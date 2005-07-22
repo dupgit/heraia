@@ -1,0 +1,14 @@
+
+14 may 2005
+	Héraia is not meant to be an hexadecimal document creator thus it is
+	not possible to call heraia from the command line with a file that does
+        not exists or that has a length of 0 byte.
+
+29 January 2005
+	Project creation
+	Name of the project comes from 
+	http://www.educnet.education.fr/musagora/manuel/sequence4/tradHeraia.htm
+	(french)
+	This is my first project in gtk+ so there might be surprising things for
+        one used to it. Please report anything that seems strange to you. 
+        

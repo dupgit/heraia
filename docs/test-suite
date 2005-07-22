@@ -1,0 +1,7 @@
+
+* Dos date : (need more tests cases)
+ November 26, 2002 at 7:25:00 pm  = (hexa) 2D 7A 9B 20
+
+* Filetime date :
+ January 04, 2003 at 11:20:48 am = (hexa) 00 A8 B6 54 E3 B3 C2 01
+ January 04, 2003 at 11:33:16 am = (hexa) 00 66 8E 12 E5 B3 C2 01

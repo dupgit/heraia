@@ -1,0 +1,26 @@
+
+C DATE (Also PHP)
+see man 3 ctime
+
+DOS DATE
+http://msdn.microsoft.com/library/default.asp?url=/library/en-us/sysinfo/base/filetimetodosdatetime.asp
+
+FILETIME
+http://msdn.microsoft.com/library/default.asp?url=/library/en-us/sysinfo/base/filetime_str.asp
+
+SYSTEMTIME
+http://msdn.microsoft.com/library/default.asp?url=/library/en-us/sysinfo/base/systemtime_str.asp
+
+JAVATIME
+http://www.javaworld.com/javaworld/jw-03-2001/jw-0330-time.html
+
+See also :
+
+http://blogs.msdn.com/oldnewthing/archive/2003/09/05/54806.aspx
+Beware this link has some funny examples ... 
+
+http://www.decimaltime.hynes.net/computers.html
+
+
+Endianness : 
+(french) http://www.debian.org/intl/french/dico/data/littlebig_endian

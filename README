@@ -1,0 +1,8 @@
+
+Compiling the program (the easy way)
+
+./autogen
+./configure
+make
+
+now you can run the program : src/heraia

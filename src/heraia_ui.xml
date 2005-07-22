@@ -1,0 +1,7 @@
+<ui>
+  <menubar name="MenuBar">
+    <menu name="Font" action="FontMenuAction">
+      <menuitem name="Select" action="FontSelection" />
+    </menu>
+  </menubar>
+</ui>
