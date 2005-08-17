@@ -87,6 +87,8 @@ int main (int argc, char ** argv)
 	heraia_window_t *main_window;
 
 	opt.filename = NULL;  /* At first we do not have any filename */	
+	opt.usage = FALSE;
+	
 	main_window = (heraia_window_t *) g_malloc0 (sizeof(*main_window));
 	/* First, in this early stage of the development we want to toggle debugging
 	   mode ON : 
@@ -123,23 +125,26 @@ int main (int argc, char ** argv)
 			opt.filename = (char*) malloc (sizeof(char) * strlen(argv[optind]) + 1);
 			strcpy(opt.filename, argv[optind]);
 		}
-	/*	else
+	else
 		{
 			if (opt.usage != TRUE)
 				{
 					exit_value = usage (0);
 					opt.usage = TRUE;
 				}
-				} */
+		}
 
 	if (opt.usage != TRUE)
 		{
+			if (main_window->debug == TRUE)
+				g_print("Beginning things\n");
 			/* init of gtk and new window */
 			exit_value = gtk_init_check (&argc, &argv);
 	   
 			if (load_heraia_ui(main_window) == TRUE)
 				{
-
+					if (main_window->debug == TRUE)
+						g_print("main_interface_loaded!\n");
 					/* here we connect the signals (some from heraia_ui.h) */
 					g_signal_connect (G_OBJECT (main_window->window), "delete_event", 
 									  G_CALLBACK (delete_main_window_event), NULL);
