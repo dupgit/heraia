@@ -34,6 +34,7 @@
 #include "heraia.h"
 #include "heraia_ui.h"
 #include "io.h"
+#include "heraia-errors.h"
 
 
 static void version()
@@ -79,24 +80,40 @@ static void destroy_main_window( GtkWidget *widget,
 }
 */
 
+static HERAIA_ERROR
+heraia_window_create(heraia_window_t **hw)
+{
+	heraia_window_t *herwin;
+
+	herwin = (heraia_window_t *) g_malloc0 (sizeof(*herwin));
+
+	if ( ! herwin )
+		return HERAIA_MEMORY_ERROR;
+	/* First, in this early stage of the development we want to toggle debugging
+	   mode ON : 
+	*/
+	herwin->debug = TRUE;
+	herwin->filename = NULL;
+	herwin->current_doc = NULL;
+	herwin->current_DW = (data_window_t *) g_malloc0 (sizeof(*herwin->current_DW));
+
+	*hw = herwin;
+
+	return HERAIA_NOERR;
+}
+
 int main (int argc, char ** argv) 
 {  
 	Options opt; /* A structure to manage the command line options  */
 	int c = 0;
 	gboolean exit_value = TRUE;
-	heraia_window_t *main_window;
+	heraia_window_t *main_window = NULL;
+	HERAIA_ERROR ret;
 
 	opt.filename = NULL;  /* At first we do not have any filename */	
 	opt.usage = FALSE;
 	
-	main_window = (heraia_window_t *) g_malloc0 (sizeof(*main_window));
-	/* First, in this early stage of the development we want to toggle debugging
-	   mode ON : 
-	*/
-	main_window->debug = TRUE;
-	main_window->filename = NULL;
-	main_window->current_doc = NULL;
-	main_window->current_DW = (data_window_t *) g_malloc0 (sizeof(*main_window->current_DW));
+	ret = heraia_window_create(&main_window);
 
 	while ((c = getopt_long (argc, argv, "vh", long_options, NULL)) != -1)
 		{
