@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
-  heraia.c
+  heraia-errors.h
   heraia - an hexadecimal file editor and analyser based on ghex
  
   (C) Copyright 2005 Sebastien Tricaud
@@ -21,7 +21,8 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
 
 
-#define HERAIA_ERROR gint
+/* #define HERAIA_ERROR gint */
+typedef  gint HERAIA_ERROR;
 
 #define HERAIA_NOERR 0
 #define HERAIA_MEMORY_ERROR 1
