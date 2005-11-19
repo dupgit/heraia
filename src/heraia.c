@@ -30,11 +30,16 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "data_interpretor.h"
 #include "heraia.h"
+#include "heraia-errors.h"
 #include "heraia_ui.h"
 #include "io.h"
-#include "heraia-errors.h"
+
+static void version();
+static int usage(int status);
+static gboolean delete_main_window_event( GtkWidget *widget, GdkEvent  *event,
+										  gpointer   data );
+static HERAIA_ERROR heraia_window_create(heraia_window_t **hw);
 
 
 static void version()
@@ -163,14 +168,14 @@ int main (int argc, char ** argv)
 					if (main_window->debug == TRUE)
 						g_print("main_interface_loaded!\n");
 					/* here we connect the signals (some from heraia_ui.h) */
-					g_signal_connect (G_OBJECT (main_window->window), "delete_event", 
+					g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "main_window")), "delete_event", 
 									  G_CALLBACK (delete_main_window_event), NULL);
-					g_signal_connect (G_OBJECT (main_window->window), "destroy", 
+					g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "main_window")), "destroy", 
 									  G_CALLBACK (on_quitter1_activate), NULL);
 
 					if (load_file_to_analyse(main_window, opt.filename) == TRUE)
 						{	
-  
+							
 							data_interpret (main_window->current_DW);
   
 							/* Connection of the signal to the right function
@@ -180,9 +185,9 @@ int main (int argc, char ** argv)
 											  G_CALLBACK (refresh_data_window), main_window->current_DW);
 							
 							g_print("main_window : %p\n", main_window);
-							init_heraia_interface(main_window);
+						   	init_heraia_interface(main_window);
 
-							gtk_widget_show_all (main_window->window);
+							gtk_widget_show_all (glade_xml_get_widget(main_window->xml, "main_window"));
 					
 							gtk_main ();
 							exit_value = TRUE;

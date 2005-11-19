@@ -1,3 +1,17 @@
+12.11.2005
+	- Olivier Delhomme <heraia@delhomme.org>
+	* changed the  heraia_window_t structure to reflect
+	  that we do use glade. Change the heraia_ui.c.
+	* cleaned some unecessary commented code lines.
+	* added definition checking in heraia-errors.h
+	* moved functions that calls the Hexwidget to
+	  the ghex_heraia_interface file
+	* moved the swap_byte function from ghex_heraia_interface.c to
+	  decode.c (where all those type of functions should be)
+	* added all static declarations where needed
+	* Modified test_file a bit ;-)
+
+
 07.07.2005
 	- Olivier Delhomme <heraia@delhomme.org>	
 	* changed a lot of things.

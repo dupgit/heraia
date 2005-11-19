@@ -43,6 +43,7 @@ typedef struct
 extern gint decode_dos_date( guchar *data, date_and_time_t *mydate );
 extern gint decode_filetime_date( guchar *data, date_and_time_t *mydate );
 extern gint decode_C_date( guchar *data, date_and_time_t *mydate );
+
 extern gint decode_8bits_signed( guchar *data, gchar *result );
 extern gint decode_8bits_unsigned( guchar *data, gchar *result );
 extern gint decode_16bits_signed( guchar *data, gchar *result );
@@ -51,5 +52,7 @@ extern gint decode_32bits_signed( guchar *data, gchar *result );
 extern gint decode_32bits_unsigned( guchar *data, gchar *result );
 extern gint decode_64bits_signed( guchar *data, gchar *result );
 extern gint decode_64bits_unsigned( guchar *data, gchar *result );
+
+extern gboolean swap_bytes(guchar *to_swap, guint first, guint last);
 
 #endif /* _DECODE_H_ */

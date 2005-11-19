@@ -15,6 +15,9 @@
            program and its datas. Do it if necessary.
 07.07.2005 review the heraia_window_t struct (add a new struct to manage the
            window itself.
+12.11.2005 add some abstraction layer to the GtkHex Widget (and modify the 
+           #include directives)
+19.11.2005 add and improve a clean make install procedure
 
 [Done List]
 19.03.2005 add a way to decode in big-endian or little-endian (Done 05.04.2005)

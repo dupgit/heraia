@@ -26,6 +26,11 @@
 
 #include "decode.h"
 
+static gboolean bissextile_year (guint32 year);
+static void calc_which_month_day ( date_and_time_t *mydate, guint32 day, guint tab_ns_months[12]);
+static void which_month_day ( date_and_time_t *mydate, guint32 day, gboolean bi);
+static void which_year_month_day (date_and_time_t *mydate, guint32 days, guint32 base);
+
 /*
    Says whether a year is a bissextile one or not
 */
@@ -396,7 +401,6 @@ gint decode_64bits_signed( guchar *data, gchar *result )
 		}
 }
 
-
 /*
    general purpose of this function is to take a 8 byte data stream
    and convert it as if it is a 64 bits unsigned number
@@ -416,5 +420,25 @@ gint decode_64bits_unsigned( guchar *data, gchar *result )
 			bcopy (data, &total, 8 * sizeof (guchar));
 			sprintf(result, "%llu", total);
 			return TRUE;
+		}
+}
+
+/*
+  Swap bytes from the buffer to_swap
+  recursive function
+  call with first = 0 and last = last byte of buffer to swap
+*/
+gboolean swap_bytes(guchar *to_swap, guint first, guint last)
+{
+	guchar aux;
+
+	if (first >= last)
+		return TRUE;
+	else
+		{
+			aux = to_swap[first];
+			to_swap[first] = to_swap[last];
+			to_swap[last] = aux;
+			return swap_bytes(to_swap, ++first, --last);
 		}
 }

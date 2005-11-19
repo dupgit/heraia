@@ -25,6 +25,11 @@
 #define _HERAIA_H_
 
 #include <getopt.h>
+#include <gtk/gtk.h>
+#include <gtkhex/gtkhex.h>
+#include <glade/glade.h>
+
+#include "data_interpretor.h"
 
 #define HERAIA_AUTHORS "Olivier Delhomme"
 #define HERAIA_DATE "20 02 2005"
@@ -43,5 +48,19 @@ static struct option const long_options[] =
 	{"help", no_argument, NULL, 'h'},
 	{NULL, 0, NULL, 0} 
 };
+
+typedef HexDocument Heraia_Document;
+typedef GtkHex Heraia_Hex;
+
+typedef struct
+{
+	gboolean  debug;          /* Used to tell the program wether we want to display debug messages or not */
+	gchar *filename;          /* this could (should) be a list of filenames !!! */
+
+	Heraia_Document *current_doc;
+	GladeXML *xml;
+	
+   	data_window_t *current_DW;  /* data_interpretor pointer */
+} heraia_window_t;
 
 #endif /* _HERAIA_H_ */

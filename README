@@ -6,3 +6,9 @@ Compiling the program (the easy way)
 make
 
 now you can run the program : src/heraia
+
+
+please note :
+if you dowloaded the sources from the svn repository the
+file heraia.csv does not mean anything (as it is not generated
+for every commit).

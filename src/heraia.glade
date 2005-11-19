@@ -148,7 +148,6 @@
 
 	      <child>
 		<widget class="GtkMenu" id="menuitem6_menu">
-		  <property name="visible">True</property>
 
 		  <child>
 		    <widget class="GtkCheckMenuItem" id="DIMenu">
@@ -184,11 +183,11 @@
 		<widget class="GtkMenu" id="menuitem7_menu">
 
 		  <child>
-		    <widget class="GtkMenuItem" id="À_propos1">
+		    <widget class="GtkMenuItem" id="a_propos1">
 		      <property name="visible">True</property>
 		      <property name="label" translatable="yes">À _propos</property>
 		      <property name="use_underline">True</property>
-		      <signal name="activate" handler="on_À_propos1_activate" last_modification_time="Tue, 31 May 2005 15:55:26 GMT"/>
+		      <signal name="activate" handler="on_a_propos1_activate" last_modification_time="Sat, 12 Nov 2005 15:20:58 GMT"/>
 		    </widget>
 		  </child>
 		</widget>

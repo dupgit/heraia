@@ -22,7 +22,6 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
 
 #include <gtk/gtk.h>
-#include <gtkhex/gtkhex.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -47,13 +46,42 @@ void on_nouveau1_activate( GtkWidget *widget, gpointer data )
 	g_print("Not implemented Yet (Please contribute !)\n");
 }
 
+void on_fonte1_activate( GtkWidget *widget, gpointer data )
+{
+	g_print("Not implemented Yet (Please contribute !)\n");
+}
+
+void on_supprimer1_activate( GtkWidget *widget, gpointer data )
+{
+	g_print("Not implemented Yet (Please contribute !)\n");
+}
+
+void on_a_propos1_activate( GtkWidget *widget, gpointer data )
+{
+	g_print("Not implemented Yet (Please contribute !)\n");
+}
+
+void on_couper1_activate( GtkWidget *widget, gpointer data )
+{
+	g_print("Not implemented Yet (Please contribute !)\n");
+}
+
+void on_copier1_activate( GtkWidget *widget, gpointer data )
+{
+	g_print("Not implemented Yet (Please contribute !)\n");
+}
+
+void on_coller1_activate( GtkWidget *widget, gpointer data )
+{
+	g_print("Not implemented Yet (Please contribute !)\n");
+}
+
 void on_ouvrir1_activate( GtkWidget *widget, gpointer data )
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 
 	if (select_file_to_load(main_window) == TRUE)
 		{
-			/* g_free(main_window->current_DW->current_hexwidget); */
 			load_file_to_analyse(main_window, main_window->filename);
 		}
 
@@ -64,8 +92,6 @@ void on_ouvrir1_activate( GtkWidget *widget, gpointer data )
 	   moving                                           */
 	g_signal_connect (G_OBJECT (main_window->current_DW->current_hexwidget), "cursor_moved",
 					  G_CALLBACK (refresh_data_window), main_window->current_DW); 
-
-	g_print("Not implemented Yet (Please contribute !)\n");
 }
 
 void on_enregistrer1_activate( GtkWidget *widget,  gpointer data )
@@ -78,15 +104,32 @@ void on_enregistrer_sous1_activate( GtkWidget *widget, gpointer data )
 	g_print("Not implemented Yet (Please contribute !)\n");
 }
 
+/* this handles the menuitem "Data Interpretor" that
+   show or hide the data interpretor window           */
+void on_DIMenu_activate (GtkWidget *widget, gpointer data)
+{
+	heraia_window_t *main_window = (heraia_window_t *) data;
+	data_window_t *DW = main_window->current_DW;
 
+	DW->window_displayed = !(DW->window_displayed);
+	
+	if (DW->window_displayed == TRUE)
+		gtk_widget_show_all(DW->window);
+	else
+		gtk_widget_hide_all(DW->window);
+
+	refresh_data_window(DW->current_hexwidget, DW);
+}
 /* end for call back functions for the main program */
 
-/* call back functions :  for the data interpretor window  */
+
+
+/* call back functions :  for the data interpretor window */
 gboolean delete_dt_window_event( GtkWidget *widget, GdkEvent  *event, gpointer data )
 {	
 	heraia_window_t *main_window = (heraia_window_t *) data;
 
-	g_signal_emit_by_name (main_window->menu_affichage_di, "activate");
+	g_signal_emit_by_name (glade_xml_get_widget(main_window->xml, "DIMenu"), "activate");
 
 	return TRUE;
 }
@@ -95,7 +138,7 @@ void destroy_dt_window( GtkWidget *widget, GdkEvent  *event, gpointer data )
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 
-	g_signal_emit_by_name (main_window->menu_affichage_di, "activate");
+	g_signal_emit_by_name (glade_xml_get_widget(main_window->xml, "DIMenu"), "activate");
 }
 /* End of call back functions that handle the data interpretor window */
 
@@ -146,39 +189,22 @@ gboolean select_file_to_load(heraia_window_t *main_window)
 	return success;
 }
 
-/* this handles the menuitem "Data Interpretor" that
-   show or hide the data interpretor window           */
-void on_DIMenu_activate (GtkWidget *widget, gpointer data)
-{
-	heraia_window_t *main_window = (heraia_window_t *) data;
-	data_window_t *DW = main_window->current_DW;
-
-	DW->window_displayed = !(DW->window_displayed);
-	
-	if (DW->window_displayed == TRUE)
-		gtk_widget_show_all(DW->window);
-	else
-		gtk_widget_hide_all(DW->window);
-	
-	refresh_data_window(DW->current_hexwidget, DW);
-}
-
 
 /* here we might init some call backs and menu options 
    This function should be called once only            */
 void init_heraia_interface(heraia_window_t *main_window)
 {
-	data_window_t *DW = main_window->current_DW;
-
+   	data_window_t *DW = main_window->current_DW;
+   
 	g_signal_connect (G_OBJECT (DW->window), "delete_event", 
 					  G_CALLBACK (delete_dt_window_event), main_window);
 
 	g_signal_connect (G_OBJECT (DW->window), "destroy", 
 					  G_CALLBACK (destroy_dt_window), main_window);
 
-	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(main_window->menu_affichage_di), DW->window_displayed);	
+	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(glade_xml_get_widget(main_window->xml, "DIMenu")), DW->window_displayed); 	
+  
 }
-
 
 /* checks if file_to_load exists and is valid and if possible, loads it */
 static gboolean load_the_glade_xml_if_it_exists(heraia_window_t *main_window, char *file_to_load)
@@ -274,36 +300,25 @@ int load_heraia_ui(heraia_window_t *main_window)
 
 	if (success == TRUE)
 		{
-			main_window->window = glade_xml_get_widget(main_window->xml, "main_window");
-			main_window->window_vbox = glade_xml_get_widget(main_window->xml, "vbox1");
-
 			/* connect the signals in the interface */
-			/* glade_xml_signal_autoconnect(main_window->xml); */
 
-			main_window->menu_affichage_di = glade_xml_get_widget(main_window->xml, "DIMenu");
-			main_window->menu_fichier_quitter = glade_xml_get_widget(main_window->xml, "quitter1");
-			main_window->menu_fichier_nouveau = glade_xml_get_widget(main_window->xml, "nouveau1");
-			main_window->menu_fichier_ouvrir = glade_xml_get_widget(main_window->xml, "ouvrir1");
-			main_window->menu_fichier_enregistrer =  glade_xml_get_widget(main_window->xml, "enregistrer1");
-			main_window->menu_fichier_enregister_sous = glade_xml_get_widget(main_window->xml, "enregistrer_sous1");
-
-			g_signal_connect (G_OBJECT (main_window->menu_affichage_di), "activate",
+			g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "DIMenu")), "activate", 
 							  G_CALLBACK (on_DIMenu_activate), main_window);
 
-			g_signal_connect (G_OBJECT (main_window->menu_fichier_quitter), "activate", 
+			g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "quitter1")), "activate", 
 							  G_CALLBACK (on_quitter1_activate), main_window);
 
-			g_signal_connect (G_OBJECT (main_window->menu_fichier_nouveau), "activate", 
+			g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "nouveau1")), "activate",  
 							  G_CALLBACK (on_nouveau1_activate), main_window);
 
-			g_signal_connect (G_OBJECT (main_window->menu_fichier_ouvrir), "activate", 
+			g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "ouvrir1")), "activate",  
 							  G_CALLBACK (on_ouvrir1_activate), main_window);
 
-			g_signal_connect (G_OBJECT (main_window->menu_fichier_enregistrer), "activate", 
+			g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "enregistrer1")), "activate",  
 							  G_CALLBACK (on_enregistrer1_activate), main_window);
 
-			g_signal_connect (G_OBJECT (main_window->menu_fichier_enregister_sous), "activate", 
-							  G_CALLBACK (on_enregistrer_sous1_activate), main_window);
+			g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "enregistrer_sous1")), "activate",  
+							  G_CALLBACK (on_enregistrer_sous1_activate), main_window); 
 		}
 
 	return success;

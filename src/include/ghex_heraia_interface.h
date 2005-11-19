@@ -24,10 +24,14 @@
 #include <gtk/gtk.h>
 #include <gtkhex/gtkhex.h>
 
+#include "heraia.h"
+#include "heraia-errors.h"
+
 #ifndef _GHEX_HERAIA_INTERFACE_H_
 #define _GHEX_HERAIA_INTERFACE_H_
 
 extern gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, gboolean big_endian,
 									 guchar *result);
+extern HERAIA_ERROR heraia_hex_document_new(heraia_window_t *main_window, char *filename);
 
 #endif /* _GHEX_HERAIA_INTERFACE_H_ */

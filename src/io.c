@@ -22,7 +22,6 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
 
 #include <gtk/gtk.h>
-#include <gtkhex/gtkhex.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -30,13 +29,12 @@
 #include <unistd.h>
 
 #include "data_interpretor.h"
+#include "ghex_heraia_interface.h"
 #include "heraia_ui.h"
 #include "io.h"
 
 gboolean load_file_to_analyse(heraia_window_t *main_window, char *filename)
 {
-	HexDocument *doc = NULL;
-	GtkWidget  *hexwidget = NULL;
 	struct stat *stat_buf = NULL;
 	gboolean success = FALSE;
 
@@ -47,16 +45,10 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, char *filename)
 
 	if (S_ISREG(stat_buf->st_mode) && stat_buf->st_size>0)
 		{
-			if (main_window->current_doc != NULL)
-				hex_document_remove_view(main_window->current_doc, main_window->current_DW->current_hexwidget);
-			doc = hex_document_new_from_file (filename);
-			hexwidget = hex_document_add_view(doc);
-			main_window->current_doc = doc;
-			if (main_window->current_DW->current_hexwidget != NULL )
-				gtk_widget_destroy (main_window->current_DW->current_hexwidget);
-			main_window->current_DW->current_hexwidget = hexwidget;
-	
-			gtk_box_pack_start(GTK_BOX(main_window->window_vbox), 
+
+			heraia_hex_document_new(main_window, filename);
+
+			gtk_box_pack_start(GTK_BOX(glade_xml_get_widget(main_window->xml, "vbox1")), 
 							   main_window->current_DW->current_hexwidget, FALSE, FALSE, 0);
 			
 			gtk_widget_show(main_window->current_DW->current_hexwidget);

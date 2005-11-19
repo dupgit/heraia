@@ -1,4 +1,4 @@
-/* -*- Mode: C; tab-width: 3; indent-tabs-mode: t; c-basic-offset: 3 -*- */
+/* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
   data_interpretor.h
   heraia - an hexadecimal file editor and analyser based on ghex

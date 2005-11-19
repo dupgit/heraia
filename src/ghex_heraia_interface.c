@@ -25,22 +25,23 @@
 #include <gtkhex/gtkhex.h>
 
 #include "ghex_heraia_interface.h"
+#include "decode.h"
 
-static gboolean swap_bytes(guchar *to_swap, guint first, guint last);
-
-static gboolean swap_bytes(guchar *to_swap, guint first, guint last)
+/* 
+   kills the old document if it exists and add a new one, from the new filename
+*/
+HERAIA_ERROR heraia_hex_document_new(heraia_window_t *main_window, char *filename) 
 {
-	guchar aux;
-
-	if (first >= last)
-		return TRUE;
-	else
-		{
-			aux = to_swap[first];
-			to_swap[first] = to_swap[last];
-			to_swap[last] = aux;
-			return swap_bytes(to_swap, ++first, --last);
-		}
+	if (main_window->current_doc != NULL)
+		hex_document_remove_view(main_window->current_doc, main_window->current_DW->current_hexwidget);
+	
+	if (main_window->current_DW->current_hexwidget != NULL )
+		gtk_widget_destroy (main_window->current_DW->current_hexwidget);
+	
+	main_window->current_doc = hex_document_new_from_file (filename);
+	main_window->current_DW->current_hexwidget = hex_document_add_view(main_window->current_doc);
+  
+	return HERAIA_NOERR;
 }
 
 /* 
