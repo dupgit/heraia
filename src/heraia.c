@@ -44,8 +44,7 @@ static HERAIA_ERROR heraia_window_create(heraia_window_t **hw);
 
 static void version()
 {
-	fprintf (stdout, "heraia, %s - %s - Version %s - License %s\n", HERAIA_AUTHORS,
-			 HERAIA_DATE, HERAIA_VERSION, HERAIA_LICENSE);
+	fprintf (stdout, "heraia, %s - %s - Version %s - License %s\n", HERAIA_AUTHORS, HERAIA_DATE, HERAIA_VERSION, HERAIA_LICENSE);
 }
 
 static int usage(int status)
@@ -59,10 +58,8 @@ static int usage(int status)
 	else
 		{
 			version();
-			fprintf(stdout, "\nheraia is a simple hexadecimal file editor and \
-file analyser");
-			fprintf(stdout, "\nUsage :\n\
-  heraia [options] filename\n");
+			fprintf(stdout, "\nheraia is a simple hexadecimal file editor and file analyser");
+			fprintf(stdout, "\nUsage :\n  heraia [options] filename\n");
 			fprintf(stdout, "\nOptions :\n\
   -h, --help\tThis help.\n\
   -v, --version\tProgram version information.\n");
@@ -78,15 +75,13 @@ static gboolean delete_main_window_event( GtkWidget *widget, GdkEvent  *event,
 }
 
 /*
-static void destroy_main_window( GtkWidget *widget,
-								 gpointer   data )
+static void destroy_main_window( GtkWidget *widget, gpointer   data )
 {
     gtk_main_quit ();
 }
 */
 
-static HERAIA_ERROR
-heraia_window_create(heraia_window_t **hw)
+static HERAIA_ERROR heraia_window_create(heraia_window_t **hw)
 {
 	heraia_window_t *herwin;
 
@@ -106,6 +101,7 @@ heraia_window_create(heraia_window_t **hw)
 
 	return HERAIA_NOERR;
 }
+
 
 int main (int argc, char ** argv) 
 {  

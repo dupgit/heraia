@@ -1,3 +1,7 @@
+07.02.2006
+         - Olivier Delhomme <heraia@delhomme.org>
+	 * Now resizing the window also resises the HexWidget in it !
+
 12.11.2005
 	- Olivier Delhomme <heraia@delhomme.org>
 	* changed the  heraia_window_t structure to reflect

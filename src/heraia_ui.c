@@ -250,7 +250,7 @@ static gboolean load_heraia_glade_xml(heraia_window_t *main_window)
 	file_to_load = (char *) g_malloc0 (sizeof(char)*(12 + strlen(filename) + 1));
 	sprintf(file_to_load, "/etc/heraia/%s", filename);
 	success = load_the_glade_xml_if_it_exists(main_window, file_to_load);
-	if (main_window->debug == TRUE && success != FALSE)
+	if (main_window->debug == TRUE && success == TRUE)
 		g_print("heraia.glade loaded from : %s\n", file_to_load );
 	
 	g_free(file_to_load);
@@ -263,7 +263,7 @@ static gboolean load_heraia_glade_xml(heraia_window_t *main_window)
 			file_to_load = (char *) g_malloc0 (sizeof(char)*(strlen(user) + strlen(filename) + 15));
 			sprintf(file_to_load, "/home/%s/.heraia/%s", user, filename);
 			success = load_the_glade_xml_if_it_exists(main_window, file_to_load);
-			if (main_window->debug == TRUE && success != FALSE)
+			if (main_window->debug == TRUE && success == TRUE)
 				g_print("heraia.glade loaded from : %s\n", file_to_load );
 
 			g_free(file_to_load);
@@ -278,7 +278,7 @@ static gboolean load_heraia_glade_xml(heraia_window_t *main_window)
 			file_to_load = (char *) g_malloc0 (sizeof(char)*(strlen(filename) + strlen(current_path) + 2));
 			sprintf(file_to_load, "%s/%s", current_path, filename);
 			success = load_the_glade_xml_if_it_exists(main_window, file_to_load);
-			if (main_window->debug == TRUE && success != FALSE)
+			if (main_window->debug == TRUE && success == TRUE)
 				g_print("heraia.glade loaded from : %s\n", file_to_load );
 
 			g_free(current_path);
@@ -288,6 +288,16 @@ static gboolean load_heraia_glade_xml(heraia_window_t *main_window)
 	g_free(filename);
 	
 	return success;
+}
+
+void on_analyse_graphique_activate( GtkWidget *widget, gpointer data )
+{
+	heraia_window_t *main_window = (heraia_window_t *) data;
+	
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(glade_xml_get_widget(main_window->xml, "analyse_graphique"))))
+		gtk_widget_show_all(glade_xml_get_widget(main_window->xml, "graph_analysis"));
+	else
+		gtk_widget_hide_all(glade_xml_get_widget(main_window->xml, "graph_analysis"));
 }
 
 
@@ -319,6 +329,10 @@ int load_heraia_ui(heraia_window_t *main_window)
 
 			g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "enregistrer_sous1")), "activate",  
 							  G_CALLBACK (on_enregistrer_sous1_activate), main_window); 
+
+			g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "analyse_graphique")), "activate",
+							  G_CALLBACK (on_analyse_graphique_activate), main_window);
+
 		}
 
 	return success;
