@@ -20,6 +20,8 @@
 19.11.2005 add and improve a clean make install procedure
 09.04.2006 change all the functions to have a good "C" return status : 
            0 == sucess else errno 
+31.07.2006 the code needs a serious review
+31.07.2006 add "module" or "plugin" capacities to the program
 
 
 [Done List]

@@ -21,9 +21,9 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
 
-#include <gtk/gtk.h>
 #include <string.h>
 
+#include "types.h"
 #include "decode.h"
 
 static gboolean bissextile_year (guint32 year);
@@ -53,7 +53,8 @@ static gboolean bissextile_year (guint32 year)
 		return FALSE;
 }
 
-static void calc_which_month_day ( date_and_time_t *mydate, guint32 day, guint tab_ns_months[12])
+
+static void calc_which_month_day (date_and_time_t *mydate, guint32 day, guint tab_ns_months[12])
 {
 	gushort i = 0;
 
@@ -66,7 +67,8 @@ static void calc_which_month_day ( date_and_time_t *mydate, guint32 day, guint t
 		mydate->day = (1 + day) - tab_ns_months[i-1];
 }
 
-static void which_month_day ( date_and_time_t *mydate, guint32 day, gboolean bi)
+
+static void which_month_day (date_and_time_t *mydate, guint32 day, gboolean bi)
 {
 
 	if (bi == TRUE)
@@ -158,7 +160,7 @@ static void which_year_month_day (date_and_time_t *mydate, guint32 days, guint32
    data : 4 guchars
    result : at least 21 gchars
 */
-gint decode_dos_date( guchar *data, date_and_time_t *mydate )
+gint decode_dos_date(guchar *data, date_and_time_t *mydate)
 {
 
 	if ((data == NULL) || (mydate == NULL))
@@ -185,7 +187,7 @@ gint decode_dos_date( guchar *data, date_and_time_t *mydate )
    data : 8 guchars
    result : at least 21 gchars
 */
-gint decode_filetime_date( guchar *data, date_and_time_t *mydate )
+gint decode_filetime_date(guchar *data, date_and_time_t *mydate)
 {
 	guint64 total = 0;
 	guint64 calc = 0;
@@ -221,7 +223,7 @@ gint decode_filetime_date( guchar *data, date_and_time_t *mydate )
    data : 4 guchars
    result : at least 21 gchars
 */
-gint decode_C_date( guchar *data, date_and_time_t *mydate )
+gint decode_C_date(guchar *data, date_and_time_t *mydate)
 {
 	guint32 total = 0;
 	guint32 days = 0;
@@ -252,7 +254,7 @@ gint decode_C_date( guchar *data, date_and_time_t *mydate )
    data : 1 guchars
    result : max 3 gchar
 */
-gint decode_8bits_signed( guchar *data, gchar *result )
+gint decode_8bits_signed(guchar *data, gchar *result)
 {
 	gint8 total;
 
@@ -266,6 +268,7 @@ gint decode_8bits_signed( guchar *data, gchar *result )
 		}
 }
 
+
 /*
    general purpose of this function is to take a 1 byte data stream
    and convert it as if it is an 8 bits signed number
@@ -274,7 +277,7 @@ gint decode_8bits_signed( guchar *data, gchar *result )
    data : 1 guchars
    result : max 3 gchar
 */
-gint decode_8bits_unsigned( guchar *data, gchar *result )
+gint decode_8bits_unsigned(guchar *data, gchar *result)
 {
 	guint8 total;
 
@@ -288,6 +291,7 @@ gint decode_8bits_unsigned( guchar *data, gchar *result )
 		}
 }
 
+
 /*
    general purpose of this function is to take a 2 byte data stream
    and convert it as if it is a 16 bits signed number
@@ -296,7 +300,7 @@ gint decode_8bits_unsigned( guchar *data, gchar *result )
    data : 2 guchars
    result : max 6 gchar
 */
-gint decode_16bits_signed( guchar *data, gchar *result )
+gint decode_16bits_signed(guchar *data, gchar *result)
 {
 	gint16 total;
 
@@ -319,7 +323,7 @@ gint decode_16bits_signed( guchar *data, gchar *result )
    data : 2 guchars
    result : max 5 gchar
 */
-gint decode_16bits_unsigned( guchar *data, gchar *result )
+gint decode_16bits_unsigned(guchar *data, gchar *result)
 {
 	guint16 total;
 
@@ -342,7 +346,7 @@ gint decode_16bits_unsigned( guchar *data, gchar *result )
    data : 4 guchars
    result : max 11 gchar
 */
-gint decode_32bits_signed( guchar *data, gchar *result )
+gint decode_32bits_signed(guchar *data, gchar *result)
 {
 	gint32 total;
 
@@ -365,7 +369,7 @@ gint decode_32bits_signed( guchar *data, gchar *result )
    data : 4 guchars
    result : max 11 gchar
 */
-gint decode_32bits_unsigned( guchar *data, gchar *result )
+gint decode_32bits_unsigned(guchar *data, gchar *result)
 {
 	guint32 total;
 
@@ -387,7 +391,7 @@ gint decode_32bits_unsigned( guchar *data, gchar *result )
    data : 8 guchars
    result : max 21 gchar
 */
-gint decode_64bits_signed( guchar *data, gchar *result )
+gint decode_64bits_signed(guchar *data, gchar *result)
 {
 	gint64 total;
 
@@ -401,6 +405,7 @@ gint decode_64bits_signed( guchar *data, gchar *result )
 		}
 }
 
+
 /*
    general purpose of this function is to take a 8 byte data stream
    and convert it as if it is a 64 bits unsigned number
@@ -409,7 +414,7 @@ gint decode_64bits_signed( guchar *data, gchar *result )
    data : 8 guchars
    result : max 21 gchar
 */
-gint decode_64bits_unsigned( guchar *data, gchar *result )
+gint decode_64bits_unsigned(guchar *data, gchar *result)
 {
 	guint64 total;
 
@@ -422,6 +427,7 @@ gint decode_64bits_unsigned( guchar *data, gchar *result )
 			return TRUE;
 		}
 }
+
 
 /*
   Swap bytes from the buffer to_swap

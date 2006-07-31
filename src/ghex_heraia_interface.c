@@ -21,9 +21,8 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
 
-#include <gtk/gtk.h>
-#include <gtkhex/gtkhex.h>
-
+#include "types.h"
+#include "heraia-errors.h"
 #include "ghex_heraia_interface.h"
 #include "decode.h"
 
@@ -44,12 +43,14 @@ HERAIA_ERROR heraia_hex_document_new(heraia_window_t *main_window, char *filenam
 	return HERAIA_NOERR;
 }
 
+
 /* 
 	Returns 'len' number of bytes located at 'pos' in th GtkHex 
    document and puts it in the result variable
 
 	We assume that a previous g_malloc has been done in order to
-   use the function.
+   use the function. Here we need the "swap_bytes" function
+   defined in the decode.h header
 */
 gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, gboolean big_endian, 
 							guchar *result) 

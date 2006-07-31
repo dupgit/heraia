@@ -28,9 +28,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "data_interpretor.h"
-#include "ghex_heraia_interface.h"
-#include "heraia_ui.h"
+#include "types.h"
 #include "io.h"
 
 gboolean load_file_to_analyse(heraia_window_t *main_window, char *filename)

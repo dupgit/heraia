@@ -21,31 +21,33 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
 
-#include <gtk/gtk.h>
-#include <gtkhex/gtkhex.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <getopt.h>
 
+#include "types.h"
 #include "heraia.h"
 #include "heraia-errors.h"
 #include "heraia_ui.h"
 #include "io.h"
+#include "data_interpretor.h"
 
-static void version();
+static void version(void);
 static int usage(int status);
 static gboolean delete_main_window_event( GtkWidget *widget, GdkEvent  *event,
 										  gpointer   data );
 static HERAIA_ERROR heraia_window_create(heraia_window_t **hw);
 
 
-static void version()
+static void version(void)
 {
 	fprintf (stdout, "heraia, %s - %s - Version %s - License %s\n", HERAIA_AUTHORS, HERAIA_DATE, HERAIA_VERSION, HERAIA_LICENSE);
 }
+
 
 static int usage(int status)
 {
@@ -67,6 +69,7 @@ static int usage(int status)
 		}
 }
 
+
 static gboolean delete_main_window_event( GtkWidget *widget, GdkEvent  *event,
 										  gpointer   data )
 {
@@ -74,12 +77,14 @@ static gboolean delete_main_window_event( GtkWidget *widget, GdkEvent  *event,
     return TRUE;
 }
 
+
 /*
 static void destroy_main_window( GtkWidget *widget, gpointer   data )
 {
     gtk_main_quit ();
 }
 */
+
 
 static HERAIA_ERROR heraia_window_create(heraia_window_t **hw)
 {

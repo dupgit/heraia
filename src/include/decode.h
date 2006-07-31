@@ -25,21 +25,6 @@
 #ifndef _DECODE_H_
 #define _DECODE_H_
 
-#include <gtk/gtk.h>
-
-typedef struct
-{
-	guint32 year;
-	guint32 month;
-	guint32 day;
-	
-	guint32 hour;
-	guint32 minutes;
-	guint32 seconds;
-
-} date_and_time_t;
-
-
 extern gint decode_dos_date( guchar *data, date_and_time_t *mydate );
 extern gint decode_filetime_date( guchar *data, date_and_time_t *mydate );
 extern gint decode_C_date( guchar *data, date_and_time_t *mydate );

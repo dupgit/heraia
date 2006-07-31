@@ -15,5 +15,6 @@ heraia_SOURCES = 	\
 	decode.c \
 	ghex_heraia_interface.c \
 	heraia_ui.c \
-	io.c
+	io.c \
+	graphic_analysis.c
 

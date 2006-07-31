@@ -1,3 +1,10 @@
+31.07.2006
+	- Olivier Delhomme <heraia@delhomme.org>
+        * Added graphic_analysis.c and graphic_analysis.h
+	* Added types.h
+	* Modified nearly all the files to reflect that the file
+	  type.h now as all the necessary types.
+
 07.02.2006
          - Olivier Delhomme <heraia@delhomme.org>
 	 * Now resizing the window also resises the HexWidget in it !

@@ -25,8 +25,6 @@
 #ifndef _DATA_INTERPRETOR_H_
 #define _DATA_INTERPRETOR_H_
 
-#include <gtk/gtk.h>
-
 /* 
 Naming : 
   H stands for Heraia
@@ -47,73 +45,7 @@ Naming :
 #define H_DI_FONT_STYLE "Bold"
 #define H_DI_FONT_WIDTH "9"
 
-typedef struct
-{
-	/* Current Hexwidget that we want data to be interpreted */
-	GtkWidget *current_hexwidget;
-
-	/* window widgets */
-	GtkWidget *window;
-	GtkWidget *window_vbox;
-	GtkWidget *window_table;
-	GtkWidget *window_statusbar;
-	GtkWidget *window_menu_bar;
-	GtkWidget *window_show_menu;
-	GtkWidget *window_show_item;
-	GtkWidget *window_encoding_menu;
-	GtkWidget *window_encoding_item;
-	GtkWidget *window_font_menu;
-	GtkWidget *window_font_item;
-
-	/* show menu items */
-	GtkWidget *window_show_8bits_item;
-	GtkWidget *window_show_16bits_item;
-	GtkWidget *window_show_32bits_item;
-	GtkWidget *window_show_64bits_item;
-	GtkWidget *window_show_dos_date_item;
-	GtkWidget *window_show_filetime_date_item;
-	GtkWidget *window_show_C_date_item;
-
-	GtkWidget *window_enc_b_e_item;   /* encoding_big_endian menu item */
-
-	GtkWidget *window_font_select_item; /* font menu item */
-
-	/* general config and parameters for the DI window*/
-	guint table_lines;
-	guint table_columns;
-	guint statusbar_context;
-	gboolean window_displayed;
-	gchar *window_font_name;
-	
-
-	/* labels */
-	GtkWidget *label_unsigned;
-	GtkWidget *label_signed;
-	GtkWidget *label_type;
-	GtkWidget *label_8bits;
-	GtkWidget *label_16bits;
-	GtkWidget *label_32bits;
-	GtkWidget *label_64bits;
-	GtkWidget *label_dos_date;
-	GtkWidget *label_filetime_date;
-	GtkWidget *label_C_date;
-
-	/* entries */
-	GtkWidget *entry_signed_byte;
-	GtkWidget *entry_unsigned_byte;
-	GtkWidget *entry_signed_16bits;
-	GtkWidget *entry_unsigned_16bits;
-	GtkWidget *entry_signed_32bits;
-	GtkWidget *entry_unsigned_32bits;
-	GtkWidget *entry_signed_64bits;
-	GtkWidget *entry_unsigned_64bits;
-	GtkWidget *entry_dos_date;
-	GtkWidget *entry_filetime_date;
-	GtkWidget *entry_C_date;
-
-} data_window_t;
-
-extern void data_interpret( data_window_t *DW );
-extern void refresh_data_window( GtkWidget *hexwidget, gpointer data );
+extern void data_interpret(data_window_t *DW);
+extern void refresh_data_window(GtkWidget *hexwidget, gpointer data);
 
 #endif /* _DATA_INTERPRETOR_H_ */

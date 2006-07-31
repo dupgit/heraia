@@ -21,19 +21,25 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
 
-#include <gtk/gtk.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+
+#include "types.h"
+#include "heraia-errors.h"
 #include "heraia_ui.h"
 #include "io.h"
-
+#include "graphic_analysis.h"
 
 static gboolean load_heraia_glade_xml(heraia_window_t *main_window);
 static gboolean load_the_glade_xml_if_it_exists(heraia_window_t *main_window, char *file_to_load);
-
+static gboolean delete_ga_window_event( GtkWidget *widget, GdkEvent  *event, gpointer data );
+static void destroy_ga_window( GtkWidget *widget, GdkEvent  *event, gpointer data );
+static void on_graph_analysis_show( GtkWidget *widget, gpointer data );
+static void on_graph_analysis_expose_event( GtkWidget *widget,  gpointer data );
+static void on_analyse_graphique_activate( GtkWidget *widget, gpointer data );
 
 /* call back functions : for the main program */
 void on_quitter1_activate( GtkWidget *widget, gpointer data )
@@ -204,6 +210,22 @@ void init_heraia_interface(heraia_window_t *main_window)
 
 	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(glade_xml_get_widget(main_window->xml, "DIMenu")), DW->window_displayed); 	
   
+	/* graph analysis window part */
+	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "analyse_graphique")), "activate",
+					  G_CALLBACK (on_analyse_graphique_activate), main_window);
+
+	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "graph_analysis")), "show",
+					  G_CALLBACK (on_graph_analysis_show), main_window);
+			
+	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "graph_analysis")), "expose_event",
+					  G_CALLBACK (on_graph_analysis_expose_event), main_window);
+
+	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "graph_analysis")), "delete_event", 
+					  G_CALLBACK (delete_ga_window_event), main_window);
+
+	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "graph_analysis")), "destroy", 
+					  G_CALLBACK (destroy_ga_window), main_window);
+	/* end of graph analysis window part */
 }
 
 /* checks if file_to_load exists and is valid and if possible, loads it */
@@ -290,6 +312,9 @@ static gboolean load_heraia_glade_xml(heraia_window_t *main_window)
 	return success;
 }
 
+
+/**** call back functions :  for the graphic analysis window ****/
+
 void on_analyse_graphique_activate( GtkWidget *widget, gpointer data )
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
@@ -299,6 +324,43 @@ void on_analyse_graphique_activate( GtkWidget *widget, gpointer data )
 	else
 		gtk_widget_hide_all(glade_xml_get_widget(main_window->xml, "graph_analysis"));
 }
+
+gboolean delete_ga_window_event( GtkWidget *widget, GdkEvent  *event, gpointer data )
+{	
+	heraia_window_t *main_window = (heraia_window_t *) data;
+
+	g_signal_emit_by_name (glade_xml_get_widget(main_window->xml, "analyse_graphique"), "activate");
+
+	return TRUE;
+}
+
+void destroy_ga_window( GtkWidget *widget, GdkEvent  *event, gpointer data )
+{
+	heraia_window_t *main_window = (heraia_window_t *) data;
+
+	g_signal_emit_by_name (glade_xml_get_widget(main_window->xml, "analyse_graphique"), "activate");
+}
+
+
+/* Called when the graph analysis window is shown */
+void on_graph_analysis_show( GtkWidget *widget,  gpointer data )
+{
+	heraia_window_t *main_window = (heraia_window_t *) data;
+	
+	fprintf(stdout, "graph_analysis got the focus !\n");
+}
+
+
+/* Called when the graph analysis window is exposed (redrawn) */
+void on_graph_analysis_expose_event( GtkWidget *widget,  gpointer data )
+{
+	heraia_window_t *main_window = (heraia_window_t *) data;
+	
+	do_the_histogram(main_window);
+	fprintf(stdout, "graph_analysis is beeing redrawn !\n");
+}
+/**** End of call back functions that handle the  graphic analysis window ****/
+
 
 
 int load_heraia_ui(heraia_window_t *main_window)
@@ -329,10 +391,6 @@ int load_heraia_ui(heraia_window_t *main_window)
 
 			g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "enregistrer_sous1")), "activate",  
 							  G_CALLBACK (on_enregistrer_sous1_activate), main_window); 
-
-			g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "analyse_graphique")), "activate",
-							  G_CALLBACK (on_analyse_graphique_activate), main_window);
-
 		}
 
 	return success;

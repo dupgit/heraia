@@ -21,47 +21,47 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
 
-#include <gtk/gtk.h>
-#include <gtkhex/gtkhex.h>
 #include <string.h>
 
+#include "types.h"
+#include "heraia-errors.h"
 #include "data_interpretor.h"
 #include "decode.h"
 #include "ghex_heraia_interface.h"
 
 /* Begining of data interpretor things  */
-
 static gboolean is_activate(GtkWidget *check_menu_item);
-static void DI_print_offset( data_window_t *DW );
-static void interpret_unsigned_byte( data_window_t *DW );
-static void interpret_signed_byte( data_window_t *DW );
-static void interpret_16bits_number( gboolean is_signed, data_window_t *DW );
-static void interpret_32bits_number( gboolean is_signed, data_window_t *DW );
-static void interpret_64bits_number( gboolean is_signed, data_window_t *DW );
-static void interpret_dos_date( data_window_t *DW );
-static void interpret_filetime_date( data_window_t *DW );
-static void interpret_C_date( data_window_t *DW );
-static void display_8bits( data_window_t *DW, gushort line );
-static void display_16bits( data_window_t *DW, gushort line );
-static void display_32bits( data_window_t *DW, gushort line );
-static void display_64bits( data_window_t *DW, gushort line );
-static void display_dos_date( data_window_t *DW, gushort line );
-static void display_filetime_date( data_window_t *DW, gushort line );
-static void display_C_date( data_window_t *DW, gushort line );
-static void display_labels( data_window_t *DW, gushort line );
-static void display_statusbar( data_window_t *DW );
-static void display_di_window( data_window_t *DW );
-static void resize_window_table( data_window_t *DW );
+static void DI_print_offset(data_window_t *DW);
+static void interpret_unsigned_byte(data_window_t *DW);
+static void interpret_signed_byte(data_window_t *DW);
+static void interpret_16bits_number(gboolean is_signed, data_window_t *DW);
+static void interpret_32bits_number(gboolean is_signed, data_window_t *DW);
+static void interpret_64bits_number(gboolean is_signed, data_window_t *DW);
+static void interpret_dos_date(data_window_t *DW);
+static void interpret_filetime_date(data_window_t *DW);
+static void interpret_C_date(data_window_t *DW);
+static void display_8bits(data_window_t *DW, gushort line);
+static void display_16bits(data_window_t *DW, gushort line);
+static void display_32bits(data_window_t *DW, gushort line);
+static void display_64bits(data_window_t *DW, gushort line);
+static void display_dos_date(data_window_t *DW, gushort line);
+static void display_filetime_date(data_window_t *DW, gushort line);
+static void display_C_date(data_window_t *DW, gushort line);
+static void display_labels(data_window_t *DW, gushort line);
+static void display_statusbar(data_window_t *DW);
+static void display_di_window(data_window_t *DW);
+static void resize_window_table(data_window_t *DW);
 
-static void show_menu_item_response( GtkWidget *widget, gpointer data );
-static void encoding_menu_item_response( GtkWidget *widget, gpointer data );
-static void font_select_menu_item_response( GtkWidget *widget, gpointer data );
-static void init_di_menu( data_window_t *DW );
+static void show_menu_item_response(GtkWidget *widget, gpointer data);
+static void encoding_menu_item_response(GtkWidget *widget, gpointer data);
+static void font_select_menu_item_response(GtkWidget *widget, gpointer data);
+static void init_di_menu(data_window_t *DW);
+
 
 /*
   Here we want to know where we are in the file (from the beginning)
 */
-static void DI_print_offset( data_window_t *DW )
+static void DI_print_offset(data_window_t *DW)
 {	
 	guint pos;      /* position of the cursor in the file */
 	gchar *text;    /* interpreted text to be printed     */
@@ -76,7 +76,7 @@ static void DI_print_offset( data_window_t *DW )
 
 	sprintf(text, "offset = %u", pos);
 	gtk_statusbar_pop (GTK_STATUSBAR(DW->window_statusbar), 
-							 DW->statusbar_context );
+							 DW->statusbar_context);
 	DW->statusbar_context =
 		gtk_statusbar_get_context_id (GTK_STATUSBAR(DW->window_statusbar),
 												text);
@@ -85,15 +85,16 @@ static void DI_print_offset( data_window_t *DW )
 	g_free (text);
 }
 
+
 /*
     Here we do interpret an unsigned byte in decimal format
 */
-static void interpret_unsigned_byte( data_window_t *DW )
+static void interpret_unsigned_byte(data_window_t *DW)
 {	
-	gchar *text;    /* interpreted text to be printed     */
-	gint result;    /* used to test different results of function calls */
-	guchar *c;      /* the character under the cursor     */
-	GtkHex *gh;
+	gchar *text = NULL;    /* interpreted text to be printed     */
+	gint result = 0;       /* used to test different results of function calls */
+	guchar *c = NULL;      /* the character under the cursor     */
+	GtkHex *gh = NULL;
 
 	gh = GTK_HEX (DW->current_hexwidget);
 
@@ -121,10 +122,11 @@ static void interpret_unsigned_byte( data_window_t *DW )
   	g_free (text);
 }
 
+
 /*
     Here we do interpret a signed byte in decimal format
 */
-static void interpret_signed_byte( data_window_t *DW )
+static void interpret_signed_byte(data_window_t *DW)
 {	
 	gchar *text;    /* interpreted text to be printed     */
 	gint result;    /* used to test different results of function calls */
@@ -158,12 +160,13 @@ static void interpret_signed_byte( data_window_t *DW )
   	g_free (text);
 }
 
+
 /*
     Here we do interpret a 16 bits number in decimal format
 	 is_signed == TRUE interpets as a signed 16 bits number
 	 is_signed == FALSE interprets as an unsigned 16 bits number
 */
-static void interpret_16bits_number( gboolean is_signed, data_window_t *DW )
+static void interpret_16bits_number(gboolean is_signed, data_window_t *DW)
 {	
 	gchar *text; /* interpreted text to be printed     */
 	guchar *c;   /* the characters under the cursor and the next one */
@@ -203,12 +206,13 @@ static void interpret_16bits_number( gboolean is_signed, data_window_t *DW )
 	g_free (c);
 }
 
+
 /*
     Here we do interpret a 32 bits number in decimal format
 	 is_signed == TRUE interpets as a signed 32 bits number
 	 is_signed == FALSE interprets as an unsigned 32 bits number
 */
-static void interpret_32bits_number( gboolean is_signed, data_window_t *DW )
+static void interpret_32bits_number(gboolean is_signed, data_window_t *DW)
 {	
 	gchar *text; /* interpreted text to be printed     */
 	guchar *c;   /* the characters under the cursor and the next one */
@@ -221,7 +225,7 @@ static void interpret_32bits_number( gboolean is_signed, data_window_t *DW )
 	result = ghex_memcpy(gh, gtk_hex_get_cursor (gh), 4,
 								is_activate(DW->window_enc_b_e_item), c);
 	text = (gchar *) g_malloc0 (H_DI_MAX_ENTRY*sizeof(gchar));
-	if (result == TRUE )
+	if (result == TRUE)
 		{		
 			if (is_signed == TRUE)
 				result = decode_32bits_signed(c, text);
@@ -254,7 +258,7 @@ static void interpret_32bits_number( gboolean is_signed, data_window_t *DW )
 	 is_signed == TRUE interpets as a signed 64 bits number
 	 is_signed == FALSE interprets as an unsigned 64 bits number
 */
-static void interpret_64bits_number( gboolean is_signed, data_window_t *DW )
+static void interpret_64bits_number(gboolean is_signed, data_window_t *DW)
 {	
 	gchar *text; /* interpreted text to be printed     */
 	guchar *c;   /* the characters under the cursor and the next one */
@@ -268,7 +272,7 @@ static void interpret_64bits_number( gboolean is_signed, data_window_t *DW )
 								is_activate(DW->window_enc_b_e_item), c);
 	text = (gchar *) g_malloc0 (H_DI_MAX_ENTRY*sizeof(gchar));
 
-	if (result == TRUE )
+	if (result == TRUE)
 		{
 			if (is_signed == TRUE)
 				result = decode_64bits_signed(c, text);
@@ -302,7 +306,7 @@ static void interpret_64bits_number( gboolean is_signed, data_window_t *DW )
     might differ from any real date (when interpreted data does
     not represent a dos date).
 */
-static void interpret_dos_date( data_window_t *DW )
+static void interpret_dos_date(data_window_t *DW)
 {	
 	gchar *text; /* interpreted text to be printed                   */
 	guchar *c;   /* the characters under the cursor and the next one */
@@ -319,7 +323,7 @@ static void interpret_dos_date( data_window_t *DW )
 	result = ghex_memcpy(gh, gtk_hex_get_cursor (gh), 4,
 								is_activate(DW->window_enc_b_e_item), c);
 
-	if (result == TRUE )
+	if (result == TRUE)
 		{
 			result = decode_dos_date(c, mydate);
 			if (result == TRUE)
@@ -331,7 +335,7 @@ static void interpret_dos_date( data_window_t *DW )
 				}
 		}
 	
-	if (result == FALSE )
+	if (result == FALSE)
 		{
 			sprintf(text, "%s", "Not a dos date");
 			gtk_entry_set_text (GTK_ENTRY(DW->entry_dos_date), text);
@@ -342,13 +346,14 @@ static void interpret_dos_date( data_window_t *DW )
 	g_free (c);
 }
 
+
 /*
     Here we do interpret a filetime date (a 8 bytes data)
 	 We can not have any date struct type because our interprets
     might differ from any real date (when interpreted data does
     not represent a filetime date).
 */
-static void interpret_filetime_date( data_window_t *DW )
+static void interpret_filetime_date(data_window_t *DW)
 {	
 	gchar *text; /* interpreted text to be printed                   */
 	guchar *c;   /* the characters under the cursor and the next one */
@@ -365,7 +370,7 @@ static void interpret_filetime_date( data_window_t *DW )
 	result = ghex_memcpy(gh, gtk_hex_get_cursor (gh), 8,
 								is_activate(DW->window_enc_b_e_item), c);
 	
-	if (result == TRUE )
+	if (result == TRUE)
 		{
 			result = decode_filetime_date(c, mydate);
 			if (result == TRUE)
@@ -377,7 +382,7 @@ static void interpret_filetime_date( data_window_t *DW )
 				}		
 		}
 	
-	if (result == FALSE )
+	if (result == FALSE)
 		{
 			sprintf(text, "%s", "Not a filetime date");
 			gtk_entry_set_text (GTK_ENTRY(DW->entry_filetime_date), text);
@@ -388,13 +393,14 @@ static void interpret_filetime_date( data_window_t *DW )
 	g_free (c);
 }
 
+
 /*
     Here we do interpret a C date (a 4 bytes data)
 	 We can not have any date struct type because our interprets
     might differ from any real date (when interpreted data does
     not represent a C date).
 */
-static void interpret_C_date( data_window_t *DW )
+static void interpret_C_date(data_window_t *DW)
 {	
 	gchar *text; /* interpreted text to be printed                   */
 	guchar *c;   /* the characters under the cursor and the next one */
@@ -412,7 +418,7 @@ static void interpret_C_date( data_window_t *DW )
 	result = ghex_memcpy(gh, gtk_hex_get_cursor (gh), 4,
 								is_activate(DW->window_enc_b_e_item), c);
 
-	if (result == TRUE )
+	if (result == TRUE)
 		{
 			result = decode_C_date(c, mydate);
 			if (result == TRUE)
@@ -424,7 +430,7 @@ static void interpret_C_date( data_window_t *DW )
 				}
 		}
 	
-	if (result == FALSE )
+	if (result == FALSE)
 		{
 			sprintf(text, "%s", "Not a C date");
 			gtk_entry_set_text (GTK_ENTRY(DW->entry_C_date), text);
@@ -434,23 +440,22 @@ static void interpret_C_date( data_window_t *DW )
 	g_free (mydate);
 	g_free (c);
 }
-
-
 /* End of data interpretor things       */
 
-/* Begining of Widget related stuff     */
 
+/* Begining of Widget related stuff     */
 static gboolean is_activate(GtkWidget *check_menu_item)
 {
 
 	return gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(check_menu_item));
 }
 
+
 /*
   function called when the cursor changes its position 
   (CALL_BACK so we need that prototype)
 */
-void refresh_data_window( GtkWidget *hexwidget, gpointer data )
+void refresh_data_window(GtkWidget *hexwidget, gpointer data)
 {
 	data_window_t *DW = (data_window_t *) data;
 	PangoFontDescription *pfd;
@@ -529,9 +534,9 @@ void refresh_data_window( GtkWidget *hexwidget, gpointer data )
 		}
 }
 
-/* display functions below */
 
-static void display_8bits( data_window_t *DW, gushort line )
+/* display functions below */
+static void display_8bits(data_window_t *DW, gushort line)
 {
 	/* First line is number 0 */
 	/* label */
@@ -555,7 +560,8 @@ static void display_8bits( data_window_t *DW, gushort line )
 						  H_DI_H_SPACE, H_DI_V_SPACE);
 }
 
-static void display_16bits( data_window_t *DW, gushort line )
+
+static void display_16bits(data_window_t *DW, gushort line)
 {
 	/* First line is number 0 */
 	/* label */
@@ -579,7 +585,8 @@ static void display_16bits( data_window_t *DW, gushort line )
 
 }
 
-static void display_32bits( data_window_t *DW, gushort line )
+
+static void display_32bits(data_window_t *DW, gushort line)
 {
 	/* First line is number 0 */
 	/* label */
@@ -603,7 +610,8 @@ static void display_32bits( data_window_t *DW, gushort line )
 
 }
 
-static void display_64bits( data_window_t *DW, gushort line )
+
+static void display_64bits(data_window_t *DW, gushort line)
 {
 	/* First line is number 0 */
 	/* label */
@@ -627,7 +635,8 @@ static void display_64bits( data_window_t *DW, gushort line )
 						  H_DI_H_SPACE, H_DI_V_SPACE);
 }
 
-static void display_dos_date( data_window_t *DW, gushort line )
+
+static void display_dos_date(data_window_t *DW, gushort line)
 {
 	/* dos date */
 	/* First line is number 0 */
@@ -645,7 +654,8 @@ static void display_dos_date( data_window_t *DW, gushort line )
 						  H_DI_H_SPACE, H_DI_V_SPACE);
 }
 
-static void display_filetime_date( data_window_t *DW, gushort line )
+
+static void display_filetime_date(data_window_t *DW, gushort line)
 {
 	/* filetime date */
 	/* First line is number 0 */
@@ -663,7 +673,8 @@ static void display_filetime_date( data_window_t *DW, gushort line )
 						  H_DI_H_SPACE, H_DI_V_SPACE);
 }
 
-static void display_C_date( data_window_t *DW, gushort line )
+
+static void display_C_date(data_window_t *DW, gushort line)
 {
 	/* C date */
 	/* First line is number 0 */
@@ -681,7 +692,8 @@ static void display_C_date( data_window_t *DW, gushort line )
 						  H_DI_H_SPACE, H_DI_V_SPACE);
 }
 
-static void display_labels( data_window_t *DW, gushort line )
+
+static void display_labels(data_window_t *DW, gushort line)
 {
 	/* unsigned byte */
 	DW->label_type = gtk_label_new ("type");
@@ -705,7 +717,8 @@ static void display_labels( data_window_t *DW, gushort line )
 						  H_DI_H_SPACE, H_DI_V_SPACE);
 }
 
-static void display_di_window( data_window_t *DW ) 
+
+static void display_di_window(data_window_t *DW) 
 {
 	gushort line = 0;
 	if (DW->window_displayed == TRUE)
@@ -713,7 +726,7 @@ static void display_di_window( data_window_t *DW )
 			if (is_activate(DW->window_show_8bits_item) == TRUE || 
 				 is_activate(DW->window_show_16bits_item) == TRUE ||
 				 is_activate(DW->window_show_32bits_item) == TRUE || 
-				 is_activate(DW->window_show_64bits_item) == TRUE  )
+				 is_activate(DW->window_show_64bits_item) == TRUE )
 				display_labels(DW, line++);
 
 			if (is_activate(DW->window_show_8bits_item) == TRUE)
@@ -742,7 +755,7 @@ static void display_di_window( data_window_t *DW )
 }
 
 
-static void display_statusbar( data_window_t *DW )
+static void display_statusbar(data_window_t *DW)
 {
 
 
@@ -754,7 +767,7 @@ static void display_statusbar( data_window_t *DW )
 
 
 /* Destroys the widgets in the table and resizes it */
-static void resize_window_table( data_window_t *DW )
+static void resize_window_table(data_window_t *DW)
 {
 	guint line = 0;
 
@@ -835,7 +848,7 @@ static void resize_window_table( data_window_t *DW )
 	if (is_activate(DW->window_show_8bits_item) == TRUE || 
 		 is_activate(DW->window_show_16bits_item) == TRUE ||
 		 is_activate(DW->window_show_32bits_item) == TRUE || 
-		 is_activate(DW->window_show_64bits_item) == TRUE )
+		 is_activate(DW->window_show_64bits_item) == TRUE)
 		line++;
 
 	if (is_activate(DW->window_show_8bits_item) == TRUE)
@@ -867,8 +880,9 @@ static void resize_window_table( data_window_t *DW )
 							  DW->table_columns);
 }
 
+
 /* when a menu has been selected */
-static void show_menu_item_response( GtkWidget *widget, gpointer data )
+static void show_menu_item_response(GtkWidget *widget, gpointer data)
 {
 	data_window_t *DW = (data_window_t *) data;
 
@@ -877,7 +891,8 @@ static void show_menu_item_response( GtkWidget *widget, gpointer data )
 	refresh_data_window(DW->current_hexwidget, DW);
 }
 
-static void encoding_menu_item_response( GtkWidget *widget, gpointer data )
+
+static void encoding_menu_item_response(GtkWidget *widget, gpointer data)
 {
 	data_window_t *DW = (data_window_t *) data;
 
@@ -885,7 +900,7 @@ static void encoding_menu_item_response( GtkWidget *widget, gpointer data )
 }
 
 
-static void font_select_menu_item_response( GtkWidget *widget, gpointer data )
+static void font_select_menu_item_response(GtkWidget *widget, gpointer data)
 {
 	data_window_t *DW = (data_window_t *) data;
 	GtkFontSelectionDialog *font_dialog = NULL;
@@ -919,7 +934,7 @@ static void font_select_menu_item_response( GtkWidget *widget, gpointer data )
 
 
 /* Initialize the menubar, and the Show menu */
-static void init_di_menu( data_window_t *DW )
+static void init_di_menu(data_window_t *DW)
 {
   
 	/* Here we could load display settings from a configuration file */
@@ -960,28 +975,28 @@ static void init_di_menu( data_window_t *DW )
              GTK_CHECK_MENU_ITEM(DW->window_show_8bits_item),
 				 TRUE); /* 8 bits display set to TRUE by default */
 	gtk_menu_shell_append (GTK_MENU_SHELL (DW->window_show_menu),
-								  DW->window_show_8bits_item );
+								  DW->window_show_8bits_item);
 
 	DW->window_show_16bits_item = gtk_check_menu_item_new_with_label("16 bits");
 	gtk_check_menu_item_set_active(
 				 GTK_CHECK_MENU_ITEM(DW->window_show_16bits_item),
 				 TRUE); /* 16 bits display set to TRUE by default */
 	gtk_menu_shell_append (GTK_MENU_SHELL (DW->window_show_menu),
-								  DW->window_show_16bits_item );
+								  DW->window_show_16bits_item);
 
 	DW->window_show_32bits_item = gtk_check_menu_item_new_with_label("32 bits");
 	gtk_check_menu_item_set_active(
              GTK_CHECK_MENU_ITEM(DW->window_show_32bits_item),
 				 FALSE); /* 32 bits display set to FALSE by default */
 	gtk_menu_shell_append (GTK_MENU_SHELL (DW->window_show_menu),
-								  DW->window_show_32bits_item );
+								  DW->window_show_32bits_item);
 
 	DW->window_show_64bits_item = gtk_check_menu_item_new_with_label("64 bits");
 	gtk_check_menu_item_set_active(
 				 GTK_CHECK_MENU_ITEM(DW->window_show_64bits_item),
 				 FALSE); /* 64 bits display set to FALSE by default */
 	gtk_menu_shell_append (GTK_MENU_SHELL (DW->window_show_menu),
-								  DW->window_show_64bits_item );
+								  DW->window_show_64bits_item);
 
 	DW->window_show_dos_date_item = 
 		gtk_check_menu_item_new_with_label("dos date");
@@ -989,7 +1004,7 @@ static void init_di_menu( data_window_t *DW )
              GTK_CHECK_MENU_ITEM(DW->window_show_dos_date_item),
 				 TRUE); /* dos date display set to TRUE by default */
 	gtk_menu_shell_append (GTK_MENU_SHELL (DW->window_show_menu),
-								  DW->window_show_dos_date_item );
+								  DW->window_show_dos_date_item);
 
 	DW->window_show_filetime_date_item = 
 		gtk_check_menu_item_new_with_label("filetime date");
@@ -997,7 +1012,7 @@ static void init_di_menu( data_window_t *DW )
 		       GTK_CHECK_MENU_ITEM(DW->window_show_filetime_date_item),
 				 TRUE); /* filetime date display set to TRUE by default */
 	gtk_menu_shell_append (GTK_MENU_SHELL (DW->window_show_menu),
-								  DW->window_show_filetime_date_item );
+								  DW->window_show_filetime_date_item);
 
 	DW->window_show_C_date_item = 
 		gtk_check_menu_item_new_with_label("C date");
@@ -1005,7 +1020,7 @@ static void init_di_menu( data_window_t *DW )
 		       GTK_CHECK_MENU_ITEM(DW->window_show_C_date_item),
 				 TRUE);/* C date display set to TRUE by default */
 	gtk_menu_shell_append (GTK_MENU_SHELL (DW->window_show_menu),
-								  DW->window_show_C_date_item );
+								  DW->window_show_C_date_item);
 	/* End of the 'Show' menu definitions */
 
 	/* Begining of the 'Encoding' menu definitions */
@@ -1015,13 +1030,13 @@ static void init_di_menu( data_window_t *DW )
 		       GTK_CHECK_MENU_ITEM(DW->window_enc_b_e_item),
 				 FALSE); /* by default we do decode little endian */
 	gtk_menu_shell_append (GTK_MENU_SHELL (DW->window_encoding_menu),
-								  DW->window_enc_b_e_item );
+								  DW->window_enc_b_e_item);
 	/* End of the 'Encoding' menu definitions */
 
 	/* Begining of the 'Font' menu definitions */
 	DW->window_font_select_item = gtk_menu_item_new_with_label("Select");
 	gtk_menu_shell_append (GTK_MENU_SHELL (DW->window_font_menu),
-								  DW->window_font_select_item );
+								  DW->window_font_select_item);
 	/* End of the 'Font' menu definitions */
 
 	/* signal handling Show menu items */
@@ -1047,8 +1062,8 @@ static void init_di_menu( data_window_t *DW )
 	/* signal handling Select menu item */
 	g_signal_connect (G_OBJECT (DW->window_font_select_item), "activate",
 							G_CALLBACK (font_select_menu_item_response), DW);
-
 }
+
 
 /*
   All malloc and such things should have been done !
@@ -1057,7 +1072,7 @@ static void init_di_menu( data_window_t *DW )
   is done automatically :
   8, 16, 32 and 64 bits, dos date and filetime date !
 */
-void data_interpret( data_window_t *DW )
+void data_interpret(data_window_t *DW)
 {
 	/* Default font name used to display things */
 	DW->window_font_name = (gchar *) 
@@ -1090,7 +1105,7 @@ void data_interpret( data_window_t *DW )
 
 	refresh_data_window(DW->current_hexwidget, DW);
 	
-	if ( DW->window_displayed == TRUE )
+	if (DW->window_displayed == TRUE)
 		gtk_widget_show_all (DW->window);
 }
 /* End of Widget related stuff  */

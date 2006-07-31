@@ -24,12 +24,6 @@
 #ifndef _HERAIA_UI_H_
 #define _HERAIA_UI_H_
 
-#include <gtk/gtk.h>
-#include <glade/glade.h>
-
-#include "data_interpretor.h"
-#include "heraia.h"
-
 #define H_DEBUG 1
 
 extern void on_quitter1_activate( GtkWidget *widget,  gpointer data );

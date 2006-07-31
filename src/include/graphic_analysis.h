@@ -1,11 +1,12 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
-  heraia-errors.h
-  heraia - an hexadecimal file editor and analyser based on ghex
+  graphic_analysis.h
+  graphic analysis functions
+  
+  (C) Copyright 2006 Olivier Delhomme
+  e-mail : heraia@delhomme.org
+  URL    : http://heraia.tuxfamily.org
  
-  (C) Copyright 2005 Sebastien Tricaud  e-mail : toady@gscore.org
-  (C) Copyright 2005 Olivier Delhomme   e-mail : heraia@delhomme.org
-
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation; either version 2, or  (at your option) 
@@ -20,12 +21,11 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
 
-#ifndef _HERAIA_ERRORS_H_ 
-#define _HERAIA_ERRORS_H_ 
+#ifndef _GHEX_GRAPHIC_ANALYSIS_H_
+#define _GHEX_GRAPHIC_ANALYSIS_H_
 
-/* this is empty for now, until there should be some errors functions */
+#define BUFFER_SIZE 16384  /* In bytes */
 
-#define HERAIA_NOERR 0
-#define HERAIA_MEMORY_ERROR 1
+extern void do_the_histogram(heraia_window_t *main_window);
 
-#endif /* _HERAIA_ERRORS_H_ */
+#endif /* _GHEX_GRAPHIC_ANALYSIS_H_ */

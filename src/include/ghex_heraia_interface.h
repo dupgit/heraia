@@ -21,17 +21,21 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
 
-#include <gtk/gtk.h>
-#include <gtkhex/gtkhex.h>
-
-#include "heraia.h"
-#include "heraia-errors.h"
-
 #ifndef _GHEX_HERAIA_INTERFACE_H_
 #define _GHEX_HERAIA_INTERFACE_H_
 
-extern gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, gboolean big_endian,
-									 guchar *result);
+/* 
+	Returns 'len' number of bytes located at 'pos' in th GtkHex 
+   document and puts it in the result variable
+
+	We assume that a previous g_malloc has been done in order to
+   use the function.
+*/
+extern gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, gboolean big_endian, guchar *result);
+
+/* 
+   kills the old document if it exists and add a new one, from the new filename
+*/
 extern HERAIA_ERROR heraia_hex_document_new(heraia_window_t *main_window, char *filename);
 
 #endif /* _GHEX_HERAIA_INTERFACE_H_ */
