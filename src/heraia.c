@@ -35,6 +35,10 @@
 #include "heraia_ui.h"
 #include "io.h"
 #include "data_interpretor.h"
+/* Remove this in the future (the init function should be called in a 
+   manner that it should'nt be necessary to include the header file somewhere */
+#include "graphic_analysis.h"
+
 
 static void version(void);
 static int usage(int status);
@@ -101,6 +105,7 @@ static HERAIA_ERROR heraia_window_create(heraia_window_t **hw)
 	herwin->filename = NULL;
 	herwin->current_doc = NULL;
 	herwin->current_DW = (data_window_t *) g_malloc0 (sizeof(*herwin->current_DW));
+	herwin->ga = NULL; /* Do some plugin initialisation here */
 
 	*hw = herwin;
 
@@ -187,6 +192,8 @@ int main (int argc, char ** argv)
 							
 							g_print("main_window : %p\n", main_window);
 						   	init_heraia_interface(main_window);
+							/* Do some init plugin calls here */
+							init_graph_analysis(main_window);
 
 							gtk_widget_show_all (glade_xml_get_widget(main_window->xml, "main_window"));
 					

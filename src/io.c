@@ -29,6 +29,7 @@
 #include <unistd.h>
 
 #include "types.h"
+#include "ghex_heraia_interface.h"
 #include "io.h"
 
 gboolean load_file_to_analyse(heraia_window_t *main_window, char *filename)

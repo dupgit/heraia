@@ -26,6 +26,15 @@
 
 #define BUFFER_SIZE 16384  /* In bytes */
 
+/* As graphic_analysis is in some sort the first plugin,
+   the struct itself is defined here (and not in types.h)
+                                                          */ 
+typedef struct
+{
+	guint running;
+} graph_analysis_t;
+
+extern void init_graph_analysis(heraia_window_t *main_window);
 extern void do_the_histogram(heraia_window_t *main_window);
 
 #endif /* _GHEX_GRAPHIC_ANALYSIS_H_ */

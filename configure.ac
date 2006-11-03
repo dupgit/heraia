@@ -66,7 +66,7 @@ AM_CONDITIONAL(ENABLE_GTK_DOC, test x$enable_gtk_doc = xyes)
 dnl ********************************************************
 dnl languages
 dnl ********************************************************
-ALL_LINGUAS="cs de en_CA nl pt_BR sv zh_CN"
+ALL_LINGUAS="en_CA"
 
 dnl ********************************************************
 dnl triggers gettext

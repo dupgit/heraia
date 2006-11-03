@@ -107,6 +107,10 @@ typedef struct
 	GladeXML *xml;
 	
    	data_window_t *current_DW;  /* data_interpretor pointer */
+	void *ga;                   /* graph analysis pointer */
+	/* add some plugin struct here */
+
+
 } heraia_window_t;
 
 
@@ -122,5 +126,6 @@ typedef struct
 	guint32 seconds;
 
 } date_and_time_t;
+
 
 #endif /* _HERAIA_TYPES_H_ */
