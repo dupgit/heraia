@@ -3,7 +3,7 @@
   io.c
   io.c - input and output functions for heraia
  
-  (C) Copyright 2005 Olivier Delhomme
+  (C) Copyright 2005 - 2007 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -21,6 +21,7 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
 
+#include <glib.h>
 #include <gtk/gtk.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -40,7 +41,7 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, char *filename)
 	stat_buf = (struct stat *) g_malloc0 (sizeof(struct stat));
 	stat(filename, stat_buf);
 	if (main_window->debug == TRUE)
-		g_print("filename to load : %s\n", filename);
+		log_message(main_window, G_LOG_LEVEL_INFO, "filename to load : %s", filename);
 
 	if (S_ISREG(stat_buf->st_mode) && stat_buf->st_size>0)
 		{
@@ -53,8 +54,15 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, char *filename)
 			gtk_widget_show(main_window->current_DW->current_hexwidget);
 
 			if (main_window->debug == TRUE)
-				g_print("Hexwidget : %p\n", main_window->current_DW->current_hexwidget);
+				log_message(main_window, G_LOG_LEVEL_INFO, "Hexwidget : %p", main_window->current_DW->current_hexwidget);
 			success = TRUE;
+
+			if (main_window->filename != filename)
+				{
+					if (main_window->filename != NULL)
+						g_free(main_window->filename);
+					main_window->filename = g_strdup_printf("%s", filename);
+				}
 		} 
 	else
 		{

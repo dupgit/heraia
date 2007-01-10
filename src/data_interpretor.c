@@ -3,7 +3,7 @@
   data_interpretor.c
   heraia - an hexadecimal file editor and analyser based on ghex
  
-  (C) Copyright 2005 Olivier Delhomme
+  (C) Copyright 2005 - 2007 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -28,6 +28,7 @@
 #include "data_interpretor.h"
 #include "decode.h"
 #include "ghex_heraia_interface.h"
+#include "heraia_ui.h"
 
 /* Begining of data interpretor things  */
 static gboolean is_activate(GtkWidget *check_menu_item);
@@ -1089,6 +1090,8 @@ void data_interpret(data_window_t *DW)
 	DW->window_vbox = gtk_vbox_new (FALSE, H_DI_V_SPACE);
 	gtk_container_add (GTK_CONTAINER(DW->window), DW->window_vbox);
 
+
+	/* Init The DataInterpretor Menu */
   	init_di_menu(DW);
 
 	DW->table_lines = H_DI_LINES;
@@ -1107,5 +1110,6 @@ void data_interpret(data_window_t *DW)
 	
 	if (DW->window_displayed == TRUE)
 		gtk_widget_show_all (DW->window);
+
 }
 /* End of Widget related stuff  */

@@ -1,9 +1,9 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
-  io.h
-  io.h - input and output functions for heraia
+  log.h
+  log functions for heraia
  
-  (C) Copyright 2005 - 2007 Olivier Delhomme
+  (C) Copyright 2006 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -20,9 +20,16 @@
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
-#ifndef _HERAIA_IO_H_
-#define _HERAIA_IO_H_
+#ifndef _HERAIA_LOG_H_
+#define _HERAIA_LOG_H_
 
-extern gboolean load_file_to_analyse( heraia_window_t *main_window, char *filename );
+#define HERAIA_LOG_DOMAIN "Heraia"
 
-#endif /* _HERAIA_IO_H_ */
+/* Messages */
+extern void print_message(const char *format, ...);
+extern void log_message(heraia_window_t *main_window, GLogLevelFlags log_level, const char *format, ...);
+extern void log_window_init_interface(heraia_window_t *main_window);
+extern void show_hide_log_window(heraia_window_t *main_window, gboolean show);
+extern void mw_cmi_affiche_logw_toggle(GtkWidget *widget, gpointer data);
+
+#endif /* _HERAIA_LOG_H_ */

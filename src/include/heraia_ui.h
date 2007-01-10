@@ -3,7 +3,7 @@
   heraia_ui.h
   main menus, callback and utility functions
  
-  (C) Copyright 2005 Olivier Delhomme
+  (C) Copyright 2005 - 2007 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -38,6 +38,7 @@ extern void on_couper1_activate( GtkWidget *widget, gpointer data );
 extern void on_copier1_activate( GtkWidget *widget, gpointer data );
 extern void on_coller1_activate( GtkWidget *widget, gpointer data );
 extern void on_DIMenu_activate (GtkWidget *widget, gpointer data);
+extern gboolean delete_main_window_event( GtkWidget *widget, GdkEvent  *event, gpointer   data );
 
 extern gboolean delete_dt_window_event( GtkWidget *widget, GdkEvent  *event, gpointer data );
 extern void destroy_dt_window( GtkWidget *widget, GdkEvent  *event, gpointer data );
@@ -45,6 +46,9 @@ extern void destroy_dt_window( GtkWidget *widget, GdkEvent  *event, gpointer dat
 extern gboolean select_file_to_load(heraia_window_t *main_window);
 extern void init_heraia_interface(heraia_window_t *main_window);
 extern int load_heraia_ui(heraia_window_t *main_window);
+extern void refresh_event_handler(GtkWidget *widget, gpointer data);
 
+extern void add_text_to_textview(GtkTextView *textview, const char *format, ...);
+extern void kill_text_from_textview(GtkTextView *textview);
 
 #endif /* _HERAIA_UI_H_ */

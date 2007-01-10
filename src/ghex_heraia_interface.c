@@ -3,7 +3,7 @@
   ghex_heraia_interface.c
   heraia - an hexadecimal file editor and analyser based on ghex
  
-  (C) Copyright 2005 Olivier Delhomme
+  (C) Copyright 2005 - 2007 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -45,7 +45,7 @@ HERAIA_ERROR heraia_hex_document_new(heraia_window_t *main_window, char *filenam
 
 
 /* 
-	Returns 'len' number of bytes located at 'pos' in th GtkHex 
+	Returns 'len' number of bytes located at 'pos' in the GtkHex 
    document and puts it in the result variable
 
 	We assume that a previous g_malloc has been done in order to

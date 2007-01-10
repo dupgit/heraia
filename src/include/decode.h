@@ -3,7 +3,7 @@
   decode.h
   heraia - an hexadecimal file editor and analyser based on ghex
  
-  (C) Copyright 2005 Olivier Delhomme
+  (C) Copyright 2005 - 2007 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -25,10 +25,12 @@
 #ifndef _DECODE_H_
 #define _DECODE_H_
 
+/* dates */
 extern gint decode_dos_date( guchar *data, date_and_time_t *mydate );
 extern gint decode_filetime_date( guchar *data, date_and_time_t *mydate );
 extern gint decode_C_date( guchar *data, date_and_time_t *mydate );
 
+/* maths */
 extern gint decode_8bits_signed( guchar *data, gchar *result );
 extern gint decode_8bits_unsigned( guchar *data, gchar *result );
 extern gint decode_16bits_signed( guchar *data, gchar *result );

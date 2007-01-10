@@ -3,7 +3,7 @@
   graphic_analysis.c
   graphic analysis functions
   
-  (C) Copyright 2006 Olivier Delhomme
+  (C) Copyright 2006 - 2007 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -42,7 +42,7 @@ void init_graph_analysis(heraia_window_t *main_window)
 	graph_analysis_t *ga;
 
 	/* Connection des signaux */
-	fprintf(stdout, "init_graph_analysis(%p) !\n", main_window);
+	log_message(main_window, G_LOG_LEVEL_INFO, "init_graph_analysis(%p) !", main_window);
 	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "analyse_graphique")), "activate",
 					  G_CALLBACK (on_analyse_graphique_activate), main_window);
 
@@ -57,12 +57,12 @@ void init_graph_analysis(heraia_window_t *main_window)
 
 	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "graph_analysis")), "destroy", 
 					  G_CALLBACK (destroy_ga_window), main_window);
-	fprintf(stdout, "init_graph_analysis(%p) !\n", main_window);
+	log_message(main_window, G_LOG_LEVEL_INFO, "init_graph_analysis(%p) !", main_window);
 	/* fin de la connexion des signaux */
     ga = (graph_analysis_t *) g_malloc0(sizeof(graph_analysis_t));
 	ga->running = 0;
 	main_window->ga = ga;
-	fprintf(stdout, "main_window->ga == %p !\n", main_window->ga);
+	log_message(main_window, G_LOG_LEVEL_INFO, "main_window->ga == %p !", main_window->ga);
 	/* Connexion de la structure */
 }
 
@@ -114,7 +114,7 @@ void on_graph_analysis_show( GtkWidget *widget,  gpointer data )
 					ga->running = 0;
 				}
 		}
-	fprintf(stdout, "Done !!\n");
+	log_message(main_window, G_LOG_LEVEL_INFO, "Done !!");
 }
 
 
@@ -126,13 +126,11 @@ void on_graph_analysis_expose_event( GtkWidget *widget, GdkEventExpose *event, g
 
 	if (main_window != NULL)
 		ga = (graph_analysis_t *) main_window->ga;
-	fprintf(stdout, "1 ");
 	
 	if (ga != NULL)
 		{
 				if (ga->running == 0)
 				{
-					fprintf(stdout, "3 \n");
 					ga->running = 1;
 					do_the_histogram(main_window);
 					ga->running = 0;
@@ -146,7 +144,8 @@ void on_graph_analysis_expose_event( GtkWidget *widget, GdkEventExpose *event, g
 
 void do_the_histogram(heraia_window_t *main_window)
 {
-	guint histo[256];
+	/*
+	  guint histo[256];
 	guint pos = 0;
 	guint size = 0;
 	guint c = 0;
@@ -164,7 +163,7 @@ void do_the_histogram(heraia_window_t *main_window)
 
 	if (main_window != NULL)
 		{
-			/* find exemples */
+ 
 			graph_area = glade_xml_get_widget(main_window->xml, "graph_area");
 			GC = gdk_gc_new(graph_area);
 		
@@ -197,13 +196,17 @@ void do_the_histogram(heraia_window_t *main_window)
 								}
 							gtk_widget_set_size_request(graph_area, 256, max);	
 							pos = 0;
-							while (pos < 255)
+							
+							  while (pos < 255)
 								{
 									gdk_draw_line (graph_area, GC, pos, 0, pos, histo[pos]);
 									pos++;
 								}
+							
 						}
 				}
 		}
+
+*/
 }
 

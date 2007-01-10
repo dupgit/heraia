@@ -3,8 +3,8 @@
   heraia-errors.h
   heraia - an hexadecimal file editor and analyser based on ghex
  
-  (C) Copyright 2005 Sebastien Tricaud  e-mail : toady@gscore.org
-  (C) Copyright 2005 Olivier Delhomme   e-mail : heraia@delhomme.org
+  (C) Copyright 2005 - 2007 Sebastien Tricaud  e-mail : toady@gscore.org
+  (C) Copyright 2005 - 2007 Olivier Delhomme   e-mail : heraia@delhomme.org
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -27,5 +27,6 @@
 
 #define HERAIA_NOERR 0
 #define HERAIA_MEMORY_ERROR 1
+#define HERAIA_NO_PLUGINS 2
 
 #endif /* _HERAIA_ERRORS_H_ */

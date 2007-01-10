@@ -3,7 +3,7 @@
   decode.c
   heraia - an hexadecimal file editor and analyser based on ghex
  
-  (C) Copyright 2005 Olivier Delhomme
+  (C) Copyright 2005 - 2007 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -19,7 +19,8 @@
  
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
+  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
+*/
 
 #include <string.h>
 
@@ -123,13 +124,13 @@ static void which_year_month_day (date_and_time_t *mydate, guint32 days, guint32
 		{
 			modulus = days / 146100;	
 			mydate->year = modulus * 400;
-			reste = modulus*3; /* pour ajouter les siècles dans les modulos 400 */
+			reste = modulus*3;     /* To add centuries in the 400 years modulus */
 			days = days % 146100;
 		}
 
 	modulus = days / 1461;
 	mydate->year += modulus * 4;
-	reste += (modulus*4) / 100; /* pour ajouter les siècles */
+	reste += (modulus*4) / 100;    /* To add centuries */
 	reste += days % 1461;
 
 	mydate->year += base;
@@ -148,7 +149,7 @@ static void which_year_month_day (date_and_time_t *mydate, guint32 days, guint32
 				nbdays = 365;
 		}
  
-	which_month_day ( mydate, reste, bissextile_year(mydate->year) );
+	which_month_day (mydate, reste, bissextile_year(mydate->year));
 }
 
 /*

@@ -1,9 +1,10 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
-  io.h
-  io.h - input and output functions for heraia
+  stat.h
+  an heraia plugin to calculate some stats on the opened file
+  done as an example
  
-  (C) Copyright 2005 - 2007 Olivier Delhomme
+  (C) Copyright 2007 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -19,10 +20,28 @@
  
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
-#ifndef _HERAIA_IO_H_
-#define _HERAIA_IO_H_
+  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
+*/
 
-extern gboolean load_file_to_analyse( heraia_window_t *main_window, char *filename );
+#ifndef _PLUGIN_STAT_H_
+#define _PLUGIN_STAT_H_
 
-#endif /* _HERAIA_IO_H_ */
+#define API_VERSION 1
+#define PLUGIN_TYPE HERAIA_PLUGIN_ACTION
+
+#define PLUGIN_NAME "stat"
+#define PLUGIN_VERSION "1"
+#define PLUGIN_SUMMARY "stat"
+#define PLUGIN_DESCRIPTION "Does some stats on the opened file"
+#define PLUGIN_AUTHOR "Olivier Delhomme <heraia@delhomme.org>"
+#define PLUGIN_HOMEPAGE "http://heraia.tuxfamily.org/"
+
+
+typedef struct 
+{
+  guint64 histo1D[256];
+  guint64 histo2D[256][256];
+} stat_t;
+
+
+#endif /* _PLUGIN_STAT_H_ */

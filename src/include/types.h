@@ -3,7 +3,7 @@
   types.h
   types.h - all data types and pieces of common declarations
  
-  (C) Copyright 2006 Olivier Delhomme
+  (C) Copyright 2006 - 2007 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -19,17 +19,36 @@
  
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
+  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
+*/
 
 #ifndef _HERAIA_TYPES_H_
 #define _HERAIA_TYPES_H_
+
+#ifdef HAVE_CONFIG_H
+   #include "config.h"
+#endif /* HAVE_CONFIG_H */
+
 #include <gtk/gtk.h>
 #include <gtkhex/gtkhex.h>
 #include <glade/glade.h>
 
+
+
+
 typedef HexDocument Heraia_Document;
 typedef GtkHex Heraia_Hex;
 typedef gint HERAIA_ERROR;
+
+/**
+ *  Refresh type (may be used to decide what to do
+ *  in a particular case
+ */
+typedef gint RefreshType;
+#define HERAIA_REFRESH_NOTHING 0
+#define HERAIA_REFRESH_NEW_FILE 1
+#define HERAIA_REFRESH_CURSOR_MOVE 2
+
 
 typedef struct
 {
@@ -107,9 +126,10 @@ typedef struct
 	GladeXML *xml;
 	
    	data_window_t *current_DW;  /* data_interpretor pointer */
-	void *ga;                   /* graph analysis pointer */
+	void *ga;                   /* graph analysis pointer   */
 	/* add some plugin struct here */
-
+	GList *plugins_list;        /* A list of plugins        */
+	RefreshType event;          /* Tells what is happening  */
 
 } heraia_window_t;
 
@@ -127,5 +147,6 @@ typedef struct
 
 } date_and_time_t;
 
+#include "log.h"
 
 #endif /* _HERAIA_TYPES_H_ */

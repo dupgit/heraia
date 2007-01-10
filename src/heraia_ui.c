@@ -3,7 +3,7 @@
   heraia_ui.c
   main menus, callback and utility functions
   
-  (C) Copyright 2005 Olivier Delhomme
+  (C) Copyright 2005 - 2007 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -19,7 +19,8 @@
  
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
+  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,6 +34,7 @@
 #include "io.h"
 #include "graphic_analysis.h"
 #include "data_interpretor.h"
+#include "plugin.h"
 
 static gboolean load_heraia_glade_xml(heraia_window_t *main_window);
 static gboolean load_the_glade_xml_if_it_exists(heraia_window_t *main_window, char *file_to_load);
@@ -45,40 +47,76 @@ void on_quitter1_activate( GtkWidget *widget, gpointer data )
 
 void on_nouveau1_activate( GtkWidget *widget, gpointer data )
 {
-	g_print("Not implemented Yet (Please contribute !)\n");
+	heraia_window_t *main_window = (heraia_window_t *) data;
+
+	log_message(main_window, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
 }
 
 void on_fonte1_activate( GtkWidget *widget, gpointer data )
 {
-	g_print("Not implemented Yet (Please contribute !)\n");
+	heraia_window_t *main_window = (heraia_window_t *) data;
+
+	log_message(main_window, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
 }
 
 void on_supprimer1_activate( GtkWidget *widget, gpointer data )
 {
-	g_print("Not implemented Yet (Please contribute !)\n");
+	heraia_window_t *main_window = (heraia_window_t *) data;
+	
+	log_message(main_window, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
 }
 
 void on_a_propos1_activate( GtkWidget *widget, gpointer data )
 {
-	g_print("Not implemented Yet (Please contribute !)\n");
+	heraia_window_t *main_window = (heraia_window_t *) data;
+	
+	gtk_widget_show(glade_xml_get_widget(main_window->xml, "about_dialog"));
 }
 
 void on_couper1_activate( GtkWidget *widget, gpointer data )
 {
-	g_print("Not implemented Yet (Please contribute !)\n");
+	heraia_window_t *main_window = (heraia_window_t *) data;
+
+	log_message(main_window, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
 }
 
 void on_copier1_activate( GtkWidget *widget, gpointer data )
 {
-	g_print("Not implemented Yet (Please contribute !)\n");
+	heraia_window_t *main_window = (heraia_window_t *) data;
+
+	log_message(main_window, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
 }
 
 void on_coller1_activate( GtkWidget *widget, gpointer data )
 {
-	g_print("Not implemented Yet (Please contribute !)\n");
+	heraia_window_t *main_window = (heraia_window_t *) data;
+
+	log_message(main_window, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
 }
 
-void on_ouvrir1_activate( GtkWidget *widget, gpointer data )
+/** This function is here to ensure that everything will be
+ *  refreshed upon a signal event.
+ */
+void refresh_event_handler(GtkWidget *widget, gpointer data)
+{
+	heraia_window_t *main_window = (heraia_window_t *) data;
+	
+	if (main_window != NULL)
+		{
+			/* Beware, this mechanism is not thread safe ! */
+			if (main_window->event == HERAIA_REFRESH_NOTHING)
+				main_window->event = HERAIA_REFRESH_CURSOR_MOVE;
+
+			refresh_data_window(widget, main_window->current_DW);
+			refresh_all_plugins(main_window);
+
+			main_window->event = HERAIA_REFRESH_NOTHING;
+		}
+}
+
+
+/* This handles the menuitem "Ouvrir" to open a file */
+void on_ouvrir1_activate(GtkWidget *widget, gpointer data )
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 
@@ -87,23 +125,28 @@ void on_ouvrir1_activate( GtkWidget *widget, gpointer data )
 			load_file_to_analyse(main_window, main_window->filename);
 		}
 
-	refresh_data_window(main_window->current_DW->current_hexwidget, main_window->current_DW);
+	main_window->event = HERAIA_REFRESH_NEW_FILE;
+	refresh_event_handler(main_window->current_DW->current_hexwidget, main_window);
 
 	/* Connection of the signal to the right function
 	   in order to interpret things when the cursor is
 	   moving                                           */
 	g_signal_connect (G_OBJECT (main_window->current_DW->current_hexwidget), "cursor_moved",
-					  G_CALLBACK (refresh_data_window), main_window->current_DW); 
+					  G_CALLBACK (refresh_event_handler), main_window); 
 }
 
 void on_enregistrer1_activate( GtkWidget *widget,  gpointer data )
 {
-	g_print("Not implemented Yet (Please contribute !)\n");
+	heraia_window_t *main_window = (heraia_window_t *) data;
+	
+	log_message(main_window, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
 }
 
 void on_enregistrer_sous1_activate( GtkWidget *widget, gpointer data )
 {
-	g_print("Not implemented Yet (Please contribute !)\n");
+	heraia_window_t *main_window = (heraia_window_t *) data;
+
+	log_message(main_window, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
 }
 
 /* this handles the menuitem "Data Interpretor" that
@@ -122,8 +165,21 @@ void on_DIMenu_activate (GtkWidget *widget, gpointer data)
 
 	refresh_data_window(DW->current_hexwidget, DW);
 }
-/* end for call back functions for the main program */
 
+gboolean delete_main_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
+{
+	gtk_widget_destroy(widget);
+    return TRUE;
+}
+
+
+/*
+void destroy_main_window(GtkWidget *widget, gpointer   data)
+{
+    gtk_main_quit ();
+}
+*/
+/* end for call back functions for the main program */
 
 
 /* call back functions :  for the data interpretor window */
@@ -152,16 +208,26 @@ void destroy_dt_window( GtkWidget *widget, GdkEvent  *event, gpointer data )
 */
 gboolean select_file_to_load(heraia_window_t *main_window)
 {
-	GtkFileSelection *file_selector;
+	GtkFileSelection *file_selector = NULL;
 	gboolean success = FALSE;
 	gint response_id = 0;
 	const gchar *filename = NULL;
+	gchar *path = NULL;
+	GError *err = NULL;
 
-	file_selector = GTK_FILE_SELECTION (gtk_file_selection_new ("Please select a file for editing."));
+	file_selector = GTK_FILE_SELECTION (gtk_file_selection_new ("Sélectionnez un fichier pour l'éditer"));
 
 	/* for the moment we do not want to retrieve multiples selections */
-	
 	gtk_file_selection_set_select_multiple(file_selector, FALSE);
+	/*  We want the file selection path to be the on of the previous
+	 *	openned file if any !
+     */
+	if (main_window->filename != NULL)
+		{
+			path = g_filename_from_utf8(g_locale_to_utf8(g_strdup_printf("%s%c", g_path_get_dirname(main_window->filename), G_DIR_SEPARATOR), -1, NULL, NULL, &err), -1, NULL, NULL, &err);
+			gtk_file_selection_set_filename(file_selector, path);
+		}
+
 	response_id = gtk_dialog_run(GTK_DIALOG (file_selector));
 	
 	switch (response_id) 
@@ -169,15 +235,11 @@ gboolean select_file_to_load(heraia_window_t *main_window)
 		case GTK_RESPONSE_OK:
 			filename = gtk_file_selection_get_filename (GTK_FILE_SELECTION (file_selector));
 			if (main_window->debug == TRUE)
-				g_print("filename selected : %s\n", filename);
+				log_message(main_window, G_LOG_LEVEL_INFO, "filename selected : %s", filename);
 			/* this should be managed with lists */		
-			/* g_free(main_window->filename); */
-
-			main_window->filename = (gchar *) g_malloc0 (sizeof(gchar) * (strlen(filename)+2));
-			if (main_window->debug == TRUE)
-				g_print("main_window->filename = gchar * g_malloc0 (%d) : Ok\n", sizeof(gchar) * (strlen(filename)+2));
-			sprintf(main_window->filename, "%s", filename);
-			
+			if (main_window->filename != NULL)
+				g_free(main_window->filename);
+			main_window->filename = g_strdup_printf("%s", filename);			
 			success = TRUE;
 			break;
 		case GTK_RESPONSE_CANCEL:
@@ -187,6 +249,7 @@ gboolean select_file_to_load(heraia_window_t *main_window)
 		}
 
 	gtk_widget_destroy (GTK_WIDGET(file_selector));
+	g_free(path);
 
 	return success;
 }
@@ -205,6 +268,7 @@ void init_heraia_interface(heraia_window_t *main_window)
 					  G_CALLBACK (destroy_dt_window), main_window);
 
 	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(glade_xml_get_widget(main_window->xml, "DIMenu")), DW->window_displayed); 	
+
 }
 
 
@@ -238,22 +302,19 @@ static gboolean load_the_glade_xml_if_it_exists(heraia_window_t *main_window, ch
  */
 static gboolean load_heraia_glade_xml(heraia_window_t *main_window)
 {
-	
 	char *current_path = NULL;
 	char *filename = NULL;
 	char *file_to_load = NULL;
 	char *user = NULL;
 	gboolean success = FALSE;
    
-	filename = (char *) g_malloc0 (sizeof(char) * 13 );	
-	sprintf(filename, "%s", "heraia.glade");
+	filename = g_strdup_printf("%s", "heraia.glade");
    
-	/* first we might see if there is a /etc/heraia/heraia.glade file */
-	file_to_load = (char *) g_malloc0 (sizeof(char)*(12 + strlen(filename) + 1));
-	sprintf(file_to_load, "/etc/heraia/%s", filename);
+	/* first we might see if there is a /usr/local/share/heraia/heraia.glade file */
+	file_to_load =  g_strdup_printf("/usr/local/share/heraia/%s", filename);
 	success = load_the_glade_xml_if_it_exists(main_window, file_to_load);
 	if (main_window->debug == TRUE && success == TRUE)
-		g_print("heraia.glade loaded from : %s\n", file_to_load );
+		log_message(main_window, G_LOG_LEVEL_INFO, "heraia.glade loaded from : %s", file_to_load);
 	
 	g_free(file_to_load);
 
@@ -262,11 +323,10 @@ static gboolean load_heraia_glade_xml(heraia_window_t *main_window)
 		{
 			/*user = (char *) g_malloc0 (sizeof(char)*255);*/
 			user = getenv("LOGNAME");
-			file_to_load = (char *) g_malloc0 (sizeof(char)*(strlen(user) + strlen(filename) + 15));
-			sprintf(file_to_load, "/home/%s/.heraia/%s", user, filename);
+			file_to_load = g_strdup_printf("/home/%s/.heraia/%s", user, filename);
 			success = load_the_glade_xml_if_it_exists(main_window, file_to_load);
 			if (main_window->debug == TRUE && success == TRUE)
-				g_print("heraia.glade loaded from : %s\n", file_to_load );
+				log_message(main_window, G_LOG_LEVEL_INFO, "heraia.glade loaded from : %s", file_to_load);
 
 			g_free(file_to_load);
 		}
@@ -276,12 +336,11 @@ static gboolean load_heraia_glade_xml(heraia_window_t *main_window)
 		{
 			current_path = (char *) g_malloc0 (sizeof(char)*255);
 			getcwd(current_path, 255);
-			/* +2 : the final '\0' and the middle '/' */
-			file_to_load = (char *) g_malloc0 (sizeof(char)*(strlen(filename) + strlen(current_path) + 2));
-			sprintf(file_to_load, "%s/%s", current_path, filename);
+	 
+			file_to_load = g_strdup_printf("%s/%s", current_path, filename);
 			success = load_the_glade_xml_if_it_exists(main_window, file_to_load);
 			if (main_window->debug == TRUE && success == TRUE)
-				g_print("heraia.glade loaded from : %s\n", file_to_load );
+				log_message(main_window, G_LOG_LEVEL_INFO, "heraia.glade loaded from : %s", file_to_load);
 
 			g_free(current_path);
 			g_free(file_to_load);
@@ -321,7 +380,56 @@ int load_heraia_ui(heraia_window_t *main_window)
 
 			g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "enregistrer_sous1")), "activate",  
 							  G_CALLBACK (on_enregistrer_sous1_activate), main_window); 
+			
+			g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "a_propos1")), "activate",  
+							  G_CALLBACK (on_a_propos1_activate), main_window); 
+
+			g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "main_window")), "delete_event", 
+									  G_CALLBACK (delete_main_window_event), NULL);
+
+			g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "main_window")), "destroy", 
+									  G_CALLBACK (on_quitter1_activate), NULL);
+			
+			/* The Log window */
+			log_window_init_interface(main_window);
+
 		}
 
 	return success;
+}
+
+/**
+ *  adds a text to a textview
+ */
+void add_text_to_textview(GtkTextView *textview, const char *format, ...)
+{	
+	va_list args;
+	GtkTextBuffer *tb = NULL;
+	GtkTextIter iEnd;
+	gchar *display = NULL;
+	GError *err = NULL;
+
+	va_start(args, format);
+	display = g_locale_to_utf8(g_strdup_vprintf(format, args), -1, NULL, NULL, &err);
+	va_end(args);
+
+	tb = GTK_TEXT_BUFFER(gtk_text_view_get_buffer(GTK_TEXT_VIEW(textview)));
+	gtk_text_buffer_get_end_iter(tb, &iEnd);
+	gtk_text_buffer_insert(tb, &iEnd, display, -1);
+	g_free(display);
+}
+
+/**
+ *  Kills the text from a textview
+ */
+void kill_text_from_textview(GtkTextView *textview)
+{
+	GtkTextBuffer *tb = NULL;
+	GtkTextIter iStart;
+	GtkTextIter iEnd;
+
+	tb = GTK_TEXT_BUFFER(gtk_text_view_get_buffer(GTK_TEXT_VIEW(textview)));
+	gtk_text_buffer_get_start_iter(tb, &iStart);
+	gtk_text_buffer_get_end_iter(tb, &iEnd);
+	gtk_text_buffer_delete (tb, &iStart, &iEnd);
 }

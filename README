@@ -1,14 +1,24 @@
 
 Compiling the program (the easy way)
 
-./autogen
-./configure
-make
+The line below is optionnal if there is already a 'configure' 
+script in your directory :
 
-now you can run the program : src/heraia
+ ./autogen.sh
+ ./configure
+ make
 
+Optional :
+ sudo make install
 
-please note :
-if you dowloaded the sources from the svn repository the
+Now you can run the program : 
+ src/heraia filename
+
+If you have installed it : 
+ heraia filename
+
+Please note :
+If you dowloaded the sources from the svn repository the
 file heraia.csv does not mean anything (as it is not generated
-for every commit).
+for every commit - but only for distribution packages upon new
+versions).

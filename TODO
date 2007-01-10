@@ -11,19 +11,34 @@
 09.05.2005 add a way to save the users settings for the data interpretor Window
            and eventually let him load them afterwards.
 20.06.2005 add a command line option to hide the data interpretor window 
-07.07.2005 verify that the make install command does install properly the 
-           program and its datas. Do it if necessary.
 07.07.2005 review the heraia_window_t struct (add a new struct to manage the
-           window itself.
+           window itself).
 12.11.2005 add some abstraction layer to the GtkHex Widget (and modify the 
            #include directives)
-19.11.2005 add and improve a clean make install procedure
 09.04.2006 change all the functions to have a good "C" return status : 
            0 == sucess else errno 
 31.07.2006 the code needs a serious review
 31.07.2006 add "module" or "plugin" capacities to the program
-
+03.01.2006 add an option to specify wether the log output should be done
+	   also to the stdout stream.
+06.01.2007 get rid of the DataInterpretor structure and replace the 
+           DataInterpretor window by a plugin with notebooks
+06.01.2007 suppress the graph_analysis structure and .c, .h source files.
+06.01.2007 add a structure to manage (in a list) the filenames and the
+06.01.2007 GtkHex Widget
+06.01.2007 By the way : get rid of that GtkHex Widget (too many limitations)
+06.01.2007 in io.c :
+    		. add a generic function to load GladeXML files
+		. modifies the load_file_to_analyse function in order
+		  to be more coherent with the structure (filename)
+08.01.2007 Add a configuration button to the plugin_list window. This button
+	   would ideally be visible if the plugin is configurable.
 
 [Done List]
 19.03.2005 add a way to decode in big-endian or little-endian (Done 05.04.2005)
 15.03.2005 add the patch from Gregory Audet : new web site menu. (Done 05.05.2005)
+07.07.2005 verify that the make install command does install properly the 
+           program and its datas. Do it if necessary. (Done 05.01.2007) 
+19.11.2005 add and improve a clean make install procedure
+           It seems Ok ! (Done 05.01.2007) 
+05.01.2007 find the way to transmit nicely the -D flags (Done 05.01.2007)

@@ -1,25 +1,26 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
-  heraia.c
-  heraia - an hexadecimal file editor and analyser based on ghex
- 
-  (C) Copyright 2005 Olivier Delhomme
-  e-mail : heraia@delhomme.org
-  URL    : http://heraia.tuxfamily.org
- 
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation; either version 2, or  (at your option) 
-  any later version.
- 
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY;  without even the implied warranty of
-  MERCHANTABILITY  or  FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
- 
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
+ *  heraia.c
+ *  heraia - an hexadecimal file editor and analyser based on ghex
+ * 
+ *  (C) Copyright 2005 - 2007 Olivier Delhomme
+ *  e-mail : heraia@delhomme.org
+ *  URL    : http://heraia.tuxfamily.org
+ * 
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2, or  (at your option) 
+ *  any later version.
+ * 
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY;  without even the implied warranty of
+ *  MERCHANTABILITY  or  FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ * 
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -38,14 +39,13 @@
 /* Remove this in the future (the init function should be called in a 
    manner that it should'nt be necessary to include the header file somewhere */
 #include "graphic_analysis.h"
-
+#include "plugin.h"
+#include "plugin_list.h"
 
 static void version(void);
 static int usage(int status);
-static gboolean delete_main_window_event( GtkWidget *widget, GdkEvent  *event,
-										  gpointer   data );
-static HERAIA_ERROR heraia_window_create(heraia_window_t **hw);
-
+static HERAIA_ERROR heraia_init_main_struct(heraia_window_t **hw);
+static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window);
 
 static void version(void)
 {
@@ -73,24 +73,7 @@ static int usage(int status)
 		}
 }
 
-
-static gboolean delete_main_window_event( GtkWidget *widget, GdkEvent  *event,
-										  gpointer   data )
-{
-	gtk_widget_destroy (widget);
-    return TRUE;
-}
-
-
-/*
-static void destroy_main_window( GtkWidget *widget, gpointer   data )
-{
-    gtk_main_quit ();
-}
-*/
-
-
-static HERAIA_ERROR heraia_window_create(heraia_window_t **hw)
+static HERAIA_ERROR heraia_init_main_struct(heraia_window_t **hw)
 {
 	heraia_window_t *herwin;
 
@@ -105,11 +88,33 @@ static HERAIA_ERROR heraia_window_create(heraia_window_t **hw)
 	herwin->filename = NULL;
 	herwin->current_doc = NULL;
 	herwin->current_DW = (data_window_t *) g_malloc0 (sizeof(*herwin->current_DW));
-	herwin->ga = NULL; /* Do some plugin initialisation here */
+	herwin->ga = NULL; 
+	herwin->plugins_list = NULL; 
 
 	*hw = herwin;
 
 	return HERAIA_NOERR;
+}
+
+static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window)
+{
+
+	/* Checking for plugins */
+	if (plugin_capable() == TRUE)
+		{
+			log_message(main_window, G_LOG_LEVEL_INFO, "Enabling plugins");
+			load_plugins(main_window);
+
+			/* the plugin_list_window (here the plugins may be loaded !) */
+			log_message(main_window, G_LOG_LEVEL_INFO, "Inits the plugin list window");
+			plugin_list_window_init_interface(main_window);
+			return HERAIA_NOERR;
+		}
+	else
+		{
+			log_message(main_window, G_LOG_LEVEL_WARNING, "Plugins will be disabled");
+			return HERAIA_NO_PLUGINS;
+		}
 }
 
 
@@ -124,7 +129,7 @@ int main (int argc, char ** argv)
 	opt.filename = NULL;  /* At first we do not have any filename */	
 	opt.usage = FALSE;
 	
-	ret = heraia_window_create(&main_window);
+	ret = heraia_init_main_struct(&main_window);
 
 	while ((c = getopt_long (argc, argv, "vh", long_options, NULL)) != -1)
 		{
@@ -165,39 +170,40 @@ int main (int argc, char ** argv)
 	if (opt.usage != TRUE)
 		{
 			if (main_window->debug == TRUE)
-				g_print("Beginning things\n");
+				fprintf(stderr, "Beginning things\n");
+		
 			/* init of gtk and new window */
 			exit_value = gtk_init_check (&argc, &argv);
-	   
+			
 			if (load_heraia_ui(main_window) == TRUE)
-				{
+				{	
 					if (main_window->debug == TRUE)
-						g_print("main_interface_loaded!\n");
-					/* here we connect the signals (some from heraia_ui.h) */
-					g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "main_window")), "delete_event", 
-									  G_CALLBACK (delete_main_window_event), NULL);
-					g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "main_window")), "destroy", 
-									  G_CALLBACK (on_quitter1_activate), NULL);
+						log_message(main_window, G_LOG_LEVEL_INFO, "main_interface_loaded");
+
+					init_heraia_plugin_system(main_window);
 
 					if (load_file_to_analyse(main_window, opt.filename) == TRUE)
 						{	
-							
-							data_interpret (main_window->current_DW);
-  
-							/* Connection of the signal to the right function
+							/* inits the data interpretor window */
+							data_interpret(main_window->current_DW);
+
+  							/* Connection of the signal to the right function
 							   in order to interpret things when the cursor is
 							   moving                                          */
 							g_signal_connect (G_OBJECT (main_window->current_DW->current_hexwidget), "cursor_moved",
-											  G_CALLBACK (refresh_data_window), main_window->current_DW);
-							
-							g_print("main_window : %p\n", main_window);
+											  G_CALLBACK (refresh_event_handler), main_window);
+
+							log_message(main_window, G_LOG_LEVEL_INFO, "main_window : %p", main_window);
 						   	init_heraia_interface(main_window);
+							
 							/* Do some init plugin calls here */
 							init_graph_analysis(main_window);
 
-							gtk_widget_show_all (glade_xml_get_widget(main_window->xml, "main_window"));
+							/* Shows all widgets */
+							gtk_widget_show_all(glade_xml_get_widget(main_window->xml, "main_window"));
 					
-							gtk_main ();
+							/* gtk main loop */
+							gtk_main();
 							exit_value = TRUE;
 						}
 					else

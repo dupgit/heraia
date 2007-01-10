@@ -3,7 +3,7 @@
   graphic_analysis.h
   graphic analysis functions
   
-  (C) Copyright 2006 Olivier Delhomme
+  (C) Copyright 2006 - 2007 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  

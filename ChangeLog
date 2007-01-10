@@ -1,9 +1,83 @@
+09.01.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* added a refresh button to the plugin list window
+          and more information on the loaded plugin
+
+08.01.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* added a plugin list window
+	* added 'plugin_list.c' and 'plugin_list.h'
+	* modified 'Makefile.am'
+	* added some generic code to add text and kill text from a textview in
+	  'heraia_ui.c' and 'heraia_ui.h'
+	* Modified 'README' a bit
+	* removed the gboolean loaded of the plugin structure and replace with
+	  a PluginState state one.
+	* plugins/stat/stat.c modified to reflect the abov change
+
+07.01.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* added an 'event' gint to the main structure heraia_window_t in order
+	  that the plugins know what event called there refresh_proc function
+	  (new file, cursor move). Such events may be added in the future.
+	  note : this is where is located the main reason making the plugin
+	  	 system unable to instantly become multi-threaded (some
+		 hard work will be needed)
+	* Change the default location for *.glade's' file to be found to
+	  /usr/local/share/heraia/
+
+06.01.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* added functions to plugin.c to manage a glade xml interface
+	* added stat.glade to the stat plugin
+	* added a simple script to copy the glade files to the right
+	  places.
+	* Modified autoclean :
+	  . take into account plugins/ and plugins/stat/
+	  . suppress all the Makefiles
+	* Replaced g_malloc0 with g_strdup_printf in the load_heraia_glade_xml
+	  function (heraia_ui.c)
+
+
+05.01.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* begining the work on the plugins capacities
+	* added 'plugins' subdir to the project
+	  . added 'stat' plugin subdir and sources as an example
+	* Modified configure.ac (plugins_dir & data_dir & coherence &
+	  presentation)
+	* Modified Makefile.am (plugins_dir & data_dir & coherence &
+	  presentation)
+	* autoclean : now we do not remove the 'po' directory anymore !
+
+
+03.01.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* added plugin.c and plugin.h
+	* changed configure.ac :
+	  . added GMODULE detection
+	  . added Build OS detection (in order to be able to compile
+	    or cross compile for other oses)
+	* generated a config.h.in with autoheader
+	* modified the AUTHORS file
+
+02.01.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* added an about box.
+
+31.12.2006
+	- Olivier Delhomme <heraia@delhomme.org>
+	* added the log system and the log window :
+	  . added log.c and log.h
+	  . added '# include "log.h"' to types.h for convenience
+	* modified somme code to add more coherence
+
 31.07.2006
 	- Olivier Delhomme <heraia@delhomme.org>
         * Added graphic_analysis.c and graphic_analysis.h
 	* Added types.h
 	* Modified nearly all the files to reflect that the file
-	  type.h now as all the necessary types.
+	  types.h now as all the necessary types.
 
 07.02.2006
          - Olivier Delhomme <heraia@delhomme.org>
