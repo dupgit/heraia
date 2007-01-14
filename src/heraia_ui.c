@@ -302,9 +302,6 @@ static gboolean load_the_glade_xml_if_it_exists(heraia_window_t *main_window, ch
  */
 static gboolean load_heraia_glade_xml(heraia_window_t *main_window)
 {
-
-	fprintf(stdout, "load_heraia_glade_xml\n");
-
 	main_window->xml = load_glade_xml_file(main_window->location_list, "heraia.glade");
 
 	if (main_window->xml == NULL)

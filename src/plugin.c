@@ -231,7 +231,6 @@ heraia_plugin_t *find_plugin_by_name(GList *plugins_list, gchar *name)
  */
 gboolean load_plugin_glade_xml(heraia_window_t *main_window, heraia_plugin_t *plugin)
 {	
-	
 	gchar *filename = NULL;
 
 	filename = g_strdup_printf("%s.glade", plugin->info->name);	
