@@ -33,6 +33,9 @@
 #include "ghex_heraia_interface.h"
 #include "io.h"
 
+static GladeXML *load_glade_xml_if_it_exists(char *file_to_load);
+
+
 gboolean load_file_to_analyse(heraia_window_t *main_window, char *filename)
 {
 	struct stat *stat_buf = NULL;
@@ -78,3 +81,50 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, char *filename)
 	return success;
 }
 
+
+/** 
+ *  Checks if file_to_load exists and is valid and if possible, loads it
+ *  in the xml structure
+ */
+static GladeXML *load_glade_xml_if_it_exists(char *file_to_load)
+{
+	struct stat *stat_buf;
+	GladeXML *xml = NULL;
+
+	stat_buf = (struct stat *) g_malloc0 (sizeof(struct stat));
+
+	stat(file_to_load, stat_buf);
+	if (S_ISREG(stat_buf->st_mode) && stat_buf->st_size>0)
+			xml = glade_xml_new(file_to_load, NULL, NULL);
+	else
+		xml = NULL;
+
+	g_free(stat_buf);
+
+	return xml;
+}
+
+/* loads the glade xml file ('filename') that describes an interface,
+   tries all the paths defined in the location_list and put the definition
+   in the 'xml' variable
+ */
+GladeXML *load_glade_xml_file(GList *location_list, gchar *filename)
+{	
+
+	gchar *file_to_load = NULL;
+	GList *list = g_list_first(location_list);
+	GladeXML *xml = NULL;
+
+	while (list != NULL && xml == NULL)
+		{
+			file_to_load =  g_strdup_printf("%s%c%s",(gchar *) list->data, G_DIR_SEPARATOR, filename);
+
+			xml = load_glade_xml_if_it_exists(file_to_load);
+
+			if (xml == NULL)
+				list = list->next;	
+			g_free(file_to_load);
+		}
+	
+	return xml;
+}

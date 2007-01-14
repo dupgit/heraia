@@ -125,12 +125,11 @@ typedef struct
 	Heraia_Document *current_doc;
 	GladeXML *xml;
 	
-   	data_window_t *current_DW;  /* data_interpretor pointer */
-	void *ga;                   /* graph analysis pointer   */
-	/* add some plugin struct here */
-	GList *plugins_list;        /* A list of plugins        */
-	RefreshType event;          /* Tells what is happening  */
-
+   	data_window_t *current_DW;  /* data_interpretor pointer                            */
+	void *ga;                   /* graph analysis pointer                              */
+	GList *location_list;       /* this is the location list where we store some paths */
+	GList *plugins_list;        /* A list of plugins                                   */
+	RefreshType event;          /* Tells what is happening                             */
 } heraia_window_t;
 
 

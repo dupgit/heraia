@@ -302,53 +302,15 @@ static gboolean load_the_glade_xml_if_it_exists(heraia_window_t *main_window, ch
  */
 static gboolean load_heraia_glade_xml(heraia_window_t *main_window)
 {
-	char *current_path = NULL;
-	char *filename = NULL;
-	char *file_to_load = NULL;
-	char *user = NULL;
-	gboolean success = FALSE;
-   
-	filename = g_strdup_printf("%s", "heraia.glade");
-   
-	/* first we might see if there is a /usr/local/share/heraia/heraia.glade file */
-	file_to_load =  g_strdup_printf("/usr/local/share/heraia/%s", filename);
-	success = load_the_glade_xml_if_it_exists(main_window, file_to_load);
-	if (main_window->debug == TRUE && success == TRUE)
-		log_message(main_window, G_LOG_LEVEL_INFO, "heraia.glade loaded from : %s", file_to_load);
-	
-	g_free(file_to_load);
 
-	/* if there is not we want to see if /home/[user]/.heraia/heraia.glade exists */
-	if (success == FALSE)
-		{
-			/*user = (char *) g_malloc0 (sizeof(char)*255);*/
-			user = getenv("LOGNAME");
-			file_to_load = g_strdup_printf("/home/%s/.heraia/%s", user, filename);
-			success = load_the_glade_xml_if_it_exists(main_window, file_to_load);
-			if (main_window->debug == TRUE && success == TRUE)
-				log_message(main_window, G_LOG_LEVEL_INFO, "heraia.glade loaded from : %s", file_to_load);
+	fprintf(stdout, "load_heraia_glade_xml\n");
 
-			g_free(file_to_load);
-		}
+	main_window->xml = load_glade_xml_file(main_window->location_list, "heraia.glade");
 
-	/* if nothing exists we default into the current directory */
-	if (success == FALSE)
-		{
-			current_path = (char *) g_malloc0 (sizeof(char)*255);
-			getcwd(current_path, 255);
-	 
-			file_to_load = g_strdup_printf("%s/%s", current_path, filename);
-			success = load_the_glade_xml_if_it_exists(main_window, file_to_load);
-			if (main_window->debug == TRUE && success == TRUE)
-				log_message(main_window, G_LOG_LEVEL_INFO, "heraia.glade loaded from : %s", file_to_load);
-
-			g_free(current_path);
-			g_free(file_to_load);
-		}
-
-	g_free(filename);
-	
-	return success;
+	if (main_window->xml == NULL)
+		return FALSE;
+	else
+		return TRUE;
 }
 
 

@@ -35,9 +35,9 @@
 
 #include "types.h"
 #include "heraia-errors.h"
+#include "io.h"
 #include "plugin.h"
 
-static gboolean load_the_plugin_glade_xml_if_it_exists(heraia_plugin_t *plugin, char *file_to_load);
 
 gboolean plugin_capable(void)
 {
@@ -225,85 +225,25 @@ heraia_plugin_t *find_plugin_by_name(GList *plugins_list, gchar *name)
 		return NULL;
 }
 
-/** 
- *  checks if file_to_load exists and is valid and if possible, loads it
- */
-static gboolean load_the_plugin_glade_xml_if_it_exists(heraia_plugin_t *plugin, char *file_to_load)
-{
-	gboolean success = FALSE;
-	struct stat *stat_buf;
-
-	stat_buf = (struct stat *) g_malloc0 (sizeof(struct stat));
-
-	stat(file_to_load, stat_buf);
-	if (S_ISREG(stat_buf->st_mode) && stat_buf->st_size>0)
-		{
-			success = TRUE;
-			plugin->xml = glade_xml_new(file_to_load, NULL, NULL);
-			if (plugin->xml == NULL)
-				success = FALSE;
-		}
-
-	g_free(stat_buf);
-
-	return success;
-}
 
 /* loads the glade xml file that describes the plugin
-   tries the following paths in that order :                 
-   - /etc/heraia/[name].glade
-   - /home/[user]/.heraia/[name].glade
-   - PWD/[name].glade
+   tries the paths found in the location_list
  */
 gboolean load_plugin_glade_xml(heraia_window_t *main_window, heraia_plugin_t *plugin)
 {	
-	char *current_path = NULL;
-	char *filename = NULL;
-	char *file_to_load = NULL;
-	char *user = NULL;
-	gboolean success = FALSE;
-   
+	
+	gchar *filename = NULL;
+
 	filename = g_strdup_printf("%s.glade", plugin->info->name);	
       
-	/* first we might see if there is a /usr/local/share/heraia/[name].glade file */
-	file_to_load = g_strdup_printf("/usr/local/share/heraia/%s", filename);
-
-	success = load_the_plugin_glade_xml_if_it_exists(plugin, file_to_load);
-	if (main_window->debug == TRUE && success == TRUE)
-		log_message(main_window, G_LOG_LEVEL_INFO, "%s loaded from : %s", filename, file_to_load);
-	
-	g_free(file_to_load);
-
-	/* then we want to see if /home/[user]/.heraia/[name].glade exists */
-	if (success == FALSE)
-		{
-			user = getenv("LOGNAME");
-			file_to_load = g_strdup_printf("/home/%s/.heraia/%s", user, filename);
-			success = load_the_plugin_glade_xml_if_it_exists(plugin, file_to_load);
-			if (main_window->debug == TRUE && success == TRUE)
-				log_message(main_window, G_LOG_LEVEL_INFO, "%s loaded from : %s", filename, file_to_load);
-
-			g_free(file_to_load);
-		}
-
-	/* if nothing exists we default into the current directory */
-	if (success == FALSE)
-		{
-			current_path = (char *) g_malloc0 (sizeof(char)*255);
-			getcwd(current_path, 255);
-			
-			file_to_load = g_strdup_printf("%s/%s", current_path, filename);
-			success = load_the_plugin_glade_xml_if_it_exists(plugin, file_to_load);
-			if (main_window->debug == TRUE && success == TRUE)
-				log_message(main_window, G_LOG_LEVEL_INFO, "%s loaded from : %s", filename, file_to_load);
-
-			g_free(current_path);
-			g_free(file_to_load);
-		}
+	plugin->xml = load_glade_xml_file(main_window->location_list, filename);
 
 	g_free(filename);
 	
-	return success;
+	if (plugin->xml == NULL)
+		return FALSE;
+	else
+		return TRUE;
 }
 
 /**

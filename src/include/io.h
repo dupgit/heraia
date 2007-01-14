@@ -24,5 +24,6 @@
 #define _HERAIA_IO_H_
 
 extern gboolean load_file_to_analyse( heraia_window_t *main_window, char *filename );
+extern GladeXML *load_glade_xml_file(GList *location_list, gchar *filename);
 
 #endif /* _HERAIA_IO_H_ */

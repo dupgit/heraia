@@ -44,8 +44,9 @@
 
 static void version(void);
 static int usage(int status);
-static HERAIA_ERROR heraia_init_main_struct(heraia_window_t **hw);
+static heraia_window_t *heraia_init_main_struct(void);
 static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window);
+static void init_heraia_location_list(heraia_window_t *main_window);
 
 static void version(void)
 {
@@ -73,14 +74,14 @@ static int usage(int status)
 		}
 }
 
-static HERAIA_ERROR heraia_init_main_struct(heraia_window_t **hw)
+static heraia_window_t *heraia_init_main_struct(void)
 {
 	heraia_window_t *herwin;
 
-	herwin = (heraia_window_t *) g_malloc0 (sizeof(*herwin));
+	herwin = (heraia_window_t *) g_malloc0 (sizeof(heraia_window_t));
 
 	if ( ! herwin )
-		return HERAIA_MEMORY_ERROR;
+		return NULL;
 	/* First, in this early stage of the development we want to toggle debugging
 	   mode ON : 
 	*/
@@ -90,10 +91,11 @@ static HERAIA_ERROR heraia_init_main_struct(heraia_window_t **hw)
 	herwin->current_DW = (data_window_t *) g_malloc0 (sizeof(*herwin->current_DW));
 	herwin->ga = NULL; 
 	herwin->plugins_list = NULL; 
+	herwin->location_list = NULL;
+	
+	init_heraia_location_list(herwin);
 
-	*hw = herwin;
-
-	return HERAIA_NOERR;
+	return herwin;
 }
 
 static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window)
@@ -117,6 +119,31 @@ static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window)
 		}
 }
 
+/**
+ *  Here we want to init the location list where we might look for
+ *  in the future. These can be viewed as default paths
+ *  possible optimisation : use g_list_prepend and reverse the order
+ */
+static void init_heraia_location_list(heraia_window_t *main_window)
+{
+	gchar *path = NULL;
+
+	/* A global path */
+	main_window->location_list = g_list_append(main_window->location_list, "/usr/local/share/heraia");
+
+	/* the user path */
+	path =  g_strdup_printf("/home/%s/.heraia", getenv("LOGNAME"));
+	main_window->location_list = g_list_append(main_window->location_list, path);
+	g_free(path);
+
+	/* heraia's binary path */
+	path = g_strdup_printf("%s", getcwd(NULL, 0));
+	main_window->location_list = g_list_append(main_window->location_list, path);
+	g_free(path);
+
+	fprintf(stdout, "init_heraia_location_list Done !\n");
+}
+
 
 int main (int argc, char ** argv) 
 {  
@@ -124,12 +151,13 @@ int main (int argc, char ** argv)
 	int c = 0;
 	gboolean exit_value = TRUE;
 	heraia_window_t *main_window = NULL;
-	HERAIA_ERROR ret;
 
 	opt.filename = NULL;  /* At first we do not have any filename */	
 	opt.usage = FALSE;
 	
-	ret = heraia_init_main_struct(&main_window);
+	main_window = heraia_init_main_struct();
+
+	fprintf(stdout, "main_struct initialized !\n");
 
 	while ((c = getopt_long (argc, argv, "vh", long_options, NULL)) != -1)
 		{
@@ -178,7 +206,7 @@ int main (int argc, char ** argv)
 			if (load_heraia_ui(main_window) == TRUE)
 				{	
 					if (main_window->debug == TRUE)
-						log_message(main_window, G_LOG_LEVEL_INFO, "main_interface_loaded");
+						log_message(main_window, G_LOG_LEVEL_INFO, "main interface loaded");
 
 					init_heraia_plugin_system(main_window);
 

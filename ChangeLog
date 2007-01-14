@@ -1,3 +1,8 @@
+14.01.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* simplified and generalized the xml loading function
+	* simplified the in heraia.c the init_heraia_main_struct function
+
 09.01.2007
 	- Olivier Delhomme <heraia@delhomme.org>
 	* added a refresh button to the plugin list window
