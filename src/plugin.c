@@ -38,6 +38,11 @@
 #include "io.h"
 #include "plugin.h"
 
+static heraia_plugin_t *get_plugin_handle(heraia_window_t *main_window, heraia_plugin_t *plugin, 
+										  const gchar *full_filename, const gchar *filename);
+static heraia_plugin_t *get_plugin_init_symbol(heraia_window_t *main_window, heraia_plugin_t *plugin);
+static void init_plugin(heraia_window_t *main_window, heraia_plugin_t *plugin, const gchar *filename, guint plugins_nb);
+static void load_one_plugin(heraia_window_t *main_window, const gchar *filename, guint plugins_nb);
 
 gboolean plugin_capable(void)
 {
@@ -81,7 +86,8 @@ void free_plugin(heraia_plugin_t *plugin)
 {
 	if (plugin != NULL)
 		{
-			g_module_close(plugin->handle);
+			if (plugin->handle != NULL)
+				g_module_close(plugin->handle);
 			if (plugin->info != NULL)
 				{
 					g_free(plugin->info->name);
@@ -106,29 +112,122 @@ void free_plugin(heraia_plugin_t *plugin)
 		}
 }
 
+/**
+ *  Here we try to get a handle for the Gmodule referenced by full_filename
+ */
+static heraia_plugin_t *get_plugin_handle(heraia_window_t *main_window, heraia_plugin_t *plugin, 
+										  const gchar *full_filename, const gchar *filename)
+{
+	if (plugin != NULL)
+		{
+
+			plugin->handle = g_module_open(full_filename, G_MODULE_BIND_MASK);
+			
+			if (plugin->handle == NULL)
+				log_message(main_window, G_LOG_LEVEL_WARNING, "Could not open plugin %s - %s", filename, g_module_error());
+		}
+
+	return plugin;
+}
+
+/**
+ *  If the handle is ok, we want to have the heraia_plugin_init function (to call it)
+ *  in order to init the plugin (by itself)
+ */ 
+static heraia_plugin_t *get_plugin_init_symbol(heraia_window_t *main_window, heraia_plugin_t *plugin)
+{
+	heraia_plugin_t *(*heraia_plugin_init)(heraia_plugin_t *);
+	gboolean get_symbol = FALSE;
+
+	if (plugin != NULL && plugin->handle != NULL)
+		{
+			get_symbol = g_module_symbol(plugin->handle, "heraia_plugin_init", (gpointer *)(&heraia_plugin_init));
+
+			if (get_symbol == FALSE)
+				{
+					log_message(main_window, G_LOG_LEVEL_WARNING, "Could not load the symbol heraia_plugin_init - %s", g_module_error());
+					free_plugin(plugin);
+					return NULL;
+				}
+			else
+				{
+					/* the plugins inits itself here */
+					plugin = heraia_plugin_init(plugin);
+					return plugin;
+				}
+		}
+	else
+		{
+			free_plugin(plugin);
+			return NULL;
+		}
+}
+
+/**
+ *  finalising initialisation : if everything went fine, the plugin is added to the 
+ *  plugin list and a menu entry is created in the Plugins menu
+ */
+static void init_plugin(heraia_window_t *main_window, heraia_plugin_t *plugin, const gchar *filename, guint plugins_nb)
+{	
+	if (plugin != NULL)
+		{
+			plugin->info->id = plugins_nb;
+			main_window->plugins_list = g_list_append(main_window->plugins_list, plugin);
+			log_message(main_window, G_LOG_LEVEL_INFO, "plugin %s loaded.", filename);
+			plugin->init_proc(main_window);
+			if (plugin->info->type == HERAIA_PLUGIN_ACTION)
+				{
+					add_entry_to_plugins_menu(main_window, plugin);
+				}
+				
+		}
+ }
+
+/**
+ *  Here we manage to load on plugin at a time (and this is really enough !)
+ */
+static void load_one_plugin(heraia_window_t *main_window, const gchar *filename, guint plugins_nb)
+{
+	const gchar *full_filename = NULL;
+	heraia_plugin_t *plugin = NULL;
+	gchar *ext = g_strdup_printf(".%s", G_MODULE_SUFFIX); /* system dependent suffix */
+
+	full_filename = g_strdup_printf("%s%c%s", PLUGINS_DIR, G_DIR_SEPARATOR, filename);
+
+	/* Make sure we do load the module named .so, .dll or .sl depending on the OS type */
+	if ( (g_file_test(full_filename, G_FILE_TEST_IS_DIR) == FALSE) &&
+		 (strcmp(strrchr(filename, '.'), ext) == 0)
+		 )
+		{
+			plugin = new_plugin();
+			plugin->path = g_strdup_printf("%s", PLUGINS_DIR);
+			plugin->filename = g_strdup_printf("%s", filename);
+							
+			plugin = get_plugin_handle(main_window, plugin, full_filename, filename);
+			plugin = get_plugin_init_symbol(main_window, plugin);
+		   
+			init_plugin(main_window, plugin, filename, plugins_nb);
+		}
+}
+
 
 /**
  *  looks at the plugins dir(s) and loads
- *  the needed plugins (all ;-)
- *  this function need some cleanning and sub functions !
+ *  the needed plugins (all ;-) (one at a time !!)
  */
 void load_plugins(heraia_window_t *main_window)
 {
 	GDir *plugins_dir = NULL;
 	GError *error = NULL;
-	heraia_plugin_t *plugin = NULL;
 	const gchar *filename = NULL;
-	const gchar *full_filename = NULL;
-	const gchar *ext = g_strdup_printf(".%s", G_MODULE_SUFFIX); /* system dependent suffix */
-	gboolean get_symbol = FALSE;
-	heraia_plugin_t *(*heraia_plugin_init)(heraia_plugin_t *);
 	unsigned int plugins_nb = 0;
 
 	/* Register all shared plugins (plugins_dir) (-DPLUGINS_DIR) */
     /* This may be a config file option later ...                */
 	plugins_dir = g_dir_open(PLUGINS_DIR, 0, &error);
-	if (plugins_dir == NULL) 
-		{  /* error while openning the plugins directory */
+
+	if (plugins_dir == NULL) /* error while openning the plugins directory */
+		{  
 			log_message(main_window, G_LOG_LEVEL_WARNING, "%s", error->message);
 			g_error_free(error);
 		}
@@ -136,48 +235,9 @@ void load_plugins(heraia_window_t *main_window)
 		{
 			while ((filename = g_dir_read_name(plugins_dir)) != NULL) 
 				{
-					full_filename = g_strdup_printf("%s%c%s", PLUGINS_DIR, G_DIR_SEPARATOR, filename);
-					/* Make sure we do load the module named .so, .dll or .sl depending on the OS type */
-					if ( (g_file_test(full_filename, G_FILE_TEST_IS_DIR) == FALSE) &&
-						 (strcmp(strrchr(filename, '.'), ext) == 0)
-                       )
-						{
-							plugin = new_plugin();
-							plugin->path = g_strdup_printf("%s", PLUGINS_DIR);
-							plugin->filename = g_strdup_printf("%s", filename);
-							
-							plugin->handle = g_module_open(full_filename, G_MODULE_BIND_MASK);
-							if (plugin->handle == NULL)
-								{ /* error while openning the plugin module */
-									log_message(main_window, G_LOG_LEVEL_WARNING, "Could not open plugin %s - %s", filename, g_module_error());
-								}
-							else
-								{
-									get_symbol = g_module_symbol(plugin->handle, "heraia_plugin_init", (gpointer *)(&heraia_plugin_init));
-									if (get_symbol == FALSE)
-										{
-											log_message(main_window, G_LOG_LEVEL_WARNING, "Could not load the symbol heraia_plugin_init - %s", g_module_error());
-											free_plugin(plugin);
-										}
-									else
-										{
-											/* inits the loaded plugin (in the plugin itself) */
-											plugin = heraia_plugin_init(plugin);
-											if (plugin != NULL)
-												{
-													plugin->info->id = ++plugins_nb;
-													main_window->plugins_list = g_list_append(main_window->plugins_list, plugin);
-													log_message(main_window, G_LOG_LEVEL_INFO, "plugin %s loaded.", filename);
-													plugin->init_proc(main_window);
-													if (plugin->info->type == HERAIA_PLUGIN_ACTION)
-														{
-															add_entry_to_plugins_menu(main_window, plugin);
-														}
-												}
-										}
-								}
-						}
+					load_one_plugin(main_window, filename, ++plugins_nb);
 				}
+			g_dir_close(plugins_dir);
 		}
 }
 

@@ -28,7 +28,6 @@
 06.01.2007 GtkHex Widget
 06.01.2007 By the way : get rid of that GtkHex Widget (too many limitations)
 06.01.2007 in io.c :
-    		. add a generic function to load GladeXML files
 		. modifies the load_file_to_analyse function in order
 		  to be more coherent with the structure (filename)
 08.01.2007 Add a configuration button to the plugin_list window. This button
@@ -42,3 +41,4 @@
 19.11.2005 add and improve a clean make install procedure
            It seems Ok ! (Done 05.01.2007) 
 05.01.2007 find the way to transmit nicely the -D flags (Done 05.01.2007)
+06.01.2007 in io.c add a generic function to load GladeXML files (Done 14.01.2007)

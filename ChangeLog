@@ -1,7 +1,13 @@
+15.01.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* plugin.c : 
+	  . splitted the load_plugins function
+	  . added a call to g_close_dir where appropriate
+
 14.01.2007
 	- Olivier Delhomme <heraia@delhomme.org>
-	* simplified and generalized the xml loading function
-	* simplified the in heraia.c the init_heraia_main_struct function
+	* simplified and generalized the xml loading function (moved to io.c)
+	* simplified in 'heraia.c' the init_heraia_main_struct function
 
 09.01.2007
 	- Olivier Delhomme <heraia@delhomme.org>
