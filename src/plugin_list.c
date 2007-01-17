@@ -261,8 +261,7 @@ static void print_plugin_extra_structure(GtkTextView *textview, heraia_plugin_t 
 		add_text_to_textview(textview, "\nLe plugin a une structure supplémentaire 'extra' (%p) d'une taille de %d octets.\n", 
 							 plugin->extra, sizeof(plugin->extra));
 	else
-		add_text_to_textview(textview, "\nTLe plugin n'a pas de structure supplémentaire.\n", 
-							 plugin->extra, sizeof(plugin->extra));
+		add_text_to_textview(textview, "\nTLe plugin n'a pas de structure supplémentaire.\n");
 
 }
 

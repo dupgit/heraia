@@ -7,7 +7,7 @@
 
 26.03.2005 add a configuration file that will record data_interpretor display
            preferences.	
-03.04.2005 add the translation (.po)
+03.04.2005 add the translation (.po) and other stuff in the po/ directory
 09.05.2005 add a way to save the users settings for the data interpretor Window
            and eventually let him load them afterwards.
 20.06.2005 add a command line option to hide the data interpretor window 

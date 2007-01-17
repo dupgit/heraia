@@ -32,6 +32,7 @@
 #include "plugin.h"
 #include "stat.h"
 #include "heraia_ui.h"
+#include "ghex_heraia_interface.h"
 
 
 /* the plugin interface functions */
@@ -224,43 +225,6 @@ static void stat_window_connect_signals(heraia_plugin_t *plugin)
 }
 
 /**
- *  adds a text to the textview
-
-static void add_to_statw_textview(heraia_plugin_t *plugin, const char *format, ...)
-{	
-	va_list args;
-	GtkTextView *statw_textview = GTK_TEXT_VIEW(glade_xml_get_widget(plugin->xml, "statw_textview"));
-	GtkTextBuffer *tb = NULL;
-	GtkTextIter iEnd;
-	gchar *display = NULL;
-	GError *err = NULL;
-
-	va_start(args, format);
-	display = g_locale_to_utf8(g_strdup_vprintf(format, args), -1, NULL, NULL, &err);
-	va_end(args);
-
-	tb = GTK_TEXT_BUFFER(gtk_text_view_get_buffer(GTK_TEXT_VIEW(statw_textview)));
-	gtk_text_buffer_get_end_iter(tb, &iEnd);
-	gtk_text_buffer_insert(tb, &iEnd, display, -1);
-	g_free(display);
-}
-
-static void kill_text_statw_textview(heraia_plugin_t *plugin)
-{
-
-	GtkTextView *statw_textview = GTK_TEXT_VIEW(glade_xml_get_widget(plugin->xml, "statw_textview"));
-	GtkTextBuffer *tb = NULL;
-	GtkTextIter iStart;
-	GtkTextIter iEnd;
-
-	tb = GTK_TEXT_BUFFER(gtk_text_view_get_buffer(GTK_TEXT_VIEW(statw_textview)));
-	gtk_text_buffer_get_start_iter(tb, &iStart);
-	gtk_text_buffer_get_end_iter(tb, &iEnd);
-	gtk_text_buffer_delete (tb, &iStart, &iEnd);
-}
-*/
-
-/**
  *  Do some stats on the selected file (entire file is used)
  */
 static void realize_some_numerical_stat(heraia_window_t *main_struct, heraia_plugin_t *plugin)
@@ -334,20 +298,20 @@ static void init_stats_histos(heraia_plugin_t *plugin)
  */
 static void populate_stats_histos(heraia_window_t *main_struct, heraia_plugin_t *plugin)
 {
-	GtkHex *gh = NULL;
+	GtkHex *gh = GTK_HEX(main_struct->current_DW->current_hexwidget);
 	guint64 i = 0;
+	guint64 taille = ghex_file_size(gh);
 	guchar c1, c2;
 	stat_t *extra = NULL;
 
 	init_stats_histos(plugin);
 	extra = (stat_t *) plugin->extra;
 
-	gh = GTK_HEX(main_struct->current_DW->current_hexwidget);
-	while (i < gh->document->file_size)
+	while (i < taille)
 		{
 			c1 = gtk_hex_get_byte(gh, i);
 			extra->histo1D[c1]++;
-			if (i+1 < gh->document->file_size)
+			if (i+1 < taille)
 				{
 					i++;
 					c2 = gtk_hex_get_byte(gh, i);

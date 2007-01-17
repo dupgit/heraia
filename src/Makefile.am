@@ -10,17 +10,30 @@ bin_PROGRAMS = heraia
 heraia_LDFLAGS = -export-dynamic
 heraia_LDADD = $(GTKHEX_LIBS) $(LIBGLADE_LIBS)
 
-heraia_SOURCES = 		\
-	heraia.c		\
-	data_interpretor.c 	\
-	decode.c 		\
-	ghex_heraia_interface.c	\
-	heraia_ui.c 		\
-	io.c 			\
-	graphic_analysis.c 	\
-	log.c			\
-	plugin.c		\
-	plugin_list.c
+heraia_SOURCES = 			\
+	heraia.c			\
+	data_interpretor.c 		\
+	decode.c 			\
+	ghex_heraia_interface.c		\
+	heraia_ui.c 			\
+	io.c 				\
+	graphic_analysis.c 		\
+	log.c				\
+	plugin.c			\
+	plugin_list.c			\
+	include/heraia.h		\
+	include/data_interpretor.h 	\
+	include/decode.h		\
+	include/ghex_heraia_interface.h	\
+	include/heraia_ui.h		\
+	include/io.h			\
+	include/graphic_analysis.h	\
+	include/log.h			\
+	include/plugin.h		\
+	include/types.h			\
+	include/heraia-errors.h		\
+	include/plugin_list.h		
+
 
 gladefiles = heraia.glade
 gladedir = $(datadir)/@PACKAGE@

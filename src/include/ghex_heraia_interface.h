@@ -37,5 +37,5 @@ extern gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, gboolean big_endia
    kills the old document if it exists and add a new one, from the new filename
 */
 extern HERAIA_ERROR heraia_hex_document_new(heraia_window_t *main_window, char *filename);
-
+extern guint64 ghex_file_size(GtkHex *gh);
 #endif /* _GHEX_HERAIA_INTERFACE_H_ */

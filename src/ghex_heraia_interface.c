@@ -59,7 +59,7 @@ gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, gboolean big_endian,
 	
   if (result == NULL || gh == NULL)
     return FALSE;
-  else if ((pos < 0) && ((pos+len) > gh->document->file_size))
+  else if ((pos < 0) && ((pos+len) > ghex_file_size(gh)))
     return FALSE;
   else
     {
@@ -71,4 +71,15 @@ gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, gboolean big_endian,
 
       return TRUE;
     }
+}
+
+/**
+ *  Returns the file size of an opened GtkHex document.
+ */
+guint64 ghex_file_size(GtkHex *gh)
+{
+	if ( gh != NULL && gh->document != NULL)
+		return gh->document->file_size;
+	else 
+		return 0;
 }

@@ -1,3 +1,10 @@
+17.01.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* modified 'plugin/stat/Makefile.am', 'src/Makefile.am' to make 'make
+	  dist' be functional.
+	* added 'ghex_file_size' function to access the GtkHex structure 
+	  directly only in the 'ghex_heraia_interface.c'
+
 15.01.2007
 	- Olivier Delhomme <heraia@delhomme.org>
 	* plugin.c : 

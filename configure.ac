@@ -166,7 +166,7 @@ AC_OUTPUT([
 
 Makefile 
 
-src/Makefile 
+src/Makefile
 
 plugins/Makefile
 plugins/stat/Makefile
