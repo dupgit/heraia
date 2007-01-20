@@ -86,7 +86,7 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, char *filename)
  *  Checks if file_to_load exists and is valid and if possible, loads it
  *  in the xml structure
  */
-static GladeXML *load_glade_xml_if_it_exists(char *file_to_load)
+static GladeXML *load_glade_xml_if_it_exists(gchar *file_to_load)
 {
 	struct stat *stat_buf;
 	GladeXML *xml = NULL;

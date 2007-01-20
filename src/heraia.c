@@ -129,19 +129,17 @@ static void init_heraia_location_list(heraia_window_t *main_window)
 	gchar *path = NULL;
 
 	/* A global path */
-	main_window->location_list = g_list_append(main_window->location_list, "/usr/local/share/heraia");
+	path = g_str_dup_printf("/usr/local/share/heraia");
+	main_window->location_list = g_list_append(main_window->location_list, path);
 
 	/* the user path */
 	path =  g_strdup_printf("/home/%s/.heraia", getenv("LOGNAME"));
 	main_window->location_list = g_list_append(main_window->location_list, path);
-	g_free(path);
 
 	/* heraia's binary path */
 	path = g_strdup_printf("%s", getcwd(NULL, 0));
 	main_window->location_list = g_list_append(main_window->location_list, path);
-	g_free(path);
 
-	fprintf(stdout, "init_heraia_location_list Done !\n");
 }
 
 

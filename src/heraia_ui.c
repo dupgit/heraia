@@ -37,7 +37,7 @@
 #include "plugin.h"
 
 static gboolean load_heraia_glade_xml(heraia_window_t *main_window);
-static gboolean load_the_glade_xml_if_it_exists(heraia_window_t *main_window, char *file_to_load);
+/* static gboolean load_the_glade_xml_if_it_exists(heraia_window_t *main_window, char *file_to_load);*/
 
 /* call back functions : for the main program */
 void on_quitter1_activate( GtkWidget *widget, gpointer data )
@@ -272,7 +272,7 @@ void init_heraia_interface(heraia_window_t *main_window)
 }
 
 
-/* checks if file_to_load exists and is valid and if possible, loads it */
+/* checks if file_to_load exists and is valid and if possible, loads it
 static gboolean load_the_glade_xml_if_it_exists(heraia_window_t *main_window, char *file_to_load)
 {
 	gboolean success = FALSE;
@@ -292,7 +292,7 @@ static gboolean load_the_glade_xml_if_it_exists(heraia_window_t *main_window, ch
 	g_free(stat_buf);
 
 	return success;
-}
+} */
 
 /* loads the glade xml file that describes the heraia project
    tries the following paths in that order :                 
@@ -302,7 +302,13 @@ static gboolean load_the_glade_xml_if_it_exists(heraia_window_t *main_window, ch
  */
 static gboolean load_heraia_glade_xml(heraia_window_t *main_window)
 {
-	main_window->xml = load_glade_xml_file(main_window->location_list, "heraia.glade");
+	gchar *filename = NULL;
+
+	filename = g_strdup_printf("heraia.glade");
+
+	main_window->xml = load_glade_xml_file(main_window->location_list, filename);
+
+	g_free(filename);
 
 	if (main_window->xml == NULL)
 		return FALSE;
