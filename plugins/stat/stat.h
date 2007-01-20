@@ -43,5 +43,12 @@ typedef struct
   guint64 histo2D[256][256];
 } stat_t;
 
+/* the plugin interface functions */
+
+extern void init(heraia_window_t *);      /* When the application initialy starts up */
+extern void quit(void);                   /* When the application exits */
+extern void run (GtkWidget *, gpointer);  /* To run anything everytime the plugin is called */
+extern void refresh(heraia_window_t *, void *); /* Called every refresh time (New file & cursor move) */
+extern heraia_plugin_t *heraia_plugin_init(heraia_plugin_t *);
 
 #endif /* _PLUGIN_STAT_H_ */

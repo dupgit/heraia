@@ -1109,7 +1109,9 @@ void data_interpret(data_window_t *DW)
 	refresh_data_window(DW->current_hexwidget, DW);
 	
 	if (DW->window_displayed == TRUE)
-		gtk_widget_show_all (DW->window);
+		gtk_widget_show_all(DW->window);
+	else 
+		gtk_widget_hide_all(DW->window);
 
 }
 /* End of Widget related stuff  */

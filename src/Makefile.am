@@ -17,7 +17,6 @@ heraia_SOURCES = 			\
 	ghex_heraia_interface.c		\
 	heraia_ui.c 			\
 	io.c 				\
-	graphic_analysis.c 		\
 	log.c				\
 	plugin.c			\
 	plugin_list.c			\
@@ -27,7 +26,6 @@ heraia_SOURCES = 			\
 	include/ghex_heraia_interface.h	\
 	include/heraia_ui.h		\
 	include/io.h			\
-	include/graphic_analysis.h	\
 	include/log.h			\
 	include/plugin.h		\
 	include/types.h			\

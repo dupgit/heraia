@@ -32,7 +32,6 @@
 #include "heraia-errors.h"
 #include "heraia_ui.h"
 #include "io.h"
-#include "graphic_analysis.h"
 #include "data_interpretor.h"
 #include "plugin.h"
 

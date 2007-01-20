@@ -122,7 +122,7 @@ PKG_CHECK_MODULES(GTKHEX, [gtkhex >= $GTKHEX_VERSION])
 dnl **************************************************
 dnl * checking for libglade                          *
 dnl **************************************************
-PKG_CHECK_MODULES(LIBGLADE, [libglade-2.0 libgnomeui-2.0 >= $LIBGLADE_VERSION])
+PKG_CHECK_MODULES(LIBGLADE, [libglade-2.0 >= $LIBGLADE_VERSION])
 
 dnl **************************************************
 dnl * checking for gmodule                           *

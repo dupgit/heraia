@@ -37,7 +37,7 @@ extern void on_a_propos1_activate( GtkWidget *widget, gpointer data );
 extern void on_couper1_activate( GtkWidget *widget, gpointer data );
 extern void on_copier1_activate( GtkWidget *widget, gpointer data );
 extern void on_coller1_activate( GtkWidget *widget, gpointer data );
-extern void on_DIMenu_activate (GtkWidget *widget, gpointer data);
+extern void on_DIMenu_activate(GtkWidget *widget, gpointer data);
 extern gboolean delete_main_window_event( GtkWidget *widget, GdkEvent  *event, gpointer   data );
 
 extern gboolean delete_dt_window_event( GtkWidget *widget, GdkEvent  *event, gpointer data );

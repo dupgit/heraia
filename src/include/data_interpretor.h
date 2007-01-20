@@ -31,13 +31,13 @@ Naming :
   DI stands for Data_Interpretor
 */
 
-#define H_DI_MAX_ENTRY 32   /* Max characters in an entry box                      */
-#define H_DI_H_SPACE 2      /* Horizontal space between widgets                    */
-#define H_DI_V_SPACE 2      /* Vertical space between widgets                      */
-#define H_DI_BORDER_WIDTH 2 /* Object's border width in containers                 */
-#define H_DI_LINES 6        /* Number of lines in the DI window by default         */
-#define H_DI_COLUMNS 3      /* Same but for columns                                */
-#define H_DI_DISPLAYED TRUE /* By default the Data Interpretor Window is displayed */
+#define H_DI_MAX_ENTRY 32    /* Max characters in an entry box                          */
+#define H_DI_H_SPACE 2       /* Horizontal space between widgets                        */
+#define H_DI_V_SPACE 2       /* Vertical space between widgets                          */
+#define H_DI_BORDER_WIDTH 2  /* Object's border width in containers                     */
+#define H_DI_LINES 6         /* Number of lines in the DI window by default             */
+#define H_DI_COLUMNS 3       /* Same but for columns                                    */
+#define H_DI_DISPLAYED TRUE  /* By default the Data Interpretor Window is not displayed */
 
 
 /* defaults values to display the data_interpretor window */

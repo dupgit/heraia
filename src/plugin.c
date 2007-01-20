@@ -145,7 +145,7 @@ static heraia_plugin_t *get_plugin_init_symbol(heraia_window_t *main_window, her
 
 			if (get_symbol == FALSE)
 				{
-					log_message(main_window, G_LOG_LEVEL_WARNING, "Could not load the symbol heraia_plugin_init - %s", g_module_error());
+					log_message(main_window, G_LOG_LEVEL_WARNING, "%s", g_module_error());
 					free_plugin(plugin);
 					return NULL;
 				}

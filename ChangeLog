@@ -1,8 +1,10 @@
 20.01.2007
 	- Olivier Delhomme <heraia@delhomme.org>
-	* Corrected some mistakes about freeing thinks (trying some code in
+	* corrected some mistakes about freeing thinks (trying some code in
 	  some less tolerant system is good finaly !)
-
+	* changed the default display value for the data_interpretor window
+	* deleted the unnecessary code from graph_analysis.[ch] which will
+	  be transferred to the stat plugin
 
 17.01.2007
 	- Olivier Delhomme <heraia@delhomme.org>

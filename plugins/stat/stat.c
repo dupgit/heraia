@@ -34,15 +34,6 @@
 #include "heraia_ui.h"
 #include "ghex_heraia_interface.h"
 
-
-/* the plugin interface functions */
-
-void init(heraia_window_t *);      /* When the application initialy starts up */
-void quit(void);                   /* When the application exits */
-void run (GtkWidget *, gpointer);  /* To run anything everytime the plugin is called */
-void refresh(heraia_window_t *, void *); /* Called every refresh time (New file & cursor move) */
-heraia_plugin_t *heraia_plugin_init(heraia_plugin_t *);
-
 /* The functions for the plugin's usage */
 static void stat_window_connect_signals(heraia_plugin_t *plugin);
 static void statw_close_clicked(GtkWidget *widget, gpointer data);

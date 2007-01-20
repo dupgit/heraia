@@ -36,9 +36,6 @@
 #include "heraia_ui.h"
 #include "io.h"
 #include "data_interpretor.h"
-/* Remove this in the future (the init function should be called in a 
-   manner that it should'nt be necessary to include the header file somewhere */
-#include "graphic_analysis.h"
 #include "plugin.h"
 #include "plugin_list.h"
 
@@ -89,7 +86,6 @@ static heraia_window_t *heraia_init_main_struct(void)
 	herwin->filename = NULL;
 	herwin->current_doc = NULL;
 	herwin->current_DW = (data_window_t *) g_malloc0 (sizeof(*herwin->current_DW));
-	herwin->ga = NULL; 
 	herwin->plugins_list = NULL; 
 	herwin->location_list = NULL;
 	
@@ -129,7 +125,7 @@ static void init_heraia_location_list(heraia_window_t *main_window)
 	gchar *path = NULL;
 
 	/* A global path */
-	path = g_str_dup_printf("/usr/local/share/heraia");
+	path = g_strdup_printf("/usr/local/share/heraia");
 	main_window->location_list = g_list_append(main_window->location_list, path);
 
 	/* the user path */
@@ -212,6 +208,7 @@ int main (int argc, char ** argv)
 						{	
 							/* inits the data interpretor window */
 							data_interpret(main_window->current_DW);
+							
 
   							/* Connection of the signal to the right function
 							   in order to interpret things when the cursor is
@@ -223,11 +220,12 @@ int main (int argc, char ** argv)
 						   	init_heraia_interface(main_window);
 							
 							/* Do some init plugin calls here */
-							init_graph_analysis(main_window);
+							/* init_graph_analysis(main_window); */
 
 							/* Shows all widgets */
 							gtk_widget_show_all(glade_xml_get_widget(main_window->xml, "main_window"));
-					
+							g_signal_emit_by_name (glade_xml_get_widget(main_window->xml, "DIMenu"), "activate");
+
 							/* gtk main loop */
 							gtk_main();
 							exit_value = TRUE;
