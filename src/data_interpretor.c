@@ -102,9 +102,11 @@ static void interpret_unsigned_byte(data_window_t *DW)
 	text = (gchar *) g_malloc0 (H_DI_MAX_ENTRY*sizeof(gchar));
 	c = (guchar *) g_malloc0 (sizeof(guchar));
 	result = ghex_memcpy(gh, gtk_hex_get_cursor (gh), 1, FALSE, c);
+
 	if (result == TRUE)
 		{
 			result = decode_8bits_unsigned(c, text);
+ 
 			if (result == TRUE)
 				gtk_entry_set_text (GTK_ENTRY(DW->entry_unsigned_byte), text);
 			else
@@ -461,14 +463,14 @@ void refresh_data_window(GtkWidget *hexwidget, gpointer data)
 	data_window_t *DW = (data_window_t *) data;
 	PangoFontDescription *pfd;
 
-	if (DW->window_displayed == TRUE)
+	if (DW != NULL && DW->window_displayed == TRUE)
 		{
 			DI_print_offset(DW);
 
 			if (DW->window_font_name != NULL)
 				pfd = pango_font_description_from_string(DW->window_font_name);
 			else
-				pfd = NULL;
+				pfd = NULL;		
 
 			gtk_widget_modify_font(GTK_WIDGET(DW->label_unsigned), pfd);
 			gtk_widget_modify_font(GTK_WIDGET(DW->label_signed), pfd);
@@ -1075,6 +1077,7 @@ static void init_di_menu(data_window_t *DW)
 */
 void data_interpret(data_window_t *DW)
 {
+  
 	/* Default font name used to display things */
 	DW->window_font_name = (gchar *) 
 		g_malloc0 ((strlen(H_DI_FONT_FAMILY)+ strlen(H_DI_FONT_STYLE)+
@@ -1088,8 +1091,8 @@ void data_interpret(data_window_t *DW)
 	DW->window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
 	DW->window_vbox = gtk_vbox_new (FALSE, H_DI_V_SPACE);
+	
 	gtk_container_add (GTK_CONTAINER(DW->window), DW->window_vbox);
-
 
 	/* Init The DataInterpretor Menu */
   	init_di_menu(DW);
@@ -1098,16 +1101,15 @@ void data_interpret(data_window_t *DW)
 	DW->table_columns = H_DI_COLUMNS;
 	DW->window_table = gtk_table_new (DW->table_lines, DW->table_columns, TRUE);
 	gtk_container_add (GTK_CONTAINER(DW->window_vbox), DW->window_table);
-	
-	DW->window_statusbar = gtk_statusbar_new () ;
- 
-	gtk_box_pack_end(GTK_BOX(DW->window_vbox), DW->window_statusbar, FALSE, FALSE, 0);
 
+	DW->window_statusbar = gtk_statusbar_new () ;
+	gtk_box_pack_end(GTK_BOX(DW->window_vbox), DW->window_statusbar, FALSE, FALSE, 0);
 	display_statusbar(DW);
+
 	display_di_window(DW);
 
 	refresh_data_window(DW->current_hexwidget, DW);
-	
+ 
 	if (DW->window_displayed == TRUE)
 		gtk_widget_show_all(DW->window);
 	else 

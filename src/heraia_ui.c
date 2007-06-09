@@ -36,6 +36,7 @@
 #include "plugin.h"
 
 static gboolean load_heraia_glade_xml(heraia_window_t *main_window);
+static void heraia_ui_connect_signals(heraia_window_t *main_window);
 /* static gboolean load_the_glade_xml_if_it_exists(heraia_window_t *main_window, char *file_to_load);*/
 
 /* call back functions : for the main program */
@@ -112,7 +113,6 @@ void refresh_event_handler(GtkWidget *widget, gpointer data)
 			main_window->event = HERAIA_REFRESH_NOTHING;
 		}
 }
-
 
 /* This handles the menuitem "Ouvrir" to open a file */
 void on_ouvrir1_activate(GtkWidget *widget, gpointer data )
@@ -293,6 +293,7 @@ static gboolean load_the_glade_xml_if_it_exists(heraia_window_t *main_window, ch
 	return success;
 } */
 
+
 /* loads the glade xml file that describes the heraia project
    tries the following paths in that order :                 
    - /etc/heraia/heraia.glade
@@ -316,6 +317,45 @@ static gboolean load_heraia_glade_xml(heraia_window_t *main_window)
 }
 
 
+/**
+ *  Connect the signals at the interface 
+ */
+static void heraia_ui_connect_signals(heraia_window_t *main_window)
+{
+
+	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "DIMenu")), "activate", 
+					  G_CALLBACK (on_DIMenu_activate), main_window);
+
+	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "quitter1")), "activate", 
+					  G_CALLBACK (on_quitter1_activate), main_window);
+
+	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "nouveau1")), "activate",  
+					  G_CALLBACK (on_nouveau1_activate), main_window);
+
+	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "ouvrir1")), "activate",  
+					  G_CALLBACK (on_ouvrir1_activate), main_window);
+
+	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "enregistrer1")), "activate",  
+					  G_CALLBACK (on_enregistrer1_activate), main_window);
+
+	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "enregistrer_sous1")), "activate",  
+					  G_CALLBACK (on_enregistrer_sous1_activate), main_window); 
+			
+	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "a_propos1")), "activate",  
+					  G_CALLBACK (on_a_propos1_activate), main_window); 
+
+	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "main_window")), "delete_event", 
+					  G_CALLBACK (delete_main_window_event), NULL);
+
+	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "main_window")), "destroy", 
+					  G_CALLBACK (on_quitter1_activate), NULL);
+			
+}
+
+/**
+ *  Loads, if possible, the glade xml file and then connects the
+ *  signals and inits the log window
+ */
 int load_heraia_ui(heraia_window_t *main_window)
 {
 	gboolean success = FALSE;
@@ -325,35 +365,8 @@ int load_heraia_ui(heraia_window_t *main_window)
 
 	if (success == TRUE)
 		{
-			/* connect the signals in the interface */
+			heraia_ui_connect_signals(main_window);
 
-			g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "DIMenu")), "activate", 
-							  G_CALLBACK (on_DIMenu_activate), main_window);
-
-			g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "quitter1")), "activate", 
-							  G_CALLBACK (on_quitter1_activate), main_window);
-
-			g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "nouveau1")), "activate",  
-							  G_CALLBACK (on_nouveau1_activate), main_window);
-
-			g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "ouvrir1")), "activate",  
-							  G_CALLBACK (on_ouvrir1_activate), main_window);
-
-			g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "enregistrer1")), "activate",  
-							  G_CALLBACK (on_enregistrer1_activate), main_window);
-
-			g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "enregistrer_sous1")), "activate",  
-							  G_CALLBACK (on_enregistrer_sous1_activate), main_window); 
-			
-			g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "a_propos1")), "activate",  
-							  G_CALLBACK (on_a_propos1_activate), main_window); 
-
-			g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "main_window")), "delete_event", 
-									  G_CALLBACK (delete_main_window_event), NULL);
-
-			g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "main_window")), "destroy", 
-									  G_CALLBACK (on_quitter1_activate), NULL);
-			
 			/* The Log window */
 			log_window_init_interface(main_window);
 
@@ -361,6 +374,7 @@ int load_heraia_ui(heraia_window_t *main_window)
 
 	return success;
 }
+
 
 /**
  *  adds a text to a textview
@@ -382,6 +396,7 @@ void add_text_to_textview(GtkTextView *textview, const char *format, ...)
 	gtk_text_buffer_insert(tb, &iEnd, display, -1);
 	g_free(display);
 }
+
 
 /**
  *  Kills the text from a textview

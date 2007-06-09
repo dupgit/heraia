@@ -120,7 +120,7 @@ typedef struct
 typedef struct
 {
 	gboolean  debug;          /* Used to tell the program wether we want to display debug messages or not */
-	gchar *filename;          /* this could (should) be a list of filenames !!! */
+	gchar *filename;          /* this could (should) be a list of filenames !!!                           */
 
 	Heraia_Document *current_doc;
 	GladeXML *xml;

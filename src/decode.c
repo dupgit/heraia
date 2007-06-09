@@ -198,7 +198,8 @@ gint decode_filetime_date(guchar *data, date_and_time_t *mydate)
 		return FALSE;
 	else
 		{
-			bcopy (data, &total, 8 * sizeof (guchar));
+			/* bcopy (data, &total, 8 * sizeof (guchar)); */
+			memcpy(&total, data, 8 * sizeof (guchar));
 			
 			total = total / 10000000;
 			calc = total  /  86400 ;
@@ -233,8 +234,9 @@ gint decode_C_date(guchar *data, date_and_time_t *mydate)
 		return FALSE;
 	else
 		{
-			bcopy (data, &total, 4 * sizeof (guchar));
-		 		
+			/* bcopy (data, &total, 4 * sizeof (guchar)); */
+			memcpy(&total, data, 4 * sizeof (guchar));
+
 			days = total /  86400 ;
 
 			which_year_month_day (mydate, days, 1970);
@@ -263,7 +265,8 @@ gint decode_8bits_signed(guchar *data, gchar *result)
 		return FALSE;
 	else
 		{
-			bcopy (data, &total, sizeof (guchar));
+			/* bcopy (data, &total, sizeof (guchar)); */
+			memcpy(&total, data, sizeof (guchar));
 			sprintf(result, "%d", total);
 			return TRUE;
 		}
@@ -286,7 +289,8 @@ gint decode_8bits_unsigned(guchar *data, gchar *result)
 		return FALSE;
 	else
 		{
-			bcopy (data, &total, sizeof (guchar));
+			/* bcopy (data, &total, sizeof (guchar)); */
+			memcpy(&total, data, sizeof (guchar));
 			sprintf(result, "%u", total);
 			return TRUE;
 		}
@@ -309,7 +313,8 @@ gint decode_16bits_signed(guchar *data, gchar *result)
 		return FALSE;
 	else
 		{
-			bcopy (data, &total, 2 * sizeof (guchar));
+			/* bcopy (data, &total, 2 * sizeof (guchar)); */
+			memcpy(&total, data, 2 * sizeof (guchar));
 			sprintf(result, "%d", total);
 			return TRUE;
 		}
@@ -332,7 +337,8 @@ gint decode_16bits_unsigned(guchar *data, gchar *result)
 		return FALSE;
 	else
 		{
-			bcopy (data, &total, 2 * sizeof (guchar));
+			/* bcopy (data, &total, 2 * sizeof (guchar)); */
+			memcpy(&total, data, 2 * sizeof (guchar));
 			sprintf(result, "%u", total);
 			return TRUE;
 		}
@@ -355,7 +361,8 @@ gint decode_32bits_signed(guchar *data, gchar *result)
 		return FALSE;
 	else
 		{
-			bcopy (data, &total, 4 * sizeof (guchar));
+			/* bcopy (data, &total, 4 * sizeof (guchar)); */
+			memcpy(&total, data, 4 * sizeof (guchar));
 			sprintf(result, "%d", total);
 			return TRUE;
 		}
@@ -378,7 +385,8 @@ gint decode_32bits_unsigned(guchar *data, gchar *result)
 		return FALSE;
 	else
 		{
-			bcopy (data, &total, 4 * sizeof (guchar));
+			/* bcopy (data, &total, 4 * sizeof (guchar)); */
+			memcpy(&total, data, 4 * sizeof (guchar));
 			sprintf(result, "%u", total);
 			return TRUE;
 		}
@@ -400,7 +408,8 @@ gint decode_64bits_signed(guchar *data, gchar *result)
 		return FALSE;
 	else
 		{
-			bcopy (data, &total, 8 * sizeof (guchar));
+			/* bcopy (data, &total, 8 * sizeof (guchar)); */
+			memcpy(&total, data, 8 * sizeof (guchar));
 			sprintf(result, "%lld", total);
 			return TRUE;
 		}
@@ -423,7 +432,8 @@ gint decode_64bits_unsigned(guchar *data, gchar *result)
 		return FALSE;
 	else
 		{
-			bcopy (data, &total, 8 * sizeof (guchar));
+			/* bcopy (data, &total, 8 * sizeof (guchar)); */
+			memcpy(&total, data, 8 * sizeof (guchar));
 			sprintf(result, "%llu", total);
 			return TRUE;
 		}

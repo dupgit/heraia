@@ -201,7 +201,7 @@ int main (int argc, char ** argv)
 				{	
 					if (main_window->debug == TRUE)
 						log_message(main_window, G_LOG_LEVEL_INFO, "main interface loaded");
-
+					
 					init_heraia_plugin_system(main_window);
 
 					if (load_file_to_analyse(main_window, opt.filename) == TRUE)
@@ -209,7 +209,6 @@ int main (int argc, char ** argv)
 							/* inits the data interpretor window */
 							data_interpret(main_window->current_DW);
 							
-
   							/* Connection of the signal to the right function
 							   in order to interpret things when the cursor is
 							   moving                                          */

@@ -36,7 +36,7 @@
 static GladeXML *load_glade_xml_if_it_exists(char *file_to_load);
 
 
-gboolean load_file_to_analyse(heraia_window_t *main_window, char *filename)
+gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 {
 	struct stat *stat_buf = NULL;
 	gboolean success = FALSE;
@@ -66,6 +66,9 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, char *filename)
 						g_free(main_window->filename);
 					main_window->filename = g_strdup_printf("%s", filename);
 				}
+
+			if (main_window->debug == TRUE)
+				log_message(main_window, G_LOG_LEVEL_INFO, "file %s loaded !", main_window->filename);
 		} 
 	else
 		{
