@@ -1,14 +1,15 @@
 SUBDIRS = 
 
-DEFS = -I$(top_srcdir)/ -I$(srcdir)/include/	\
+DEFS = -I$(SRCDIR)/ -I$(SRCDIR)/include/	\
 	-DPLUGINS_DIR=\"$(plugins_dir)\"	\
 	-DDATA_DIR=\"$(data_dir)\" 		\
 	$(GTKHEX_CFLAGS) $(LIBGLADE_CFLAGS) 	\
-	$(GMODULE_CFLAGS)
+	$(GMODULE_CFLAGS) $(CFLAGS) 		\
+	$(GTK2_CFLAGS) $(GLIB2_CFLAGS)
 
 bin_PROGRAMS = heraia
-heraia_LDFLAGS = -export-dynamic
-heraia_LDADD = $(GTKHEX_LIBS) $(LIBGLADE_LIBS)
+heraia_LDFLAGS = -export-dynamic -no-undefined 
+heraia_LDADD = $(GTKHEX_LIBS) $(LIBGLADE_LIBS) $(GMODULES_LIBS) $(GLIB2_LIBS) $(GTK2_LIBS)
 
 heraia_SOURCES = 			\
 	heraia.c			\

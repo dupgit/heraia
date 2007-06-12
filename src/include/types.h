@@ -34,8 +34,6 @@
 #include <glade/glade.h>
 
 
-
-
 typedef HexDocument Heraia_Document;
 typedef GtkHex Heraia_Hex;
 typedef gint HERAIA_ERROR;

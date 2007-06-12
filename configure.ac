@@ -3,10 +3,17 @@ AC_PREREQ(2.59)
 AC_INIT([Heraia], [0.0.1],
         [Olivier Delhomme],
         [heraia])
-dnl Put the preprocessor macros in a header file instead of command line 
 AC_CONFIG_HEADER([config.h])
+AM_INIT_AUTOMAKE([$PACKAGE_TARNAME], [$PACKAGE_VERSION])
+
+dnl directory requirement
+TOP_SRCDIR=`pwd`
+SRCDIR="${TOP_SRCDIR}/src"
+AC_SUBST(TOP_SRCDIR)
+AC_SUBST(SRCDIR)
+
+dnl Put the preprocessor macros in a header file instead of command line 
 AC_CONFIG_SRCDIR([src/heraia.c])
-AM_INIT_AUTOMAKE
 
 dnl Libraries requirements
 GLIB2_VERSION=2.2.0
@@ -78,6 +85,7 @@ data_dir=$datadir/heraia
 
 AC_SUBST(plugins_dir)
 AC_SUBST(data_dir)
+
 dnl the line below does not work !!
 dnl AC_DEFINE_UNQUOTED(PLUGINS_DIR, "$plugins_dir", [Directory where the plugins are located])
 
@@ -148,10 +156,9 @@ case $build_os in
     *mingw*)
 	AC_DEFINE_UNQUOTED(SYS_MINGW, 1, [This is a Windows system using MinGW])
 	LDFLAGS="$LDFLAGS -no-undefined -Wl,--export-all-symbols"
-        CFLAGS="$CFLAGS -mms-bitfields -mwindows"
+        CFLAGS="$CFLAGS -mms-bitfields -mwindows -mno-cygwin"
         ;;
 esac
-
 
 AC_SUBST(LDFLAGS)
 AC_SUBST(CFLAGS)
@@ -161,18 +168,13 @@ AC_SUBST(LIBGLADE_CFLAGS)
 AC_SUBST(LIBGLADE_LIBS)
 AC_SUBST(GMODULE_CFLAGS)
 AC_SUBST(GMODULE_LIBS)
+AC_SUBST(GLIB2_CFLAGS)
+AC_SUBST(GLIB2_LIBS)
+AC_SUBST(GTK2_CFLAGS)
+AC_SUBST(GTK2_LIBS)
 
-AC_OUTPUT([
-
-Makefile 
-
-src/Makefile
-
-plugins/Makefile
-plugins/stat/Makefile
-
-])
-
+AC_CONFIG_FILES([Makefile src/Makefile plugins/Makefile plugins/stat/Makefile])
+AC_OUTPUT
 
 echo
 echo "*** Dumping configuration ***"

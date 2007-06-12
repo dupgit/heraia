@@ -49,7 +49,8 @@ gboolean plugin_capable(void)
 	return g_module_supported();
 }
 
-/*  Creates a new empty plugin 
+/**  
+ *  Creates a new empty plugin 
  *  it may be initialised by
  *  the plugin itself !
  */
@@ -192,7 +193,7 @@ static void load_one_plugin(heraia_window_t *main_window, const gchar *filename,
 	heraia_plugin_t *plugin = NULL;
 	gchar *ext = g_strdup_printf(".%s", G_MODULE_SUFFIX); /* system dependent suffix */
 
-	full_filename = g_strdup_printf("%s%c%s", PLUGINS_DIR, G_DIR_SEPARATOR, filename);
+	full_filename = g_build_filename(PLUGINS_DIR, filename, NULL);
 
 	/* Make sure we do load the module named .so, .dll or .sl depending on the OS type */
 	if ( (g_file_test(full_filename, G_FILE_TEST_IS_DIR) == FALSE) &&
@@ -286,8 +287,9 @@ heraia_plugin_t *find_plugin_by_name(GList *plugins_list, gchar *name)
 }
 
 
-/* loads the glade xml file that describes the plugin
-   tries the paths found in the location_list
+/** 
+ *  Loads the glade xml file that describes the plugin (.glade suffix)
+ *  tries the paths found in the location_list
  */
 gboolean load_plugin_glade_xml(heraia_window_t *main_window, heraia_plugin_t *plugin)
 {	

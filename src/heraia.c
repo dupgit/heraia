@@ -94,6 +94,11 @@ static heraia_window_t *heraia_init_main_struct(void)
 	return herwin;
 }
 
+/**
+ *  Function that initializes the plugin system if any :
+ *   - loads any plugin where expected to be found
+ *   - inits the plugin window
+ */
 static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window)
 {
 
@@ -118,27 +123,28 @@ static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window)
 /**
  *  Here we want to init the location list where we might look for
  *  in the future. These can be viewed as default paths
- *  possible optimisation : use g_list_prepend and reverse the order
+ *  Beware : prepended list in reverse order
  */
 static void init_heraia_location_list(heraia_window_t *main_window)
 {
 	gchar *path = NULL;
 
-	/* A global path */
-	path = g_strdup_printf("/usr/local/share/heraia");
-	main_window->location_list = g_list_append(main_window->location_list, path);
-
-	/* the user path */
-	path =  g_strdup_printf("/home/%s/.heraia", getenv("LOGNAME"));
-	main_window->location_list = g_list_append(main_window->location_list, path);
-
 	/* heraia's binary path */
-	path = g_strdup_printf("%s", getcwd(NULL, 0));
-	main_window->location_list = g_list_append(main_window->location_list, path);
+	path = g_strdup_printf("%s", g_get_current_dir());
+	main_window->location_list = g_list_prepend(main_window->location_list, path);
+	
+	/* the user path */
+	path =  g_strdup_printf("%s%c.%s", g_get_home_dir(), G_DIR_SEPARATOR, "heraia");
+	main_window->location_list = g_list_prepend(main_window->location_list, path);
 
+	/* A global path */
+	path = g_strdup_printf("%s%c%s", g_get_user_data_dir(), G_DIR_SEPARATOR, "heraia");
+	main_window->location_list = g_list_prepend(main_window->location_list, path);
 }
 
-
+/**
+ *  main program
+ */
 int main (int argc, char ** argv) 
 {  
 	Options opt; /* A structure to manage the command line options  */

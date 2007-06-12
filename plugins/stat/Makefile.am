@@ -1,14 +1,15 @@
 SUBDIRS = 
 
-DEFS = -I$(top_srcdir)/ -I$(top_srcdir)/src/include/	\
+DEFS = -I$(SRCDIR)/ -I$(SRCDIR)/include/		\
 	$(GTKHEX_CFLAGS) $(LIBGLADE_CFLAGS) 		\
-	$(GMODULE_CFLAGS)
+	$(GMODULE_CFLAGS) $(CFLAGS) $(GTK2_CFLAGS) 	\
+	$(GLIB2_CFLAGS)
 
 stat_la_SOURCES = 	\
 	stat.c		\
 	stat.h
 
-stat_la_LDFLAGS = -module
+stat_la_LDFLAGS = -no-undefined -module -export-dynamic
 statdir = $(plugins_dir)
 stat_LTLIBRARIES = stat.la
 
