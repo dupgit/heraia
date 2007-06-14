@@ -22,18 +22,7 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
 */
 
-#include <glade/glade.h>
-#include <glib/gprintf.h>
-#include <gtk/gtk.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-
 #include "types.h"
-#include "heraia-errors.h"
 
 /* ma fonction de log qui me permet d'afficher sur stdout et dans la fenêtre de log */
 static void my_log(heraia_window_t *main_window, gchar *log_domain, GLogLevelFlags log_level, const char *format, ...);

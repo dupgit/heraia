@@ -1,6 +1,6 @@
 SUBDIRS = 
 
-DEFS = -I$(SRCDIR)/ -I$(SRCDIR)/include/		\
+DEFS = -I$(SRCDIR) -I$(SRCDIR)/include			\
 	$(GTKHEX_CFLAGS) $(LIBGLADE_CFLAGS) 		\
 	$(GMODULE_CFLAGS) $(CFLAGS) $(GTK2_CFLAGS) 	\
 	$(GLIB2_CFLAGS)

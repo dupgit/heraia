@@ -1,6 +1,6 @@
 SUBDIRS = 
 
-DEFS = -I$(SRCDIR)/ -I$(SRCDIR)/include/	\
+DEFS = -I$(SRCDIR) -I$(SRCDIR)/include		\
 	-DPLUGINS_DIR=\"$(plugins_dir)\"	\
 	-DDATA_DIR=\"$(data_dir)\" 		\
 	$(GTKHEX_CFLAGS) $(LIBGLADE_CFLAGS) 	\

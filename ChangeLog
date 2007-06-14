@@ -1,3 +1,36 @@
+14.06.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* Still some changes to enable easy compilation under the
+	  mingw/msys environment under Windows.
+	  . modified nearly all files to put, in the file type.h all the 
+	    decalaratives part in order that the linker under windows may 
+	    not be confused (which is the case even if you specify hard 
+	    coded paths to the .o files!)
+	  . suppressed some trailing '/' to the end of SRCDIR and TOP_SRCDIR
+	    in order that the path is really included by the compiler (gcc)
+	    under windows (I do not know why there is such a difference with
+	    the linux environment which does not complain at all !!)
+
+12.06.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* Changes to prepare heraia to be compiled on windows :
+	  . added the -mno-cygwin flag to CFLAGS. So the executable is made
+	    standalone.
+	  . added SRCDIR and TOP_SRCDIR definition in configure.ac and
+	    replaced the old srcdir and top_srcdir by those variables
+	    in the Makefiles.am in order to take paths correctly under
+	    windows
+	  . modified the AC_OUTPUT command with a AC_CONFIG_FILE because
+	    it's smarter !
+	* heraia.c :
+	  . added and changed some comments 
+	  . changed the hardcoded paths with the glib equivalent functions
+	    in order that the software still works in an environment where
+	    paths can begin with C: or F: and so on ...
+	* plugin.c :
+	  . changed a g_strdup_printf in a g_build_filename in order that
+	    the filename is built correctly even if we are under windows !
+
 20.01.2007
 	- Olivier Delhomme <heraia@delhomme.org>
 	* corrected some mistakes about freeing thinks (trying some code in

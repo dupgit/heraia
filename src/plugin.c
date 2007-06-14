@@ -22,21 +22,7 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
  */
 
-#include <glade/glade.h>
-#include <gmodule.h>
-#include <glib/gprintf.h>
-#include <gtk/gtk.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-
 #include "types.h"
-#include "heraia-errors.h"
-#include "io.h"
-#include "plugin.h"
 
 static heraia_plugin_t *get_plugin_handle(heraia_window_t *main_window, heraia_plugin_t *plugin, 
 										  const gchar *full_filename, const gchar *filename);

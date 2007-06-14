@@ -22,9 +22,6 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
 
 #include "types.h"
-#include "heraia-errors.h"
-#include "ghex_heraia_interface.h"
-#include "decode.h"
 
 /* 
    kills the old document if it exists and add a new one, from the new filename

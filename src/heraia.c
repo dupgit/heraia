@@ -22,22 +22,7 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <getopt.h>
-
 #include "types.h"
-#include "heraia.h"
-#include "heraia-errors.h"
-#include "heraia_ui.h"
-#include "io.h"
-#include "data_interpretor.h"
-#include "plugin.h"
-#include "plugin_list.h"
 
 static void version(void);
 static int usage(int status);

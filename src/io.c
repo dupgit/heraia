@@ -21,17 +21,7 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
 
-#include <glib.h>
-#include <gtk/gtk.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-
 #include "types.h"
-#include "ghex_heraia_interface.h"
-#include "io.h"
 
 static GladeXML *load_glade_xml_if_it_exists(char *file_to_load);
 

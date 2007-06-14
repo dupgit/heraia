@@ -21,22 +21,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
  */
-#include <glade/glade.h>
-#include <gmodule.h>
-#include <glib/gprintf.h>
-#include <gtk/gtk.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
 
 #include "types.h"
-#include "heraia-errors.h"
-#include "plugin.h"
-#include "plugin_list.h"
-#include "heraia_ui.h"
 
 static gboolean delete_plw_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data);
 static void destroy_plw_window(GtkWidget *widget, GdkEvent  *event, gpointer data);

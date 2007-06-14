@@ -29,9 +29,28 @@
    #include "config.h"
 #endif /* HAVE_CONFIG_H */
 
+
+/** As there seems to be huge differences between the linux
+ *  and the windows developpement platform such as that
+ *  the included paths are correcty taken into account
+ *  under linux (and thus nobody bothers) but not under
+ *  windows, I decide to put all the .h definitions here
+ *  even if it's ugly, this is supposed to solve the problem.
+ */
+
+#include <getopt.h>
+#include <glib.h>
+#include <glib/gprintf.h>
+#include <gmodule.h>
 #include <gtk/gtk.h>
 #include <gtkhex/gtkhex.h>
 #include <glade/glade.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 
 typedef HexDocument Heraia_Document;
@@ -144,6 +163,15 @@ typedef struct
 
 } date_and_time_t;
 
+#include "data_interpretor.h"
+#include "decode.h"
+#include "ghex_heraia_interface.h"
+#include "heraia.h"
+#include "heraia_ui.h"
+#include "heraia-errors.h"
+#include "io.h"
 #include "log.h"
+#include "plugin.h"
+#include "plugin_list.h"
 
 #endif /* _HERAIA_TYPES_H_ */
