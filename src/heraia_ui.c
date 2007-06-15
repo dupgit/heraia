@@ -62,6 +62,32 @@ void on_a_propos1_activate( GtkWidget *widget, gpointer data )
 	gtk_widget_show(glade_xml_get_widget(main_window->xml, "about_dialog"));
 }
 
+/**
+ *  To close the A propos dialog box (with the "close" button)
+ */
+static void a_propos_response(GtkWidget *widget, gint response, gpointer data)
+{
+	heraia_window_t *main_window = (heraia_window_t *) data;
+ 	
+	gtk_widget_hide(glade_xml_get_widget(main_window->xml, "about_dialog"));
+}
+
+static void a_propos_close(GtkWidget *widget, gpointer data)
+{
+	heraia_window_t *main_window = (heraia_window_t *) data;
+	
+	gtk_widget_hide(glade_xml_get_widget(main_window->xml, "about_dialog"));
+}
+
+static gboolean a_propos_delete(GtkWidget *widget, GdkEvent  *event, gpointer data)
+{
+	heraia_window_t *main_window = (heraia_window_t *) data;
+ 	
+	gtk_widget_hide(glade_xml_get_widget(main_window->xml, "about_dialog"));
+ 	
+	return TRUE;
+}
+
 void on_couper1_activate( GtkWidget *widget, gpointer data )
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
@@ -83,6 +109,7 @@ void on_coller1_activate( GtkWidget *widget, gpointer data )
 	log_message(main_window, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
 }
 
+
 /** This function is here to ensure that everything will be
  *  refreshed upon a signal event.
  */
@@ -102,6 +129,7 @@ void refresh_event_handler(GtkWidget *widget, gpointer data)
 			main_window->event = HERAIA_REFRESH_NOTHING;
 		}
 }
+
 
 /* This handles the menuitem "Ouvrir" to open a file */
 void on_ouvrir1_activate(GtkWidget *widget, gpointer data )
@@ -329,9 +357,16 @@ static void heraia_ui_connect_signals(heraia_window_t *main_window)
 
 	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "enregistrer_sous1")), "activate",  
 					  G_CALLBACK (on_enregistrer_sous1_activate), main_window); 
-			
+		
+	/* about dialog box */		
 	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "a_propos1")), "activate",  
 					  G_CALLBACK (on_a_propos1_activate), main_window); 
+	g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "about_dialog")), "close",
+					 G_CALLBACK(a_propos_close), main_window);
+	g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "about_dialog")), "response",
+					 G_CALLBACK(a_propos_response), main_window);
+	g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "about_dialog")), "delete-event",
+					 G_CALLBACK(a_propos_delete), main_window);
 
 	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "main_window")), "delete_event", 
 					  G_CALLBACK (delete_main_window_event), NULL);

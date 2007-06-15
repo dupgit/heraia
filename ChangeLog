@@ -1,3 +1,10 @@
+15.06.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* heraia_ui.c :
+	  . added some code in order that the about dialog box can close
+	    correctly under windows (that is to say by pressing the "close"
+	    button!)
+
 14.06.2007
 	- Olivier Delhomme <heraia@delhomme.org>
 	* Still some changes to enable easy compilation under the
