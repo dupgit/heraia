@@ -22,26 +22,26 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
 */
 
-#include <glib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <time.h>
-#include <unistd.h>
-
 #include "types.h"
-#include "plugin.h"
 #include "stat.h"
-#include "heraia_ui.h"
-#include "ghex_heraia_interface.h"
 
 /* The functions for the plugin's usage */
 static void stat_window_connect_signals(heraia_plugin_t *plugin);
 static void statw_close_clicked(GtkWidget *widget, gpointer data);
 static void destroy_stat_window(GtkWidget *widget, GdkEvent  *event, gpointer data);
+static void histo_radiobutton_toggled(GtkWidget *widget, gpointer data);
 static gboolean delete_stat_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data );
 static void realize_some_numerical_stat(heraia_window_t *main_struct, heraia_plugin_t *plugin);
 static void init_stats_histos(heraia_plugin_t *plugin);
 static void populate_stats_histos(heraia_window_t *main_struct, heraia_plugin_t *plugin);
+static guint max_histo_1D(stat_t *extra);
+static guint max_histo_2D(stat_t *extra);
+static guint init_stats_pixbufs(stat_t *extra);
+static void make_pixbufs_from_histos(stat_t *extra);
+static void plot_in_pixbuf(GdkPixbuf *pixbuf, gint64 x, gint64 y, guchar red, guchar green, guchar blue, guchar alpha);
+static void do_pixbuf_1D_from_histo1D(stat_t *extra, guint max_1D);
+static void do_pixbuf_2D_from_histo2D(stat_t *extra, guint max_2D);
+
 
 /**
  *  Initialisation plugin called when the plugin is loaded (some sort of pre-init)
@@ -197,6 +197,25 @@ static void statw_close_clicked(GtkWidget *widget, gpointer data)
 		}
 }
 
+/* What to do when the user chooses a 1D or 2D histo */
+static void histo_radiobutton_toggled(GtkWidget *widget, gpointer data)
+{
+	heraia_plugin_t *plugin = (heraia_plugin_t *) data;
+	
+	if (plugin != NULL)
+		{
+			GtkImage *image = GTK_IMAGE(glade_xml_get_widget(plugin->xml, "histo_image"));
+			stat_t *extra = (stat_t *) plugin->extra;
+
+			if (gtk_toggle_button_get_active(glade_xml_get_widget(plugin->xml, "rb_1D")) == TRUE)
+				gtk_image_set_from_pixbuf(image, extra->pixbuf_1D);
+			else
+				if (gtk_toggle_button_get_active(glade_xml_get_widget(plugin->xml, "rb_2D")) == TRUE)
+					gtk_image_set_from_pixbuf(image, extra->pixbuf_2D);
+		}
+}
+
+
 /**
  *  Connects all the signals to the correct functions
  */
@@ -211,9 +230,17 @@ static void stat_window_connect_signals(heraia_plugin_t *plugin)
 	/* Close Button */
 	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "statw_close_b")), "clicked", 
 					 G_CALLBACK(statw_close_clicked), plugin);
+	
+	/* RadioButton */
+	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "rb_1D")), "toggled", 
+					 G_CALLBACK(histo_radiobutton_toggled), plugin);
+
+	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "rb_2D")), "toggled", 
+					 G_CALLBACK(histo_radiobutton_toggled), plugin);
 
 	/* the toogle button is already connected to the run_proc function ! */
 }
+
 
 /**
  *  Do some stats on the selected file (entire file is used)
@@ -265,6 +292,7 @@ static void realize_some_numerical_stat(heraia_window_t *main_struct, heraia_plu
 		}
 }
 
+
 /**
  *  Inits the histograms
  */
@@ -274,6 +302,7 @@ static void init_stats_histos(heraia_plugin_t *plugin)
 	guint j = 0;
 	stat_t *extra = NULL;
 
+	/* inits the structures */
 	extra = (stat_t *) plugin->extra;
 	for (i=0; i<=255; i++)
 		{
@@ -281,8 +310,10 @@ static void init_stats_histos(heraia_plugin_t *plugin)
 			for (j=0; j<=255; j++)
 				extra->histo2D[i][j] = 0 ;
 		}
-
 }
+
+
+
 
 /**
  *  Populates the histograms
@@ -293,10 +324,12 @@ static void populate_stats_histos(heraia_window_t *main_struct, heraia_plugin_t 
 	guint64 i = 0;
 	guint64 taille = ghex_file_size(gh);
 	guchar c1, c2;
-	stat_t *extra = NULL;
+	stat_t *extra = (stat_t *) plugin->extra;
+	GtkImage *image = GTK_IMAGE(glade_xml_get_widget(plugin->xml, "histo_image"));
+	GtkToggleButton *rb_1D = GTK_TOGGLE_BUTTON(glade_xml_get_widget(plugin->xml, "rb_1D"));
+	GtkToggleButton *rb_2D = GTK_TOGGLE_BUTTON(glade_xml_get_widget(plugin->xml, "rb_2D"));
 
 	init_stats_histos(plugin);
-	extra = (stat_t *) plugin->extra;
 
 	while (i < taille)
 		{
@@ -310,5 +343,164 @@ static void populate_stats_histos(heraia_window_t *main_struct, heraia_plugin_t 
 					extra->histo2D[c1][c2]++;
 				}
 			i++;
+		}
+
+	make_pixbufs_from_histos(extra);
+
+	if (gtk_toggle_button_get_active(rb_1D) == TRUE)
+		gtk_image_set_from_pixbuf(image, extra->pixbuf_1D);
+	else
+		if (gtk_toggle_button_get_active(rb_2D) == TRUE)
+			gtk_image_set_from_pixbuf(image, extra->pixbuf_2D);
+}
+
+
+/**
+ *  Seeks the histo2D struct to find the maximum value
+ */
+static guint max_histo_2D(stat_t *extra)
+{
+	guint i = 0;
+	guint j = 0;
+	guint max = 0;
+
+	for (i=0; i<=255; i++)
+		{
+			for (j=0; j<=255; j++)
+				{
+					if (extra->histo2D[i][j] > max)
+						max = extra->histo2D[i][j];
+				}
+		}
+
+	return max;
+}
+
+
+/**
+ *  Seeks the histo1D struct to find the maximum value
+ */
+static guint max_histo_1D(stat_t *extra)
+{
+	guint i = 0;
+	guint max = 0;
+
+	for (i=0; i<=255; i++)
+		{
+			if (extra->histo1D[i] > max)
+				max = extra->histo1D[i];
+		}
+
+	return max;
+}
+
+
+/**
+ *  Inits the image buffers
+ */
+static guint init_stats_pixbufs(stat_t *extra)
+{
+	guint max_1D = 0;
+		
+	max_1D = max_histo_1D(extra);
+
+	extra->pixbuf_1D = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8, 255, (gint) max_1D);
+	gdk_pixbuf_fill(extra->pixbuf_1D, 0xFFFFFF00);
+	gdk_pixbuf_add_alpha(extra->pixbuf_1D, TRUE, (guchar) 255, (guchar) 255, (guchar) 255);
+
+	extra->pixbuf_2D = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8, 255, 255);
+	gdk_pixbuf_fill(extra->pixbuf_2D, 0xFFFFFF00);
+	gdk_pixbuf_add_alpha(extra->pixbuf_2D, TRUE, (guchar) 255, (guchar) 255, (guchar) 255);
+
+	return max_1D;
+}
+
+
+/**
+ *  Makes the pixbufs from the histograms values
+ */
+static void make_pixbufs_from_histos(stat_t *extra)
+{
+	guint max_1D = 0;
+	guint max_2D = 0;
+
+	max_1D = init_stats_pixbufs(extra);
+	max_2D = max_histo_2D(extra);
+	do_pixbuf_1D_from_histo1D(extra, max_1D);
+	do_pixbuf_2D_from_histo2D(extra, max_2D);
+}
+
+
+/**
+ *  Prints a pixel in the corresponding pixbuf
+ */
+static void plot_in_pixbuf(GdkPixbuf *pixbuf, gint64 x, gint64 y, guchar red, guchar green, guchar blue, guchar alpha)
+{
+  guchar *pixels = NULL;
+  guchar *p = NULL;
+
+  pixels = gdk_pixbuf_get_pixels(pixbuf);
+
+  p = pixels + y * gdk_pixbuf_get_rowstride(pixbuf) + x * gdk_pixbuf_get_n_channels(pixbuf);
+
+  p[0] = red;
+  p[1] = green;
+  p[2] = blue;
+  p[3] = alpha;
+
+}
+
+/**
+ *  Fills the pixbuf with the corresponding data from the
+ *  histo1D struct
+ */
+static void do_pixbuf_1D_from_histo1D(stat_t *extra, guint max_1D)
+{
+	guint i = 0;
+
+	for (i=0; i<=255; i++)
+		{
+			plot_in_pixbuf(extra->pixbuf_1D, i, max_1D - extra->histo1D[i], (guchar) 255, (guchar) 0, (guchar) 0, (guchar) 255);
+		}
+}
+
+
+/**
+ *  Fills the pixbuf with the corresponding data from the
+ *  histo2D struct
+ */
+static void do_pixbuf_2D_from_histo2D(stat_t *extra, guint max_2D)
+{
+	guint i = 0;
+	guint j = 0;
+	guchar red;
+	guchar green;
+	guchar blue;
+
+	/* A sort of color 'normalization' */
+	gdouble correction = (gdouble)255/(gdouble)max_2D ;
+
+	for (i=0; i<=255; i++)
+		{
+			for (j=0; j<=255; j++)
+				{
+					if (extra->histo2D[i][j] > 255)
+						red = (guchar) 255;
+					else
+						red = (guchar) extra->histo2D[i][j] * correction;
+
+					if (extra->histo2D[i][j] > 65025)
+						green = (guchar) 255;
+					else
+						green = extra->histo2D[i][j] / 255 * correction;
+
+					if (extra->histo2D[i][j] > 16581375)
+						blue = (guchar) 255;
+					else
+						blue = extra->histo2D[i][j] / 65025 * correction;
+				
+					plot_in_pixbuf(extra->pixbuf_2D, i, 255-j, red, green, blue, (guchar) 0);
+
+				}
 		}
 }

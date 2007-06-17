@@ -39,8 +39,10 @@
 
 typedef struct 
 {
-  guint64 histo1D[256];
-  guint64 histo2D[256][256];
+	guint64 histo1D[256];
+	guint64 histo2D[256][256];
+	GdkPixbuf *pixbuf_1D;
+	GdkPixbuf *pixbuf_2D;
 } stat_t;
 
 /* the plugin interface functions */
