@@ -1,3 +1,23 @@
+18.06.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* renamed the following files (some stupid system are unable to
+	  compile heraia otherwise) :
+	  . io.c -> heraia_io.c
+	  . io.h -> heraia_io.h
+	  . types.h -> heraia_types.h
+	  . heraia-errors.h -> heraia_errors.h
+	  . changed Makefile.am and relevant .c files to reflect this.
+
+
+17.06.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* stat.[ch] :
+	  . added the histogram 1D and 2D visualisation (generating an image)
+	    with a GdkPixbuf (Still doesn't work)
+	  . killed the #include directives (now all is included in types.h)
+	* types.h :
+	  . killed an unecessary commented out line (graph analysis)
+
 15.06.2007
 	- Olivier Delhomme <heraia@delhomme.org>
 	* heraia_ui.c :

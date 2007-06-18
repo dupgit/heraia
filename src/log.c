@@ -22,7 +22,7 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
 */
 
-#include "types.h"
+#include "heraia_types.h"
 
 /* ma fonction de log qui me permet d'afficher sur stdout et dans la fenêtre de log */
 static void my_log(heraia_window_t *main_window, gchar *log_domain, GLogLevelFlags log_level, const char *format, ...);

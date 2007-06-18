@@ -22,7 +22,7 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
 */
 
-#include "types.h"
+#include "heraia_types.h"
 
 static gboolean load_heraia_glade_xml(heraia_window_t *main_window);
 static void heraia_ui_connect_signals(heraia_window_t *main_window);

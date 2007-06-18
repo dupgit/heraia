@@ -16,8 +16,8 @@ heraia_SOURCES = 			\
 	data_interpretor.c 		\
 	decode.c 			\
 	ghex_heraia_interface.c		\
+	heraia_io.c 			\
 	heraia_ui.c 			\
-	io.c 				\
 	log.c				\
 	plugin.c			\
 	plugin_list.c			\
@@ -25,12 +25,12 @@ heraia_SOURCES = 			\
 	include/data_interpretor.h 	\
 	include/decode.h		\
 	include/ghex_heraia_interface.h	\
+	include/heraia_errors.h		\
+	include/heraia_io.h		\
+	include/heraia_types.h		\
 	include/heraia_ui.h		\
-	include/io.h			\
 	include/log.h			\
 	include/plugin.h		\
-	include/types.h			\
-	include/heraia-errors.h		\
 	include/plugin_list.h		
 
 

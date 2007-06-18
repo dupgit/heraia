@@ -21,7 +21,7 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
 
-#include "types.h"
+#include "heraia_types.h"
 
 /* 
    kills the old document if it exists and add a new one, from the new filename

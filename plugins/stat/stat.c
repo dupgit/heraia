@@ -22,7 +22,7 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
 */
 
-#include "types.h"
+#include "heraia_types.h"
 #include "stat.h"
 
 /* The functions for the plugin's usage */

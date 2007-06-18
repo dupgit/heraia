@@ -22,7 +22,7 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
 */
 
-#include "types.h"
+#include "heraia_types.h"
 
 static gboolean bissextile_year (guint32 year);
 static void calc_which_month_day ( date_and_time_t *mydate, guint32 day, guint tab_ns_months[12]);
