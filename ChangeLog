@@ -1,3 +1,14 @@
+19.06.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* plugins/stat/stat.c
+	  . normalized the 1D histo (with fancy colors)
+	  . added 2D histo visualization (still to be improved)
+	* heraia.c
+	  . added system_config_dirs in the location list and
+	    modified its order.
+	* heraia_io.c
+	  . changed a g_strdup_printf into a more portable g_build_filename
+
 18.06.2007
 	- Olivier Delhomme <heraia@delhomme.org>
 	* renamed the following files (some stupid system are unable to

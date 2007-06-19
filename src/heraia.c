@@ -108,23 +108,52 @@ static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window)
 /**
  *  Here we want to init the location list where we might look for
  *  in the future. These can be viewed as default paths
- *  Beware : prepended list in reverse order
+ *  Beware : prepended list in reverse order.
  */
 static void init_heraia_location_list(heraia_window_t *main_window)
 {
 	gchar *path = NULL;
+	const gchar* const  *system_data_dirs;
+	guint i = 0;
 
 	/* heraia's binary path */
 	path = g_strdup_printf("%s", g_get_current_dir());
 	main_window->location_list = g_list_prepend(main_window->location_list, path);
 	
+	/* System data dirs */
+	system_data_dirs = g_get_system_data_dirs();
+	i = 0;
+	while(system_data_dirs[i] != NULL)
+		{
+			path = g_strdup_printf("%s%c%s", system_data_dirs[i], G_DIR_SEPARATOR, "heraia");
+			main_window->location_list = g_list_prepend(main_window->location_list, path);
+			i++;
+		}
+
+	/* System config dirs */
+	system_data_dirs = g_get_system_config_dirs();
+	i = 0;
+	while(system_data_dirs[i] != NULL)
+		{
+			path = g_strdup_printf("%s%c%s", system_data_dirs[i], G_DIR_SEPARATOR, "heraia");
+			main_window->location_list = g_list_prepend(main_window->location_list, path);
+			i++;
+		}
+
 	/* the user path */
 	path =  g_strdup_printf("%s%c.%s", g_get_home_dir(), G_DIR_SEPARATOR, "heraia");
 	main_window->location_list = g_list_prepend(main_window->location_list, path);
 
-	/* A global path */
+	/* A global user data path */
 	path = g_strdup_printf("%s%c%s", g_get_user_data_dir(), G_DIR_SEPARATOR, "heraia");
 	main_window->location_list = g_list_prepend(main_window->location_list, path);
+
+	/* A global config data path */
+	path = g_strdup_printf("%s%c%s", g_get_user_config_dir(), G_DIR_SEPARATOR, "heraia");
+	main_window->location_list = g_list_prepend(main_window->location_list, path);
+
+	
+
 }
 
 /**

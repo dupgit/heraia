@@ -110,7 +110,7 @@ GladeXML *load_glade_xml_file(GList *location_list, gchar *filename)
 
 	while (list != NULL && xml == NULL)
 		{
-			file_to_load =  g_strdup_printf("%s%c%s",(gchar *) list->data, G_DIR_SEPARATOR, filename);
+			file_to_load =  g_build_filename((gchar *) list->data, filename, NULL);
 
 			xml = load_glade_xml_if_it_exists(file_to_load);
 

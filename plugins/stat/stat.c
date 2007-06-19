@@ -36,7 +36,7 @@ static void init_stats_histos(heraia_plugin_t *plugin);
 static void populate_stats_histos(heraia_window_t *main_struct, heraia_plugin_t *plugin);
 static guint max_histo_1D(stat_t *extra);
 static guint max_histo_2D(stat_t *extra);
-static guint init_stats_pixbufs(stat_t *extra);
+static void init_stats_pixbufs(stat_t *extra);
 static void make_pixbufs_from_histos(stat_t *extra);
 static void plot_in_pixbuf(GdkPixbuf *pixbuf, gint64 x, gint64 y, guchar red, guchar green, guchar blue, guchar alpha);
 static void do_pixbuf_1D_from_histo1D(stat_t *extra, guint max_1D);
@@ -207,11 +207,13 @@ static void histo_radiobutton_toggled(GtkWidget *widget, gpointer data)
 			GtkImage *image = GTK_IMAGE(glade_xml_get_widget(plugin->xml, "histo_image"));
 			stat_t *extra = (stat_t *) plugin->extra;
 
-			if (gtk_toggle_button_get_active(glade_xml_get_widget(plugin->xml, "rb_1D")) == TRUE)
+			if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(glade_xml_get_widget(plugin->xml, "rb_1D"))) == TRUE)
 				gtk_image_set_from_pixbuf(image, extra->pixbuf_1D);
 			else
-				if (gtk_toggle_button_get_active(glade_xml_get_widget(plugin->xml, "rb_2D")) == TRUE)
-					gtk_image_set_from_pixbuf(image, extra->pixbuf_2D);
+				{
+					if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(glade_xml_get_widget(plugin->xml, "rb_2D"))) == TRUE)
+						gtk_image_set_from_pixbuf(image, extra->pixbuf_2D);
+				}
 		}
 }
 
@@ -221,6 +223,7 @@ static void histo_radiobutton_toggled(GtkWidget *widget, gpointer data)
  */
 static void stat_window_connect_signals(heraia_plugin_t *plugin)
 {
+
 	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "stat_window")), "delete_event", 
 					 G_CALLBACK(delete_stat_window_event), plugin);
 
@@ -356,6 +359,24 @@ static void populate_stats_histos(heraia_window_t *main_struct, heraia_plugin_t 
 
 
 /**
+ *  Seeks the histo1D struct to find the maximum value
+ */
+static guint max_histo_1D(stat_t *extra)
+{
+	guint i = 0;
+	guint max = 0;
+
+	for (i=0; i<=255; i++)
+		{
+			if (extra->histo1D[i] > max)
+				max = extra->histo1D[i];
+		}
+
+	return max;
+}
+
+
+/**
  *  Seeks the histo2D struct to find the maximum value
  */
 static guint max_histo_2D(stat_t *extra)
@@ -378,33 +399,12 @@ static guint max_histo_2D(stat_t *extra)
 
 
 /**
- *  Seeks the histo1D struct to find the maximum value
- */
-static guint max_histo_1D(stat_t *extra)
-{
-	guint i = 0;
-	guint max = 0;
-
-	for (i=0; i<=255; i++)
-		{
-			if (extra->histo1D[i] > max)
-				max = extra->histo1D[i];
-		}
-
-	return max;
-}
-
-
-/**
  *  Inits the image buffers
  */
-static guint init_stats_pixbufs(stat_t *extra)
+static void init_stats_pixbufs(stat_t *extra)
 {
-	guint max_1D = 0;
-		
-	max_1D = max_histo_1D(extra);
-
-	extra->pixbuf_1D = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8, 255, (gint) max_1D);
+ 
+	extra->pixbuf_1D = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8, 255, 255);
 	gdk_pixbuf_fill(extra->pixbuf_1D, 0xFFFFFF00);
 	gdk_pixbuf_add_alpha(extra->pixbuf_1D, TRUE, (guchar) 255, (guchar) 255, (guchar) 255);
 
@@ -412,7 +412,6 @@ static guint init_stats_pixbufs(stat_t *extra)
 	gdk_pixbuf_fill(extra->pixbuf_2D, 0xFFFFFF00);
 	gdk_pixbuf_add_alpha(extra->pixbuf_2D, TRUE, (guchar) 255, (guchar) 255, (guchar) 255);
 
-	return max_1D;
 }
 
 
@@ -424,10 +423,16 @@ static void make_pixbufs_from_histos(stat_t *extra)
 	guint max_1D = 0;
 	guint max_2D = 0;
 
-	max_1D = init_stats_pixbufs(extra);
+	init_stats_pixbufs(extra);
+	max_1D = max_histo_1D(extra);
 	max_2D = max_histo_2D(extra);
-	do_pixbuf_1D_from_histo1D(extra, max_1D);
-	do_pixbuf_2D_from_histo2D(extra, max_2D);
+
+	fprintf(stdout, "%d %d\n", max_1D, max_2D);
+
+	if (max_1D > 0)
+		do_pixbuf_1D_from_histo1D(extra, max_1D);
+	if (max_2D > 0)
+		do_pixbuf_2D_from_histo2D(extra, max_2D);
 }
 
 
@@ -450,6 +455,41 @@ static void plot_in_pixbuf(GdkPixbuf *pixbuf, gint64 x, gint64 y, guchar red, gu
 
 }
 
+
+/**
+ *  Prints a line of pixels in the corresponding pixbuf (1D histo)
+ */
+static void line_in_pixbuf(GdkPixbuf *pixbuf, gint64 x, gint64 y, gint64 max)
+{
+	guchar *pixels = NULL;
+	guchar *p = NULL;
+
+	/* normalisation (here we know that max != 0 (cf make_pixbufs_from_histos) */
+	gdouble y_norm = (gdouble) (y*255) / (gdouble)(max);
+	
+	y = (gint64) y_norm;
+
+	if (pixbuf != NULL)
+		{
+
+			gint rowstride = gdk_pixbuf_get_rowstride(pixbuf);
+			gint n_channels = gdk_pixbuf_get_n_channels(pixbuf);
+			
+			pixels = gdk_pixbuf_get_pixels(pixbuf);
+	
+			while (y<255)
+				{
+					p = pixels + y * rowstride + x * n_channels;
+					p[0] = (guchar) 255-(y/2);
+					p[1] = (guchar) 16;
+					p[2] = (guchar) y/2;
+					p[3] = (guchar) 255;
+					y++;
+				}
+		}
+}
+
+
 /**
  *  Fills the pixbuf with the corresponding data from the
  *  histo1D struct
@@ -460,7 +500,7 @@ static void do_pixbuf_1D_from_histo1D(stat_t *extra, guint max_1D)
 
 	for (i=0; i<=255; i++)
 		{
-			plot_in_pixbuf(extra->pixbuf_1D, i, max_1D - extra->histo1D[i], (guchar) 255, (guchar) 0, (guchar) 0, (guchar) 255);
+			line_in_pixbuf(extra->pixbuf_1D, i, max_1D - extra->histo1D[i], max_1D);
 		}
 }
 
@@ -468,6 +508,8 @@ static void do_pixbuf_1D_from_histo1D(stat_t *extra, guint max_1D)
 /**
  *  Fills the pixbuf with the corresponding data from the
  *  histo2D struct
+ *  It is really hard to make something very visible (to make colors
+ *  look really different between to height values)
  */
 static void do_pixbuf_2D_from_histo2D(stat_t *extra, guint max_2D)
 {
@@ -478,29 +520,20 @@ static void do_pixbuf_2D_from_histo2D(stat_t *extra, guint max_2D)
 	guchar blue;
 
 	/* A sort of color 'normalization' */
-	gdouble correction = (gdouble)255/(gdouble)max_2D ;
-
+	
 	for (i=0; i<=255; i++)
 		{
 			for (j=0; j<=255; j++)
 				{
-					if (extra->histo2D[i][j] > 255)
-						red = (guchar) 255;
-					else
-						red = (guchar) extra->histo2D[i][j] * correction;
-
-					if (extra->histo2D[i][j] > 65025)
-						green = (guchar) 255;
-					else
-						green = extra->histo2D[i][j] / 255 * correction;
-
-					if (extra->histo2D[i][j] > 16581375)
-						blue = (guchar) 255;
-					else
-						blue = extra->histo2D[i][j] / 65025 * correction;
+					gdouble height = (gdouble) (extra->histo2D[i][j]*255) / (gdouble) max_2D ;
+					if (height >0)
+						{
+							red = (guchar)  height;
+							green = (guchar) height/2;
+							blue = (guchar) 255 - (height);
 				
-					plot_in_pixbuf(extra->pixbuf_2D, i, 255-j, red, green, blue, (guchar) 0);
-
+							plot_in_pixbuf(extra->pixbuf_2D, i, 255-j, red, green, blue, (guchar) 255);
+						}
 				}
 		}
 }

@@ -4,8 +4,8 @@
 <glade-interface>
 
 <widget class="GtkWindow" id="stat_window">
-  <property name="width_request">400</property>
-  <property name="height_request">200</property>
+  <property name="width_request">360</property>
+  <property name="height_request">360</property>
   <property name="visible">True</property>
   <property name="title" translatable="yes">Stats</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
@@ -111,6 +111,7 @@
 
 		  <child>
 		    <widget class="GtkRadioButton" id="rb_1D">
+		      <property name="width_request">50</property>
 		      <property name="visible">True</property>
 		      <property name="can_focus">True</property>
 		      <property name="label" translatable="yes">1D</property>
@@ -188,8 +189,8 @@
 			      <child>
 				<widget class="GtkImage" id="histo_image">
 				  <property name="visible">True</property>
-				  <property name="xalign">0</property>
-				  <property name="yalign">0</property>
+				  <property name="xalign">0.5</property>
+				  <property name="yalign">0.5</property>
 				  <property name="xpad">0</property>
 				  <property name="ypad">0</property>
 				</widget>
