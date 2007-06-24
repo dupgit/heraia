@@ -235,7 +235,7 @@ gboolean select_file_to_load(heraia_window_t *main_window)
 
 	/* for the moment we do not want to retrieve multiples selections */
 	gtk_file_selection_set_select_multiple(file_selector, FALSE);
-	/*  We want the file selection path to be the on of the previous
+	/*  We want the file selection path to be the one of the previous
 	 *	openned file if any !
      */
 	if (main_window->filename != NULL)

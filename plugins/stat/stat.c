@@ -29,6 +29,8 @@
 static void stat_window_connect_signals(heraia_plugin_t *plugin);
 static void statw_close_clicked(GtkWidget *widget, gpointer data);
 static void destroy_stat_window(GtkWidget *widget, GdkEvent  *event, gpointer data);
+static void statw_save_as_clicked(GtkWidget *widget, gpointer data);
+static gchar *stat_select_file_to_save(void);
 static void histo_radiobutton_toggled(GtkWidget *widget, gpointer data);
 static gboolean delete_stat_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data );
 static void realize_some_numerical_stat(heraia_window_t *main_struct, heraia_plugin_t *plugin);
@@ -197,6 +199,55 @@ static void statw_close_clicked(GtkWidget *widget, gpointer data)
 		}
 }
 
+/* What to do when the save as button is clicked */
+static void statw_save_as_clicked(GtkWidget *widget, gpointer data)
+{
+	heraia_plugin_t *plugin = (heraia_plugin_t *) data;
+
+	if (plugin != NULL)
+		{
+			GtkImage *image = GTK_IMAGE(glade_xml_get_widget(plugin->xml, "histo_image"));
+			GdkPixbuf *pixbuf = gtk_image_get_pixbuf(image);
+			gchar *filename = NULL;
+			GError **error = NULL;
+
+			filename = stat_select_file_to_save();
+			gdk_pixbuf_save(pixbuf, filename, "png", error, "compression", "9", NULL);
+			
+			if (filename != NULL)
+				g_free(filename);
+		}
+}
+
+static gchar *stat_select_file_to_save(void)
+{
+	GtkFileSelection *file_selector = NULL;
+	gint response_id = 0;
+	gchar *filename;
+
+	file_selector = GTK_FILE_SELECTION (gtk_file_selection_new ("Entrez le nom du fichier image"));
+
+	/* for the moment we do not want to retrieve multiples selections */
+	gtk_file_selection_set_select_multiple(file_selector, FALSE);
+
+	response_id = gtk_dialog_run(GTK_DIALOG (file_selector));
+
+	switch (response_id) 
+		{
+		case GTK_RESPONSE_OK:
+			filename = g_strdup(gtk_file_selection_get_filename (GTK_FILE_SELECTION (file_selector)));
+			break;
+		case GTK_RESPONSE_CANCEL:
+		default:
+			filename = NULL;
+			break;
+		}
+
+	gtk_widget_destroy (GTK_WIDGET(file_selector));
+
+	return filename;
+}
+
 /* What to do when the user chooses a 1D or 2D histo */
 static void histo_radiobutton_toggled(GtkWidget *widget, gpointer data)
 {
@@ -240,6 +291,11 @@ static void stat_window_connect_signals(heraia_plugin_t *plugin)
 
 	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "rb_2D")), "toggled", 
 					 G_CALLBACK(histo_radiobutton_toggled), plugin);
+
+	/* Save As Button */
+	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "statw_save_as")), "clicked", 
+					 G_CALLBACK(statw_save_as_clicked), plugin);
+
 
 	/* the toogle button is already connected to the run_proc function ! */
 }
@@ -537,3 +593,5 @@ static void do_pixbuf_2D_from_histo2D(stat_t *extra, guint max_2D)
 				}
 		}
 }
+
+
