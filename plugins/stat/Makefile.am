@@ -10,6 +10,7 @@ stat_la_SOURCES = 	\
 	stat.h
 
 stat_la_LDFLAGS = -no-undefined -module -export-dynamic
+stat_la_LIBADD = $(GTKHEX_LIBS) $(LIBGLADE_LIBS) $(GMODULE_LIBS) $(GTK2_LIBS) $(GLIB2_LIBS) $(LDFLAGS)
 statdir = $(plugins_dir)
 stat_LTLIBRARIES = stat.la
 

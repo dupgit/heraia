@@ -155,7 +155,7 @@ case $build_os in
 	;;
     *mingw*)
 	AC_DEFINE_UNQUOTED(SYS_MINGW, 1, [This is a Windows system using MinGW])
-	LDFLAGS="$LDFLAGS -no-undefined -Wl,--export-all-symbols"
+	LDFLAGS="$LDFLAGS -no-undefined -Wl,--export-all-symbols -L$SRCDIR"
         CFLAGS="$CFLAGS -mms-bitfields -mwindows -mno-cygwin"
         ;;
 esac

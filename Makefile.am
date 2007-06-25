@@ -1,4 +1,6 @@
 SUBDIRS = src plugins
 
-EXTRA_DIST = 	\
-	HISTORY
+EXTRA_DIST = 		\
+	HISTORY 	\
+	autogen.sh	\
+	autoclean	

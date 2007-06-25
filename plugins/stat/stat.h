@@ -37,12 +37,23 @@
 #define PLUGIN_HOMEPAGE "http://heraia.tuxfamily.org/"
 
 
+typedef struct
+{
+	guint64 max;   /* maximum value              */
+	guint64 min;   /* minimum value              */
+	guint64 mean;  /* mean value                 */
+	guint nb_val;  /* number of different values */
+} histo_infos_t;
+
+
 typedef struct 
 {
-	guint64 histo1D[256];
-	guint64 histo2D[256][256];
-	GdkPixbuf *pixbuf_1D;
-	GdkPixbuf *pixbuf_2D;
+	guint64 histo1D[256];        /* The values for the 1D histogram                 */
+	guint64 histo2D[256][256];   /* The values for the 2D histogram                 */
+	histo_infos_t *infos_1D;     /* stores mathematical datas on the histogram (1D) */
+	histo_infos_t *infos_2D;     /* stores mathematical datas on the histogram (2D) */
+	GdkPixbuf *pixbuf_1D;        /* Pixbuf to be displayed (1D)                     */
+	GdkPixbuf *pixbuf_2D;        /* Pixbuf to be displayed (2D)                     */ 
 } stat_t;
 
 /* the plugin interface functions */

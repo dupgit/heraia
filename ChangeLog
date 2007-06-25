@@ -1,3 +1,26 @@
+25.06.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* plugins/stat/Makefile.am
+	  . added some libs for the linker (supprisingly windows needs this
+	    were linux doesn't even bother !)
+	* plugins/stat/stat.c
+	  . added a info structure to store min, max, mean and the number of
+	    different values (and may be some other statistical values in 
+	    the future) in order to draw better histogramms (some day).
+	  . changed two functions to made the calculation of thoses values
+	    for histo 1D and 2D.
+	  . optimized things by doing a double loop only once.
+	  . tried to change the normalization calculation (still to be
+	    improved !!)
+	* configure.ac
+	  . added the src dir for the linker (same reason)
+	* Makefile.am
+	  . added autogen.sh and autoclean to the dist files. Thoses files
+	    are usefull tools that I uses everyday. There is no valuable
+	    reason that others won't !
+	* ChangeLog
+	  . corrected a typo !!!
+
 24.06.2007
 	- Olivier Delhomme <heraia@delhomme.org>
 	* plugins/stat/stat.c
@@ -371,7 +394,7 @@ O8.05.2005
 	    we need to communicate with the ghex widget.
 	  * src/include/ghex_heraia_interface.h
 	  * docs/test-suite : here we explain which data test-suite we have used
-	    to make the whome stuff working.
+	    to make the whole stuff working.
 	
 14.03.2005 
 	- Gregory Audet <gretsim@yahoo.com>

@@ -36,8 +36,8 @@ static gboolean delete_stat_window_event(GtkWidget *widget, GdkEvent  *event, gp
 static void realize_some_numerical_stat(heraia_window_t *main_struct, heraia_plugin_t *plugin);
 static void init_stats_histos(heraia_plugin_t *plugin);
 static void populate_stats_histos(heraia_window_t *main_struct, heraia_plugin_t *plugin);
-static guint max_histo_1D(stat_t *extra);
-static guint max_histo_2D(stat_t *extra);
+static void calc_infos_histo_1D(stat_t *extra);
+static void calc_infos_histo_2D(stat_t *extra);
 static void init_stats_pixbufs(stat_t *extra);
 static void make_pixbufs_from_histos(stat_t *extra);
 static void plot_in_pixbuf(GdkPixbuf *pixbuf, gint64 x, gint64 y, guchar red, guchar green, guchar blue, guchar alpha);
@@ -76,7 +76,11 @@ heraia_plugin_t *heraia_plugin_init(heraia_plugin_t *plugin)
 
 	/* add the extra struct to the plugin one */
 	extra = (stat_t *) g_malloc0 (sizeof(stat_t));
+	extra->infos_1D = (histo_infos_t *) g_malloc0 (sizeof(histo_infos_t));
+	extra->infos_2D = (histo_infos_t *) g_malloc0 (sizeof(histo_infos_t));
+
 	plugin->extra = extra;
+	
 
 	return plugin;
 }
@@ -308,10 +312,6 @@ static void realize_some_numerical_stat(heraia_window_t *main_struct, heraia_plu
 {
 	struct stat *stat_buf;
 	gchar buf[42];
-	guint i = 0;
-	guint j = 0;
-	guint nbval1D = 0;
-	guint nbval2D = 0;
 	stat_t *extra = NULL;
 	GtkTextView *textview = GTK_TEXT_VIEW(glade_xml_get_widget(plugin->xml, "statw_textview"));
 
@@ -335,16 +335,9 @@ static void realize_some_numerical_stat(heraia_window_t *main_struct, heraia_plu
 					populate_stats_histos(main_struct, plugin);
 
 					extra = (stat_t *) plugin->extra;
-					for (i=0; i<=255; i++)
-						{
-							if (extra->histo1D[i] > 0)
-								nbval1D++;
-							for (j=0; j<=255; j++)
-								if (extra->histo2D[i][j] > 0)
-									nbval2D++;
-						}
-					add_text_to_textview(textview, "Nombre d'octets différents : %d\n", nbval1D);
-					add_text_to_textview(textview, "Nombre de paires d'octets  : %d\n", nbval2D);
+					
+					add_text_to_textview(textview, "Nombre d'octets différents : %d\n", extra->infos_1D->nb_val);
+					add_text_to_textview(textview, "Nombre de paires d'octets différentes : %d\n", extra->infos_2D->nb_val);
 
 					log_message(main_struct, G_LOG_LEVEL_INFO, "Histos calculated !");
 				}		
@@ -415,42 +408,80 @@ static void populate_stats_histos(heraia_window_t *main_struct, heraia_plugin_t 
 
 
 /**
- *  Seeks the histo1D struct to find the maximum value
+ *  Seeks the histo1D struct to find the maximum value 
  */
-static guint max_histo_1D(stat_t *extra)
+static void calc_infos_histo_1D(stat_t *extra)
 {
 	guint i = 0;
-	guint max = 0;
+	gint64 n = 1;
+	guint64 max = 0;
+	guint64 min = G_MAXUINT64;
+	gint64 mean = extra->histo1D[0];
+	gint64 diff = 0;
 
 	for (i=0; i<=255; i++)
 		{
+			/* maximum value */
 			if (extra->histo1D[i] > max)
 				max = extra->histo1D[i];
-		}
 
-	return max;
+			/* minimum value */
+			if (extra->histo1D[i] < min)
+				min = extra->histo1D[i];
+			
+			/* number of different values */
+			if (extra->histo1D[i] > 0)
+				extra->infos_1D->nb_val++;
+
+			/* mean calculation */
+			diff = extra->histo1D[i] - mean;
+			mean = mean + diff/n;
+			n++;
+		}
+	extra->infos_1D->min = min;
+	extra->infos_1D->max = max;
+	extra->infos_1D->mean = (guint64) mean;
 }
 
 
 /**
  *  Seeks the histo2D struct to find the maximum value
  */
-static guint max_histo_2D(stat_t *extra)
+static void calc_infos_histo_2D(stat_t *extra)
 {
 	guint i = 0;
 	guint j = 0;
-	guint max = 0;
+	gint64 n = 1;
+	guint64 max = 0;
+	guint64 min = G_MAXUINT;
+	gint64 mean = extra->histo2D[0][0];
+	gint64 diff = 0;
 
 	for (i=0; i<=255; i++)
 		{
 			for (j=0; j<=255; j++)
 				{
+					/* maximum value */
 					if (extra->histo2D[i][j] > max)
 						max = extra->histo2D[i][j];
+
+					/* minimum value */
+					if (extra->histo2D[i][j] < min)
+						min = extra->histo2D[i][j];
+
+					/* number of different values */
+					if (extra->histo2D[i][j] > 0)
+						extra->infos_2D->nb_val++;
+
+					/* mean calculation */
+					diff = extra->histo1D[i] - mean;
+					mean = mean + diff/n;
+					n++;
 				}
 		}
-
-	return max;
+	extra->infos_2D->min = min;
+	extra->infos_2D->max = max;
+	extra->infos_2D->mean = (guint64) mean;
 }
 
 
@@ -476,19 +507,14 @@ static void init_stats_pixbufs(stat_t *extra)
  */
 static void make_pixbufs_from_histos(stat_t *extra)
 {
-	guint max_1D = 0;
-	guint max_2D = 0;
-
 	init_stats_pixbufs(extra);
-	max_1D = max_histo_1D(extra);
-	max_2D = max_histo_2D(extra);
+	calc_infos_histo_1D(extra);
+	calc_infos_histo_2D(extra);
 
-	fprintf(stdout, "%d %d\n", max_1D, max_2D);
-
-	if (max_1D > 0)
-		do_pixbuf_1D_from_histo1D(extra, max_1D);
-	if (max_2D > 0)
-		do_pixbuf_2D_from_histo2D(extra, max_2D);
+	if (extra->infos_1D->max > 0)
+		do_pixbuf_1D_from_histo1D(extra, extra->infos_1D->max);
+	if (extra->infos_2D->max > 0)
+		do_pixbuf_2D_from_histo2D(extra, extra->infos_2D->max);
 }
 
 
@@ -515,15 +541,10 @@ static void plot_in_pixbuf(GdkPixbuf *pixbuf, gint64 x, gint64 y, guchar red, gu
 /**
  *  Prints a line of pixels in the corresponding pixbuf (1D histo)
  */
-static void line_in_pixbuf(GdkPixbuf *pixbuf, gint64 x, gint64 y, gint64 max)
+static void line_in_pixbuf(GdkPixbuf *pixbuf, gint64 x, gint64 y)
 {
 	guchar *pixels = NULL;
 	guchar *p = NULL;
-
-	/* normalisation (here we know that max != 0 (cf make_pixbufs_from_histos) */
-	gdouble y_norm = (gdouble) (y*255) / (gdouble)(max);
-	
-	y = (gint64) y_norm;
 
 	if (pixbuf != NULL)
 		{
@@ -553,10 +574,13 @@ static void line_in_pixbuf(GdkPixbuf *pixbuf, gint64 x, gint64 y, gint64 max)
 static void do_pixbuf_1D_from_histo1D(stat_t *extra, guint max_1D)
 {
 	guint i = 0;
+	gint64 y = 0;
 
 	for (i=0; i<=255; i++)
-		{
-			line_in_pixbuf(extra->pixbuf_1D, i, max_1D - extra->histo1D[i], max_1D);
+		{	
+			/* normalisation (here we know that max != 0 (cf make_pixbufs_from_histos) */
+			y = (gint64) (extra->infos_1D->max - (extra->histo1D[i]*extra->infos_1D->nb_val) / (extra->infos_1D->max));	
+			line_in_pixbuf(extra->pixbuf_1D, i, y);
 		}
 }
 
@@ -574,14 +598,14 @@ static void do_pixbuf_2D_from_histo2D(stat_t *extra, guint max_2D)
 	guchar red;
 	guchar green;
 	guchar blue;
-
+	gdouble height = 0;
 	/* A sort of color 'normalization' */
 	
 	for (i=0; i<=255; i++)
 		{
 			for (j=0; j<=255; j++)
 				{
-					gdouble height = (gdouble) (extra->histo2D[i][j]*255) / (gdouble) max_2D ;
+					height = (gdouble) (extra->histo2D[i][j]*255) / (gdouble) max_2D ;
 					if (height >0)
 						{
 							red = (guchar)  height;
