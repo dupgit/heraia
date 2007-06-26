@@ -1,3 +1,13 @@
+26.06.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* plugins/stat/stats.c
+	  . still making some efforts on color normalisation
+	  . suppressed an unecessary function parameter that
+	    we can have with the other one
+	  . added some textual informations about the histograms
+	  . added some space between the textual informations
+	    in the hope that it will add lisibility
+
 25.06.2007
 	- Olivier Delhomme <heraia@delhomme.org>
 	* plugins/stat/Makefile.am
@@ -6,7 +16,7 @@
 	* plugins/stat/stat.c
 	  . added a info structure to store min, max, mean and the number of
 	    different values (and may be some other statistical values in 
-	    the future) in order to draw better histogramms (some day).
+	    the future) in order to draw better histograms (some day).
 	  . changed two functions to made the calculation of thoses values
 	    for histo 1D and 2D.
 	  . optimized things by doing a double loop only once.
