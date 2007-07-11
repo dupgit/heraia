@@ -1,3 +1,9 @@
+11.07.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* heraia.iss
+	  . new file added. This file describes an InnoSetup project
+	    that make a win32 setup binary for heraia.
+
 26.06.2007
 	- Olivier Delhomme <heraia@delhomme.org>
 	* plugins/stat/stats.c
