@@ -25,8 +25,6 @@ rm -f ltmain.sh
 echo "rm -f ltmain.sh"
 rm -f missing
 echo "rm -f missing"
-rm -fr po/POTFILES
-echo "rm -fr po/POTFILES"
 rm -f src/*~ src/*#
 echo "rm -f src/*~ src/*#"
 rm -f *~ *#
