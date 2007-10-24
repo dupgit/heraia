@@ -24,21 +24,28 @@
 
 #ifndef _DECODE_H_
 #define _DECODE_H_
+/* templates */
+typedef gchar *(* DecodeFunc) (guchar *); /* Decode gunction template for numbers*/
+typedef gchar *(* DecodeDateFunc) (guchar *, date_and_time_t *mydate); /* Decode function template for dates */
+
+/* bits */
+extern gchar *decode_to_bits_le(guchar *data);
+extern gchar *decode_to_bits_be(guchar *data);
 
 /* dates */
-extern gint decode_dos_date( guchar *data, date_and_time_t *mydate );
-extern gint decode_filetime_date( guchar *data, date_and_time_t *mydate );
-extern gint decode_C_date( guchar *data, date_and_time_t *mydate );
+extern gchar *decode_dos_date(guchar *data, date_and_time_t *mydate);
+extern gchar *decode_filetime_date(guchar *data, date_and_time_t *mydate);
+extern gchar *decode_C_date(guchar *data, date_and_time_t *mydate);
 
-/* maths */
-extern gint decode_8bits_signed( guchar *data, gchar *result );
-extern gint decode_8bits_unsigned( guchar *data, gchar *result );
-extern gint decode_16bits_signed( guchar *data, gchar *result );
-extern gint decode_16bits_unsigned( guchar *data, gchar *result );
-extern gint decode_32bits_signed( guchar *data, gchar *result );
-extern gint decode_32bits_unsigned( guchar *data, gchar *result );
-extern gint decode_64bits_signed( guchar *data, gchar *result );
-extern gint decode_64bits_unsigned( guchar *data, gchar *result );
+/* numbers */
+extern gchar *decode_8bits_signed(guchar *data);
+extern gchar *decode_8bits_unsigned(guchar *data);
+extern gchar *decode_16bits_signed(guchar *data);
+extern gchar *decode_16bits_unsigned(guchar *data);
+extern gchar *decode_32bits_signed(guchar *data);
+extern gchar *decode_32bits_unsigned(guchar *data);
+extern gchar *decode_64bits_signed(guchar *data);
+extern gchar *decode_64bits_unsigned(guchar *data);
 
 extern gboolean swap_bytes(guchar *to_swap, guint first, guint last);
 

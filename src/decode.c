@@ -149,20 +149,34 @@ static void which_year_month_day (date_and_time_t *mydate, guint32 days, guint32
 	which_month_day (mydate, reste, bissextile_year(mydate->year));
 }
 
-/*
-   general purpose of this function is to take a 4 byte data stream
-   and convert it as if it is a dos date. If it is not, the result
-   may be funny !
-   We do asume that both *data and *result contains correct values
-   and has enough space to store any result.
-   data : 4 guchars
-   result : at least 21 gchars
+
+/**
+ *  Return a gchar * that contains the date and time
+ *  encoded from the values contained in the date_and_time_t structure
+ *  it may be freed when no longer needed
+ *  We do not use any of the g_date_strftime or strftime function
+ *  because dates are not always valid !
+ */
+static gchar *date_printf(date_and_time_t *mydate)
+{
+	return g_strdup_printf("%02u/%02u/%04u - %02u:%02u:%02u", mydate->day, mydate->month, mydate->year, mydate->hour, mydate->minutes, mydate->seconds);
+}
+
+
+/**
+ *  general purpose of this function is to take a 4 byte data stream
+ *  and convert it as if it is a dos date. If it is not, the result
+ *  may be funny !
+ *  data : 4 guchars
+ *  returns a gchar * that may be freed when no longer needed 
 */
-gint decode_dos_date(guchar *data, date_and_time_t *mydate)
+gchar *decode_dos_date(guchar *data, date_and_time_t *mydate)
 {
 
-	if ((data == NULL) || (mydate == NULL))
-		return FALSE;
+	if (data == NULL) 
+		{
+			return NULL;
+		}
 	else
 		{
 			mydate->year = (data[3] >> 1) + 1980;
@@ -171,31 +185,31 @@ gint decode_dos_date(guchar *data, date_and_time_t *mydate)
 			mydate->hour = (data[1] & 0xF8) >> 3;
 			mydate->minutes = ((data[1] & 0x07) << 3) + ((data[0] & 0xE0) >> 5);
 			mydate->seconds = (data[0] & 0x1F) << 1;
-			return TRUE;
+
+			return date_printf(mydate);
 		}
 }
 
 
-/*
-   general purpose of this function is to take a 8 byte data stream
-   and convert it as if it is a filetime date. If it is not, the result
-   may be funny !
-   We do asume that both *data and *result contains correct values
-   and has enough space to store any result.
-   data : 8 guchars
-   result : at least 21 gchars
+/**
+ *  general purpose of this function is to take a 8 byte data stream
+ *  and convert it as if it is a filetime date. If it is not, the result
+ *  may be funny !
+ *  data : 8 guchars
+ *  returns a gchar * that may be freed when no longer needed 
 */
-gint decode_filetime_date(guchar *data, date_and_time_t *mydate)
+gchar *decode_filetime_date(guchar *data, date_and_time_t *mydate)
 {
 	guint64 total = 0;
 	guint64 calc = 0;
 	guint32 days = 0;
  
-	if ((data == NULL) || (mydate == NULL))
-		return FALSE;
+	if (data == NULL)
+		{
+			return NULL;
+		}
 	else
 		{
-			/* bcopy (data, &total, 8 * sizeof (guchar)); */
 			memcpy(&total, data, 8 * sizeof (guchar));
 			
 			total = total / 10000000;
@@ -208,246 +222,282 @@ gint decode_filetime_date(guchar *data, date_and_time_t *mydate)
 			mydate->minutes = ((total % 3600) / 60);
 			mydate->seconds = (total % 60);
 			
-			return TRUE;
+			return date_printf(mydate);
 		}
 }
 
 
-/*
-   general purpose of this function is to take a 4 byte data stream
-   and convert it as if it is a C date. If it is not, the result may 
-	be funny !
-   We do asume that both *data and *result contains correct values
-   and has enough space to store any result.
-   data : 4 guchars
-   result : at least 21 gchars
+/**
+ *  general purpose of this function is to take a 4 byte data stream
+ *  and convert it as if it is a C date. If it is not, the result may 
+ *  be funny !
+ *  data : 4 guchars
+ *  returns a gchar * that may be freed when no longer needed 
 */
-gint decode_C_date(guchar *data, date_and_time_t *mydate)
+gchar *decode_C_date(guchar *data, date_and_time_t *mydate)
 {
 	guint32 total = 0;
 	guint32 days = 0;
   
-	if ((data == NULL) || (mydate == NULL))
-		return FALSE;
+	if (data == NULL)
+		{
+			return NULL;
+		}
 	else
 		{
-			/* bcopy (data, &total, 4 * sizeof (guchar)); */
 			memcpy(&total, data, 4 * sizeof (guchar));
 
 			days = total /  86400 ;
 
-			which_year_month_day (mydate, days, 1970);
+			which_year_month_day(mydate, days, 1970);
 
 			mydate->hour = ((total) % 86400) / 3600;
 			mydate->minutes = ((total) % 3600) / 60;
 			mydate->seconds = (total % 60);
 
-			return TRUE;
+			return date_printf(mydate);
 		}
 }
 
-/*
-   general purpose of this function is to take a 1 byte data stream
-   and convert it as if it is an 8 bits signed number
-   We do asume that both *data and *result contains correct values
-   and has enough space to store any result.
-   data : 1 guchars
-   result : max 3 gchar
-*/
-gint decode_8bits_signed(guchar *data, gchar *result)
-{
-	gint8 total;
 
-	if ((data == NULL) || (result == NULL))
-		return FALSE;
+/**
+ *  decodes the stream represented by *data to a
+ *  string of 0 and 1 (Little Endian style)
+ */
+gchar *decode_to_bits_le(guchar *data)
+{
+
+	if (data == NULL)
+		{
+			return NULL;
+		}
 	else
 		{
-			/* bcopy (data, &total, sizeof (guchar)); */
+			return g_strdup_printf("%1u%1u%1u%1u%1u%1u%1u%1u",
+										  (data[0] & 0x80) > 0 ? 1 : 0, 
+										  (data[0] & 0x40) > 0 ? 1 : 0,
+										  (data[0] & 0x20) > 0 ? 1 : 0, 
+										  (data[0] & 0x10) > 0 ? 1 : 0,
+										  (data[0] & 0x08) > 0 ? 1 : 0, 
+										  (data[0] & 0x04) > 0 ? 1 : 0,
+										  (data[0] & 0x02) > 0 ? 1 : 0, 
+										  (data[0] & 0x01) > 0 ? 1 : 0);
+		}
+}
+
+/**
+ *  decodes the stream represented by *data to a
+ *  string of 0 and 1 (Big Endian style)
+ */
+gchar *decode_to_bits_be(guchar *data)
+{
+
+	if (data == NULL)
+		{
+			return NULL;
+		}
+	else
+		{
+			return g_strdup_printf("%1u%1u%1u%1u%1u%1u%1u%1u",
+										  (data[0] & 0x01) > 0 ? 1 : 0, 
+										  (data[0] & 0x02) > 0 ? 1 : 0,
+										  (data[0] & 0x04) > 0 ? 1 : 0, 
+										  (data[0] & 0x08) > 0 ? 1 : 0,
+										  (data[0] & 0x10) > 0 ? 1 : 0, 
+										  (data[0] & 0x20) > 0 ? 1 : 0,
+										  (data[0] & 0x40) > 0 ? 1 : 0, 
+										  (data[0] & 0x80) > 0 ? 1 : 0);
+		}
+}
+
+/**
+ *  general purpose of this function is to take a 1 byte data stream
+ *  and convert it as if it is an 8 bits signed number
+ *  data : 1 guchar
+ *  returns a gchar * that may be freed when no longer needed 
+ */
+gchar *decode_8bits_signed(guchar *data)
+{
+	gint8 total = 0;
+
+	if (data == NULL)
+		{
+			return NULL;
+		}
+	else
+		{
 			memcpy(&total, data, sizeof (guchar));
-			sprintf(result, "%d", total);
-			return TRUE;
+			return g_strdup_printf("%d", total);
 		}
 }
 
 
-/*
-   general purpose of this function is to take a 1 byte data stream
-   and convert it as if it is an 8 bits signed number
-   We do asume that both *data and *result contains correct values
-   and has enough space to store any result.
-   data : 1 guchars
-   result : max 3 gchar
+/**
+ *  general purpose of this function is to take a 1 byte data stream
+ *  and convert it as if it is an 8 bits unsigned number
+ *  data : 1 guchar
+ *  returns a gchar * that may be freed when no longer needed
 */
-gint decode_8bits_unsigned(guchar *data, gchar *result)
+gchar *decode_8bits_unsigned(guchar *data)
 {
-	guint8 total;
+	guint8 total = 0;
 
-	if ((data == NULL) || (result == NULL))
-		return FALSE;
+	if (data == NULL)
+		{
+			return NULL;
+		}
 	else
 		{
-			/* bcopy (data, &total, sizeof (guchar)); */
 			memcpy(&total, data, sizeof (guchar));
-			sprintf(result, "%u", total);
-			return TRUE;
+			return g_strdup_printf("%u", total);
 		}
 }
 
 
-/*
-   general purpose of this function is to take a 2 byte data stream
-   and convert it as if it is a 16 bits signed number
-   We do asume that both *data and *result contains correct values
-   and has enough space to store any result.
-   data : 2 guchars
-   result : max 6 gchar
-*/
-gint decode_16bits_signed(guchar *data, gchar *result)
+/**
+ *  general purpose of this function is to take a 2 byte data stream
+ *  and convert it as if it is a 16 bits signed number
+ *  data : 2 guchars
+ *  returns a gchar * that may be freed when no longer needed
+ */
+gchar *decode_16bits_signed(guchar *data)
 {
-	gint16 total;
+	gint16 total = 0;
 
-	if ((data == NULL) || (result == NULL))
-		return FALSE;
+	if (data == NULL)
+		{
+			return NULL;
+		}
 	else
 		{
-			/* bcopy (data, &total, 2 * sizeof (guchar)); */
 			memcpy(&total, data, 2 * sizeof (guchar));
-			sprintf(result, "%d", total);
-			return TRUE;
+			return g_strdup_printf("%d", total);
 		}
 }
 
 
-/*
-   general purpose of this function is to take a 2 byte data stream
-   and convert it as if it is a 16 bits unsigned number
-   We do asume that both *data and *result contains correct values
-   and has enough space to store any result.
-   data : 2 guchars
-   result : max 5 gchar
-*/
-gint decode_16bits_unsigned(guchar *data, gchar *result)
+/**
+ *  general purpose of this function is to take a 2 byte data stream
+ *  and convert it as if it is a 16 bits unsigned number
+ *  data : 2 guchars
+ *  returns a gchar * that may be freed when no longer needed
+ */
+gchar *decode_16bits_unsigned(guchar *data)
 {
-	guint16 total;
+	guint16 total = 0;
 
-	if ((data == NULL) || (result == NULL))
-		return FALSE;
+	if (data == NULL)
+		{
+			return NULL;
+		}
 	else
 		{
-			/* bcopy (data, &total, 2 * sizeof (guchar)); */
 			memcpy(&total, data, 2 * sizeof (guchar));
-			sprintf(result, "%u", total);
-			return TRUE;
+			return g_strdup_printf("%u", total);
 		}
 }
 
 
-/*
-   general purpose of this function is to take a 4 byte data stream
-   and convert it as if it is a 32 bits signed number
-   We do asume that both *data and *result contains correct values
-   and has enough space to store any result.
-   data : 4 guchars
-   result : max 11 gchar
+/**
+ *  general purpose of this function is to take a 4 byte data stream
+ *  and convert it as if it is a 32 bits signed number
+ *  data : 4 guchars
+ *  returns a gchar * that may be freed when no longer needed
 */
-gint decode_32bits_signed(guchar *data, gchar *result)
+gchar *decode_32bits_signed(guchar *data)
 {
-	gint32 total;
+	gint32 total = 0;
 
-	if ((data == NULL) || (result == NULL))
-		return FALSE;
+	if (data == NULL)
+		{
+			return NULL;
+		}
 	else
 		{
-			/* bcopy (data, &total, 4 * sizeof (guchar)); */
 			memcpy(&total, data, 4 * sizeof (guchar));
-			sprintf(result, "%d", total);
-			return TRUE;
+			return g_strdup_printf("%d", total);
 		}
 }
 
 
-/*
-   general purpose of this function is to take a 4 byte data stream
-   and convert it as if it is a 32 bits unsigned number
-   We do asume that both *data and *result contains correct values
-   and has enough space to store any result.
-   data : 4 guchars
-   result : max 11 gchar
+/**
+ *  general purpose of this function is to take a 4 byte data stream
+ *  and convert it as if it is a 32 bits unsigned number
+ *  data : 4 guchars
+ *  returns a gchar * that may be freed when no longer needed
 */
-gint decode_32bits_unsigned(guchar *data, gchar *result)
+gchar *decode_32bits_unsigned(guchar *data)
 {
-	guint32 total;
+	guint32 total = 0;
 
-	if ((data == NULL) || (result == NULL))
-		return FALSE;
+	if (data == NULL)
+		{
+			return NULL;
+		}
 	else
 		{
-			/* bcopy (data, &total, 4 * sizeof (guchar)); */
 			memcpy(&total, data, 4 * sizeof (guchar));
-			sprintf(result, "%u", total);
-			return TRUE;
+			return g_strdup_printf("%u", total);
 		}
 }
 
-/*
-   general purpose of this function is to take a 8 byte data stream
-   and convert it as if it is a 64 bits signed number
-   We do asume that both *data and *result contains correct values
-   and has enough space to store any result.
-   data : 8 guchars
-   result : max 21 gchar
+/**
+ *  general purpose of this function is to take a 8 byte data stream
+ *  and convert it as if it is a 64 bits signed number
+ *  data : 8 guchars
+ *  returns a gchar * that may be freed when no longer needed
 */
-gint decode_64bits_signed(guchar *data, gchar *result)
+gchar *decode_64bits_signed(guchar *data)
 {
-	gint64 total;
+	gint64 total = 0;
 
-	if ((data == NULL) || (result == NULL))
-		return FALSE;
+	if (data == NULL)
+		{
+			return NULL;
+		}
 	else
 		{
-			/* bcopy (data, &total, 8 * sizeof (guchar)); */
 			memcpy(&total, data, 8 * sizeof (guchar));
-			sprintf(result, "%lld", total);
-			return TRUE;
+			return g_strdup_printf("%lld", total);
 		}
 }
 
 
-/*
-   general purpose of this function is to take a 8 byte data stream
-   and convert it as if it is a 64 bits unsigned number
-   We do asume that both *data and *result contains correct values
-   and has enough space to store any result.
-   data : 8 guchars
-   result : max 21 gchar
+/**
+ *  general purpose of this function is to take a 8 byte data stream
+ *  and convert it as if it is a 64 bits unsigned number
+ *  data : 8 guchars
+ *  returns a gchar * that may be freed when no longer needed
 */
-gint decode_64bits_unsigned(guchar *data, gchar *result)
+gchar *decode_64bits_unsigned(guchar *data)
 {
-	guint64 total;
+	guint64 total = 0;
 
-	if ((data == NULL) || (result == NULL))
-		return FALSE;
+	if (data == NULL)
+		{
+			return NULL;
+		}
 	else
 		{
-			/* bcopy (data, &total, 8 * sizeof (guchar)); */
 			memcpy(&total, data, 8 * sizeof (guchar));
-			sprintf(result, "%llu", total);
-			return TRUE;
+			return g_strdup_printf("%llu", total);
 		}
 }
 
 
-/*
-  Swap bytes from the buffer to_swap
-  recursive function
-  call with first = 0 and last = last byte of buffer to swap
-*/
+/**
+ *  Swap bytes from the buffer to_swap
+ *  recursive function !!
+ *  call with first = 0 and last = last byte of buffer to swap
+ */
 gboolean swap_bytes(guchar *to_swap, guint first, guint last)
 {
 	guchar aux;
 
 	if (first >= last)
-		return TRUE;
+		{
+			return TRUE;
+		}
 	else
 		{
 			aux = to_swap[first];

@@ -48,7 +48,15 @@ extern void init_heraia_interface(heraia_window_t *main_window);
 extern int load_heraia_ui(heraia_window_t *main_window);
 extern void refresh_event_handler(GtkWidget *widget, gpointer data);
 
+/* Text view */
 extern void add_text_to_textview(GtkTextView *textview, const char *format, ...);
 extern void kill_text_from_textview(GtkTextView *textview);
+
+/* RadioButton */
+extern GtkWidget *gtk_radio_button_get_active(GSList *group);
+extern GtkWidget *gtk_radio_button_get_active_from_widget(GtkRadioButton *radio_group_member);
+
+/* CheckMenuItem */
+extern gboolean is_cmi_checked(GtkWidget *check_menu_item);
 
 #endif /* _HERAIA_UI_H_ */

@@ -24,18 +24,12 @@
 #ifndef _GHEX_HERAIA_INTERFACE_H_
 #define _GHEX_HERAIA_INTERFACE_H_
 
-/* 
-	Returns 'len' number of bytes located at 'pos' in th GtkHex 
-   document and puts it in the result variable
 
-	We assume that a previous g_malloc has been done in order to
-   use the function.
-*/
-extern gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, gboolean big_endian, guchar *result);
+extern void connect_cursor_moved_signal(heraia_window_t *main_window);
 
-/* 
-   kills the old document if it exists and add a new one, from the new filename
-*/
+extern gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, guint endianness, guchar *result);
+
 extern HERAIA_ERROR heraia_hex_document_new(heraia_window_t *main_window, char *filename);
 extern guint64 ghex_file_size(GtkHex *gh);
+
 #endif /* _GHEX_HERAIA_INTERFACE_H_ */

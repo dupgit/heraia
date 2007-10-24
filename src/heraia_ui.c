@@ -110,7 +110,8 @@ void on_coller1_activate( GtkWidget *widget, gpointer data )
 }
 
 
-/** This function is here to ensure that everything will be
+/** 
+ *  This function is here to ensure that everything will be
  *  refreshed upon a signal event.
  */
 void refresh_event_handler(GtkWidget *widget, gpointer data)
@@ -123,7 +124,7 @@ void refresh_event_handler(GtkWidget *widget, gpointer data)
 			if (main_window->event == HERAIA_REFRESH_NOTHING)
 				main_window->event = HERAIA_REFRESH_CURSOR_MOVE;
 
-			refresh_data_window(widget, main_window->current_DW);
+			refresh_data_interpretor_window(widget, main_window);
 			refresh_all_plugins(main_window);
 
 			main_window->event = HERAIA_REFRESH_NOTHING;
@@ -147,8 +148,8 @@ void on_ouvrir1_activate(GtkWidget *widget, gpointer data )
 	/* Connection of the signal to the right function
 	   in order to interpret things when the cursor is
 	   moving                                           */
-	g_signal_connect (G_OBJECT (main_window->current_DW->current_hexwidget), "cursor_moved",
-					  G_CALLBACK (refresh_event_handler), main_window); 
+	/* g_signal_connect (G_OBJECT (main_window->current_DW->current_hexwidget), "cursor_moved",
+	   G_CALLBACK (refresh_event_handler), main_window); */
 }
 
 void on_enregistrer1_activate( GtkWidget *widget,  gpointer data )
@@ -165,22 +166,43 @@ void on_enregistrer_sous1_activate( GtkWidget *widget, gpointer data )
 	log_message(main_window, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
 }
 
-/* this handles the menuitem "Data Interpretor" that
-   show or hide the data interpretor window           */
-void on_DIMenu_activate (GtkWidget *widget, gpointer data)
+/**
+ *  This handles the menuitem "Data Interpretor" that
+ *  shows or hides the data interpretor window           
+ */
+void on_DIMenu_activate(GtkWidget *widget, gpointer data)
 {
+
 	heraia_window_t *main_window = (heraia_window_t *) data;
-	data_window_t *DW = main_window->current_DW;
+	data_window_t *dw = NULL; /* program structure */
+	GtkWidget *diw = NULL;    /* data interpretor widget */
 
-	DW->window_displayed = !(DW->window_displayed);
-	
-	if (DW->window_displayed == TRUE)
-		gtk_widget_show_all(DW->window);
-	else
-		gtk_widget_hide_all(DW->window);
-
-	refresh_data_window(DW->current_hexwidget, DW);
+	if (main_window != NULL)
+		{
+			dw = main_window->current_DW;
+     
+			if (dw != NULL)
+				{
+					diw = glade_xml_get_widget(main_window->xml, "data_interpretor_window");
+	  
+					if (diw != NULL)
+						{
+							dw->window_displayed = !(dw->window_displayed);
+	  
+							if (dw->window_displayed == TRUE)
+								{
+									gtk_widget_show_all(diw);
+									refresh_data_interpretor_window(widget, data);
+								}
+							else
+								{
+									gtk_widget_hide_all(diw);
+								}
+						}
+				}
+		}
 }
+
 
 gboolean delete_main_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {
@@ -199,20 +221,20 @@ void destroy_main_window(GtkWidget *widget, gpointer   data)
 
 
 /* call back functions :  for the data interpretor window */
-gboolean delete_dt_window_event( GtkWidget *widget, GdkEvent  *event, gpointer data )
+gboolean delete_dt_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {	
 	heraia_window_t *main_window = (heraia_window_t *) data;
 
-	g_signal_emit_by_name (glade_xml_get_widget(main_window->xml, "DIMenu"), "activate");
+	g_signal_emit_by_name(glade_xml_get_widget(main_window->xml, "DIMenu"), "activate");
 
 	return TRUE;
 }
 
-void destroy_dt_window( GtkWidget *widget, GdkEvent  *event, gpointer data )
+void destroy_dt_window(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 
-	g_signal_emit_by_name (glade_xml_get_widget(main_window->xml, "DIMenu"), "activate");
+	g_signal_emit_by_name(glade_xml_get_widget(main_window->xml, "DIMenu"), "activate");
 }
 /* End of call back functions that handle the data interpretor window */
 
@@ -236,8 +258,8 @@ gboolean select_file_to_load(heraia_window_t *main_window)
 	/* for the moment we do not want to retrieve multiples selections */
 	gtk_file_selection_set_select_multiple(file_selector, FALSE);
 	/*  We want the file selection path to be the one of the previous
-	 *	openned file if any !
-     */
+	 *  openned file if any !
+	 */
 	if (main_window->filename != NULL)
 		{
 			path = g_filename_from_utf8(g_locale_to_utf8(g_strdup_printf("%s%c", g_path_get_dirname(main_window->filename), G_DIR_SEPARATOR), -1, NULL, NULL, &err), -1, NULL, NULL, &err);
@@ -271,20 +293,50 @@ gboolean select_file_to_load(heraia_window_t *main_window)
 }
 
 
-/* here we might init some call backs and menu options 
-   This function should be called once only            */
+/**
+ *  Here we might init some call backs and menu options
+ *  and display the interface (main && sub-windows)
+ *  This function should be called only once at main program's 
+ *  init time
+ */
 void init_heraia_interface(heraia_window_t *main_window)
 {
-   	data_window_t *DW = main_window->current_DW;
-   
-	g_signal_connect (G_OBJECT (DW->window), "delete_event", 
-					  G_CALLBACK (delete_dt_window_event), main_window);
+	data_window_t *dw = NULL; /* data interpretor structure */
+	GtkWidget *diw = NULL;    /* data interpretor window    */
+	GtkWidget *menu = NULL;   /* the DIMenu diplay option   */
+	GtkWidget *window = NULL; /* the main window widget     */ 
+  
+	if (main_window != NULL)
+		{
+			dw = main_window->current_DW;
+    
+			diw = glade_xml_get_widget(main_window->xml, "data_interpretor_window");
+			menu = glade_xml_get_widget(main_window->xml, "DIMenu");
+			window = glade_xml_get_widget(main_window->xml, "main_window");
 
-	g_signal_connect (G_OBJECT (DW->window), "destroy", 
-					  G_CALLBACK (destroy_dt_window), main_window);
+			if (dw != NULL && diw != NULL)
+				{
+					g_signal_connect(G_OBJECT(diw), "delete_event", 
+									 G_CALLBACK(delete_dt_window_event), main_window);
 
-	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(glade_xml_get_widget(main_window->xml, "DIMenu")), DW->window_displayed); 	
+					g_signal_connect(G_OBJECT(diw), "destroy", 
+									 G_CALLBACK(destroy_dt_window), main_window);
 
+					gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menu), dw->window_displayed);     
+	  
+					/* Shows all widgets */
+					gtk_widget_show_all(window);
+
+					if (dw->window_displayed == TRUE)
+						{
+							gtk_widget_show_all(diw);
+						}
+					else
+						{
+							gtk_widget_hide_all(diw);
+						}
+				}
+		}
 }
 
 
@@ -311,11 +363,12 @@ static gboolean load_the_glade_xml_if_it_exists(heraia_window_t *main_window, ch
 } */
 
 
-/* loads the glade xml file that describes the heraia project
-   tries the following paths in that order :                 
-   - /etc/heraia/heraia.glade
-   - /home/[user]/.heraia/heraia.glade
-   - PWD/heraia.glade
+/**
+ *  Loads the glade xml file that describes the heraia project
+ *  tries the following paths in that order :                 
+ *  - /etc/heraia/heraia.glade
+ *  - /home/[user]/.heraia/heraia.glade
+ *  - PWD/heraia.glade
  */
 static gboolean load_heraia_glade_xml(heraia_window_t *main_window)
 {
@@ -394,6 +447,8 @@ int load_heraia_ui(heraia_window_t *main_window)
 			/* The Log window */
 			log_window_init_interface(main_window);
 
+			/* The data interpretor window */
+			data_interpretor_init_interface(main_window);
 		}
 
 	return success;
@@ -435,4 +490,46 @@ void kill_text_from_textview(GtkTextView *textview)
 	gtk_text_buffer_get_start_iter(tb, &iStart);
 	gtk_text_buffer_get_end_iter(tb, &iEnd);
 	gtk_text_buffer_delete (tb, &iStart, &iEnd);
+}
+
+
+
+/**
+ *  Try to find the active radio button widget in a group
+ *  This does not take into account inconsistant states
+ *  returns the first active radio button otherwise NULL
+ */
+GtkWidget *gtk_radio_button_get_active(GSList *group)
+{
+	GSList *tmp_slist = group;
+  
+	while (tmp_slist)
+		{
+			if (GTK_TOGGLE_BUTTON (tmp_slist->data)->active)
+				return GTK_WIDGET (tmp_slist->data);
+			tmp_slist = tmp_slist->next;
+		}
+
+	return NULL;
+}
+
+/**
+ * gtk_radio_button_get_active_from_widget:
+ * @radio_group_member: widget to get radio group from
+ * 
+ * @returns: the active #GtkRadioButton within the group from
+ *           @radio_group_member
+ **/
+GtkWidget *gtk_radio_button_get_active_from_widget(GtkRadioButton *radio_group_member)
+{ 
+	if (radio_group_member)
+		return gtk_radio_button_get_active(radio_group_member->group);
+}
+
+/**
+ *  Tells whether a GtkCheckMenuItem is Checked or not
+ */
+gboolean is_cmi_checked(GtkWidget *check_menu_item)
+{
+	return gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(check_menu_item));
 }

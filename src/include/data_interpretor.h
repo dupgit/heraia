@@ -25,27 +25,20 @@
 #ifndef _DATA_INTERPRETOR_H_
 #define _DATA_INTERPRETOR_H_
 
-/* 
-Naming : 
-  H stands for Heraia
-  DI stands for Data_Interpretor
-*/
+/** 
+ *  Naming : 
+ *   H stands for Heraia
+ *   DI stands for Data_Interpretor
+ */
 
-#define H_DI_MAX_ENTRY 32    /* Max characters in an entry box                          */
-#define H_DI_H_SPACE 2       /* Horizontal space between widgets                        */
-#define H_DI_V_SPACE 2       /* Vertical space between widgets                          */
-#define H_DI_BORDER_WIDTH 2  /* Object's border width in containers                     */
-#define H_DI_LINES 6         /* Number of lines in the DI window by default             */
-#define H_DI_COLUMNS 3       /* Same but for columns                                    */
-#define H_DI_DISPLAYED TRUE  /* By default the Data Interpretor Window is not displayed */
+#define H_DI_DISPLAYED FALSE  /* By default the Data Interpretor Window is not displayed */
 
+/* Little Endian, Middle Endian and Big Endian in a reverse order ;) */
+#define H_DI_BIG_ENDIAN 2
+#define H_DI_MIDDLE_ENDIAN 4
+#define H_DI_LITTLE_ENDIAN 8
 
-/* defaults values to display the data_interpretor window */
-#define H_DI_FONT_FAMILY "FreeMono"
-#define H_DI_FONT_STYLE "Bold"
-#define H_DI_FONT_WIDTH "9"
-
-extern void data_interpret(data_window_t *DW);
-extern void refresh_data_window(GtkWidget *hexwidget, gpointer data);
+extern void data_interpretor_init_interface(heraia_window_t *main_window);
+extern void refresh_data_interpretor_window(GtkWidget *hexwidget, gpointer data);
 
 #endif /* _DATA_INTERPRETOR_H_ */

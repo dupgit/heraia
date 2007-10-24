@@ -70,7 +70,7 @@ static heraia_window_t *heraia_init_main_struct(void)
 	herwin->debug = TRUE;
 	herwin->filename = NULL;
 	herwin->current_doc = NULL;
-	herwin->current_DW = (data_window_t *) g_malloc0 (sizeof(*herwin->current_DW));
+	herwin->current_DW = (data_window_t *) g_malloc0 (sizeof(data_window_t));
 	herwin->plugins_list = NULL; 
 	herwin->location_list = NULL;
 	
@@ -113,7 +113,7 @@ static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window)
 static void init_heraia_location_list(heraia_window_t *main_window)
 {
 	gchar *path = NULL;
-	const gchar* const  *system_data_dirs;
+	const gchar* const *system_data_dirs;
 	guint i = 0;
 
 	/* heraia's binary path */
@@ -151,9 +151,6 @@ static void init_heraia_location_list(heraia_window_t *main_window)
 	/* A global config data path */
 	path = g_strdup_printf("%s%c%s", g_get_user_config_dir(), G_DIR_SEPARATOR, "heraia");
 	main_window->location_list = g_list_prepend(main_window->location_list, path);
-
-	
-
 }
 
 /**
@@ -212,48 +209,46 @@ int main (int argc, char ** argv)
 	if (opt.usage != TRUE)
 		{
 			if (main_window->debug == TRUE)
-				fprintf(stderr, "Beginning things\n");
+				{
+					fprintf(stderr, "Beginning things\n");
+				}
 		
 			/* init of gtk and new window */
-			exit_value = gtk_init_check (&argc, &argv);
+			exit_value = gtk_init_check(&argc, &argv);
 			
 			if (load_heraia_ui(main_window) == TRUE)
 				{	
 					if (main_window->debug == TRUE)
-						log_message(main_window, G_LOG_LEVEL_INFO, "main interface loaded");
+						{
+							log_message(main_window, G_LOG_LEVEL_INFO, "main interface loaded (%s)", main_window->xml->filename);
+						}
 					
 					init_heraia_plugin_system(main_window);
 
 					if (load_file_to_analyse(main_window, opt.filename) == TRUE)
-						{	
-							/* inits the data interpretor window */
-							data_interpret(main_window->current_DW);
-							
+						{								
   							/* Connection of the signal to the right function
 							   in order to interpret things when the cursor is
 							   moving                                          */
-							g_signal_connect (G_OBJECT (main_window->current_DW->current_hexwidget), "cursor_moved",
-											  G_CALLBACK (refresh_event_handler), main_window);
+							connect_cursor_moved_signal(main_window);
 
 							log_message(main_window, G_LOG_LEVEL_INFO, "main_window : %p", main_window);
-						   	init_heraia_interface(main_window);
-							
-							/* Do some init plugin calls here */
-							/* init_graph_analysis(main_window); */
 
-							/* Shows all widgets */
-							gtk_widget_show_all(glade_xml_get_widget(main_window->xml, "main_window"));
-							g_signal_emit_by_name (glade_xml_get_widget(main_window->xml, "DIMenu"), "activate");
+						   	init_heraia_interface(main_window);
 
 							/* gtk main loop */
 							gtk_main();
 							exit_value = TRUE;
 						}
 					else
-						exit_value = FALSE;
+						{
+							exit_value = FALSE;
+						}
 				}
 			else
-				fprintf(stderr, "File heraia.glade not found !\n");
+				{
+					fprintf(stderr, "File heraia.glade not found !\n");
+				}
 		}
 
 	return !exit_value; /* Apparently gtk TRUE and FALSE are inverted compared to bash ! */

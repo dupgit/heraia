@@ -30,11 +30,12 @@
 #endif /* HAVE_CONFIG_H */
 
 
-/** As there seems to be huge differences between the linux
+/** 
+ *  As there seems to be huge differences between the linux
  *  and the windows developpement platform such as that
  *  the included paths are correcty taken into account
  *  under linux (and thus nobody bothers) but not under
- *  windows, I decide to put all the .h definitions here
+ *  windows, I decided to put all the .h definitions here
  *  even if it's ugly, this is supposed to solve the problem.
  */
 
@@ -71,67 +72,8 @@ typedef gint RefreshType;
 typedef struct
 {
 	/* Current Hexwidget that we want data to be interpreted */
-	GtkWidget *current_hexwidget;
-
-	/* window widgets */
-	GtkWidget *window;
-	GtkWidget *window_vbox;
-	GtkWidget *window_table;
-	GtkWidget *window_statusbar;
-	GtkWidget *window_menu_bar;
-	GtkWidget *window_show_menu;
-	GtkWidget *window_show_item;
-	GtkWidget *window_encoding_menu;
-	GtkWidget *window_encoding_item;
-	GtkWidget *window_font_menu;
-	GtkWidget *window_font_item;
-
-	/* show menu items */
-	GtkWidget *window_show_8bits_item;
-	GtkWidget *window_show_16bits_item;
-	GtkWidget *window_show_32bits_item;
-	GtkWidget *window_show_64bits_item;
-	GtkWidget *window_show_dos_date_item;
-	GtkWidget *window_show_filetime_date_item;
-	GtkWidget *window_show_C_date_item;
-
-	GtkWidget *window_enc_b_e_item;   /* encoding_big_endian menu item */
-
-	GtkWidget *window_font_select_item; /* font menu item */
-
-	/* general config and parameters for the DI window*/
-	guint table_lines;
-	guint table_columns;
-	guint statusbar_context;
-	gboolean window_displayed;
-	gchar *window_font_name;
-	
-
-	/* labels */
-	GtkWidget *label_unsigned;
-	GtkWidget *label_signed;
-	GtkWidget *label_type;
-	GtkWidget *label_8bits;
-	GtkWidget *label_16bits;
-	GtkWidget *label_32bits;
-	GtkWidget *label_64bits;
-	GtkWidget *label_dos_date;
-	GtkWidget *label_filetime_date;
-	GtkWidget *label_C_date;
-
-	/* entries */
-	GtkWidget *entry_signed_byte;
-	GtkWidget *entry_unsigned_byte;
-	GtkWidget *entry_signed_16bits;
-	GtkWidget *entry_unsigned_16bits;
-	GtkWidget *entry_signed_32bits;
-	GtkWidget *entry_unsigned_32bits;
-	GtkWidget *entry_signed_64bits;
-	GtkWidget *entry_unsigned_64bits;
-	GtkWidget *entry_dos_date;
-	GtkWidget *entry_filetime_date;
-	GtkWidget *entry_C_date;
-
+  GtkWidget *current_hexwidget;  /* we may want to move this from here to heraia_window_t structure */
+  gboolean window_displayed;     /* says whether the window is displayed or not */
 } data_window_t;
 
 
