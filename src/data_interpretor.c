@@ -189,19 +189,13 @@ void refresh_data_interpretor_window(GtkWidget *widget, gpointer data)
 			interpret_as_number(main_window, decode_32bits_signed, "diw_32bits_s", 4, endianness);
 			interpret_as_number(main_window, decode_64bits_unsigned, "diw_64bits_us", 8, endianness);
 			interpret_as_number(main_window, decode_64bits_signed, "diw_64bits_s", 8, endianness);
-  
-			if (endianness == H_DI_BIG_ENDIAN)
-				{
-					interpret_as_number(main_window, decode_to_bits_be, "diw_base_bits", 1, endianness );
-				}
-			else
-				{
-					interpret_as_number(main_window, decode_to_bits_le, "diw_base_bits", 1, endianness);
-				}
+			interpret_as_number(main_window, decode_to_bits, "diw_base_bits", 1, endianness);
+			interpret_as_number(main_window, decode_packed_BCD, "diw_base_bcd", 1, endianness);
 
 			interpret_as_date(main_window, decode_C_date, "diw_C_date", 4, endianness);
 			interpret_as_date(main_window, decode_dos_date, "diw_msdos_date", 4, endianness);
 			interpret_as_date(main_window, decode_filetime_date, "diw_filetime_date", 8, endianness);
+			interpret_as_date(main_window, decode_HFS_date, "diw_HFS_date", 4, endianness);
 		}
 }
 

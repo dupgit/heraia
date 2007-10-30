@@ -29,13 +29,16 @@ typedef gchar *(* DecodeFunc) (guchar *); /* Decode gunction template for number
 typedef gchar *(* DecodeDateFunc) (guchar *, date_and_time_t *mydate); /* Decode function template for dates */
 
 /* bits */
-extern gchar *decode_to_bits_le(guchar *data);
-extern gchar *decode_to_bits_be(guchar *data);
+extern gchar *decode_to_bits(guchar *data);
 
 /* dates */
 extern gchar *decode_dos_date(guchar *data, date_and_time_t *mydate);
 extern gchar *decode_filetime_date(guchar *data, date_and_time_t *mydate);
 extern gchar *decode_C_date(guchar *data, date_and_time_t *mydate);
+extern gchar *decode_HFS_date(guchar *data, date_and_time_t *mydate);
+
+/* bcd */
+extern gchar *decode_packed_BCD(guchar *data);
 
 /* numbers */
 extern gchar *decode_8bits_signed(guchar *data);
@@ -47,6 +50,7 @@ extern gchar *decode_32bits_unsigned(guchar *data);
 extern gchar *decode_64bits_signed(guchar *data);
 extern gchar *decode_64bits_unsigned(guchar *data);
 
+/* Utils */
 extern gboolean swap_bytes(guchar *to_swap, guint first, guint last);
-
+extern void reverse_byte_order(guchar *to_reverse);
 #endif /* _DECODE_H_ */

@@ -34,9 +34,9 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 	stat_buf = (struct stat *) g_malloc0 (sizeof(struct stat));
 	stat(filename, stat_buf);
 	if (main_window->debug == TRUE)
-	  {
-	    log_message(main_window, G_LOG_LEVEL_INFO, "filename to load : %s", filename);
-	  }
+		{
+			log_message(main_window, G_LOG_LEVEL_INFO, "filename to load : %s", filename);
+		}
 
 	if (S_ISREG(stat_buf->st_mode) && stat_buf->st_size>0)
 		{
@@ -49,36 +49,36 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 			gtk_widget_show(main_window->current_DW->current_hexwidget);
 
 			if (main_window->debug == TRUE)
-			  {
-			    log_message(main_window, G_LOG_LEVEL_INFO, "Hexwidget : %p", main_window->current_DW->current_hexwidget);
-			  }
+				{
+					log_message(main_window, G_LOG_LEVEL_INFO, "Hexwidget : %p", main_window->current_DW->current_hexwidget);
+				}
 
 			success = TRUE;
 
 			if (main_window->filename != filename)
 				{
 					if (main_window->filename != NULL)
-					  {
-					    g_free(main_window->filename);
-					  }
+						{
+							g_free(main_window->filename);
+						}
 					main_window->filename = g_strdup_printf("%s", filename);
 				}
 
 			if (main_window->debug == TRUE)
-			  {
-			    log_message(main_window, G_LOG_LEVEL_INFO, "file %s loaded !", main_window->filename);
-			  }
+				{
+					log_message(main_window, G_LOG_LEVEL_INFO, "file %s loaded !", main_window->filename);
+				}
 		} 
 	else
 		{
 			if (S_ISREG(stat_buf->st_mode))
-			  {
-			    fprintf(stderr, "The file %s is empty !\n", filename);
-			  }
+				{
+					fprintf(stderr, "The file %s is empty !\n", filename);
+				}
 			else
-			  {
-			    fprintf(stderr, "The file %s does not exist !\n", filename);
-			  }
+				{
+					fprintf(stderr, "The file %s does not exist !\n", filename);
+				}
 			success = FALSE;
 		}
 
@@ -101,13 +101,13 @@ static GladeXML *load_glade_xml_if_it_exists(gchar *file_to_load)
 
 	stat(file_to_load, stat_buf);
 	if (S_ISREG(stat_buf->st_mode) && stat_buf->st_size>0)
-	  {
-	    xml = glade_xml_new(file_to_load, NULL, NULL);
-	  }
+		{
+			xml = glade_xml_new(file_to_load, NULL, NULL);
+		}
 	else
-	  {
-	    xml = NULL;
-	  }
+		{
+			xml = NULL;
+		}
 
 	g_free(stat_buf);
 
@@ -131,9 +131,9 @@ GladeXML *load_glade_xml_file(GList *location_list, gchar *filename)
 			xml = load_glade_xml_if_it_exists(file_to_load);
 
 			if (xml == NULL)
-			  {
-				list = list->next;	
-			  }
+				{
+					list = list->next;	
+				}
 			g_free(file_to_load);
 		}
 	

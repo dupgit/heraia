@@ -34,7 +34,9 @@ heraia_SOURCES = 			\
 	include/plugin_list.h		
 
 
-gladefiles = heraia.glade
+gladefiles = heraia.glade	\
+	     logo.png		\
+	     logo_petit.png
 gladedir = $(datadir)/@PACKAGE@
 glade_DATA = $(gladefiles)
 EXTRA_DIST = $(gladefiles)

@@ -30,8 +30,8 @@
  */
 void connect_cursor_moved_signal(heraia_window_t *main_window)
 {
-  g_signal_connect(G_OBJECT(main_window->current_DW->current_hexwidget), "cursor_moved",   
-		   G_CALLBACK(refresh_event_handler), main_window);
+	g_signal_connect(G_OBJECT(main_window->current_DW->current_hexwidget), "cursor_moved",   
+						  G_CALLBACK(refresh_event_handler), main_window);
 }
 
 
@@ -61,34 +61,47 @@ HERAIA_ERROR heraia_hex_document_new(heraia_window_t *main_window, char *filenam
  *
  *  We assume that a previous g_malloc has been done in order to
  *  use the function. Here we need the "swap_bytes" function
- *  defined in the decode.h header
+ *  defined in the decode.h header in order to take the endianness
+ *  into account
  */
 gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, guint endianness, guchar *result) 
 {
-  guint i;
+	guint i;
 	
-  if (result == NULL || gh == NULL)
-    {
-      return FALSE;
-    }
-  else if ((pos < 0) || ((pos+len) > ghex_file_size(gh)))
-    {
-      return FALSE;
-    }
-  else
-    {
-		 for (i=0; i<len ; i++)
-		   {
-		     result[i] = gtk_hex_get_byte(gh, pos+i);
-		   }
+	if (result == NULL || gh == NULL)
+		{
+			return FALSE;
+		}
+	else if ((pos < 0) || ((pos+len) > ghex_file_size(gh)))
+		{
+			return FALSE;
+		}
+	else
+		{
+			for (i=0; i<len ; i++)
+				{
+					result[i] = gtk_hex_get_byte(gh, pos+i);
+				}
 
-		 if (endianness == H_DI_BIG_ENDIAN)
-		   {
-		     swap_bytes(result, 0, len-1);
-		   }
-		 /* TODO : Middle Endian !! */
-      return TRUE;
-    }
+			if (endianness == H_DI_BIG_ENDIAN)
+				{
+					if (len > 1)
+						{
+							swap_bytes(result, 0, len-1);
+						}
+					else
+						{
+							reverse_byte_order(result);  /* Only one byte and big endian requested */
+						} 
+				}
+			else if (endianness == H_DI_MIDDLE_ENDIAN && len >= 4)
+				{
+					swap_bytes(result, 0, (len/2)-1);
+					swap_bytes(result, (len/2), len-1);
+				}
+
+			return TRUE;
+		}
 }
 
 /**
@@ -97,11 +110,11 @@ gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, guint endianness, guchar 
 guint64 ghex_file_size(GtkHex *gh)
 {
 	if ( gh != NULL && gh->document != NULL)
-	  {
-	    return gh->document->file_size;
-	  }
+		{
+			return gh->document->file_size;
+		}
 	else
-	  {
-	    return 0;
-	  }
+		{
+			return 0;
+		}
 }

@@ -15,12 +15,19 @@ JAVATIME
 http://www.javaworld.com/javaworld/jw-03-2001/jw-0330-time.html
 
 See also :
-http://blogs.msdn.com/oldnewthing/archive/2003/09/05/54806.aspx
-Beware this link has some funny examples ... 
-
-http://www.decimaltime.hynes.net/computers.html
-
+ - http://blogs.msdn.com/oldnewthing/archive/2003/09/05/54806.aspx
+   Beware this link has some funny examples ... 
+ - http://www.decimaltime.hynes.net/computers.html
+ - http://en.wikipedia.org/wiki/Epoch_%28reference_date%29#Computing
+ - http://tools.ietf.org/html/rfc1305 (NTP)
 
 Endianness : 
 (french)  http://www.debian.org/intl/french/dico/data/littlebig_endian
 (english) http://en.wikipedia.org/wiki/Endianness
+
+Others :
+ - http://hachoir.org/
+ - http://www.forensicswiki.org/wiki/Main_Page
+
+Leap years
+ - http://en.wikipedia.org/wiki/Leap_year

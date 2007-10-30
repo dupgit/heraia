@@ -1,3 +1,31 @@
+30.10.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* Changed the "Base" tab name to "Binary based"
+	  name.
+	* Added HFS as a new interpreted date
+	* Added BCD coding to the "Binary based" tab
+	* Added links to the "links" file to document
+	  dates formats and some interresting projects
+	* Redesigned a bit the functions that computes
+	  the date and time
+	* Added middle endian encoding
+	* Added logos to the main window and the about
+	  box
+
+24.10.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* Get rid of the old data interpretor window and :
+	  - added a new one in the glade description file
+	    that uses tabs (numbers, dates and base)
+	  - modified a bit to take this major change into
+	    account. Now adding a new function to decode
+	    things and linking it to the data interpretor
+	    window is much more easy.
+	  - Added a binary interpretation into the "base"
+	    tab.
+	  - cleaned code and comments a bit
+	* added a link for the endianness documentation
+
 11.07.2007
 	- Olivier Delhomme <heraia@delhomme.org>
 	* heraia.iss
