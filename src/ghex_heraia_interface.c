@@ -25,17 +25,6 @@
 
 
 /**
- *  Connects the signal that the cursor has moved to
- *  the refreshing function
- */
-void connect_cursor_moved_signal(heraia_window_t *main_window)
-{
-	g_signal_connect(G_OBJECT(main_window->current_DW->current_hexwidget), "cursor_moved",   
-						  G_CALLBACK(refresh_event_handler), main_window);
-}
-
-
-/**
  *  kills the old document if it exists and add a new one, from the new filename
  */
 HERAIA_ERROR heraia_hex_document_new(heraia_window_t *main_window, char *filename) 

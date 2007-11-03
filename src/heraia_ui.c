@@ -309,24 +309,24 @@ void init_heraia_interface(heraia_window_t *main_window)
 	if (main_window != NULL)
 		{
 			dw = main_window->current_DW;
-    
-			diw = glade_xml_get_widget(main_window->xml, "data_interpretor_window");
+
 			menu = glade_xml_get_widget(main_window->xml, "DIMenu");
 			window = glade_xml_get_widget(main_window->xml, "main_window");
 
 			if (dw != NULL && diw != NULL)
 				{
-					g_signal_connect(G_OBJECT(diw), "delete_event", 
-									 G_CALLBACK(delete_dt_window_event), main_window);
-
-					g_signal_connect(G_OBJECT(diw), "destroy", 
-									 G_CALLBACK(destroy_dt_window), main_window);
+					/*  Connection of the signal to the right function
+					 *  in order to interpret things when the cursor is
+					 *  moving                                          
+					 */
+					connect_cursor_moved_signal(main_window);
 
 					gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menu), dw->window_displayed);     
 	  
 					/* Shows all widgets */
 					gtk_widget_show_all(window);
 
+					/* Shows or hide the data interpretor window */
 					if (dw->window_displayed == TRUE)
 						{
 							gtk_widget_show_all(diw);
@@ -386,6 +386,16 @@ static gboolean load_heraia_glade_xml(heraia_window_t *main_window)
 		return TRUE;
 }
 
+/**
+ *  Connects the signal that the cursor has moved to
+ *  the refreshing function
+ */
+void connect_cursor_moved_signal(heraia_window_t *main_window)
+{
+	g_signal_connect(G_OBJECT(main_window->current_DW->current_hexwidget), "cursor_moved",   
+						  G_CALLBACK(refresh_event_handler), main_window);
+}
+
 
 /**
  *  Connect the signals at the interface 
@@ -393,6 +403,7 @@ static gboolean load_heraia_glade_xml(heraia_window_t *main_window)
 static void heraia_ui_connect_signals(heraia_window_t *main_window)
 {
 
+	/* the data interpretor menu */
 	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "DIMenu")), "activate", 
 					  G_CALLBACK (on_DIMenu_activate), main_window);
 
@@ -412,15 +423,20 @@ static void heraia_ui_connect_signals(heraia_window_t *main_window)
 					  G_CALLBACK (on_enregistrer_sous1_activate), main_window); 
 		
 	/* about dialog box */		
-	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "a_propos1")), "activate",  
-					  G_CALLBACK (on_a_propos1_activate), main_window); 
+	g_signal_connect (G_OBJECT(glade_xml_get_widget(main_window->xml, "a_propos1")), "activate",  
+					  G_CALLBACK(on_a_propos1_activate), main_window); 
+
 	g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "about_dialog")), "close",
 					 G_CALLBACK(a_propos_close), main_window);
+
 	g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "about_dialog")), "response",
 					 G_CALLBACK(a_propos_response), main_window);
+
 	g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "about_dialog")), "delete-event",
 					 G_CALLBACK(a_propos_delete), main_window);
 
+
+	/* main window killed or destroyed */
 	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "main_window")), "delete_event", 
 					  G_CALLBACK (delete_main_window_event), NULL);
 
@@ -431,7 +447,10 @@ static void heraia_ui_connect_signals(heraia_window_t *main_window)
 
 /**
  *  Loads, if possible, the glade xml file and then connects the
- *  signals and inits the log window
+ *  signals and inits the following windows :
+ *  - log window
+ *  - data_interpretor window
+ *  - list data types
  */
 int load_heraia_ui(heraia_window_t *main_window)
 {
@@ -449,6 +468,9 @@ int load_heraia_ui(heraia_window_t *main_window)
 
 			/* The data interpretor window */
 			data_interpretor_init_interface(main_window);
+
+			/* The list data types window */
+			list_data_types_init_interface(main_window);
 		}
 
 	return success;
@@ -506,7 +528,9 @@ GtkWidget *gtk_radio_button_get_active(GSList *group)
 	while (tmp_slist)
 		{
 			if (GTK_TOGGLE_BUTTON (tmp_slist->data)->active)
-				return GTK_WIDGET (tmp_slist->data);
+				{
+					return GTK_WIDGET (tmp_slist->data);
+				}
 			tmp_slist = tmp_slist->next;
 		}
 
@@ -523,7 +547,13 @@ GtkWidget *gtk_radio_button_get_active(GSList *group)
 GtkWidget *gtk_radio_button_get_active_from_widget(GtkRadioButton *radio_group_member)
 { 
 	if (radio_group_member)
-		return gtk_radio_button_get_active(radio_group_member->group);
+		{
+			return gtk_radio_button_get_active(radio_group_member->group);
+		}
+	else
+		{
+			return NULL;
+		}
 }
 
 /**

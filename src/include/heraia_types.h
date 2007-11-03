@@ -115,5 +115,6 @@ typedef struct
 #include "log.h"
 #include "plugin.h"
 #include "plugin_list.h"
+#include "list_data_types.h"
 
 #endif /* _HERAIA_TYPES_H_ */

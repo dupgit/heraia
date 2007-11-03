@@ -206,6 +206,13 @@ void refresh_data_interpretor_window(GtkWidget *widget, gpointer data)
  */
 static void connect_data_interpretor_signals(heraia_window_t *main_window)
 {
+	/* When data interpretor's window is killed or destroyed */
+	g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "data_interpretor_window")), "delete_event", 
+						  G_CALLBACK(delete_dt_window_event), main_window);
+
+	g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "data_interpretor_window")), "destroy", 
+						  G_CALLBACK(destroy_dt_window), main_window);
+
 	/* Menu "close" */
 	g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "diw_close_menu")), "activate", 
 						  G_CALLBACK(close_data_interpretor_window), main_window);

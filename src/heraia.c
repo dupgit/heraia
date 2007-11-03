@@ -227,11 +227,7 @@ int main (int argc, char ** argv)
 
 					if (load_file_to_analyse(main_window, opt.filename) == TRUE)
 						{								
-  							/* Connection of the signal to the right function
-							   in order to interpret things when the cursor is
-							   moving                                          */
-							connect_cursor_moved_signal(main_window);
-
+  						
 							log_message(main_window, G_LOG_LEVEL_INFO, "main_window : %p", main_window);
 
 						   	init_heraia_interface(main_window);

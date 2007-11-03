@@ -171,7 +171,7 @@ static void init_plugin(heraia_window_t *main_window, heraia_plugin_t *plugin, c
  }
 
 /**
- *  Here we manage to load on plugin at a time (and this is really enough !)
+ *  Here we manage to load one plugin at a time (and this is really enough !)
  */
 static void load_one_plugin(heraia_window_t *main_window, const gchar *filename, guint plugins_nb)
 {

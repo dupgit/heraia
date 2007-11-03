@@ -1,7 +1,8 @@
-/* -*- Mode: C; tab-width: 3; indent-tabs-mode: t; c-basic-offset: 3 -*- */
+/* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
-  ghex_heraia_interface.h
-  heraia - an hexadecimal file editor and analyser based on ghex
+  list_data_types.h
+  window allowing the user to manage his data types (add, remove, edit and
+  eventually save them)
  
   (C) Copyright 2005 - 2007 Olivier Delhomme
   e-mail : heraia@delhomme.org
@@ -21,12 +22,11 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
 
-#ifndef _GHEX_HERAIA_INTERFACE_H_
-#define _GHEX_HERAIA_INTERFACE_H_
+#ifndef _LIST_DATA_TYPES_H_
+#define _LIST_DATA_TYPES_H_
 
-extern gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, guint endianness, guchar *result);
+extern void on_ldt_menu_activate(GtkWidget *widget, gpointer data);
+extern void list_data_types_init_interface(heraia_window_t *main_window);
 
-extern HERAIA_ERROR heraia_hex_document_new(heraia_window_t *main_window, char *filename);
-extern guint64 ghex_file_size(GtkHex *gh);
 
-#endif /* _GHEX_HERAIA_INTERFACE_H_ */
+#endif /* _LIST_DATA_TYPES_H_ */

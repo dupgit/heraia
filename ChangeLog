@@ -1,3 +1,29 @@
+03.11.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* Corrected some comments
+
+
+02.11.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* moved connect_cursor_moved_signal function from
+	  ghex_heraia_interface.c to heraia_ui.h to be
+	  more coherent.
+	* adding a new window that will allow the user to
+	  create new data types (that may be viewed in the
+	  data interpretor window) added the files 
+	   . list_data_types.[ch]
+	* Moved the connection to the moved cursor's signal
+	  from heraia.c to init_heraia_interface() in the
+	  heraia_ui.c file. Added in load_heraia_ui()  a call 
+	  to list_data_types_init_interface() function.
+	* Moved some signals connections to the data interpretor
+	  window from init_heraia_interface() to 
+	  connect_data_interpretor_signals()
+	* Added a return value to 
+	  gtk_radio_button_get_active_from_widget() in case
+	  of a null radio_group_member (returns NULL)
+
+
 30.10.2007
 	- Olivier Delhomme <heraia@delhomme.org>
 	* Changed the "Base" tab name to "Binary based"

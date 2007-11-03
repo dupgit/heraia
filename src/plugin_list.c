@@ -331,33 +331,34 @@ static void pn_treeview_selection_changed_cb(GtkTreeSelection *selection, gpoint
 
 static void plugin_list_window_connect_signals(heraia_window_t *main_window)
 {
-  GtkTreeSelection *select = NULL;
+	GtkTreeSelection *select = NULL;
  
-  if (main_window != NULL)
-    {
-      g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "plugin_list_window")), "delete_event", 
-		       G_CALLBACK(delete_plw_window_event), main_window);
+	if (main_window != NULL)
+		{
+			/* When the plugin list window is destroyed or killed */
+			g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "plugin_list_window")), "delete_event", 
+							 G_CALLBACK(delete_plw_window_event), main_window);
 
-      g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "plugin_list_window")), "destroy", 
-		       G_CALLBACK(destroy_plw_window), main_window);
+			g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "plugin_list_window")), "destroy", 
+							 G_CALLBACK(destroy_plw_window), main_window);
 	
-      /* Close button */
-      g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "plw_close_b")), "clicked", 
-		       G_CALLBACK(plw_close_clicked), main_window);
+			/* Close button */
+			g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "plw_close_b")), "clicked", 
+							 G_CALLBACK(plw_close_clicked), main_window);
 
-      /* The toogle button */
-      g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "mw_cmi_plugin_list")), "toggled",
-		       G_CALLBACK(mw_cmi_plw_toggle), main_window);
+			/* The toogle button */
+			g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "mw_cmi_plugin_list")), "toggled",
+							 G_CALLBACK(mw_cmi_plw_toggle), main_window);
      
-      /* Selection has changed for the pn_treeview */
-      select = gtk_tree_view_get_selection(GTK_TREE_VIEW(glade_xml_get_widget(main_window->xml, "pn_treeview")));
-      gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
-      g_signal_connect (G_OBJECT(select), "changed", G_CALLBACK (pn_treeview_selection_changed_cb), main_window);
+			/* Selection has changed for the pn_treeview */
+			select = gtk_tree_view_get_selection(GTK_TREE_VIEW(glade_xml_get_widget(main_window->xml, "pn_treeview")));
+			gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
+			g_signal_connect (G_OBJECT(select), "changed", G_CALLBACK (pn_treeview_selection_changed_cb), main_window);
 
-	  /* Refresh button */
-      g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "plw_refresh_b")), "clicked", 
-		       G_CALLBACK(plw_refresh_clicked), main_window);
-    }
+			/* Refresh button */
+			g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "plw_refresh_b")), "clicked", 
+							 G_CALLBACK(plw_refresh_clicked), main_window);
+		}
 }
 
 /**
@@ -398,7 +399,7 @@ static void init_plugin_name_tv(heraia_window_t *main_window)
 				gtk_tree_view_remove_column(treeview, column);
 		   
 			renderer = gtk_cell_renderer_text_new();
-			column = gtk_tree_view_column_new_with_attributes ("Nom", renderer, "text", PNTV_COLUMN_NAME, NULL);
+			column = gtk_tree_view_column_new_with_attributes ("Name", renderer, "text", PNTV_COLUMN_NAME, NULL);
 			gtk_tree_view_append_column (treeview, column);
 		}
 }
