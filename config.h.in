@@ -1,5 +1,8 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
+/* Debug mode Off */
+#undef ENABLE_DEBUG
+
 /* always defined to indicate that i18n is enabled */
 #undef ENABLE_NLS
 
@@ -117,6 +120,12 @@
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
 
+/* This is a Linux system */
+#undef SYS_LINUX
+
+/* This is a Windows system using MinGW */
+#undef SYS_MINGW
+
 /* Define to 1 if you can safely include both <sys/time.h> and <time.h>. */
 #undef TIME_WITH_SYS_TIME
 
@@ -129,5 +138,5 @@
 /* Define to `int' if <sys/types.h> does not define. */
 #undef pid_t
 
-/* Define to `unsigned int' if <sys/types.h> does not define. */
+/* Define to `unsigned' if <sys/types.h> does not define. */
 #undef size_t

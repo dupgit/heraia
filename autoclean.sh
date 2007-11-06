@@ -25,19 +25,23 @@ rm -f ltmain.sh
 echo "rm -f ltmain.sh"
 rm -f missing
 echo "rm -f missing"
-rm -f src/*~ src/*#
-echo "rm -f src/*~ src/*#"
-rm -f *~ *#
-echo "rm -f *~ *#"
-rm -f Makefile.in src/Makefile.in plugins/Makefile.in plugins/stat/Makefile.in
-echo "rm -f Makefile.in src/Makefile.in plugins/Makefile.in plugins/stat/Makefile.in"
-rm -f Makefile src/Makefile plugins/Makefile plugins/stat/Makefile
-echo "rm -f Makefile src/Makefile plugins/Makefile plugins/stat/Makefile"
+find . -name "Makefile" -exec rm -f {} \;
+echo "find . -name Makefile -exec rm -f {} \;"
+find . -name "Makefile.in" -exec rm -f {} \;
+echo "find . -name Makefile.in -exec rm -f {} \;"
 rm -f configure
 echo "rm -f configure"
 rm -f config.status config.log
 echo "rm -f config.status config.log"
 rm -f libtool
 echo "rm -f libtool"
-find -name *~ -exec rm {} \;
-echo "find -name *~ -exec rm {} \;"
+find . -name "*~" -exec rm -f {} \;
+echo "find . -name *~ -exec rm -f {} \;"
+find . -name "*#" -exec rm -f {} \;
+echo "find . -name *# -exec rm -f {} \;"
+find . -name *.gcd[ao] -exec rm -f {} \;
+echo "find . -name *.gcd[ao] -exec rm -f {} \;"
+find . -name *.gcov -exec rm -f {} \;
+echo "find . -name *.gcov -exec rm -f {} \;"
+find . -name *.gcno -exec rm -f {} \;
+echo "find . -name *.gcno -exec rm -f {} \;"

@@ -67,7 +67,7 @@ static heraia_window_t *heraia_init_main_struct(void)
 	/* First, in this early stage of the development we want to toggle debugging
 	   mode ON : 
 	*/
-	herwin->debug = TRUE;
+	herwin->debug = TRUE; /* ENABLE_DEBUG; */
 	herwin->filename = NULL;
 	herwin->current_doc = NULL;
 	herwin->current_DW = (data_window_t *) g_malloc0 (sizeof(data_window_t));
@@ -94,7 +94,10 @@ static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window)
 			load_plugins(main_window);
 
 			/* the plugin_list_window (here the plugins may be loaded !) */
-			log_message(main_window, G_LOG_LEVEL_INFO, "Inits the plugin list window");
+			if (main_window->debug == TRUE)
+				{
+					log_message(main_window, G_LOG_LEVEL_INFO, "Inits the plugin list window");
+				}
 			plugin_list_window_init_interface(main_window);
 			return HERAIA_NOERR;
 		}
@@ -168,7 +171,10 @@ int main (int argc, char ** argv)
 	
 	main_window = heraia_init_main_struct();
 
-	fprintf(stdout, "main_struct initialized !\n");
+	if (main_window->debug == TRUE)
+		{
+			fprintf(stdout, "Main struct initialized !\n");
+		}
 
 	while ((c = getopt_long (argc, argv, "vh", long_options, NULL)) != -1)
 		{
@@ -218,17 +224,17 @@ int main (int argc, char ** argv)
 			
 			if (load_heraia_ui(main_window) == TRUE)
 				{	
-					if (main_window->debug == TRUE)
-						{
-							log_message(main_window, G_LOG_LEVEL_INFO, "main interface loaded (%s)", main_window->xml->filename);
-						}
-					
+			  
+					log_message(main_window, G_LOG_LEVEL_INFO, "Main interface loaded (%s)", main_window->xml->filename);
+										
 					init_heraia_plugin_system(main_window);
 
 					if (load_file_to_analyse(main_window, opt.filename) == TRUE)
 						{								
-  						
-							log_message(main_window, G_LOG_LEVEL_INFO, "main_window : %p", main_window);
+  							if (main_window->debug == TRUE)
+								{
+									log_message(main_window, G_LOG_LEVEL_INFO, "Main_window : %p", main_window);
+								}
 
 						   	init_heraia_interface(main_window);
 

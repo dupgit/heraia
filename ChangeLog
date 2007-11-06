@@ -1,3 +1,19 @@
+06.11.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* Added --enable-debug, --enable-gcov and --enable-gprof options 
+	  to ./configure's script
+	  - enable-debug sets the PROGRAM_DEBUG environment variable to 
+	    TRUE and compiles heraia with debugging mode on, otherwise
+	    heraia is compiled without debugging mode. As for now, as I
+	    consider the code as not mature, heraia is compiled in 
+	    debugging mode (whatever the option you choose)
+	  - enable-gcov enables code coverage functionnalities used by
+	    gnu's gcov software (it may help to see how well is tested
+	    a particular piece of code)
+	  - enable-gprof enables code performances analysis. It may be
+	    a little bit useless at first, but it may become interesting
+	    in the future (when some search functions will be available)
+
 03.11.2007
 	- Olivier Delhomme <heraia@delhomme.org>
 	* Corrected some comments

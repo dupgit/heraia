@@ -160,6 +160,62 @@ case $build_os in
         ;;
 esac
 
+dnl **************************************************
+dnl * ./configure options                            *
+dnl **************************************************
+
+
+dnl *******************************
+dnl debug option
+dnl *******************************
+AC_ARG_ENABLE([debug],
+     [  --enable-debug    Turn on debugging],
+     [case "${enableval}" in
+       yes) debug=true ;;
+       no)  debug=false ;;
+       *) AC_MSG_ERROR([bad value ${enableval} for --enable-debug]) ;;
+     esac],[debug=false])
+if test x$debug = xtrue
+then
+ AC_DEFINE_UNQUOTED(ENABLE_DEBUG, TRUE, [Debug mode On])
+else
+ AC_DEFINE_UNQUOTED(ENABLE_DEBUG, FALSE, [Debug mode Off])
+fi
+
+dnl *******************************
+dnl gcov option
+dnl *******************************
+AC_ARG_ENABLE([gcov],
+     [  --enable-gcov     Enables gcov coverage tests],
+     [case "${enableval}" in
+       yes) gcov=true ;;
+       no)  gcov=false ;;
+       *) AC_MSG_ERROR([bad value ${enableval} for --enable-gcov]) ;;
+     esac],[gcov=false])
+if test x$gcov = xtrue
+then
+ CFLAGS="-fprofile-arcs -ftest-coverage $CFLAGS "
+else
+ CFLAGS="$CFLAGS"
+fi
+
+dnl *******************************
+dnl gprof option
+dnl *******************************
+AC_ARG_ENABLE([gprof],
+     [  --enable-gprof    Enables gprof profiling],
+     [case "${enableval}" in
+       yes) gprof=true ;;
+       no)  gprof=false ;;
+       *) AC_MSG_ERROR([bad value ${enableval} for --enable-gprof]) ;;
+     esac],[gprof=false])
+if test x$gprof = xtrue
+then
+ CFLAGS="-pg $CFLAGS"
+else
+ CFLAGS="$CFLAGS"
+fi
+
 AC_SUBST(LDFLAGS)
 AC_SUBST(CFLAGS)
 AC_SUBST(GTKHEX_CFLAGS)
