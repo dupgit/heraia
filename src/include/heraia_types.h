@@ -25,7 +25,9 @@
 #ifndef _HERAIA_TYPES_H_
 #define _HERAIA_TYPES_H_
 
-/* #ifdef HAVE_CONFIG_H */ /* I have some problems under windows if #ifdef statement is activated */
+/* I have some problems under windows if #ifdef statement is activated */
+
+/* #ifdef HAVE_CONFIG_H */ 
 #  include "config.h"
 /* #endif */  /* HAVE_CONFIG_H */
 
@@ -33,7 +35,7 @@
 /** 
  *  As there seems to be huge differences between the linux
  *  and the windows developpement platform such as that
- *  the included paths are correcty taken into account
+ *  the included paths are correctly taken into account
  *  under linux (and thus nobody bothers) but not under
  *  windows, I decided to put all the .h definitions here
  *  even if it's ugly, this is supposed to solve the problem.
@@ -72,8 +74,12 @@ typedef gint RefreshType;
 typedef struct
 {
 	/* Current Hexwidget that we want data to be interpreted */
-  GtkWidget *current_hexwidget;  /* we may want to move this from here to heraia_window_t structure */
-  gboolean window_displayed;     /* says whether the window is displayed or not */
+	GtkWidget *current_hexwidget;  /* we may want to move this from here to heraia_window_t structure */
+	GtkWidget *diw;                /* data interpretor window                                         */
+
+	gboolean window_displayed;     /* says whether the window is displayed or not                     */
+	gint tab_displayed;           /* keeps the last displayed tab's number before closing            */
+
 } data_window_t;
 
 
@@ -92,7 +98,7 @@ typedef struct
 } heraia_window_t;
 
 
-/* a human struct to store a date with a time*/
+/* a human struct to store a date with a time TODO : add an UTC info*/
 typedef struct
 {
 	guint32 year;

@@ -1,0 +1,5 @@
+
+07.11.2007 I tried to minimise McCabe's complexity measure results
+           of every function. I would be very pleased if heraia
+           developpers, if any, could be carefull enought to leave
+           each function's McCabe value under 10 strictly.

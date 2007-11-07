@@ -43,6 +43,38 @@ HERAIA_ERROR heraia_hex_document_new(heraia_window_t *main_window, char *filenam
 	return HERAIA_NOERR;
 }
 
+/**
+ *  Deals with the endianness of 'len' bytes located in 'result'
+ *  for BIG_ENDIAN we only swap bytes if we have two or more of them
+ *  if we have only one byte, we reverse its order
+ *  if endianness is MIDDLE_ENDIAN we swap only four or more bytes
+ *  Here we might have funny things with len corresponding to 24 or 56 bits
+ *  for example
+ *  Assumption is made that the default order is LITTLE_ENDIAN (which may
+ *  not be true on some systems !)
+ *  We fo assume that 'result' really contains 'len' bytes of data previously
+ *  gmalloc'ed
+ */
+static void change_endianness(guint len, guint endianness, guchar *result)
+{
+	if (endianness == H_DI_BIG_ENDIAN)
+		{
+			if (len > 1) /* We swap bytes only if we have two or more */
+				{
+					swap_bytes(result, 0, len-1);
+				}
+			else
+				{
+					reverse_byte_order(result);  /* Only one byte and big endian requested */
+				} 
+		}
+	else if (endianness == H_DI_MIDDLE_ENDIAN && len >= 4)
+		{
+			swap_bytes(result, 0, (len/2)-1);
+			swap_bytes(result, (len/2), len-1);
+		}
+}
+
 
 /**
  *  Returns 'len' number of bytes located at 'pos' in the GtkHex 
@@ -61,33 +93,20 @@ gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, guint endianness, guchar 
 		{
 			return FALSE;
 		}
-	else if ((pos < 0) || ((pos+len) > ghex_file_size(gh)))
+	else if ((pos < 0) || ((pos+len) > ghex_file_size(gh))) /* pos located in the file limits ! */ 
 		{
 			return FALSE;
 		}
 	else
 		{
+			/* Extracts len bytes from the Ghex widget */
 			for (i=0; i<len ; i++)
 				{
 					result[i] = gtk_hex_get_byte(gh, pos+i);
 				}
-
-			if (endianness == H_DI_BIG_ENDIAN)
-				{
-					if (len > 1)
-						{
-							swap_bytes(result, 0, len-1);
-						}
-					else
-						{
-							reverse_byte_order(result);  /* Only one byte and big endian requested */
-						} 
-				}
-			else if (endianness == H_DI_MIDDLE_ENDIAN && len >= 4)
-				{
-					swap_bytes(result, 0, (len/2)-1);
-					swap_bytes(result, (len/2), len-1);
-				}
+			
+			/* Deals with endianness to rearrange datas */
+			change_endianness(len, endianness, result);
 
 			return TRUE;
 		}

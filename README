@@ -1,9 +1,6 @@
-
 Compiling the program (the easy way)
 
-The line below is optionnal if there is already a 'configure' 
-script in your directory :
-
+ ./autoclean.sh
  ./autogen.sh
  ./configure
  make
@@ -18,7 +15,7 @@ If you have installed it :
  heraia filename
 
 Please note :
-If you dowloaded the sources from the svn repository the
+If you downloaded the sources from the svn repository the
 file heraia.csv does not mean anything (as it is not generated
 for every commit - but only for distribution packages upon new
 versions).

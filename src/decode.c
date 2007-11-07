@@ -371,8 +371,8 @@ gchar *decode_HFS_date(guchar *data, date_and_time_t *mydate)
 
 
 /**
- *  decodes the stream represented by *data to a
- *  string of 0 and 1 (Little Endian style)
+ *  decodes the stream represented by *data (one byte) to a
+ *  string containing eight 0 or 1 (Little Endian style)
  */
 gchar *decode_to_bits(guchar *data)
 {
@@ -391,7 +391,7 @@ gchar *decode_to_bits(guchar *data)
 										  (data[0] & 0x08) > 0 ? 1 : 0, 
 										  (data[0] & 0x04) > 0 ? 1 : 0,
 										  (data[0] & 0x02) > 0 ? 1 : 0, 
-										  (data[0] & 0x01) > 0 ? 1 : 0);
+										  (data[0] & 0x01));
 		}
 }
 

@@ -25,10 +25,11 @@
 #include "heraia_types.h"
 
 static void version(void);
-static int usage(int status);
+static gboolean usage(int status);
 static heraia_window_t *heraia_init_main_struct(void);
 static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window);
 static void init_heraia_location_list(heraia_window_t *main_window);
+static gboolean manage_command_line_options(Options *opt, int argc, char ** argv);
 
 static void version(void)
 {
@@ -36,7 +37,7 @@ static void version(void)
 }
 
 
-static int usage(int status)
+static gboolean usage(int status)
 {
 	if (status == 0)
 		{
@@ -60,21 +61,28 @@ static heraia_window_t *heraia_init_main_struct(void)
 {
 	heraia_window_t *herwin;
 
-	herwin = (heraia_window_t *) g_malloc0 (sizeof(heraia_window_t));
+	herwin = (heraia_window_t *) g_malloc0(sizeof(heraia_window_t));
 
 	if ( ! herwin )
-		return NULL;
+		{
+			return NULL;
+		}
 	/* First, in this early stage of the development we want to toggle debugging
 	   mode ON : 
 	*/
 	herwin->debug = TRUE; /* ENABLE_DEBUG; */
 	herwin->filename = NULL;
 	herwin->current_doc = NULL;
-	herwin->current_DW = (data_window_t *) g_malloc0 (sizeof(data_window_t));
 	herwin->plugins_list = NULL; 
 	herwin->location_list = NULL;
-	
 	init_heraia_location_list(herwin);
+
+	/* data interpretor structure initialization */
+	herwin->current_DW = (data_window_t *) g_malloc0 (sizeof(data_window_t));
+	herwin->current_DW->current_hexwidget = NULL;
+	herwin->current_DW->diw = NULL;
+	herwin->current_DW->window_displayed = FALSE;
+	herwin->current_DW->tab_displayed = 0;  /* the first tab */
 
 	return herwin;
 }
@@ -94,11 +102,9 @@ static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window)
 			load_plugins(main_window);
 
 			/* the plugin_list_window (here the plugins may be loaded !) */
-			if (main_window->debug == TRUE)
-				{
-					log_message(main_window, G_LOG_LEVEL_INFO, "Inits the plugin list window");
-				}
+			log_message(main_window, G_LOG_LEVEL_DEBUG, "Inits the plugin list window");
 			plugin_list_window_init_interface(main_window);
+
 			return HERAIA_NOERR;
 		}
 	else
@@ -157,24 +163,13 @@ static void init_heraia_location_list(heraia_window_t *main_window)
 }
 
 /**
- *  main program
+ *  Manages all the command line options and populates the
+ *  Options *opt structure accordingly
  */
-int main (int argc, char ** argv) 
-{  
-	Options opt; /* A structure to manage the command line options  */
+static gboolean manage_command_line_options(Options *opt, int argc, char ** argv)
+{
+	int exit_value = TRUE;
 	int c = 0;
-	gboolean exit_value = TRUE;
-	heraia_window_t *main_window = NULL;
-
-	opt.filename = NULL;  /* At first we do not have any filename */	
-	opt.usage = FALSE;
-	
-	main_window = heraia_init_main_struct();
-
-	if (main_window->debug == TRUE)
-		{
-			fprintf(stdout, "Main struct initialized !\n");
-		}
 
 	while ((c = getopt_long (argc, argv, "vh", long_options, NULL)) != -1)
 		{
@@ -189,30 +184,58 @@ int main (int argc, char ** argv)
 	 
 				case 'h':
 					exit_value = usage(1);
-					opt.usage = TRUE;
+					opt->usage = TRUE;
 					break;
 
 				default:
 					exit_value = usage(0);
-					opt.usage = TRUE;
+					opt->usage = TRUE;
 				}
 		}
 
 	if (optind < argc)
 		{
-			opt.filename = (char*) malloc (sizeof(char) * strlen(argv[optind]) + 1);
-			strcpy(opt.filename, argv[optind]);
+			opt->filename = (char*) malloc (sizeof(char) * strlen(argv[optind]) + 1);
+			strcpy(opt->filename, argv[optind]);
 		}
 	else
 		{
-			if (opt.usage != TRUE)
+			if (opt->usage != TRUE)
 				{
-					exit_value = usage (0);
-					opt.usage = TRUE;
+					exit_value = usage(0);
+					opt->usage = TRUE;
 				}
 		}
 
-	if (opt.usage != TRUE)
+	return exit_value;
+}
+
+
+/**
+ *  main program
+ */
+int main (int argc, char ** argv) 
+{  
+	Options *opt; /* A structure to manage the command line options  */
+	gboolean exit_value = TRUE;
+	heraia_window_t *main_window = NULL;
+
+	opt = (Options *) g_malloc0(sizeof(Options));
+
+	opt->filename = NULL;  /* At first we do not have any filename */	
+	opt->usage = FALSE;
+	
+	main_window = heraia_init_main_struct();
+
+	if (main_window->debug == TRUE)
+		{
+			fprintf(stdout, "Main struct initialized !\n");
+		}
+
+	/* Command line options evaluation */
+	exit_value = manage_command_line_options(opt, argc, argv);
+	
+	if (opt->usage != TRUE)
 		{
 			if (main_window->debug == TRUE)
 				{
@@ -229,13 +252,11 @@ int main (int argc, char ** argv)
 										
 					init_heraia_plugin_system(main_window);
 
-					if (load_file_to_analyse(main_window, opt.filename) == TRUE)
+					if (load_file_to_analyse(main_window, opt->filename) == TRUE)
 						{								
-  							if (main_window->debug == TRUE)
-								{
-									log_message(main_window, G_LOG_LEVEL_INFO, "Main_window : %p", main_window);
-								}
-
+						
+							log_message(main_window, G_LOG_LEVEL_DEBUG, "Main_window : %p", main_window);
+							
 						   	init_heraia_interface(main_window);
 
 							/* gtk main loop */

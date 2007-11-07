@@ -30,6 +30,9 @@ static heraia_plugin_t *get_plugin_init_symbol(heraia_window_t *main_window, her
 static void init_plugin(heraia_window_t *main_window, heraia_plugin_t *plugin, const gchar *filename, guint plugins_nb);
 static void load_one_plugin(heraia_window_t *main_window, const gchar *filename, guint plugins_nb);
 
+/**
+ * Says whether the system can handle plugins (or not)
+ */
 gboolean plugin_capable(void)
 {
 	return g_module_supported();
@@ -111,7 +114,9 @@ static heraia_plugin_t *get_plugin_handle(heraia_window_t *main_window, heraia_p
 			plugin->handle = g_module_open(full_filename, G_MODULE_BIND_MASK);
 			
 			if (plugin->handle == NULL)
-				log_message(main_window, G_LOG_LEVEL_WARNING, "Could not open plugin %s - %s", filename, g_module_error());
+				{
+					log_message(main_window, G_LOG_LEVEL_WARNING, "Could not open plugin %s - %s", filename, g_module_error());
+				}
 		}
 
 	return plugin;

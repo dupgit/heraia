@@ -1,3 +1,15 @@
+07.11.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* Changed the way to call the log function for debug purposes.
+	  Now you can call directly (without testing main_window->debug)
+	  the 'log_message' function with G_LOG_LEVEL_DEBUG parameter.
+	* Modified some functions in order that their McCabe complexity
+	  number be strictly under 10.
+	* Translated some french sentences to english.
+	* Data interpretor notebook tab now remembers the last opened
+	  tab (in order to display this one when re-opening it)
+	* Switched from file selection to file chooser
+	 
 06.11.2007
 	- Olivier Delhomme <heraia@delhomme.org>
 	* Added --enable-debug, --enable-gcov and --enable-gprof options 

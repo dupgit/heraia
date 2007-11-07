@@ -63,7 +63,9 @@ void print_message(const char *format, ...)
 	g_free(str);
 }
 
-/* The log function */
+/**
+ *  The log function 
+ */
 static void my_log(heraia_window_t *main_window, gchar *log_domain, GLogLevelFlags log_level, const char *format, ...)
 {
 	va_list args;
@@ -131,7 +133,9 @@ static void my_log(heraia_window_t *main_window, gchar *log_domain, GLogLevelFla
 }
 
 
-/* A function that helps logging a message a the specified level */
+/**
+ *  A function that helps logging a message a the specified level 
+ */
 void log_message(heraia_window_t *main_window, GLogLevelFlags log_level, const char *format, ...)
 {
 	va_list args;
@@ -142,40 +146,55 @@ void log_message(heraia_window_t *main_window, GLogLevelFlags log_level, const c
 	GTimeVal *time = NULL;
 	GError *err = NULL;
 
-	g_return_if_fail (format != NULL);
+    if (!(main_window->debug == FALSE && log_level == G_LOG_LEVEL_DEBUG))
+		{
+			g_return_if_fail(format != NULL);
 
-	va_start(args, format);
-	str = g_strdup_vprintf(format, args);
-	va_end(args);
+			va_start(args, format);
+			str = g_strdup_vprintf(format, args);
+			va_end(args);
+			str_utf8 = g_locale_to_utf8(str, -1, NULL, NULL, &err);
+
+			time = (GTimeVal *) g_malloc0 (sizeof(GTimeVal));
+			g_get_current_time(time);
+			str_time = g_time_val_to_iso8601(time);
+			str_time_utf8 = g_locale_to_utf8(str_time, -1, NULL, NULL, &err);
+
 	
-	time = (GTimeVal *) g_malloc0 (sizeof(GTimeVal));
-	g_get_current_time(time);
-	str_time = g_time_val_to_iso8601(time);
-	str_time_utf8 = g_locale_to_utf8(str_time, -1, NULL, NULL, &err);
-	str_utf8 = g_locale_to_utf8(str, -1, NULL, NULL, &err);
-
-	if (str_utf8)
-		{
-			if (str_time_utf8)
-				my_log(main_window, HERAIA_LOG_DOMAIN, log_level, "%s - %s%c", str_time_utf8, str_utf8, '\0');
+			if (str_utf8)
+				{
+					if (str_time_utf8)
+						{
+							my_log(main_window, HERAIA_LOG_DOMAIN, log_level, "%s - %s%c", str_time_utf8, str_utf8, '\0');
+						}
+					else
+						{
+							my_log(main_window, HERAIA_LOG_DOMAIN, log_level, "%s - %s%c", str_time, str_utf8, '\0');
+						}
+				}
 			else
-				my_log(main_window, HERAIA_LOG_DOMAIN, log_level, "%s - %s%c", str_time, str_utf8, '\0');
-		}
-	else
-		{
-			if (str_time_utf8)
-				my_log(main_window, HERAIA_LOG_DOMAIN, log_level, "%s - %s%c", str_time_utf8, str, '\0');
-			else
-				my_log(main_window, HERAIA_LOG_DOMAIN, log_level, "%s - %s%c", str_time, str, '\0');
-		}
+				{
+					if (str_time_utf8)
+						{
+							my_log(main_window, HERAIA_LOG_DOMAIN, log_level, "%s - %s%c", str_time_utf8, str, '\0');
+						}
+					else
+						{
+							my_log(main_window, HERAIA_LOG_DOMAIN, log_level, "%s - %s%c", str_time, str, '\0');
+						}
+				}
 
-	g_free(time);
-	g_free(str);
-	g_free(str_time);
-	g_free(str_time_utf8);
-	g_free(str_utf8);
-
+			g_free(time);
+			g_free(str);
+			g_free(str_time);
+			g_free(str_time_utf8);
+			g_free(str_utf8);
+		}
 }
+
+/**
+ *  Shows and hides the log window
+ */
 
 void show_hide_log_window(heraia_window_t *main_window, gboolean show)
 {
@@ -187,7 +206,9 @@ void show_hide_log_window(heraia_window_t *main_window, gboolean show)
 
 }
 
-/* The Check menu item for the Log window */
+/**
+ *  The Check menu item for the Log window 
+ */
 void mw_cmi_affiche_logw_toggle(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
@@ -200,7 +221,9 @@ void mw_cmi_affiche_logw_toggle(GtkWidget *widget, gpointer data)
 
 /**** The Signals ****/
 
-/* Closing the window */
+/** 
+ *  Closing the window 
+ */
 static gboolean delete_log_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data )
 {
 	logw_close_clicked(widget, data);
@@ -223,7 +246,9 @@ static void logw_close_clicked(GtkWidget *widget, gpointer data)
 }
 
 
-/* Connecting the window signals to the rigth functions  */
+/**
+ *  Connecting the window signals to the right functions  
+ */
 static void log_window_connect_signals(heraia_window_t *main_window)
 {
 
@@ -247,7 +272,9 @@ static void log_window_connect_signals(heraia_window_t *main_window)
 
 
 
-/* Inits the log window interface */
+/**
+ *  Inits the log window interface 
+ */
 void log_window_init_interface(heraia_window_t *main_window)
 {
 	log_window_connect_signals(main_window);

@@ -250,6 +250,8 @@ void data_interpretor_init_interface(heraia_window_t *main_window)
 				{
 					/* Says whether the data interpretor window is displayed or not */
 					dw->window_displayed = H_DI_DISPLAYED;
+					dw->diw = glade_xml_get_widget(main_window->xml, "data_interpretor_window");
+					dw->tab_displayed = 0; /* the first tab */
 				}
 		}
 }

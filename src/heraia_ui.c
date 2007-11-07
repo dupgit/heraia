@@ -144,12 +144,6 @@ void on_ouvrir1_activate(GtkWidget *widget, gpointer data )
 
 	main_window->event = HERAIA_REFRESH_NEW_FILE;
 	refresh_event_handler(main_window->current_DW->current_hexwidget, main_window);
-
-	/* Connection of the signal to the right function
-	   in order to interpret things when the cursor is
-	   moving                                           */
-	/* g_signal_connect (G_OBJECT (main_window->current_DW->current_hexwidget), "cursor_moved",
-	   G_CALLBACK (refresh_event_handler), main_window); */
 }
 
 void on_enregistrer1_activate( GtkWidget *widget,  gpointer data )
@@ -174,8 +168,8 @@ void on_DIMenu_activate(GtkWidget *widget, gpointer data)
 {
 
 	heraia_window_t *main_window = (heraia_window_t *) data;
-	data_window_t *dw = NULL; /* program structure */
-	GtkWidget *diw = NULL;    /* data interpretor widget */
+	data_window_t *dw = NULL;      /* program structure           */
+	GtkNotebook *notebook = NULL;  /* data interpretor's notebook */
 
 	if (main_window != NULL)
 		{
@@ -183,20 +177,29 @@ void on_DIMenu_activate(GtkWidget *widget, gpointer data)
      
 			if (dw != NULL)
 				{
-					diw = glade_xml_get_widget(main_window->xml, "data_interpretor_window");
+					if (dw->diw == NULL)
+						{
+							dw->diw = glade_xml_get_widget(main_window->xml, "data_interpretor_window");
+						}
 	  
-					if (diw != NULL)
+					if (dw->diw != NULL)
 						{
 							dw->window_displayed = !(dw->window_displayed);
-	  
+							notebook = GTK_NOTEBOOK(glade_xml_get_widget(main_window->xml, "diw_notebook"));
+
 							if (dw->window_displayed == TRUE)
 								{
-									gtk_widget_show_all(diw);
+									gtk_widget_show_all(dw->diw);
+
+									/* Setting the first page of the notebook as default (Numbers) */					
+									gtk_notebook_set_current_page(notebook, dw->tab_displayed);
+
 									refresh_data_interpretor_window(widget, data);
 								}
 							else
 								{
-									gtk_widget_hide_all(diw);
+									dw->tab_displayed = gtk_notebook_get_current_page(notebook);
+									gtk_widget_hide_all(dw->diw);
 								}
 						}
 				}
@@ -246,38 +249,45 @@ void destroy_dt_window(GtkWidget *widget, GdkEvent  *event, gpointer data)
 */
 gboolean select_file_to_load(heraia_window_t *main_window)
 {
-	GtkFileSelection *file_selector = NULL;
+	GtkWidget *parent = NULL;
+	GtkFileChooser *file_chooser = NULL;
 	gboolean success = FALSE;
-	gint response_id = 0;
-	const gchar *filename = NULL;
-	gchar *path = NULL;
-	GError *err = NULL;
+	gchar *filename = NULL;
 
-	file_selector = GTK_FILE_SELECTION (gtk_file_selection_new ("Sélectionnez un fichier pour l'éditer"));
+	parent = glade_xml_get_widget(main_window->xml, "main_window");
+
+	file_chooser = GTK_FILE_CHOOSER(gtk_file_chooser_dialog_new("Select a file to analyse",
+													   GTK_WINDOW(parent),
+													   GTK_FILE_CHOOSER_ACTION_OPEN, 
+													   GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+													   GTK_STOCK_OPEN, GTK_RESPONSE_OK, 
+													   NULL));
 
 	/* for the moment we do not want to retrieve multiples selections */
-	gtk_file_selection_set_select_multiple(file_selector, FALSE);
+	gtk_window_set_modal(GTK_WINDOW(file_chooser), TRUE);
+	gtk_file_chooser_set_select_multiple(file_chooser, FALSE);
+
 	/*  We want the file selection path to be the one of the previous
 	 *  openned file if any !
 	 */
 	if (main_window->filename != NULL)
 		{
-			path = g_filename_from_utf8(g_locale_to_utf8(g_strdup_printf("%s%c", g_path_get_dirname(main_window->filename), G_DIR_SEPARATOR), -1, NULL, NULL, &err), -1, NULL, NULL, &err);
-			gtk_file_selection_set_filename(file_selector, path);
+			/*	gtk_file_chooser_set_current_folder(file_chooser, main_window->filename); */
 		}
-
-	response_id = gtk_dialog_run(GTK_DIALOG (file_selector));
 	
-	switch (response_id) 
+	switch (gtk_dialog_run(GTK_DIALOG(file_chooser))) 
 		{
 		case GTK_RESPONSE_OK:
-			filename = gtk_file_selection_get_filename (GTK_FILE_SELECTION (file_selector));
-			if (main_window->debug == TRUE)
-				log_message(main_window, G_LOG_LEVEL_INFO, "filename selected : %s", filename);
+			filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(file_chooser));
+			log_message(main_window, G_LOG_LEVEL_DEBUG, "filename selected : %s", filename);
+
 			/* this should be managed with lists */		
 			if (main_window->filename != NULL)
-				g_free(main_window->filename);
-			main_window->filename = g_strdup_printf("%s", filename);			
+				{
+					g_free(main_window->filename);
+				}
+
+			main_window->filename = g_strdup_printf("%s", filename);
 			success = TRUE;
 			break;
 		case GTK_RESPONSE_CANCEL:
@@ -286,9 +296,9 @@ gboolean select_file_to_load(heraia_window_t *main_window)
 			break;
 		}
 
-	gtk_widget_destroy (GTK_WIDGET(file_selector));
-	g_free(path);
-
+	g_free(filename);
+	gtk_widget_destroy(GTK_WIDGET(file_chooser));
+	
 	return success;
 }
 

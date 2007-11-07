@@ -4,7 +4,7 @@
 <glade-interface>
   <widget class="GtkWindow" id="main_window">
     <property name="visible">True</property>
-    <property name="title" translatable="yes">héraia</property>
+    <property name="title" translatable="yes">Heraia</property>
     <property name="icon">logo_petit.png</property>
     <child>
       <widget class="GtkVBox" id="vbox1">
@@ -166,7 +166,7 @@
                     <child>
                       <widget class="GtkCheckMenuItem" id="mw_cmi_plugin_list">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Liste des plugins</property>
+                        <property name="label" translatable="yes">Plugins list</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_plugin_list_activate"/>
                       </widget>
@@ -274,7 +274,7 @@
     <property name="name">heraia</property>
     <property name="version">0.0.1</property>
     <property name="copyright">(C) 2005 - 2007 Two or more autors (see Credits)</property>
-    <property name="comments" translatable="yes">Un analyseur et éditeur de fichier hexadécimal</property>
+    <property name="comments" translatable="yes">An hexadecimal analyser and editor</property>
     <property name="website">http://heraia.tuxfamily.org/</property>
     <property name="website_label" translatable="yes">Heraia web site</property>
     <property name="license" translatable="yes">		    GNU GENERAL PUBLIC LICENSE
@@ -528,7 +528,7 @@ POSSIBILITY OF SUCH DAMAGES.
     </child>
   </widget>
   <widget class="GtkWindow" id="plugin_list_window">
-    <property name="title" translatable="yes">Liste des plugins</property>
+    <property name="title" translatable="yes">Plugins list</property>
     <child>
       <widget class="GtkVBox" id="vbox4">
         <property name="visible">True</property>
@@ -816,10 +816,13 @@ POSSIBILITY OF SUCH DAMAGES.
               </packing>
             </child>
             <child>
-              <widget class="GtkNotebook" id="diw_notebook1">
+              <widget class="GtkNotebook" id="diw_notebook">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                <property name="scrollable">True</property>
+                <property name="enable_popup">True</property>
+                <property name="homogeneous">True</property>
                 <child>
                   <widget class="GtkHBox" id="hbox4">
                     <property name="visible">True</property>

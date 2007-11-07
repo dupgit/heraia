@@ -33,11 +33,9 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 
 	stat_buf = (struct stat *) g_malloc0 (sizeof(struct stat));
 	stat(filename, stat_buf);
-	if (main_window->debug == TRUE)
-		{
-			log_message(main_window, G_LOG_LEVEL_INFO, "filename to load : %s", filename);
-		}
 
+	log_message(main_window, G_LOG_LEVEL_DEBUG, "filename to load : %s", filename);
+	
 	if (S_ISREG(stat_buf->st_mode) && stat_buf->st_size>0)
 		{
 
@@ -48,11 +46,8 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 			
 			gtk_widget_show(main_window->current_DW->current_hexwidget);
 
-			if (main_window->debug == TRUE)
-				{
-					log_message(main_window, G_LOG_LEVEL_INFO, "Hexwidget : %p", main_window->current_DW->current_hexwidget);
-				}
-
+			log_message(main_window, G_LOG_LEVEL_DEBUG, "Hexwidget : %p", main_window->current_DW->current_hexwidget);
+			
 			success = TRUE;
 
 			if (main_window->filename != filename)
@@ -63,11 +58,9 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 						}
 					main_window->filename = g_strdup_printf("%s", filename);
 				}
-
-			if (main_window->debug == TRUE)
-				{
-					log_message(main_window, G_LOG_LEVEL_INFO, "file %s loaded !", main_window->filename);
-				}
+		
+			log_message(main_window, G_LOG_LEVEL_DEBUG, "file %s loaded !", main_window->filename);
+				
 		} 
 	else
 		{
