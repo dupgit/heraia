@@ -28,6 +28,7 @@ static void interpret_as_date(heraia_window_t *main_window, DecodeDateFunc decod
 static void interpret_as_number(heraia_window_t *main_window, DecodeFunc decode_it, gchar *widget_name, guint length, guint endianness);
 static void close_data_interpretor_window(GtkWidget *widget, gpointer data);
 static void connect_data_interpretor_signals(heraia_window_t *main_window);
+static gint get_ghex_data(data_window_t *data_window, guint length, guint endianness, guchar *c);
 
 /**
  *  Determines which endianness is selected that is to say
@@ -59,6 +60,28 @@ static guint which_endianness(heraia_window_t *main_window)
 }
 
 /**
+ *  Gets the data from the hexwidget
+ */
+static gint get_ghex_data(data_window_t *data_window, guint length, guint endianness, guchar *c)
+{
+	GtkHex *gh = NULL;
+	gint result = FALSE;
+
+	gh = GTK_HEX(data_window->current_hexwidget);
+
+	if (gh != NULL)
+		{
+			result = ghex_memcpy(gh, gtk_hex_get_cursor(gh), length, endianness, c);
+		}
+	else
+		{
+			result = FALSE;
+		}
+	return result;
+}
+
+
+/**
  *   Here we do interpret a date according to the decode_it function
  *   We are assuming that main_window != NULL and main_window->xml != NULL
  *    . heraia_window_t *main_window : the main structure
@@ -71,19 +94,16 @@ static void interpret_as_date(heraia_window_t *main_window, DecodeDateFunc decod
 {	
 	gint result = 0;       /* used to test different results of function calls */
 	guchar *c = NULL;      /* the character under the cursor                   */
-	GtkHex *gh = NULL;
 	gchar *text = NULL;
 	data_window_t *data_window = main_window->current_DW;
 	GtkWidget *entry = glade_xml_get_widget(main_window->xml, widget_name);
 	date_and_time_t *mydate; /* date resulting of interpretation       */
-
-	gh = GTK_HEX (data_window->current_hexwidget);
-
+	
 	c = (guchar *) g_malloc0 (length);
 	mydate = (date_and_time_t *) g_malloc0 (sizeof(date_and_time_t));
 
-	result = ghex_memcpy(gh, gtk_hex_get_cursor(gh), length, endianness, c);
-
+	result = get_ghex_data(data_window, length, endianness, c);
+	
 	if (result == TRUE)
 		{
 			text = decode_it(c, mydate);
@@ -100,13 +120,14 @@ static void interpret_as_date(heraia_window_t *main_window, DecodeDateFunc decod
 		}
 	else
 		{
-			text = g_strdup_printf("Cannot interpret as a %d bytes date", length);
+			text = g_strdup_printf("Cannot interpret as a %d byte(s) date", length);
 			gtk_entry_set_text(GTK_ENTRY(entry), text);		
 		}
 
 	g_free(c);
   	g_free(text);
 }
+
 
 /**
  *   Here we do interpret a number according to the decode_it function
@@ -121,15 +142,13 @@ static void interpret_as_number(heraia_window_t *main_window, DecodeFunc decode_
 {	
 	gint result = 0;       /* used to test different results of function calls */
 	guchar *c = NULL;      /* the character under the cursor                   */
-	GtkHex *gh = NULL;
 	gchar *text = NULL; 
-	data_window_t *data_window = main_window->current_DW;
-	GtkWidget *entry = glade_xml_get_widget(main_window->xml, widget_name);
+	data_window_t *data_window = main_window->current_DW;   /* We allready know that it's not NULL */
+	GtkWidget *entry = glade_xml_get_widget(main_window->xml, widget_name);  /* we might test the result as this is user input*/
 
-	gh = GTK_HEX (data_window->current_hexwidget);
+	c = (guchar *) g_malloc0(length);
 
-	c = (guchar *) g_malloc0 (length);
-	result = ghex_memcpy(gh, gtk_hex_get_cursor(gh), length, endianness, c);
+	result = get_ghex_data(data_window, length, endianness, c);
 
 	if (result == TRUE)
 		{
@@ -147,7 +166,7 @@ static void interpret_as_number(heraia_window_t *main_window, DecodeFunc decode_
 		}
 	else
 		{
-			text = g_strdup_printf("Cannot interpret as a %d bytes number", length);
+			text = g_strdup_printf("Cannot interpret as a %d byte(s) number", length);
 			gtk_entry_set_text(GTK_ENTRY(entry), text);		
 		}
 

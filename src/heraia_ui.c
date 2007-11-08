@@ -214,15 +214,6 @@ gboolean delete_main_window_event(GtkWidget *widget, GdkEvent  *event, gpointer 
 }
 
 
-/*
-void destroy_main_window(GtkWidget *widget, gpointer   data)
-{
-    gtk_main_quit ();
-}
-*/
-/* end for call back functions for the main program */
-
-
 /* call back functions :  for the data interpretor window */
 gboolean delete_dt_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {	
@@ -242,37 +233,99 @@ void destroy_dt_window(GtkWidget *widget, GdkEvent  *event, gpointer data)
 /* End of call back functions that handle the data interpretor window */
 
 
-/* 
-   This function does open a file selector dialog box and returns the selected 
-   filename. 
-   We do fill the main_window->filename parameter here !
-*/
+/**
+ *  Returns an absolute path to the filename
+ *  the string should be freed when no longer needed
+ *  very UGLy !
+ */
+static gchar *make_absolute_path(gchar *filename)
+{
+	gchar *current_dir = NULL;
+	gchar *new_dir = NULL;
+
+	if (g_path_is_absolute(filename) == TRUE)
+		{
+			/* if the filename is already in an absolute format */
+			return  g_path_get_dirname(filename);
+		}
+	else
+		{
+			current_dir = g_get_current_dir();
+			new_dir = g_path_get_dirname(filename);
+
+			if (g_chdir(new_dir) == 0)
+				{
+					g_free(new_dir);
+					new_dir = g_get_current_dir();
+					g_chdir(current_dir);
+					g_free(current_dir);
+
+					return new_dir;
+				}
+			else
+				{
+					g_free(current_dir);
+
+					return NULL;
+				}
+		}
+}
+
+
+/**
+ *  Sets the working directory for the file chooser to the directory of the
+ *  filename (even if filename is a relative filename such as 
+ *  ../docs/test_file
+ */
+static void set_the_working_directory(GtkFileChooser *file_chooser, gchar *filename)
+{
+	gchar *dirname = NULL;    /* directory where we want to be, at first, in the file chooser */
+
+	dirname = make_absolute_path(filename);
+
+	if (dirname != NULL)
+		{
+			gtk_file_chooser_set_current_folder(file_chooser, dirname);
+			g_free(dirname);
+		}
+}
+ 
+
+/**
+ *  This function does open a file selector dialog box and returns the selected 
+ *  filename. 
+ *  We do fill the main_window->filename parameter here !
+ */
 gboolean select_file_to_load(heraia_window_t *main_window)
 {
-	GtkWidget *parent = NULL;
+	GtkWidget *parent = NULL; /* A parent window (we use main_window)                         */
 	GtkFileChooser *file_chooser = NULL;
 	gboolean success = FALSE;
-	gchar *filename = NULL;
+	gchar *filename = NULL;   /* filename selected (if any) to be openned                     */
 
 	parent = glade_xml_get_widget(main_window->xml, "main_window");
 
 	file_chooser = GTK_FILE_CHOOSER(gtk_file_chooser_dialog_new("Select a file to analyse",
-													   GTK_WINDOW(parent),
-													   GTK_FILE_CHOOSER_ACTION_OPEN, 
-													   GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-													   GTK_STOCK_OPEN, GTK_RESPONSE_OK, 
-													   NULL));
+																GTK_WINDOW(parent),
+																GTK_FILE_CHOOSER_ACTION_OPEN, 
+																GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+																GTK_STOCK_OPEN, GTK_RESPONSE_OK, 
+																NULL));
 
-	/* for the moment we do not want to retrieve multiples selections */
+	/**
+     *  for the moment we do not want to retrieve multiples selections 
+	 *  but this could be a valuable thing in the future
+	 */
 	gtk_window_set_modal(GTK_WINDOW(file_chooser), TRUE);
 	gtk_file_chooser_set_select_multiple(file_chooser, FALSE);
 
-	/*  We want the file selection path to be the one of the previous
+	/**
+	 *  We want the file selection path to be the one of the previous
 	 *  openned file if any !
 	 */
 	if (main_window->filename != NULL)
 		{
-			/*	gtk_file_chooser_set_current_folder(file_chooser, main_window->filename); */
+			set_the_working_directory(file_chooser, main_window->filename);
 		}
 	
 	switch (gtk_dialog_run(GTK_DIALOG(file_chooser))) 
@@ -295,7 +348,7 @@ gboolean select_file_to_load(heraia_window_t *main_window)
 			success = FALSE;
 			break;
 		}
-
+	
 	g_free(filename);
 	gtk_widget_destroy(GTK_WIDGET(file_chooser));
 	

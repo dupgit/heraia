@@ -44,6 +44,7 @@
 #include <getopt.h>
 #include <glib.h>
 #include <glib/gprintf.h>
+#include <glib/gstdio.h>
 #include <gmodule.h>
 #include <gtk/gtk.h>
 #include <gtkhex/gtkhex.h>

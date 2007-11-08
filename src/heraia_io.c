@@ -25,11 +25,18 @@
 
 static GladeXML *load_glade_xml_if_it_exists(char *file_to_load);
 
-
+/**
+ *  Loads the file 'filename' to analyse and populates the
+ *  corresponfing structure 'main_window' as needed thus
+ *  main_window and filename must NOT be NULL pointers
+ */
 gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 {
 	struct stat *stat_buf = NULL;
 	gboolean success = FALSE;
+
+	g_return_val_if_fail(filename != NULL, FALSE);
+	g_return_val_if_fail(main_window != NULL, FALSE);
 
 	stat_buf = (struct stat *) g_malloc0 (sizeof(struct stat));
 	stat(filename, stat_buf);
@@ -39,7 +46,7 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 	if (S_ISREG(stat_buf->st_mode) && stat_buf->st_size>0)
 		{
 
-			heraia_hex_document_new(main_window, filename);
+			heraia_hex_document_new(main_window, filename); /* removes the old hexdocument and adds a new one */
 
 			gtk_box_pack_start(GTK_BOX(glade_xml_get_widget(main_window->xml, "vbox1")), 
 							   main_window->current_DW->current_hexwidget, TRUE, TRUE, 0);
@@ -66,11 +73,11 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 		{
 			if (S_ISREG(stat_buf->st_mode))
 				{
-					fprintf(stderr, "The file %s is empty !\n", filename);
+					log_message(main_window, G_LOG_LEVEL_WARNING, "The file %s is empty !\n", filename);
 				}
 			else
 				{
-					fprintf(stderr, "The file %s does not exist !\n", filename);
+					log_message(main_window, G_LOG_LEVEL_WARNING, "The file %s does not exist !\n", filename);
 				}
 			success = FALSE;
 		}

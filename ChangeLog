@@ -1,3 +1,14 @@
+08.11.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* Changed heraia's behavior when called to allow the user to 
+	  call without a filename in the command line (but the option
+	  to do so is not removed)
+	* Added more comments and removed old commented out functions
+	* Re-added the fact that the file chooser 'remembers' the last
+	  openned directory
+	* Modified the init_location_list in order that this fucntion
+	  returns a GList of locations and does not take any arguments
+	
 07.11.2007
 	- Olivier Delhomme <heraia@delhomme.org>
 	* Changed the way to call the log function for debug purposes.

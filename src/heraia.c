@@ -28,15 +28,23 @@ static void version(void);
 static gboolean usage(int status);
 static heraia_window_t *heraia_init_main_struct(void);
 static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window);
-static void init_heraia_location_list(heraia_window_t *main_window);
+static GList *init_heraia_location_list(void);
 static gboolean manage_command_line_options(Options *opt, int argc, char ** argv);
 
+/**
+ *  prints program name, version, author, date and licence
+ *  to the standard output
+ */
 static void version(void)
 {
 	fprintf (stdout, "heraia, %s - %s - Version %s - License %s\n", HERAIA_AUTHORS, HERAIA_DATE, HERAIA_VERSION, HERAIA_LICENSE);
 }
 
 
+/**
+ *  Function that informs the user aboit the command line options
+ *  available with heraia
+ */
 static gboolean usage(int status)
 {
 	if (status == 0)
@@ -57,9 +65,13 @@ static gboolean usage(int status)
 		}
 }
 
+
+/**
+ *  Initialize the main structure (main_window)
+ */
 static heraia_window_t *heraia_init_main_struct(void)
 {
-	heraia_window_t *herwin;
+	heraia_window_t *herwin = NULL;
 
 	herwin = (heraia_window_t *) g_malloc0(sizeof(heraia_window_t));
 
@@ -74,8 +86,7 @@ static heraia_window_t *heraia_init_main_struct(void)
 	herwin->filename = NULL;
 	herwin->current_doc = NULL;
 	herwin->plugins_list = NULL; 
-	herwin->location_list = NULL;
-	init_heraia_location_list(herwin);
+	herwin->location_list = init_heraia_location_list();
 
 	/* data interpretor structure initialization */
 	herwin->current_DW = (data_window_t *) g_malloc0 (sizeof(data_window_t));
@@ -119,15 +130,16 @@ static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window)
  *  in the future. These can be viewed as default paths
  *  Beware : prepended list in reverse order.
  */
-static void init_heraia_location_list(heraia_window_t *main_window)
+static GList *init_heraia_location_list(void)
 {
 	gchar *path = NULL;
 	const gchar* const *system_data_dirs;
 	guint i = 0;
+	GList *location_list = NULL;
 
 	/* heraia's binary path */
 	path = g_strdup_printf("%s", g_get_current_dir());
-	main_window->location_list = g_list_prepend(main_window->location_list, path);
+	location_list = g_list_prepend(location_list, path);
 	
 	/* System data dirs */
 	system_data_dirs = g_get_system_data_dirs();
@@ -135,7 +147,7 @@ static void init_heraia_location_list(heraia_window_t *main_window)
 	while(system_data_dirs[i] != NULL)
 		{
 			path = g_strdup_printf("%s%c%s", system_data_dirs[i], G_DIR_SEPARATOR, "heraia");
-			main_window->location_list = g_list_prepend(main_window->location_list, path);
+			location_list = g_list_prepend(location_list, path);
 			i++;
 		}
 
@@ -145,21 +157,23 @@ static void init_heraia_location_list(heraia_window_t *main_window)
 	while(system_data_dirs[i] != NULL)
 		{
 			path = g_strdup_printf("%s%c%s", system_data_dirs[i], G_DIR_SEPARATOR, "heraia");
-			main_window->location_list = g_list_prepend(main_window->location_list, path);
+			location_list = g_list_prepend(location_list, path);
 			i++;
 		}
 
 	/* the user path */
 	path =  g_strdup_printf("%s%c.%s", g_get_home_dir(), G_DIR_SEPARATOR, "heraia");
-	main_window->location_list = g_list_prepend(main_window->location_list, path);
+	location_list = g_list_prepend(location_list, path);
 
 	/* A global user data path */
 	path = g_strdup_printf("%s%c%s", g_get_user_data_dir(), G_DIR_SEPARATOR, "heraia");
-	main_window->location_list = g_list_prepend(main_window->location_list, path);
+	location_list = g_list_prepend(location_list, path);
 
 	/* A global config data path */
 	path = g_strdup_printf("%s%c%s", g_get_user_config_dir(), G_DIR_SEPARATOR, "heraia");
-	main_window->location_list = g_list_prepend(main_window->location_list, path);
+	location_list = g_list_prepend(location_list, path);
+
+	return location_list;
 }
 
 /**
@@ -193,19 +207,22 @@ static gboolean manage_command_line_options(Options *opt, int argc, char ** argv
 				}
 		}
 
-	if (optind < argc)
+	if (optind < argc) /* filename */
 		{
 			opt->filename = (char*) malloc (sizeof(char) * strlen(argv[optind]) + 1);
 			strcpy(opt->filename, argv[optind]);
 		}
-	else
-		{
-			if (opt->usage != TRUE)
-				{
-					exit_value = usage(0);
-					opt->usage = TRUE;
-				}
-		}
+	/**
+	 *  We do not bother anymore if there is no file name to load
+	 *  else
+	 *	{
+	 *		if (opt->usage != TRUE)
+	 *			{
+	 *              exit_value = usage(0);
+	 *				opt->usage = TRUE;
+	 *			}
+	 *	}
+	 */
 
 	return exit_value;
 }
@@ -252,21 +269,20 @@ int main (int argc, char ** argv)
 										
 					init_heraia_plugin_system(main_window);
 
-					if (load_file_to_analyse(main_window, opt->filename) == TRUE)
-						{								
-						
-							log_message(main_window, G_LOG_LEVEL_DEBUG, "Main_window : %p", main_window);
-							
-						   	init_heraia_interface(main_window);
-
-							/* gtk main loop */
-							gtk_main();
-							exit_value = TRUE;
-						}
-					else
+					if (opt->filename != NULL)
 						{
-							exit_value = FALSE;
+							load_file_to_analyse(main_window, opt->filename);
 						}
+	 
+						
+					log_message(main_window, G_LOG_LEVEL_DEBUG, "Main_window : %p", main_window);
+					
+					init_heraia_interface(main_window);
+					
+					/* gtk main loop */
+					gtk_main();
+					
+					exit_value = TRUE;				
 				}
 			else
 				{

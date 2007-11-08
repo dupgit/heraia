@@ -25,15 +25,20 @@
 
 
 /**
- *  kills the old document if it exists and add a new one, from the new filename
+ *  Removes the old document if it exists and adds a new one
+ *  from the filename 'filename'
  */
 HERAIA_ERROR heraia_hex_document_new(heraia_window_t *main_window, char *filename) 
 {
 	if (main_window->current_doc != NULL)
-		hex_document_remove_view(main_window->current_doc, main_window->current_DW->current_hexwidget);
+		{
+			hex_document_remove_view(main_window->current_doc, main_window->current_DW->current_hexwidget);
+		}
 	
 	if (main_window->current_DW->current_hexwidget != NULL )
-		gtk_widget_destroy(main_window->current_DW->current_hexwidget);
+		{
+			gtk_widget_destroy(main_window->current_DW->current_hexwidget);
+		}
 	
 	main_window->current_doc = hex_document_new_from_file(filename);
 	main_window->current_DW->current_hexwidget = hex_document_add_view(main_window->current_doc);
@@ -102,7 +107,7 @@ gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, guint endianness, guchar 
 			/* Extracts len bytes from the Ghex widget */
 			for (i=0; i<len ; i++)
 				{
-					result[i] = gtk_hex_get_byte(gh, pos+i);
+						result[i] = gtk_hex_get_byte(gh, pos+i);
 				}
 			
 			/* Deals with endianness to rearrange datas */
