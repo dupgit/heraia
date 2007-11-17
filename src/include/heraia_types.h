@@ -64,7 +64,7 @@ typedef gint HERAIA_ERROR;
 
 /**
  *  Refresh type (may be used to decide what to do
- *  in a particular case
+ *  in a particular case)
  */
 typedef gint RefreshType;
 #define HERAIA_REFRESH_NOTHING 0
@@ -79,27 +79,39 @@ typedef struct
 	GtkWidget *diw;                /* data interpretor window                                         */
 
 	gboolean window_displayed;     /* says whether the window is displayed or not                     */
-	gint tab_displayed;           /* keeps the last displayed tab's number before closing            */
+	gint tab_displayed;            /* keeps the last displayed tab's number before closing            */
 
 } data_window_t;
 
 
+
+/**
+ *  Data type structure entry that contains user defined data types
+ */
 typedef struct
 {
-	gboolean  debug;          /* Used to tell the program wether we want to display debug messages or not */
-	gchar *filename;          /* this could (should) be a list of filenames !!!                           */
+	gchar *name;      /* Name of the data type                                                       */
+	guint size;       /* size of the data type  (here we may limit size entry, eg <= 8 for example)  */
+} data_type_t;
 
-	Heraia_Document *current_doc;
-	GladeXML *xml;
+
+typedef struct
+{
+	gboolean  debug;            /* Used to tell the program wether we want to display debug messages or not */
+	gchar *filename;            /* this could (should) be a list of filenames !!!                           */
+	Heraia_Document *current_doc;  /* We may want to group this with current_hexwidget in a specific struct */
+
+	GladeXML *xml;              /* the interface xml description (using libglade)      */
 	
    	data_window_t *current_DW;  /* data_interpretor pointer                            */
 	GList *location_list;       /* this is the location list where we store some paths */
 	GList *plugins_list;        /* A list of plugins                                   */
+	GList *data_type_list;      /* A list of data types                                */
 	RefreshType event;          /* Tells what is happening                             */
 } heraia_window_t;
 
 
-/* a human struct to store a date with a time TODO : add an UTC info*/
+/* a human struct to store a date with a time. TODO : add an UTC info */
 typedef struct
 {
 	guint32 year;
@@ -123,5 +135,6 @@ typedef struct
 #include "plugin.h"
 #include "plugin_list.h"
 #include "list_data_types.h"
+#include "data_type.h"
 
 #endif /* _HERAIA_TYPES_H_ */

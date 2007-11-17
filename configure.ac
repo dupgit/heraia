@@ -3,7 +3,7 @@ AC_PREREQ(2.59)
 AC_INIT([Heraia], [0.0.1],
         [Olivier Delhomme],
         [heraia])
-AC_CONFIG_HEADER([config.h])
+AC_CONFIG_SRCDIR([src/heraia.c])
 AM_INIT_AUTOMAKE([$PACKAGE_TARNAME], [$PACKAGE_VERSION])
 
 dnl directory requirement
@@ -13,7 +13,7 @@ AC_SUBST(TOP_SRCDIR)
 AC_SUBST(SRCDIR)
 
 dnl Put the preprocessor macros in a header file instead of command line 
-AC_CONFIG_SRCDIR([src/heraia.c])
+AC_CONFIG_HEADER([config.h])
 
 dnl Libraries requirements
 GLIB2_VERSION=2.2.0
@@ -28,6 +28,10 @@ AC_SUBST(GTK2_VERSION)
 AC_SUBST(LIBGLADE_VERSION)
 AC_SUBST(GMODULE_VERSION)
 
+dnl Build time sanity check
+AM_SANITY_CHECK
+
+dnl Initialize maintainer mode
 AM_MAINTAINER_MODE
 
 dnl **************************************************
@@ -56,7 +60,8 @@ AC_CHECK_FUNCS(gettimeofday select socket strdup strerror strstr)
 dnl **************************************************
 dnl * Checks for programs                            *
 dnl **************************************************
-AM_PROG_LIBTOOL
+AC_DISABLE_STATIC
+AC_PROG_LIBTOOL
 
 dnl **************************************************
 dnl * Checks for paths                               *
@@ -137,7 +142,6 @@ dnl * checking for gmodule                           *
 dnl **************************************************
 PKG_CHECK_MODULES(GMODULE, [gmodule-2.0 >= $GMODULE_VERSION])
 
-
 AC_PROG_INSTALL
 
 CFLAGS="$CFLAGS -Wall -Wstrict-prototypes -Wmissing-declarations \
@@ -152,10 +156,11 @@ dnl **************************************************
 case $build_os in
     *linux*)
 	AC_DEFINE_UNQUOTED(SYS_LINUX, 1, [This is a Linux system])
+	LDFLAGS="$LDFLAGS -export-dynamic -no-undefined -module"
 	;;
     *mingw*)
 	AC_DEFINE_UNQUOTED(SYS_MINGW, 1, [This is a Windows system using MinGW])
-	LDFLAGS="$LDFLAGS -no-undefined -Wl,--export-all-symbols -L$SRCDIR"
+	LDFLAGS="$LDFLAGS -export-dynamic -no-undefined -module -Wl,--export-all-symbols"
         CFLAGS="$CFLAGS -mms-bitfields -mwindows -mno-cygwin"
         ;;
 esac

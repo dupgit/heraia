@@ -1,3 +1,23 @@
+13.11.2007
+	- Olivier Delhomme <heraia@delhomme.org>	
+	* Added comments
+	* Changed few things in configure.ac
+	* Begun the data type and list data type windows. Here we should
+	  find a way to add new types (that will be used in the data
+	  interpretor window)
+	  
+12.11.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* Could not find a way to compile plugins under windows. 
+	  Unresolved errors like "undefined symbol" occurs where
+	  they do not under my linux box (debian etch).
+
+09.11.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* Use of $(LDFLAG) varaible in Makefile.am this will be more
+	  convenient if we want to change things : we might do so only
+	  in configure.ac file.
+
 08.11.2007
 	- Olivier Delhomme <heraia@delhomme.org>
 	* Changed heraia's behavior when called to allow the user to 

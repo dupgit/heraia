@@ -8,7 +8,7 @@ DEFS = -I$(SRCDIR) -I$(SRCDIR)/include		\
 	$(GTK2_CFLAGS) $(GLIB2_CFLAGS)
 
 bin_PROGRAMS = heraia
-heraia_LDFLAGS = -export-dynamic -no-undefined 
+heraia_LDFLAGS = $(LDFLAGS)
 heraia_LDADD = $(GTKHEX_LIBS) $(LIBGLADE_LIBS) $(GMODULES_LIBS) $(GLIB2_LIBS) $(GTK2_LIBS)
 
 heraia_SOURCES = 			\
@@ -22,6 +22,7 @@ heraia_SOURCES = 			\
 	plugin.c			\
 	plugin_list.c			\
 	list_data_types.c		\
+	data_type.c			\
 	include/heraia.h		\
 	include/data_interpretor.h 	\
 	include/decode.h		\
@@ -33,12 +34,14 @@ heraia_SOURCES = 			\
 	include/log.h			\
 	include/plugin.h		\
 	include/plugin_list.h		\
-	include/list_data_types.h
+	include/list_data_types.h	\
+	include/data_type.h
 
 
 gladefiles = heraia.glade	\
 	     logo.png		\
 	     logo_petit.png
+
 gladedir = $(datadir)/@PACKAGE@
 glade_DATA = $(gladefiles)
 EXTRA_DIST = $(gladefiles)

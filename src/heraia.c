@@ -75,7 +75,7 @@ static heraia_window_t *heraia_init_main_struct(void)
 
 	herwin = (heraia_window_t *) g_malloc0(sizeof(heraia_window_t));
 
-	if ( ! herwin )
+	if (!herwin)
 		{
 			return NULL;
 		}
@@ -87,6 +87,7 @@ static heraia_window_t *heraia_init_main_struct(void)
 	herwin->current_doc = NULL;
 	herwin->plugins_list = NULL; 
 	herwin->location_list = init_heraia_location_list();
+	herwin->data_type_list = NULL;
 
 	/* data interpretor structure initialization */
 	herwin->current_DW = (data_window_t *) g_malloc0 (sizeof(data_window_t));

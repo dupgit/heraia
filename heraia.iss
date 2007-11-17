@@ -27,8 +27,9 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 Source: "C:\msys\1.0\home\0659562\heraia\src\heraia.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\msys\1.0\home\0659562\heraia\src\heraia.glade"; DestDir: "{userappdata}\heraia"; Flags: ignoreversion
-Source: "C:\mingw\bin\libintl3.dll"; DestDir: "{sys}"; Flags: ignoreversion
-Source: "C:\mingw\bin\libiconv2.dll"; DestDir: "{sys}"; Flags: ignoreversion
+Source: "C:\mingw\bin\libintl3.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\mingw\bin\libiconv2.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\mingw\bin\libgtkhex-0.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

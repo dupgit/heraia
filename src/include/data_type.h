@@ -1,8 +1,7 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
-  list_data_types.h
-  window allowing the user to manage his data types (add, remove, edit and
-  eventually save them)
+  data_type.h
+  Window allowing the user to create or edit a new data type
  
   (C) Copyright 2005 - 2007 Olivier Delhomme
   e-mail : heraia@delhomme.org
@@ -20,18 +19,16 @@
  
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
+  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */ 
 
-#ifndef _LIST_DATA_TYPES_H_
-#define _LIST_DATA_TYPES_H_
 
-enum {
-  LDT_TV_COLUMN_NAME,
-  LDT_TV_N_COLUMNS
-}; 
+#ifndef _DATA_TYPE_H_
+#define _DATA_TYPE_H_
 
-extern void on_ldt_menu_activate(GtkWidget *widget, gpointer data);
-extern void list_data_types_init_interface(heraia_window_t *main_window);
-extern void add_data_type_name_to_treeview(heraia_window_t *main_window, gchar *name);
+extern void clear_data_type_widgets(heraia_window_t *main_window);
 
-#endif /* _LIST_DATA_TYPES_H_ */
+/* interface initialization */
+extern void data_type_init_interface(heraia_window_t *main_window);
+
+
+#endif /* _DATA_TYPE_H_ */

@@ -1,18 +1,22 @@
 SUBDIRS = 
 
-DEFS = -I$(SRCDIR) -I$(SRCDIR)/include			\
-	$(GTKHEX_CFLAGS) $(LIBGLADE_CFLAGS) 		\
-	$(GMODULE_CFLAGS) $(CFLAGS) $(GTK2_CFLAGS) 	\
-	$(GLIB2_CFLAGS)
+DEFS = -I$(SRCDIR) -I$(SRCDIR)/include		\
+        -DPLUGINS_DIR=\"$(plugins_dir)\"	\
+	-DDATA_DIR=\"$(data_dir)\" 		\
+	$(GTKHEX_CFLAGS) $(LIBGLADE_CFLAGS) 	\
+	$(GMODULE_CFLAGS) $(CFLAGS) 		\
+	$(GTK2_CFLAGS) $(GLIB2_CFLAGS)
 
-stat_la_SOURCES = 	\
+pkglib_LTLIBRARIES = libstat.la
+
+libstat_la_SOURCES = 	\
 	stat.c		\
 	stat.h
 
-stat_la_LDFLAGS = -no-undefined -module -export-dynamic
-stat_la_LIBADD = $(GTKHEX_LIBS) $(LIBGLADE_LIBS) $(GMODULE_LIBS) $(GTK2_LIBS) $(GLIB2_LIBS) $(LDFLAGS)
-statdir = $(plugins_dir)
-stat_LTLIBRARIES = stat.la
+libstat_la_LDFLAGS = $(LDFLAGS)
+libstat_la_LIBADD = $(GTKHEX_LIBS) $(LIBGLADE_LIBS) $(GMODULE_LIBS) $(GTK2_LIBS) $(GLIB2_LIBS)
+
+libstatdir = $(plugins_dir)
 
 statgladefiles = stat.glade
 statgladedir = $(datadir)/@PACKAGE@

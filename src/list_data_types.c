@@ -1,8 +1,8 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
   list_data_types.c
-  window allowing the user to manage his data types (add, remove, edit and
-  eventually save them)
+  Window allowing the user to manage his data types (add, remove, edit,
+  save and load them)
   
   (C) Copyright 2005 - 2007 Olivier Delhomme
   e-mail : heraia@delhomme.org
@@ -28,7 +28,6 @@
 /**
  *  Shows or hide the list data type window
  */
-
 void on_ldt_menu_activate(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
@@ -47,6 +46,34 @@ void on_ldt_menu_activate(GtkWidget *widget, gpointer data)
 					gtk_widget_hide(glade_xml_get_widget(main_window->xml, "list_data_types_window")); 
 				}
 		}
+}
+
+/**
+ *  Adds the data type name to the treeview
+ */
+void add_data_type_name_to_treeview(heraia_window_t *main_window, gchar *name)
+{
+	GtkListStore *list_store = NULL;  /* Treeview Stuff for rendering */
+	GtkTreeIter iter;                 /* the text in it.              */
+	GtkCellRenderer *renderer = NULL; 
+	GtkTreeViewColumn *column = NULL;  
+	GtkTreeView *treeview = NULL;     /* Treeview where data type name will be displayed */
+
+	treeview = GTK_TREE_VIEW(glade_xml_get_widget(main_window->xml, "ldt_treeview"));
+
+	list_store = GTK_LIST_STORE(gtk_tree_view_get_model(treeview));
+
+	if (list_store == NULL)
+		{
+			list_store = gtk_list_store_new(LDT_TV_N_COLUMNS, G_TYPE_STRING);
+			renderer = gtk_cell_renderer_text_new();
+			column = gtk_tree_view_column_new_with_attributes("Name", renderer, "text", LDT_TV_COLUMN_NAME, NULL);
+			gtk_tree_view_append_column(treeview, column);
+		}
+
+	gtk_list_store_append(list_store, &iter);
+	gtk_list_store_set(list_store, &iter, LDT_TV_COLUMN_NAME, name, -1);
+	gtk_tree_view_set_model(treeview, GTK_TREE_MODEL(list_store));
 }
 
 
@@ -76,6 +103,19 @@ static void destroy_ldt_window(GtkWidget *widget, GdkEvent  *event, gpointer dat
 }
 
 
+
+/**
+ *  When the add button (+) is clicked
+ */
+static void ldt_add_button_clicked(GtkWidget *widget, gpointer data)
+{
+	heraia_window_t *main_window = (heraia_window_t *) data;
+
+	clear_data_type_widgets(main_window);
+	gtk_widget_show_all(glade_xml_get_widget(main_window->xml, "data_type_window"));
+}
+
+
 /**
  *  Connects list_data_types's window signals.
  */
@@ -94,6 +134,10 @@ static void connect_list_data_types_signals(heraia_window_t *main_window)
 
 			g_signal_connect (G_OBJECT(glade_xml_get_widget(main_window->xml, "list_data_types_window")), "destroy", 
 							  G_CALLBACK(destroy_ldt_window), main_window);
+
+			/* Add button */
+			g_signal_connect (G_OBJECT(glade_xml_get_widget(main_window->xml, "ldt_add_button")), "clicked", 
+							  G_CALLBACK(ldt_add_button_clicked), main_window);
 		}
 }
 

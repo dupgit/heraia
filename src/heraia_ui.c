@@ -26,35 +26,28 @@
 
 static gboolean load_heraia_glade_xml(heraia_window_t *main_window);
 static void heraia_ui_connect_signals(heraia_window_t *main_window);
-/* static gboolean load_the_glade_xml_if_it_exists(heraia_window_t *main_window, char *file_to_load);*/
 
-/* call back functions : for the main program */
+/**
+ *  Quit, file menu
+ */
 void on_quitter1_activate( GtkWidget *widget, gpointer data )
 {
 	gtk_main_quit();
 }
 
-void on_nouveau1_activate( GtkWidget *widget, gpointer data )
+/**
+ *  New, file menu
+ */
+void on_nouveau1_activate(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 
 	log_message(main_window, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
 }
 
-void on_fonte1_activate( GtkWidget *widget, gpointer data )
-{
-	heraia_window_t *main_window = (heraia_window_t *) data;
-
-	log_message(main_window, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
-}
-
-void on_supprimer1_activate( GtkWidget *widget, gpointer data )
-{
-	heraia_window_t *main_window = (heraia_window_t *) data;
-	
-	log_message(main_window, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
-}
-
+/**
+ *  Shows apropos's dialog box
+ */
 void on_a_propos1_activate( GtkWidget *widget, gpointer data )
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
@@ -88,6 +81,20 @@ static gboolean a_propos_delete(GtkWidget *widget, GdkEvent  *event, gpointer da
 	return TRUE;
 }
 
+
+/**
+ *  Delete, edit menu
+ */
+void on_supprimer1_activate( GtkWidget *widget, gpointer data )
+{
+	heraia_window_t *main_window = (heraia_window_t *) data;
+	
+	log_message(main_window, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
+}
+
+/**
+ *  Cut, edit menu
+ */
 void on_couper1_activate( GtkWidget *widget, gpointer data )
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
@@ -95,6 +102,9 @@ void on_couper1_activate( GtkWidget *widget, gpointer data )
 	log_message(main_window, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
 }
 
+/**
+ *  Copy, edit menu
+ */
 void on_copier1_activate( GtkWidget *widget, gpointer data )
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
@@ -102,6 +112,10 @@ void on_copier1_activate( GtkWidget *widget, gpointer data )
 	log_message(main_window, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
 }
 
+
+/**
+ *  Paste, edit menu
+ */
 void on_coller1_activate( GtkWidget *widget, gpointer data )
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
@@ -206,7 +220,9 @@ void on_DIMenu_activate(GtkWidget *widget, gpointer data)
 		}
 }
 
-
+/**
+ *  When the user destroys or delete the main window
+ */
 gboolean delete_main_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {
 	gtk_widget_destroy(widget);
@@ -214,7 +230,9 @@ gboolean delete_main_window_event(GtkWidget *widget, GdkEvent  *event, gpointer 
 }
 
 
-/* call back functions :  for the data interpretor window */
+/**
+ *  call back functions for the data interpretor window destruction
+ */
 gboolean delete_dt_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {	
 	heraia_window_t *main_window = (heraia_window_t *) data;
@@ -403,29 +421,6 @@ void init_heraia_interface(heraia_window_t *main_window)
 }
 
 
-/* checks if file_to_load exists and is valid and if possible, loads it
-static gboolean load_the_glade_xml_if_it_exists(heraia_window_t *main_window, char *file_to_load)
-{
-	gboolean success = FALSE;
-	struct stat *stat_buf;
-
-	stat_buf = (struct stat *) g_malloc0 (sizeof(struct stat));
-
-	stat(file_to_load, stat_buf);
-	if (S_ISREG(stat_buf->st_mode) && stat_buf->st_size>0)
-		{
-			success = TRUE;
-			main_window->xml = glade_xml_new(file_to_load, NULL, NULL);
-			if (main_window->xml == NULL)
-				success = FALSE;
-		}
-
-	g_free(stat_buf);
-
-	return success;
-} */
-
-
 /**
  *  Loads the glade xml file that describes the heraia project
  *  tries the following paths in that order :                 
@@ -470,21 +465,39 @@ static void heraia_ui_connect_signals(heraia_window_t *main_window)
 	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "DIMenu")), "activate", 
 					  G_CALLBACK (on_DIMenu_activate), main_window);
 
+	/* Quit, file menu */
 	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "quitter1")), "activate", 
 					  G_CALLBACK (on_quitter1_activate), main_window);
 
+	/* New, file menu */
 	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "nouveau1")), "activate",  
 					  G_CALLBACK (on_nouveau1_activate), main_window);
 
+	/* Open, file menu */
 	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "ouvrir1")), "activate",  
 					  G_CALLBACK (on_ouvrir1_activate), main_window);
 
+	/* Save, file menu */
 	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "enregistrer1")), "activate",  
 					  G_CALLBACK (on_enregistrer1_activate), main_window);
 
+	/* Save As, file menu */
 	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "enregistrer_sous1")), "activate",  
 					  G_CALLBACK (on_enregistrer_sous1_activate), main_window); 
-		
+	
+	/* Cut, edit menu */
+	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "couper1")), "activate",  
+					  G_CALLBACK (on_couper1_activate), main_window); 
+
+	/* Copy, edit menu */
+	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "copier1")), "activate",  
+					  G_CALLBACK (on_copier1_activate), main_window); 
+
+	/* Paste, edit menu */
+	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "coller1")), "activate",  
+					  G_CALLBACK (on_coller1_activate), main_window); 
+
+
 	/* about dialog box */		
 	g_signal_connect (G_OBJECT(glade_xml_get_widget(main_window->xml, "a_propos1")), "activate",  
 					  G_CALLBACK(on_a_propos1_activate), main_window); 
@@ -534,6 +547,9 @@ int load_heraia_ui(heraia_window_t *main_window)
 
 			/* The list data types window */
 			list_data_types_init_interface(main_window);
+
+			/* The data type window (create or edit one type) */
+			data_type_init_interface(main_window);
 		}
 
 	return success;
