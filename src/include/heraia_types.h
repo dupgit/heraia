@@ -87,6 +87,7 @@ typedef struct
 
 /**
  *  Data type structure entry that contains user defined data types
+ *  This is integrated within a GList
  */
 typedef struct
 {

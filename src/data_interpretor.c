@@ -28,7 +28,6 @@ static void interpret_as_date(heraia_window_t *main_window, DecodeDateFunc decod
 static void interpret_as_number(heraia_window_t *main_window, DecodeFunc decode_it, gchar *widget_name, guint length, guint endianness);
 static void close_data_interpretor_window(GtkWidget *widget, gpointer data);
 static void connect_data_interpretor_signals(heraia_window_t *main_window);
-static gint get_ghex_data(data_window_t *data_window, guint length, guint endianness, guchar *c);
 
 /**
  *  Determines which endianness is selected that is to say
@@ -59,27 +58,6 @@ static guint which_endianness(heraia_window_t *main_window)
 		return H_DI_LITTLE_ENDIAN;  /* default interpretation case */
 }
 
-/**
- *  Gets the data from the hexwidget
- */
-static gint get_ghex_data(data_window_t *data_window, guint length, guint endianness, guchar *c)
-{
-	GtkHex *gh = NULL;
-	gint result = FALSE;
-
-	gh = GTK_HEX(data_window->current_hexwidget);
-
-	if (gh != NULL)
-		{
-			result = ghex_memcpy(gh, gtk_hex_get_cursor(gh), length, endianness, c);
-		}
-	else
-		{
-			result = FALSE;
-		}
-	return result;
-}
-
 
 /**
  *   Here we do interpret a date according to the decode_it function
@@ -102,7 +80,7 @@ static void interpret_as_date(heraia_window_t *main_window, DecodeDateFunc decod
 	c = (guchar *) g_malloc0 (length);
 	mydate = (date_and_time_t *) g_malloc0 (sizeof(date_and_time_t));
 
-	result = get_ghex_data(data_window, length, endianness, c);
+	result = ghex_get_data(data_window, length, endianness, c);
 	
 	if (result == TRUE)
 		{
@@ -148,7 +126,7 @@ static void interpret_as_number(heraia_window_t *main_window, DecodeFunc decode_
 
 	c = (guchar *) g_malloc0(length);
 
-	result = get_ghex_data(data_window, length, endianness, c);
+	result = ghex_get_data(data_window, length, endianness, c);
 
 	if (result == TRUE)
 		{

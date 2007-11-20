@@ -117,12 +117,40 @@ gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, guint endianness, guchar 
 		}
 }
 
+
+
+/**
+ *  Gets the data from the hexwidget, a wrapper to the ghex_memcpy
+ *  function. guchar *c MUST have been pre allocated BEFORE the call.
+ *  endianness == H_DI_BIG_ENDIAN, H_DI_MIDDLE_ENDIAN or H_DI_LITTLE_ENDIAN
+ *  length can be anything but MUST be strictly less than the size allocated 
+ *  to *c
+ */
+gboolean ghex_get_data(data_window_t *data_window, guint length, guint endianness, guchar *c)
+{
+	GtkHex *gh = NULL;
+	gboolean result = FALSE;
+
+	gh = GTK_HEX(data_window->current_hexwidget);
+
+	if (gh != NULL)
+		{
+			result = ghex_memcpy(gh, gtk_hex_get_cursor(gh), length, endianness, c);
+		}
+	else
+		{
+			result = FALSE;
+		}
+	return result;
+}
+
+
 /**
  *  Returns the file size of an opened GtkHex document.
  */
 guint64 ghex_file_size(GtkHex *gh)
 {
-	if ( gh != NULL && gh->document != NULL)
+	if (gh != NULL && gh->document != NULL)
 		{
 			return gh->document->file_size;
 		}

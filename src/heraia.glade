@@ -1562,7 +1562,7 @@ POSSIBILITY OF SUCH DAMAGES.
                           </widget>
                         </child>
                         <child>
-                          <widget class="GtkButton" id="button1">
+                          <widget class="GtkButton" id="ldt_save_button">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -1598,6 +1598,9 @@ POSSIBILITY OF SUCH DAMAGES.
             <child>
               <placeholder/>
             </child>
+            <child>
+              <placeholder/>
+            </child>
           </widget>
           <packing>
             <property name="position">1</property>
@@ -1621,21 +1624,22 @@ POSSIBILITY OF SUCH DAMAGES.
             <property name="visible">True</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
             <property name="spacing">4</property>
-            <property name="homogeneous">True</property>
             <child>
               <widget class="GtkLabel" id="label22">
                 <property name="visible">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                <property name="label" translatable="yes">Name :</property>
+                <property name="label" translatable="yes">data type name :</property>
               </widget>
               <packing>
-                <property name="fill">False</property>
+                <property name="expand">False</property>
               </packing>
             </child>
             <child>
               <widget class="GtkEntry" id="dt_name_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="has_focus">True</property>
+                <property name="is_focus">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
               </widget>
               <packing>
@@ -1656,19 +1660,24 @@ POSSIBILITY OF SUCH DAMAGES.
             <property name="visible">True</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
             <property name="spacing">4</property>
-            <property name="homogeneous">True</property>
             <child>
               <widget class="GtkLabel" id="label23">
                 <property name="visible">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                <property name="label" translatable="yes">Size (in bytes) : </property>
+                <property name="label" translatable="yes">size (in bytes) : </property>
               </widget>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
             </child>
             <child>
-              <widget class="GtkEntry" id="dt_size_entry">
+              <widget class="GtkSpinButton" id="dt_size_spinbutton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                <property name="adjustment">1 1 16 1 10 10</property>
+                <property name="snap_to_ticks">True</property>
+                <property name="numeric">True</property>
               </widget>
               <packing>
                 <property name="expand">False</property>
@@ -1676,7 +1685,15 @@ POSSIBILITY OF SUCH DAMAGES.
               </packing>
             </child>
             <child>
-              <placeholder/>
+              <widget class="GtkEntry" id="hex_datas_entry">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                <property name="editable">False</property>
+              </widget>
+              <packing>
+                <property name="position">2</property>
+              </packing>
             </child>
           </widget>
           <packing>
@@ -1704,6 +1721,8 @@ POSSIBILITY OF SUCH DAMAGES.
               <widget class="GtkButton" id="dt_ok_button">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="has_default">True</property>
                 <property name="receives_default">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                 <property name="label" translatable="yes">gtk-ok</property>

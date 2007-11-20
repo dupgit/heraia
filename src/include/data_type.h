@@ -19,13 +19,28 @@
  
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */ 
-
+  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
+*/ 
 
 #ifndef _DATA_TYPE_H_
 #define _DATA_TYPE_H_
 
+/**
+ *  If any changes occurs in the .glade file description
+ *  one might also do it here
+ */
+#define DT_SPIN_MIN 1
+#define DT_SPIN_MAX 16
+
+extern void refresh_hex_datas_entry(heraia_window_t *main_window);
+
 extern void clear_data_type_widgets(heraia_window_t *main_window);
+extern void fill_data_type_widgets(heraia_window_t *main_window, GList *data_type_list);
+
+extern GList *is_data_type_name_already_used(GList *data_type_list, gchar *name);
+
+extern data_type_t *new_data_type(gchar *name, guint size);
+extern void free_data_type(data_type_t *a_data_type);
 
 /* interface initialization */
 extern void data_type_init_interface(heraia_window_t *main_window);
