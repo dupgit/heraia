@@ -243,7 +243,7 @@ void add_entry_to_plugins_menu(heraia_window_t *main_window, heraia_plugin_t *pl
 	plugin->cmi_entry = GTK_CHECK_MENU_ITEM(gtk_check_menu_item_new_with_label(plugin->info->name));
 
 	/* Append this menu entry to the menu */
-	gtk_menu_shell_append(GTK_MENU_SHELL(glade_xml_get_widget(main_window->xml, "plugins_menu")), GTK_WIDGET(plugin->cmi_entry));
+	gtk_menu_shell_append(GTK_MENU_SHELL(heraia_get_widget(main_window->xmls->main, "plugins_menu")), GTK_WIDGET(plugin->cmi_entry));
 
 	/* Connect the menu entry toggled signal to the run_proc function of the plugin */
 	g_signal_connect(G_OBJECT(plugin->cmi_entry), "toggled", G_CALLBACK(plugin->run_proc), main_window);

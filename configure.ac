@@ -58,7 +58,7 @@ AC_FUNC_VPRINTF
 AC_CHECK_FUNCS(gettimeofday select socket strdup strerror strstr)
 
 dnl **************************************************
-dnl * Checks for programs                            *
+dnl * Checks dynamic libraries capabilities          *
 dnl **************************************************
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
@@ -173,6 +173,8 @@ dnl **************************************************
 dnl *******************************
 dnl debug option
 dnl *******************************
+dnl At this early stage debugging IS activated 
+dnl by default
 AC_ARG_ENABLE([debug],
      [  --enable-debug    Turn on debugging],
      [case "${enableval}" in
@@ -183,8 +185,10 @@ AC_ARG_ENABLE([debug],
 if test x$debug = xtrue
 then
  AC_DEFINE_UNQUOTED(ENABLE_DEBUG, TRUE, [Debug mode On])
+ CFLAGS="$CFLAGS -ggdb"
 else
- AC_DEFINE_UNQUOTED(ENABLE_DEBUG, FALSE, [Debug mode Off])
+ AC_DEFINE_UNQUOTED(ENABLE_DEBUG, TRUE, [Debug mode Off])
+ CFLAGS="$CFLAGS -ggdb"
 fi
 
 dnl *******************************

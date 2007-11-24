@@ -52,7 +52,7 @@ void on_a_propos1_activate( GtkWidget *widget, gpointer data )
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	
-	gtk_widget_show(glade_xml_get_widget(main_window->xml, "about_dialog"));
+	gtk_widget_show(heraia_get_widget(main_window->xmls->main, "about_dialog"));
 }
 
 /**
@@ -62,21 +62,21 @@ static void a_propos_response(GtkWidget *widget, gint response, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
  	
-	gtk_widget_hide(glade_xml_get_widget(main_window->xml, "about_dialog"));
+	gtk_widget_hide(heraia_get_widget(main_window->xmls->main, "about_dialog"));
 }
 
 static void a_propos_close(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	
-	gtk_widget_hide(glade_xml_get_widget(main_window->xml, "about_dialog"));
+	gtk_widget_hide(heraia_get_widget(main_window->xmls->main, "about_dialog"));
 }
 
 static gboolean a_propos_delete(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
  	
-	gtk_widget_hide(glade_xml_get_widget(main_window->xml, "about_dialog"));
+	gtk_widget_hide(heraia_get_widget(main_window->xmls->main, "about_dialog"));
  	
 	return TRUE;
 }
@@ -193,13 +193,13 @@ void on_DIMenu_activate(GtkWidget *widget, gpointer data)
 				{
 					if (dw->diw == NULL)
 						{
-							dw->diw = glade_xml_get_widget(main_window->xml, "data_interpretor_window");
+							dw->diw = heraia_get_widget(main_window->xmls->main, "data_interpretor_window");
 						}
 	  
 					if (dw->diw != NULL)
 						{
 							dw->window_displayed = !(dw->window_displayed);
-							notebook = GTK_NOTEBOOK(glade_xml_get_widget(main_window->xml, "diw_notebook"));
+							notebook = GTK_NOTEBOOK(heraia_get_widget(main_window->xmls->main, "diw_notebook"));
 
 							if (dw->window_displayed == TRUE)
 								{
@@ -237,7 +237,7 @@ gboolean delete_dt_window_event(GtkWidget *widget, GdkEvent  *event, gpointer da
 {	
 	heraia_window_t *main_window = (heraia_window_t *) data;
 
-	g_signal_emit_by_name(glade_xml_get_widget(main_window->xml, "DIMenu"), "activate");
+	g_signal_emit_by_name(heraia_get_widget(main_window->xmls->main, "DIMenu"), "activate");
 
 	return TRUE;
 }
@@ -246,7 +246,7 @@ void destroy_dt_window(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 
-	g_signal_emit_by_name(glade_xml_get_widget(main_window->xml, "DIMenu"), "activate");
+	g_signal_emit_by_name(heraia_get_widget(main_window->xmls->main, "DIMenu"), "activate");
 }
 /* End of call back functions that handle the data interpretor window */
 
@@ -321,7 +321,7 @@ gboolean select_file_to_load(heraia_window_t *main_window)
 	gboolean success = FALSE;
 	gchar *filename = NULL;   /* filename selected (if any) to be openned                     */
 
-	parent = glade_xml_get_widget(main_window->xml, "main_window");
+	parent = heraia_get_widget(main_window->xmls->main, "main_window");
 
 	file_chooser = GTK_FILE_CHOOSER(gtk_file_chooser_dialog_new("Select a file to analyse",
 																GTK_WINDOW(parent),
@@ -391,8 +391,8 @@ void init_heraia_interface(heraia_window_t *main_window)
 		{
 			dw = main_window->current_DW;
 
-			menu = glade_xml_get_widget(main_window->xml, "DIMenu");
-			window = glade_xml_get_widget(main_window->xml, "main_window");
+			menu = heraia_get_widget(main_window->xmls->main, "DIMenu");
+			window = heraia_get_widget(main_window->xmls->main, "main_window");
 
 			if (dw != NULL && diw != NULL)
 				{
@@ -422,7 +422,7 @@ void init_heraia_interface(heraia_window_t *main_window)
 
 
 /**
- *  Loads the glade xml file that describes the heraia project
+ *  Loads the glade xml files that describes the heraia project
  *  tries the following paths in that order :                 
  *  - /etc/heraia/heraia.glade
  *  - /home/[user]/.heraia/heraia.glade
@@ -432,16 +432,26 @@ static gboolean load_heraia_glade_xml(heraia_window_t *main_window)
 {
 	gchar *filename = NULL;
 
-	filename = g_strdup_printf("heraia.glade");
+	if (main_window != NULL && main_window->xmls != NULL)
+		{
 
-	main_window->xml = load_glade_xml_file(main_window->location_list, filename);
+			filename = g_strdup_printf("heraia.glade"); 
+			main_window->xmls->main = load_glade_xml_file(main_window->location_list, filename);
+			g_free(filename);
 
-	g_free(filename);
+			/**
+			 *  filename = g_strdup_printf("treatment.glade");
+			 *  main_window->xmls->treatment = load_glade_xml_file(main_window->location_list, filename);
+			 *  g_free(filename);
+			 */
 
-	if (main_window->xml == NULL)
-		return FALSE;
+			if (main_window->xmls->main == NULL) /* || main_window->xmls->treatment == NULL) */
+				return FALSE;
+			else
+				return TRUE;
+		}
 	else
-		return TRUE;
+		return FALSE;
 }
 
 /**
@@ -462,61 +472,61 @@ static void heraia_ui_connect_signals(heraia_window_t *main_window)
 {
 
 	/* the data interpretor menu */
-	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "DIMenu")), "activate", 
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "DIMenu")), "activate", 
 					  G_CALLBACK (on_DIMenu_activate), main_window);
 
 	/* Quit, file menu */
-	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "quitter1")), "activate", 
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "quitter1")), "activate", 
 					  G_CALLBACK (on_quitter1_activate), main_window);
 
 	/* New, file menu */
-	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "nouveau1")), "activate",  
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "nouveau1")), "activate",  
 					  G_CALLBACK (on_nouveau1_activate), main_window);
 
 	/* Open, file menu */
-	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "ouvrir1")), "activate",  
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "ouvrir1")), "activate",  
 					  G_CALLBACK (on_ouvrir1_activate), main_window);
 
 	/* Save, file menu */
-	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "enregistrer1")), "activate",  
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "enregistrer1")), "activate",  
 					  G_CALLBACK (on_enregistrer1_activate), main_window);
 
 	/* Save As, file menu */
-	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "enregistrer_sous1")), "activate",  
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "enregistrer_sous1")), "activate",  
 					  G_CALLBACK (on_enregistrer_sous1_activate), main_window); 
 	
 	/* Cut, edit menu */
-	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "couper1")), "activate",  
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "couper1")), "activate",  
 					  G_CALLBACK (on_couper1_activate), main_window); 
 
 	/* Copy, edit menu */
-	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "copier1")), "activate",  
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "copier1")), "activate",  
 					  G_CALLBACK (on_copier1_activate), main_window); 
 
 	/* Paste, edit menu */
-	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "coller1")), "activate",  
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "coller1")), "activate",  
 					  G_CALLBACK (on_coller1_activate), main_window); 
 
 
 	/* about dialog box */		
-	g_signal_connect (G_OBJECT(glade_xml_get_widget(main_window->xml, "a_propos1")), "activate",  
+	g_signal_connect (G_OBJECT(heraia_get_widget(main_window->xmls->main, "a_propos1")), "activate",  
 					  G_CALLBACK(on_a_propos1_activate), main_window); 
 
-	g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "about_dialog")), "close",
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "about_dialog")), "close",
 					 G_CALLBACK(a_propos_close), main_window);
 
-	g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "about_dialog")), "response",
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "about_dialog")), "response",
 					 G_CALLBACK(a_propos_response), main_window);
 
-	g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "about_dialog")), "delete-event",
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "about_dialog")), "delete-event",
 					 G_CALLBACK(a_propos_delete), main_window);
 
 
 	/* main window killed or destroyed */
-	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "main_window")), "delete_event", 
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "main_window")), "delete_event", 
 					  G_CALLBACK (delete_main_window_event), NULL);
 
-	g_signal_connect (G_OBJECT (glade_xml_get_widget(main_window->xml, "main_window")), "destroy", 
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "main_window")), "destroy", 
 					  G_CALLBACK (on_quitter1_activate), NULL);
 			
 }
@@ -532,7 +542,7 @@ int load_heraia_ui(heraia_window_t *main_window)
 {
 	gboolean success = FALSE;
 
-	/* load the interface */
+	/* load the XML interfaces (main & treatment) */
 	success = load_heraia_glade_xml(main_window);
 
 	if (success == TRUE)
@@ -641,4 +651,22 @@ GtkWidget *gtk_radio_button_get_active_from_widget(GtkRadioButton *radio_group_m
 gboolean is_cmi_checked(GtkWidget *check_menu_item)
 {
 	return gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(check_menu_item));
+}
+
+/**
+ *  This is a wrapper to the glade xml get widget. It is intended
+ *  to simplify the developpers lives if they have to choose or
+ *  propose other means to do the same thing than libglade (say,
+ *  for example, GtkBuilder :)
+ */
+GtkWidget *heraia_get_widget(GladeXML *xml, gchar *widget_name)
+{
+	if (xml != NULL && widget_name != NULL)
+		{
+			return glade_xml_get_widget(xml, widget_name);
+		}
+	else
+		{
+			return NULL;
+		}
 }

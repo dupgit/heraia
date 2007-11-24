@@ -72,22 +72,32 @@ static gboolean usage(int status)
 static heraia_window_t *heraia_init_main_struct(void)
 {
 	heraia_window_t *herwin = NULL;
+	xml_t *xmls = NULL;
 
 	herwin = (heraia_window_t *) g_malloc0(sizeof(heraia_window_t));
-
+	
 	if (!herwin)
 		{
 			return NULL;
 		}
+
 	/* First, in this early stage of the development we want to toggle debugging
 	   mode ON : 
 	*/
-	herwin->debug = TRUE; /* ENABLE_DEBUG; */
+	herwin->debug = ENABLE_DEBUG;
 	herwin->filename = NULL;
+	
 	herwin->current_doc = NULL;
 	herwin->plugins_list = NULL; 
 	herwin->location_list = init_heraia_location_list();
 	herwin->data_type_list = NULL;
+	herwin->current_data_type = NULL;
+	herwin->available_treatment_list = NULL; /* init this list here */
+
+	/* xml_t structure initialisation */
+	xmls = (xml_t *) g_malloc0(sizeof(xml_t));
+	xmls->main = NULL;
+	herwin->xmls = xmls;
 
 	/* data interpretor structure initialization */
 	herwin->current_DW = (data_window_t *) g_malloc0 (sizeof(data_window_t));
@@ -266,7 +276,7 @@ int main (int argc, char ** argv)
 			if (load_heraia_ui(main_window) == TRUE)
 				{	
 			  
-					log_message(main_window, G_LOG_LEVEL_INFO, "Main interface loaded (%s)", main_window->xml->filename);
+					log_message(main_window, G_LOG_LEVEL_INFO, "Main interface loaded (%s)", main_window->xmls->main->filename);
 										
 					init_heraia_plugin_system(main_window);
 

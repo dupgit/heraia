@@ -63,9 +63,9 @@ static void destroy_plw_window(GtkWidget *widget, GdkEvent  *event, gpointer dat
 static void plw_close_clicked(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
-	GtkCheckMenuItem *cmi = GTK_CHECK_MENU_ITEM(glade_xml_get_widget(main_window->xml, "mw_cmi_plugin_list"));
+	GtkCheckMenuItem *cmi = GTK_CHECK_MENU_ITEM(heraia_get_widget(main_window->xmls->main, "mw_cmi_plugin_list"));
 
-	show_hide_widget(GTK_WIDGET(glade_xml_get_widget(main_window->xml, "plugin_list_window")), FALSE);
+	show_hide_widget(GTK_WIDGET(heraia_get_widget(main_window->xmls->main, "plugin_list_window")), FALSE);
 	gtk_check_menu_item_set_active(cmi, FALSE);
 }
 
@@ -76,7 +76,7 @@ static void plw_close_clicked(GtkWidget *widget, gpointer data)
 static void plw_refresh_clicked(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
-	GtkTextView *textview = GTK_TEXT_VIEW(glade_xml_get_widget(main_window->xml, "plugin_info_textview"));
+	GtkTextView *textview = GTK_TEXT_VIEW(heraia_get_widget(main_window->xmls->main, "plugin_info_textview"));
 
 	init_plugin_name_tv(main_window);
 	kill_text_from_textview(textview);	
@@ -90,8 +90,8 @@ static void plw_refresh_clicked(GtkWidget *widget, gpointer data)
 static void mw_cmi_plw_toggle(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
-	GtkCheckMenuItem *cmi = GTK_CHECK_MENU_ITEM(glade_xml_get_widget(main_window->xml, "mw_cmi_plugin_list"));
-	GtkPaned *paned = GTK_PANED(glade_xml_get_widget(main_window->xml, "plw_hpaned"));
+	GtkCheckMenuItem *cmi = GTK_CHECK_MENU_ITEM(heraia_get_widget(main_window->xmls->main, "mw_cmi_plugin_list"));
+	GtkPaned *paned = GTK_PANED(heraia_get_widget(main_window->xmls->main, "plw_hpaned"));
 	gint pos = 0;
 
 	if (gtk_check_menu_item_get_active(cmi) == TRUE)
@@ -104,7 +104,7 @@ static void mw_cmi_plw_toggle(GtkWidget *widget, gpointer data)
 				}
 		}
 
-	show_hide_widget(GTK_WIDGET(glade_xml_get_widget(main_window->xml, "plugin_list_window")), 
+	show_hide_widget(GTK_WIDGET(heraia_get_widget(main_window->xmls->main, "plugin_list_window")), 
 					 gtk_check_menu_item_get_active(cmi));
 }
 
@@ -367,7 +367,7 @@ static void pn_treeview_selection_changed_cb(GtkTreeSelection *selection, gpoint
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	gchar *name = NULL;
 	heraia_plugin_t *plugin = NULL;
-	GtkTextView *textview = GTK_TEXT_VIEW(glade_xml_get_widget(main_window->xml, "plugin_info_textview"));
+	GtkTextView *textview = GTK_TEXT_VIEW(heraia_get_widget(main_window->xmls->main, "plugin_info_textview"));
 
 	if (gtk_tree_selection_get_selected(selection, &model, &iter))
 		{
@@ -404,27 +404,27 @@ static void plugin_list_window_connect_signals(heraia_window_t *main_window)
 	if (main_window != NULL)
 		{
 			/* When the plugin list window is destroyed or killed */
-			g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "plugin_list_window")), "delete_event", 
+			g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "plugin_list_window")), "delete_event", 
 							 G_CALLBACK(delete_plw_window_event), main_window);
 
-			g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "plugin_list_window")), "destroy", 
+			g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "plugin_list_window")), "destroy", 
 							 G_CALLBACK(destroy_plw_window), main_window);
 	
 			/* Close button */
-			g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "plw_close_b")), "clicked", 
+			g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "plw_close_b")), "clicked", 
 							 G_CALLBACK(plw_close_clicked), main_window);
 
 			/* The toogle button */
-			g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "mw_cmi_plugin_list")), "toggled",
+			g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "mw_cmi_plugin_list")), "toggled",
 							 G_CALLBACK(mw_cmi_plw_toggle), main_window);
      
 			/* Selection has changed for the pn_treeview */
-			select = gtk_tree_view_get_selection(GTK_TREE_VIEW(glade_xml_get_widget(main_window->xml, "pn_treeview")));
+			select = gtk_tree_view_get_selection(GTK_TREE_VIEW(heraia_get_widget(main_window->xmls->main, "pn_treeview")));
 			gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
-			g_signal_connect (G_OBJECT(select), "changed", G_CALLBACK (pn_treeview_selection_changed_cb), main_window);
+			g_signal_connect(G_OBJECT(select), "changed", G_CALLBACK (pn_treeview_selection_changed_cb), main_window);
 
 			/* Refresh button */
-			g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "plw_refresh_b")), "clicked", 
+			g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "plw_refresh_b")), "clicked", 
 							 G_CALLBACK(plw_refresh_clicked), main_window);
 		}
 }
@@ -445,7 +445,7 @@ static void init_plugin_name_tv(heraia_window_t *main_window)
 
 	if (main_window != NULL)
 		{
-			treeview = GTK_TREE_VIEW(glade_xml_get_widget(main_window->xml, "pn_treeview"));
+			treeview = GTK_TREE_VIEW(heraia_get_widget(main_window->xmls->main, "pn_treeview"));
 
 			p_list = g_list_first(main_window->plugins_list);
 

@@ -48,7 +48,7 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 
 			heraia_hex_document_new(main_window, filename); /* removes the old hexdocument and adds a new one */
 
-			gtk_box_pack_start(GTK_BOX(glade_xml_get_widget(main_window->xml, "vbox1")), 
+			gtk_box_pack_start(GTK_BOX(heraia_get_widget(main_window->xmls->main, "vbox1")), 
 							   main_window->current_DW->current_hexwidget, TRUE, TRUE, 0);
 			
 			gtk_widget_show(main_window->current_DW->current_hexwidget);

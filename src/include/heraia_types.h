@@ -71,7 +71,9 @@ typedef gint RefreshType;
 #define HERAIA_REFRESH_NEW_FILE 1
 #define HERAIA_REFRESH_CURSOR_MOVE 2
 
-
+/**
+ *  Data interpretor window structure
+ */
 typedef struct
 {
 	/* Current Hexwidget that we want data to be interpreted */
@@ -84,31 +86,51 @@ typedef struct
 } data_window_t;
 
 
-
 /**
  *  Data type structure entry that contains user defined data types
- *  This is integrated within a GList
+ *  This is integrated within a GList.
+ *  !! Do not forget to update the functions related to this such as
+ *   . new_data_type
+ *   . free_data_type
+ *   . copy_data_type
+ *  See data_type.c for thoses functions
  */
 typedef struct
 {
-	gchar *name;      /* Name of the data type                                                       */
-	guint size;       /* size of the data type  (here we may limit size entry, eg <= 8 for example)  */
+	gchar *name;             /* Name of the data type                                                       */
+	guint size;              /* size of the data type  (here we may limit size entry, eg <= 16 for example) */
+	GList *treatment_c_list; /* Treatments containers to be applied (in the list order) to the data 
+								(treatment_container_t *)                                                   */
 } data_type_t;
 
 
+/**
+ *  Structure that contains all the xml definitions loaded at 
+ *  running time using libglade
+ */
 typedef struct
 {
-	gboolean  debug;            /* Used to tell the program wether we want to display debug messages or not */
-	gchar *filename;            /* this could (should) be a list of filenames !!!                           */
-	Heraia_Document *current_doc;  /* We may want to group this with current_hexwidget in a specific struct */
+	GladeXML *main;       /* the main interface xml description       */
+} xml_t;
 
-	GladeXML *xml;              /* the interface xml description (using libglade)      */
-	
-   	data_window_t *current_DW;  /* data_interpretor pointer                            */
-	GList *location_list;       /* this is the location list where we store some paths */
-	GList *plugins_list;        /* A list of plugins                                   */
-	GList *data_type_list;      /* A list of data types                                */
-	RefreshType event;          /* Tells what is happening                             */
+
+/**
+ *  This is the main structure (mainly named main_window due to historycal reasons)
+ *  It contains all things that the program needs
+ */
+typedef struct
+{
+	gboolean  debug;                /* Used to tell the program wether we want to display debug messages or not  */
+	gchar *filename;                /* this could (should) be a list of filenames !!!                            */
+	Heraia_Document *current_doc;   /* We may want to group this with current_hexwidget in a specific struct     */
+	xml_t *xmls;                    /* All the xmls used in the program, loaded at running time                  */
+   	data_window_t *current_DW;      /* data_interpretor pointer                                                  */
+	GList *location_list;           /* this is the location list where we store some paths                       */
+	GList *plugins_list;            /* A list of plugins                                                         */
+	GList *data_type_list;          /* A list of data types                                                      */
+	data_type_t *current_data_type; /* data type that is being edited                                            */
+	GList *available_treatment_list;/* Available treatments that can be used by the user in the data type window */
+	RefreshType event;              /* Tells what is happening                                                   */
 } heraia_window_t;
 
 

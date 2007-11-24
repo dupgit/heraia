@@ -1,3 +1,23 @@
+23.11.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* Added structures and functions to manage the treatment 
+	  container where treatments will appear
+
+22.11.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* Added a wrapper to the function glade_xml_get_widget in
+	  order to be able to change the method (or add a user choice
+	  about the method or library), thinking about GtkBuilder
+
+21.11.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* Activating debug, by default in file "configure.ac"
+	  and turning back the option correctly in heraia.c
+	* Added -ggdb flag to debugging option in file "configure.ac"
+	* Added a new structure to handle XML definitions loaded at
+	  runtime: xmls that will group all GladeXML definitions
+	  Modified all the sources accordingly
+	 
 13.11.2007
 	- Olivier Delhomme <heraia@delhomme.org>	
 	* Added comments
@@ -43,7 +63,7 @@
 	 
 06.11.2007
 	- Olivier Delhomme <heraia@delhomme.org>
-	* Added --enable-debug, --enable-gcov and --enable-gprof options 
+	* Added --enable-debug, --enable-gcov and --enable-gprof options
 	  to ./configure's script
 	  - enable-debug sets the PROGRAM_DEBUG environment variable to 
 	    TRUE and compiles heraia with debugging mode on, otherwise

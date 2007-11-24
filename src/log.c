@@ -71,7 +71,7 @@ static void my_log(heraia_window_t *main_window, gchar *log_domain, GLogLevelFla
 	va_list args;
 	gchar *str = NULL;
 	gchar *display = NULL;
-	GtkTextView *logw_textview = GTK_TEXT_VIEW(glade_xml_get_widget(main_window->xml, "logw_textview"));
+	GtkTextView *logw_textview = GTK_TEXT_VIEW(heraia_get_widget(main_window->xmls->main, "logw_textview"));
 	GtkTextBuffer *tb = NULL;
 	GtkTextIter iStart;
 
@@ -200,9 +200,9 @@ void show_hide_log_window(heraia_window_t *main_window, gboolean show)
 {
 
 	if (show)
-		gtk_widget_show(GTK_WIDGET(glade_xml_get_widget(main_window->xml, "log_window")));
+		gtk_widget_show(GTK_WIDGET(heraia_get_widget(main_window->xmls->main, "log_window")));
 	else
-		gtk_widget_hide(GTK_WIDGET(glade_xml_get_widget(main_window->xml, "log_window")));
+		gtk_widget_hide(GTK_WIDGET(heraia_get_widget(main_window->xmls->main, "log_window")));
 
 }
 
@@ -239,7 +239,7 @@ static void destroy_log_window(GtkWidget *widget, GdkEvent  *event, gpointer dat
 static void logw_close_clicked(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
-	GtkCheckMenuItem *cmi = GTK_CHECK_MENU_ITEM(glade_xml_get_widget(main_window->xml, "mw_cmi_affiche_logw"));
+	GtkCheckMenuItem *cmi = GTK_CHECK_MENU_ITEM(heraia_get_widget(main_window->xmls->main, "mw_cmi_affiche_logw"));
 
 	show_hide_log_window(main_window, FALSE);
 	gtk_check_menu_item_set_active(cmi, FALSE);
@@ -252,18 +252,18 @@ static void logw_close_clicked(GtkWidget *widget, gpointer data)
 static void log_window_connect_signals(heraia_window_t *main_window)
 {
 
-	g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "log_window")), "delete_event", 
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "log_window")), "delete_event", 
 					 G_CALLBACK(delete_log_window_event), main_window);
 
-	g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "log_window")), "destroy", 
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "log_window")), "destroy", 
 					 G_CALLBACK(destroy_log_window), main_window);
 	
 	/* Close Button */
-	g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "logw_close_b")), "clicked", 
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "logw_close_b")), "clicked", 
 					 G_CALLBACK(logw_close_clicked), main_window);
 
 	/* the toogle button */
-	g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "mw_cmi_affiche_logw")), "toggled",
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "mw_cmi_affiche_logw")), "toggled",
 							 G_CALLBACK(mw_cmi_affiche_logw_toggle), main_window);
 
 }

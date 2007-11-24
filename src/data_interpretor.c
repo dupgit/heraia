@@ -35,7 +35,7 @@ static void connect_data_interpretor_signals(heraia_window_t *main_window);
  */
 static guint which_endianness(heraia_window_t *main_window)
 {
-	GtkRadioButton *rb = GTK_RADIO_BUTTON(glade_xml_get_widget(main_window->xml, "diw_rb_little_endian"));
+	GtkRadioButton *rb = GTK_RADIO_BUTTON(heraia_get_widget(main_window->xmls->main, "diw_rb_little_endian"));
 	GtkWidget *activated = NULL;
 	const gchar *widget_name = NULL;
 
@@ -74,8 +74,8 @@ static void interpret_as_date(heraia_window_t *main_window, DecodeDateFunc decod
 	guchar *c = NULL;      /* the character under the cursor                   */
 	gchar *text = NULL;
 	data_window_t *data_window = main_window->current_DW;
-	GtkWidget *entry = glade_xml_get_widget(main_window->xml, widget_name);
-	date_and_time_t *mydate; /* date resulting of interpretation       */
+	GtkWidget *entry = heraia_get_widget(main_window->xmls->main, widget_name);
+	date_and_time_t *mydate = NULL; /* date resulting of interpretation       */
 	
 	c = (guchar *) g_malloc0 (length);
 	mydate = (date_and_time_t *) g_malloc0 (sizeof(date_and_time_t));
@@ -122,7 +122,7 @@ static void interpret_as_number(heraia_window_t *main_window, DecodeFunc decode_
 	guchar *c = NULL;      /* the character under the cursor                   */
 	gchar *text = NULL; 
 	data_window_t *data_window = main_window->current_DW;   /* We allready know that it's not NULL */
-	GtkWidget *entry = glade_xml_get_widget(main_window->xml, widget_name);  /* we might test the result as this is user input*/
+	GtkWidget *entry = heraia_get_widget(main_window->xmls->main, widget_name);  /* we might test the result as this is user input*/
 
 	c = (guchar *) g_malloc0(length);
 
@@ -161,9 +161,9 @@ static void close_data_interpretor_window(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 
-	if (main_window != NULL && main_window->xml != NULL)
+	if (main_window != NULL && main_window->xmls != NULL  && main_window->xmls->main)
 		{
-			g_signal_emit_by_name(glade_xml_get_widget(main_window->xml, "DIMenu"), "activate");
+			g_signal_emit_by_name(heraia_get_widget(main_window->xmls->main, "DIMenu"), "activate");
 		}
 }
 
@@ -204,26 +204,26 @@ void refresh_data_interpretor_window(GtkWidget *widget, gpointer data)
 static void connect_data_interpretor_signals(heraia_window_t *main_window)
 {
 	/* When data interpretor's window is killed or destroyed */
-	g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "data_interpretor_window")), "delete_event", 
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "data_interpretor_window")), "delete_event", 
 						  G_CALLBACK(delete_dt_window_event), main_window);
 
-	g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "data_interpretor_window")), "destroy", 
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "data_interpretor_window")), "destroy", 
 						  G_CALLBACK(destroy_dt_window), main_window);
 
 	/* Menu "close" */
-	g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "diw_close_menu")), "activate", 
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "diw_close_menu")), "activate", 
 						  G_CALLBACK(close_data_interpretor_window), main_window);
 
 	/* Radio Button "Little Endian" */
-	g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "diw_rb_little_endian")), "toggled", 
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "diw_rb_little_endian")), "toggled", 
 						  G_CALLBACK(refresh_data_interpretor_window), main_window);
 
 	/* Radio Button "Big Endian" */
-	g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "diw_rb_big_endian")), "toggled", 
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "diw_rb_big_endian")), "toggled", 
 						  G_CALLBACK(refresh_data_interpretor_window), main_window);
 
 	/* Radio Button "Middle Endian" */
-	g_signal_connect(G_OBJECT(glade_xml_get_widget(main_window->xml, "diw_rb_middle_endian")), "toggled", 
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "diw_rb_middle_endian")), "toggled", 
 						  G_CALLBACK(refresh_data_interpretor_window), main_window);
 }
 
@@ -247,7 +247,7 @@ void data_interpretor_init_interface(heraia_window_t *main_window)
 				{
 					/* Says whether the data interpretor window is displayed or not */
 					dw->window_displayed = H_DI_DISPLAYED;
-					dw->diw = glade_xml_get_widget(main_window->xml, "data_interpretor_window");
+					dw->diw = heraia_get_widget(main_window->xmls->main, "data_interpretor_window");
 					dw->tab_displayed = 0; /* the first tab */
 				}
 		}

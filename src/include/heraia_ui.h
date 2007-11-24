@@ -48,6 +48,9 @@ extern int load_heraia_ui(heraia_window_t *main_window);
 extern void refresh_event_handler(GtkWidget *widget, gpointer data);
 extern void connect_cursor_moved_signal(heraia_window_t *main_window);
 
+/* libglade wrapper */
+GtkWidget *heraia_get_widget(GladeXML *xml, gchar *widget_name);
+
 /* Text view */
 extern void add_text_to_textview(GtkTextView *textview, const char *format, ...);
 extern void kill_text_from_textview(GtkTextView *textview);
