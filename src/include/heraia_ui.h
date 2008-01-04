@@ -62,4 +62,7 @@ extern GtkWidget *gtk_radio_button_get_active_from_widget(GtkRadioButton *radio_
 /* CheckMenuItem */
 extern gboolean is_cmi_checked(GtkWidget *check_menu_item);
 
+/* Widget */
+extern void destroy_a_single_widget(GtkWidget *widget);
+
 #endif /* _HERAIA_UI_H_ */

@@ -23,6 +23,7 @@ heraia_SOURCES = 			\
 	plugin_list.c			\
 	list_data_types.c		\
 	data_type.c			\
+	treatments.c			\
 	include/heraia.h		\
 	include/data_interpretor.h 	\
 	include/decode.h		\
@@ -35,7 +36,8 @@ heraia_SOURCES = 			\
 	include/plugin.h		\
 	include/plugin_list.h		\
 	include/list_data_types.h	\
-	include/data_type.h
+	include/data_type.h		\
+	include/treatments.h
 
 
 gladefiles = heraia.glade	\

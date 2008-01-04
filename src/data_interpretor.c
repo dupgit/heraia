@@ -77,7 +77,7 @@ static void interpret_as_date(heraia_window_t *main_window, DecodeDateFunc decod
 	GtkWidget *entry = heraia_get_widget(main_window->xmls->main, widget_name);
 	date_and_time_t *mydate = NULL; /* date resulting of interpretation       */
 	
-	c = (guchar *) g_malloc0 (length);
+	c = (guchar *) g_malloc0 (sizeof(guchar) * length);
 	mydate = (date_and_time_t *) g_malloc0 (sizeof(date_and_time_t));
 
 	result = ghex_get_data(data_window, length, endianness, c);
@@ -124,7 +124,7 @@ static void interpret_as_number(heraia_window_t *main_window, DecodeFunc decode_
 	data_window_t *data_window = main_window->current_DW;   /* We allready know that it's not NULL */
 	GtkWidget *entry = heraia_get_widget(main_window->xmls->main, widget_name);  /* we might test the result as this is user input*/
 
-	c = (guchar *) g_malloc0(length);
+	c = (guchar *) g_malloc0(sizeof(guchar) * length);
 
 	result = ghex_get_data(data_window, length, endianness, c);
 
@@ -193,6 +193,8 @@ void refresh_data_interpretor_window(GtkWidget *widget, gpointer data)
 			interpret_as_date(main_window, decode_dos_date, "diw_msdos_date", 4, endianness);
 			interpret_as_date(main_window, decode_filetime_date, "diw_filetime_date", 8, endianness);
 			interpret_as_date(main_window, decode_HFS_date, "diw_HFS_date", 4, endianness);
+
+			refresh_all_ud_data_interpretor(main_window, endianness);
 		}
 }
 

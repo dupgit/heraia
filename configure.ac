@@ -203,7 +203,7 @@ AC_ARG_ENABLE([gcov],
      esac],[gcov=false])
 if test x$gcov = xtrue
 then
- CFLAGS="-fprofile-arcs -ftest-coverage $CFLAGS "
+ CFLAGS="-g -fprofile-arcs -ftest-coverage $CFLAGS "
 else
  CFLAGS="$CFLAGS"
 fi

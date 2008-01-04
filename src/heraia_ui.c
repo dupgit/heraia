@@ -670,3 +670,15 @@ GtkWidget *heraia_get_widget(GladeXML *xml, gchar *widget_name)
 			return NULL;
 		}
 }
+
+
+/**
+ *  Destroys a single widget if it exists 
+ */
+void destroy_a_single_widget(GtkWidget *widget)
+{
+	if (widget != NULL)
+		{
+			gtk_widget_destroy(widget);
+		}
+}

@@ -4,7 +4,7 @@
   Window allowing the user to manage his data types (add, remove, edit,
   save and load them)
   
-  (C) Copyright 2005 - 2007 Olivier Delhomme
+  (C) Copyright 2007 - 2007 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -120,6 +120,10 @@ static void ldt_add_button_clicked(GtkWidget *widget, gpointer data)
 	heraia_window_t *main_window = (heraia_window_t *) data;
 
 	main_window->current_data_type = new_data_type("", DT_SPIN_MIN);
+
+	/* data interpretor widget creation */
+	create_ud_data_interpretor_widgets(main_window, main_window->current_data_type);
+
 	show_data_type_window(main_window, main_window->current_data_type);
 }
 
@@ -137,6 +141,7 @@ static void ldt_remove_button_clicked(GtkWidget *widget, gpointer data)
 	GtkTreeModel *model = NULL;
 	GtkListStore *list_store = NULL;
 	gchar *name = NULL;
+	data_type_t *a_data_type = NULL;
 
 	treeview = GTK_TREE_VIEW(heraia_get_widget(main_window->xmls->main, "ldt_treeview"));
 
@@ -151,7 +156,13 @@ static void ldt_remove_button_clicked(GtkWidget *widget, gpointer data)
 			if (data_type_list != NULL)
 				{
 					/* frees internal structure */
-					free_data_type((data_type_t *)data_type_list->data);
+					a_data_type = (data_type_t *) data_type_list->data;
+					
+					/* the data interpretor part */
+					destroy_a_single_widget(a_data_type->di_label);
+					destroy_a_single_widget(a_data_type->di_entry);
+					free_data_type(a_data_type);
+
 					main_window->data_type_list = g_list_delete_link(main_window->data_type_list, data_type_list);
 
 					/* frees the treeview accordingly */
@@ -186,10 +197,15 @@ static void ldt_edit_button_clicked(GtkWidget *widget, gpointer data)
 		{    
 			gtk_tree_model_get(model, &iter, LDT_TV_COLUMN_NAME, &name, -1);
 			data_type_list = is_data_type_name_already_used(data_type_list, name);
-			main_window->current_data_type = copy_data_type_struct(data_type_list->data);
-
+			
 			if (data_type_list != NULL)
-				{
+				{		
+					/** 
+					 *  We use a copy because we want to be able to be in edit mode even if
+					 *  the user clicked add(+) button.
+					 */
+					main_window->current_data_type = copy_data_type_struct(main_window, data_type_list->data);
+					
 					show_data_type_window(main_window, main_window->current_data_type);
 				}
 		}

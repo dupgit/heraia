@@ -34,40 +34,6 @@
 #define DT_BOX_SPACING 4
 #define DT_BOX_PADDING 0
 
-typedef GList *(* TreatmentDoFunc) (GList *);            /* Treatment function called while operating the treatment */
-typedef void (* TreatmentInitFunc) (heraia_window_t *);  /* Treatment init function                                 */
-typedef void (* TreatmentDelFunc) (heraia_window_t *);   /* Treatment delete function                               */
-
-
-/**
- *  Treatment structure
- */
-typedef struct
-{
-	gchar *name;               /* Treatment name  */
-	TreatmentDoFunc do_it;     /* Treatment function that manages the whole treatment (interface + treatment itself) */
-	TreatmentInitFunc init;    /* inits the interface */
-	TreatmentDelFunc kill;     /* kills the treatment itself */ 
-	gpointer data;             /* Generic treatment data. Each instantiated treatment may have it's own              */
-} treatment_t;
-
-
-/**
- *  Structure in order to contain one treatment
- */
-typedef struct
-{
-	GtkWidget *container_box;  /* Upper box containing the whole stuff                */
-	GtkWidget *button_box;     /* right part of the hbox. Contains "-", GtkEntry, "+" */
-	GtkWidget *combo_box;      /* Left box where we have the combobox                 */
-	GtkWidget *tment_list;     /* combobox containning the treatment list             */
-	GtkWidget *result;         /* the GtkEntry in the vbox                            */
-	GtkWidget *moins;          /* "-" button                                          */
-	GtkWidget *plus;           /* "+" button                                          */
-	treatment_t *treatment;    /* Selected treatment                                  */
-} treatment_container_t;
-
-
 /*** Functions ***/
 extern void refresh_hex_datas_entry(heraia_window_t *main_window);
 
@@ -79,10 +45,12 @@ extern GList *is_data_type_name_already_used(GList *data_type_list, gchar *name)
 /* Structure operations */
 extern data_type_t *new_data_type(gchar *name, guint size);
 extern void free_data_type(data_type_t *a_data_type);
-extern data_type_t *copy_data_type_struct(data_type_t *a_data_type);
+extern data_type_t *copy_data_type_struct(heraia_window_t *main_window, data_type_t *a_data_type);
 
 /* interface initialization and construction */
 extern void data_type_init_interface(heraia_window_t *main_window);
 extern void show_data_type_window(heraia_window_t *main_window, data_type_t *a_data_type);
+extern void create_ud_data_interpretor_widgets(heraia_window_t *main_window, data_type_t *a_data_type);
+extern void refresh_all_ud_data_interpretor(heraia_window_t *main_window, guint endianness);
 
 #endif /* _DATA_TYPE_H_ */

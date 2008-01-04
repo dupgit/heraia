@@ -1,3 +1,23 @@
+04.01.2008
+	- Olivier Delhomme <heraia@delhomme.org>
+	* Modified a lot of things in the data type creation part
+	  - added the ability to add treatments to the data type
+	    and to calculate the result
+	  - added one simple treatment as un example : "reverse" that
+	    reverse the bytes in the buffers
+	  - added the just created data types a special user defined
+	    tab in the data interpretor window
+	  - added a refresh caller that refreshes the user defined
+	    type tab if one moves the cursor around in the hex editor
+	* Moved treatments definitions to heraia_type.h
+	* Reviewed gmalloc allocations
+
+26.11.2007
+	- Olivier Delhomme <heraia@delhomme.org>
+	* Added treatments.[ch] where one should find all treatments
+	  definitions that may be used in new data type definitions in
+	  the data_type window.
+	
 23.11.2007
 	- Olivier Delhomme <heraia@delhomme.org>
 	* Added structures and functions to manage the treatment 

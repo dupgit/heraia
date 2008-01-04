@@ -3,7 +3,7 @@
   data_types.c
   Window allowing the user to create or edit a new data type
   
-  (C) Copyright 2005 - 2007 Olivier Delhomme
+  (C) Copyright 2007 - 2007 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -33,13 +33,15 @@ static void connect_data_type_signals(heraia_window_t *main_window);
 static void set_spinbutton_max_range(heraia_window_t *main_window);
 
 static void close_data_type_window(heraia_window_t *main_window);
-static void destroy_container_widget(treatment_container_t *tment_c);
+static void destroy_container_widget(treatment_container_t *tment_c, gboolean all);
 static treatment_container_t *new_treatment_container(heraia_window_t *main_window);
 static void create_treatment_container_widget(heraia_window_t *main_window, treatment_container_t *tment_c);
+static guchar *print_bin_to_hex(GtkWidget *entry, GList *values_list);
 
 /* treatment container widget signals */
 static void add_treatment_container_widget(GtkWidget *widget, gpointer data);
-
+static void remove_treatment_container_widget(GtkWidget *widget, gpointer data);
+static void cb_changed_in_treatment_container_widget(GtkWidget *widget, gpointer data);
 
 /**
  *  Returns a new data_type filled with name and size values
@@ -50,8 +52,20 @@ data_type_t *new_data_type(gchar *name, guint size)
 
 	a_data_type = (data_type_t *) g_malloc0(sizeof(data_type_t));
 
-	a_data_type->name = g_strdup(name);
+	if (name != NULL)
+		{
+			a_data_type->name = g_strdup(name);
+		}
+	else
+		{
+			a_data_type->name = NULL;
+		}
+
 	a_data_type->size = size;
+
+	/* Data interpretor widgets */
+	a_data_type->di_label = NULL;
+	a_data_type->di_entry = NULL;
 
 	return a_data_type;
 }
@@ -68,26 +82,49 @@ void free_data_type(data_type_t *a_data_type)
 				{
 					g_free(a_data_type->name);
 				}
-
+	  		
 			g_free(a_data_type);
 		}
 }
 
 
 /**
- *  Copies the data_type_t structure in an new one
- *  That may be freely freed after use.
+ *  Copies the data_type_t structure in a new one,
+ *  that may be freely freed after use.
+ *  main_window needed to fill the combobox widget with available treatment list
  */
-data_type_t *copy_data_type_struct(data_type_t *a_data_type)
+data_type_t *copy_data_type_struct(heraia_window_t *main_window, data_type_t *a_data_type)
 {
+	data_type_t *data_type = NULL;
+	treatment_container_t *tment_c = NULL;
+	GList *list = NULL;
+	GList *list2 = NULL;
+
 	if (a_data_type != NULL)
 		{
-			return new_data_type(a_data_type->name, a_data_type->size);
+			data_type = new_data_type(a_data_type->name, a_data_type->size);
+			list = a_data_type->treatment_c_list;
+
+			while (list != NULL)
+				{
+					/**
+					 *  Here we do not copy the widgets as they will be created
+					 *  on the fly. We copy the list and the treatments
+					 */
+					tment_c = new_treatment_container(main_window);
+					tment_c->treatment = copy_treatment(((treatment_container_t *)list->data)->treatment);
+					list2 = g_list_append(list2, tment_c);				   
+					list = g_list_next(list);
+				}
+
+			data_type->treatment_c_list = list2;
+
+			/* data interpretor widget creation */
+			create_ud_data_interpretor_widgets(main_window, data_type);
+			gtk_label_set_text(GTK_LABEL(data_type->di_label), gtk_label_get_text(GTK_LABEL(a_data_type->di_label)));
 		}
-	else
-		{
-			return NULL;
-		}
+  
+	return data_type;
 }
 
 
@@ -146,9 +183,49 @@ static void fill_treatment_combobox(GtkWidget *tment_list, GList *available_list
 	gtk_combo_box_set_active(GTK_COMBO_BOX(tment_list), -1);
 }
 
+/**
+ *  Tries to set the named "name" active item of the combobox list.
+ */
+static void set_active_text_item(GtkWidget *combo_box, gchar *name)
+{
+	GtkTreeIter iter;
+	GtkTreeModel *model = NULL;
+	gchar *list_name = NULL;
+	gboolean ok = TRUE;
+	gboolean stop = FALSE;
+
+	if (name != NULL)
+		{
+
+			model = gtk_combo_box_get_model(GTK_COMBO_BOX(combo_box));
+	
+			ok = gtk_tree_model_get_iter_first(model, &iter);
+	
+			while (ok == TRUE && stop == FALSE)
+				{
+					gtk_tree_model_get(model, &iter, 0, &list_name, -1);
+					if (g_ascii_strcasecmp(list_name, name) == 0)
+						{
+							stop = TRUE;
+						}
+					else
+						{
+							ok = gtk_tree_model_iter_next(model, &iter);
+						}
+				}
+
+			if (stop == TRUE)
+				{
+					gtk_combo_box_set_active_iter(GTK_COMBO_BOX(combo_box), &iter);
+				}
+		}
+}
+
 
 /**
  *  Create a new empty treatment container
+ *  Needs main_window structure to fill the combobox with available
+ *  treatments
  */
 static treatment_container_t *new_treatment_container(heraia_window_t *main_window)
 {
@@ -168,8 +245,14 @@ static treatment_container_t *new_treatment_container(heraia_window_t *main_wind
 	gtk_entry_set_editable(GTK_ENTRY(tment_c->result), FALSE);
 	tment_c->moins = gtk_button_new_with_label(" - ");
 	tment_c->plus = gtk_button_new_with_label(" + ");
+	
+
 	g_signal_connect(G_OBJECT(tment_c->plus), "clicked", 
 					 G_CALLBACK(add_treatment_container_widget), main_window);
+	g_signal_connect(G_OBJECT(tment_c->moins), "clicked", 
+					 G_CALLBACK(remove_treatment_container_widget), main_window);
+	g_signal_connect(G_OBJECT(tment_c->tment_list), "changed",
+					 G_CALLBACK(cb_changed_in_treatment_container_widget), main_window);
 
 	/* Widget packing together */
 	gtk_box_pack_start(GTK_BOX(tment_c->button_box), tment_c->moins, FALSE, FALSE, DT_BOX_PADDING);
@@ -184,7 +267,7 @@ static treatment_container_t *new_treatment_container(heraia_window_t *main_wind
 
 
 /**
- *  Packs the container widget to the main window widgets via "dt_treatment_vbox"
+ *  Packs the container widget to the main window widgets via "dt_treatment_vbox".
  */
 static void create_treatment_container_widget(heraia_window_t *main_window, treatment_container_t *tment_c)
 {
@@ -194,11 +277,12 @@ static void create_treatment_container_widget(heraia_window_t *main_window, trea
 
 	gtk_box_pack_start(GTK_BOX(vbox), tment_c->container_box, FALSE, FALSE, DT_BOX_PADDING);
 
-	if (tment_c->treatment != NULL)
+	if (tment_c->treatment != NULL) 
 		{
-			/* TODO : Here we may call the method to init the treatment zone */
+			/* Here we call the method to init the treatment zone */
+			tment_c->treatment->init(tment_c->treatment);
+			set_active_text_item(tment_c->tment_list, tment_c->treatment->name);
 		}
-
 }
 
 
@@ -225,6 +309,148 @@ static void add_treatment_container_widget(GtkWidget *widget, gpointer data)
 
 	/* Append the container to the list */
 	a_data_type->treatment_c_list = g_list_append(a_data_type->treatment_c_list, (gpointer) new_container);
+
+	/* Update the whole treatment container list + data interpretor window*/
+	refresh_hex_datas_entry(main_window);
+}
+
+/**
+ *  Finds the container which contains the specified widget
+ */
+static GList *find_treatment_container_from_widget(GList *container_list, GtkWidget *widget)
+{
+	gboolean stop = FALSE;
+	treatment_container_t *tment_c = NULL;
+
+	while (container_list != NULL && stop == FALSE)
+		{
+			tment_c = (treatment_container_t *) container_list->data;
+			if (tment_c->moins == widget || tment_c->tment_list == widget)
+				{
+					stop = TRUE;
+				}
+			else
+				{
+					container_list = g_list_next(container_list);
+				}
+		}
+
+	return container_list;
+}
+
+
+/**
+ *  Removes a treatment container widget when (-) button is clicked
+ */
+static void remove_treatment_container_widget(GtkWidget *widget, gpointer data)
+{
+	heraia_window_t *main_window = (heraia_window_t *) data;
+	data_type_t *a_data_type = NULL;
+	treatment_container_t *tment_c = NULL;
+	GList *list = NULL;
+
+	a_data_type = main_window->current_data_type;
+	list = find_treatment_container_from_widget(a_data_type->treatment_c_list, widget);
+	if (list != NULL)
+		{
+			tment_c = (treatment_container_t *) list->data;
+
+			/* Removes the container completely */
+			destroy_container_widget(tment_c, TRUE);
+
+			/* Removes the treatment container from the list */
+			a_data_type->treatment_c_list = g_list_delete_link(a_data_type->treatment_c_list, list);
+
+			/* Update the whole treatment container list + data interpretor window*/
+			refresh_hex_datas_entry(main_window);
+		}
+}
+
+/**
+ *  Updates the treatment_container list entries
+ */
+static guchar *update_treatment_container_list_entries(GList *tment_c_list, GList *values_list)
+{
+	treatment_container_t *tment_c = NULL;
+	guchar *final = NULL;
+
+	while (tment_c_list != NULL)
+		{
+			tment_c = (treatment_container_t *) tment_c_list->data;
+			
+			if (tment_c->treatment != NULL && tment_c->treatment->do_it != NULL)
+				{
+					values_list = tment_c->treatment->do_it(values_list);
+					final = print_bin_to_hex(tment_c->result, values_list);
+				}
+
+			tment_c_list = g_list_next(tment_c_list);
+		}
+
+	return final;
+}
+
+
+/**
+ *  Called when a change is done in the treatment list combobox.
+ *  Affects the new treatment to the treatment_container.
+ */
+static void cb_changed_in_treatment_container_widget(GtkWidget *widget, gpointer data)
+{
+	heraia_window_t *main_window = (heraia_window_t *) data;
+	data_type_t *a_data_type = NULL;
+	treatment_container_t *tment_c = NULL;
+	treatment_t *tment = NULL;
+	gchar *tment_name = NULL;
+	GList *list = NULL;
+
+	/* Retreiving the treatment container concerned by the changed signal */
+	a_data_type = main_window->current_data_type;
+	list = find_treatment_container_from_widget(a_data_type->treatment_c_list, widget);
+	if (list != NULL)
+		{
+			tment_c = (treatment_container_t *) list->data;
+
+			/* Retrieving the treatment name selected */
+			tment_name = gtk_combo_box_get_active_text(GTK_COMBO_BOX(tment_c->tment_list));
+
+			/* Retrieves the treatment (with struct an such) from the treatment name */
+			tment = find_treatment(main_window->available_treatment_list, tment_name);
+	
+			if (tment != NULL)
+				{
+					/* TODO : kill any previous treatment */
+
+					tment_c->treatment = copy_treatment(tment);
+		
+					/* Update the whole treatment container list + data interpretor window*/
+					refresh_hex_datas_entry(main_window);
+				}
+		}
+}
+
+/**
+ *  Creates new user defined widgets for the data interpretor window.
+ */
+void create_ud_data_interpretor_widgets(heraia_window_t *main_window, data_type_t *a_data_type)
+{
+	GtkWidget *vbox = NULL;
+
+	/* Creates new widgets for the data interpretor window */
+	a_data_type->di_label = gtk_label_new(NULL);
+	gtk_misc_set_padding(GTK_MISC(a_data_type->di_label), 4, 4);
+	gtk_misc_set_alignment(GTK_MISC(a_data_type->di_label), 0.5, 0.5);
+
+	a_data_type->di_entry = gtk_entry_new();
+
+	vbox = heraia_get_widget(main_window->xmls->main, "ud_type_vbox");
+	gtk_box_pack_start(GTK_BOX(vbox), a_data_type->di_label, FALSE, FALSE, DT_BOX_PADDING);
+	
+	vbox = heraia_get_widget(main_window->xmls->main, "ud_value_vbox");
+	gtk_box_pack_start(GTK_BOX(vbox), a_data_type->di_entry, FALSE, FALSE, DT_BOX_PADDING);
+
+	gtk_widget_show(a_data_type->di_label);
+	gtk_widget_show(a_data_type->di_entry);
 }
 
 
@@ -237,24 +463,41 @@ static void add_treatment_container_widget(GtkWidget *widget, gpointer data)
 void show_data_type_window(heraia_window_t *main_window, data_type_t *a_data_type)
 {
 	treatment_container_t *new_container = NULL;
+	GList *list = NULL;
 
 	/* create all the treatment widgets */
-	while (a_data_type->treatment_c_list != NULL)
-		{
-			/* TODO : Create the widgets with all the treatments */
-
-		}
+	list = a_data_type->treatment_c_list;
 	
-	/* Creates a new treatment container */
-	new_container = new_treatment_container(main_window);
+	if (list == NULL) /* Creates only the first treatment_container */
+		{
+			log_message(main_window, G_LOG_LEVEL_DEBUG, "Creating a new treatment container");
 
-	/* Create the last box that will contain one empty treatment container widget */
-	create_treatment_container_widget(main_window, new_container);
+			/* Creates a new empty treatment container */
+			new_container = new_treatment_container(main_window);
 
-	/* Append the container to the list */
-	a_data_type->treatment_c_list = g_list_append(a_data_type->treatment_c_list, (gpointer) new_container);
+			/* Create the last box that will contain one empty treatment container widget */
+			create_treatment_container_widget(main_window, new_container); 
 
+			/* Append the container to the list */
+			a_data_type->treatment_c_list = g_list_append(a_data_type->treatment_c_list, (gpointer) new_container);
+		}
+	else  /* Create the widgets with all the treatments */
+		{
+			while (list != NULL)
+				{
+					
+					new_container = (treatment_container_t *) list->data;
 
+					log_message(main_window, G_LOG_LEVEL_DEBUG, "Creating a treatment container");
+
+					create_treatment_container_widget(main_window, new_container);
+					gtk_widget_show_all(new_container->container_box);
+
+					list = g_list_next(list);
+				}
+		}
+
+	/* fills widgets that are on top of the window (name, size and hexentry) */
 	fill_data_type_widgets(main_window, a_data_type); 
 	set_spinbutton_max_range(main_window);
 
@@ -268,30 +511,134 @@ void show_data_type_window(heraia_window_t *main_window, data_type_t *a_data_typ
  *  TODO : add some specific representation options such
  *         as space between characters
  */
-static void print_bin_to_hex(heraia_window_t *main_window, gchar *widget_name, guchar *bin_datas, guint length)
+static guchar *print_bin_to_hex(GtkWidget *entry, GList *values_list)
 {
 	guint i = 0;
-	GtkEntry *entry = GTK_ENTRY(heraia_get_widget(main_window->xmls->main, widget_name));
-	
 	guchar *aux = NULL;
 	guchar *hex = NULL;
+	guchar *final = NULL;
+	value_t *a_value = NULL;
 
-	aux = (guchar *) g_malloc0(sizeof(guchar)*3);
-	hex = (guchar *) g_malloc0(sizeof(guchar)*((length*2) + 1));
+	while (values_list != NULL)
+		{
+			a_value = (value_t *) values_list->data;
 
-   for(i = 0; i < length; i++)  
-    {
-      sprintf((char *) aux, "%02x", bin_datas[i]); 
-      memcpy(hex+(i*2), aux, 2);
-    }
+			aux = (guchar *) g_malloc0(sizeof(guchar) * 3);
+			hex = (guchar *) g_malloc0(sizeof(guchar) * ((a_value->length * 2) + 1) );
 
-   hex[i*2+1] = '\0';
-   g_free(aux);
-  
-   gtk_entry_set_text(entry, (gchar *) hex);
+			for(i = 0; i < a_value->length; i++)  
+				{
+					sprintf((char *) aux, "%02x", a_value->bytes[i]); 
+					memcpy(hex+(i*2), aux, 2);
+				}
 
-   g_free(hex);
+			hex[i*2+1] = '\0';
+			g_free(aux);
 
+			if (final == NULL)
+				{
+					final = (guchar *) g_strdup((gchar *) hex);
+				}
+			else
+				{
+					aux = final;
+					final = (guchar *) g_strconcat((gchar *) aux, " / ", (gchar *) hex);
+					g_free(aux);
+				}
+
+			g_free(hex);
+
+			values_list = g_list_next(values_list);
+		}
+	
+	if (entry != NULL)
+		{
+			gtk_entry_set_text(GTK_ENTRY(entry), (gchar *) final);
+		}
+
+	return final;
+}
+
+
+/**
+ *  Refreshes one user defined data type when the cursor is moved
+ *  in the gtkhex structure.
+ */
+static void refresh_one_ud_data_interpretor(data_type_t *a_data_type, value_t *a_value)
+{
+	treatment_container_t *tment_c = NULL; /* one treatment container  */
+	GList *tment_c_list = NULL;            /* treatment container list */
+	guchar *final = NULL;                  /* final result             */
+	GList *values_list = NULL;
+
+	values_list = g_list_append(values_list, (gpointer) a_value);
+
+	if (a_data_type != NULL)
+		{
+			tment_c_list = a_data_type->treatment_c_list;
+
+			while (tment_c_list != NULL)
+				{
+					tment_c = (treatment_container_t *) tment_c_list->data;
+			
+					if (tment_c->treatment != NULL && tment_c->treatment->do_it != NULL)
+						{
+							values_list = tment_c->treatment->do_it(values_list);	
+						}
+
+					tment_c_list = g_list_next(tment_c_list);
+				}
+
+			final = print_bin_to_hex(a_data_type->di_entry, values_list);
+			g_free(final);
+		}
+}
+
+
+/**
+ *  Refreshes all the user data defined types (called when the cursor is moved)
+ *  Interpretation is done following the endianness 'endianness'
+ */
+void refresh_all_ud_data_interpretor(heraia_window_t *main_window, guint endianness)
+{
+	data_window_t *data_window = main_window->current_DW;
+	value_t *a_value = NULL;
+	guchar *bin_datas = NULL;
+	GList *data_type_list = NULL;
+	data_type_t *a_data_type = NULL;
+	guint length = 0;
+	gboolean result = FALSE;
+	gchar *text = NULL;
+			
+	data_type_list = main_window->data_type_list;
+
+	while (data_type_list != NULL)
+		{
+			a_data_type = (data_type_t *) data_type_list->data;
+
+			if (a_data_type != NULL)
+				{
+					length = a_data_type->size;
+					bin_datas = (guchar *) g_malloc0(sizeof(guchar) * length);
+					result = ghex_get_data(data_window, length, endianness, bin_datas);
+
+					if (result == TRUE)
+						{
+							a_value = new_value_t(length, bin_datas);
+							refresh_one_ud_data_interpretor(a_data_type, a_value);
+						}
+					else
+						{
+							text = g_strdup_printf("Cannot copy %d bytes in order to interpret them !", length);
+							gtk_entry_set_text(GTK_ENTRY(a_data_type->di_entry), text);
+							g_free(text);
+						}
+					g_free(bin_datas);
+				}
+
+			data_type_list = g_list_next(data_type_list);
+		}
+		
 }
 
 
@@ -307,32 +654,42 @@ void refresh_hex_datas_entry(heraia_window_t *main_window)
 {
 	guchar *bin_datas = NULL;
 	data_window_t *data_window = main_window->current_DW;
-	GtkSpinButton *dt_size_spinbutton = GTK_SPIN_BUTTON(heraia_get_widget(main_window->xmls->main, "dt_size_spinbutton"));
 	guint length = 0;
 	gboolean result = FALSE;
+	GtkWidget *entry = NULL;
+	value_t *a_value = NULL;
+	GList *values_list = NULL;
+	GList *tment_c_list = NULL;
+	guchar *final = NULL;
 
-	length = gtk_spin_button_get_value_as_int(dt_size_spinbutton);
-			
-	if (length >= DT_SPIN_MIN && length <= DT_SPIN_MAX)
+	length = main_window->current_data_type->size;
+
+	if (data_window->current_hexwidget != NULL)
 		{
-			if (main_window->current_data_type != NULL)
-				{
-					main_window->current_data_type->size = length;
-				}
+			bin_datas = (guchar *) g_malloc0(sizeof(guchar) * length);
+			result = ghex_get_data(data_window, length, H_DI_LITTLE_ENDIAN, bin_datas);
 
-			if (data_window->current_hexwidget != NULL)
+			if (result == TRUE)
 				{
-					bin_datas = (guchar *) g_malloc0(length);
-					result = ghex_get_data(data_window, length, H_DI_LITTLE_ENDIAN, bin_datas);
+					entry = heraia_get_widget(main_window->xmls->main, "hex_datas_entry");
+					a_value = new_value_t(length, bin_datas);
+					values_list = g_list_append(values_list, (gpointer) a_value);
 
-					if (result == TRUE)
+					print_bin_to_hex(entry, values_list);
+
+					/* Follows the others for the data_type beiing edited */
+					tment_c_list = main_window->current_data_type->treatment_c_list;
+					final = update_treatment_container_list_entries(tment_c_list, values_list);
+							
+					/* data interpretor part */
+					if (final != NULL)
 						{
-							print_bin_to_hex(main_window, "hex_datas_entry", bin_datas, length);
+							gtk_entry_set_text(GTK_ENTRY(main_window->current_data_type->di_entry), (gchar *) final);
 						}
-
-					g_free(bin_datas);
 				}
-		}
+
+			g_free(bin_datas);
+		}	
 }
 
 
@@ -480,42 +837,81 @@ static data_type_t *retrieve_data_type_information(heraia_window_t *main_window)
 }
 */
 
+
 /**
- *  Destroys a container widget
+ *  Destroys a container Widget.
+ *  If all is true it destroys everything even the treatment and such.
+ *  If all is false it destroys only the widget part.
  */
-static void destroy_container_widget(treatment_container_t *tment_c)
+static void destroy_container_widget(treatment_container_t *tment_c, gboolean all)
 {
-	gtk_widget_destroy(tment_c->plus);
-	gtk_widget_destroy(tment_c->moins);
-	gtk_widget_destroy(tment_c->result);
-	gtk_widget_destroy(tment_c->tment_list);
-	gtk_widget_destroy(tment_c->button_box);
-	gtk_widget_destroy(tment_c->combo_box);
-	gtk_widget_destroy(tment_c->container_box);
-
-	if (tment_c->treatment != NULL)
+	if (tment_c != NULL)
 		{
-			/* Here we must also destroy the treatment */
-		}
+			destroy_a_single_widget(tment_c->plus);	
+			tment_c->plus = NULL;
 
-	g_free(tment_c);
+			destroy_a_single_widget(tment_c->moins); 
+			tment_c->moins = NULL;
+			
+			destroy_a_single_widget(tment_c->result); 
+			tment_c->result = NULL;
+
+			destroy_a_single_widget(tment_c->tment_list); 
+			tment_c->tment_list = NULL;
+
+			destroy_a_single_widget(tment_c->button_box); 
+			tment_c->button_box = NULL;
+
+			destroy_a_single_widget(tment_c->combo_box); 
+			tment_c->combo_box = NULL;
+
+			destroy_a_single_widget(tment_c->container_box); 
+			tment_c->container_box = NULL;
+
+			if (all == TRUE)
+				{
+
+					if (tment_c->treatment != NULL && tment_c->treatment->kill != NULL)
+						{
+							tment_c->treatment->kill(tment_c->treatment); /* erases itself */
+						}
+					
+					g_free(tment_c);
+				}
+		}
 }
 
 /**
- *  Destroys the last container widget (which should always be empty) 
+ *  Called when the data_type_window is closed
  */
 static void close_data_type_window(heraia_window_t *main_window)
 {
 	data_type_t *a_data_type = NULL; /* data type currently in use */
-	GList *last; /* last element of a list */
+	GList *list = NULL;
 
-	/* Removing the last widget from the list and the window   */
-	/* TODO : Here we should destroy all the container widgets */
-	a_data_type = main_window->current_data_type;
-	last = g_list_last(a_data_type->treatment_c_list);
-	destroy_container_widget((treatment_container_t *)last->data);
-	a_data_type->treatment_c_list  = g_list_delete_link(a_data_type->treatment_c_list, last);
+	/* Current data type beeing edited */
+	a_data_type = main_window->current_data_type; 
 
+	/* Current treatment container list for this data type */
+	list = a_data_type->treatment_c_list;
+	
+	/* Destroys all widgets associated with the treatment container list */
+	/* This does not destroys the list itself here */
+	while (list != NULL)
+		{
+			destroy_container_widget((treatment_container_t *)list->data, FALSE);
+			list = g_list_next(list);
+		}
+
+	/** Last box stuff : I do not know if this is really usefull !!                                   */
+	/* Destroys the last widget (which should never contain any treatment)                            */
+	/* list = g_list_last(a_data_type->treatment_c_list);                                             */
+	/* if (list != NULL)                                                                              */
+	/*	{                                                                                             */
+	/*		destroy_container_widget((treatment_container_t *)list->data, TRUE);                      */
+	/*		a_data_type->treatment_c_list  = g_list_delete_link(a_data_type->treatment_c_list, list); */
+	/*	}                                                                                             */
+	
 	/* Hiding the window */
 	gtk_widget_hide(heraia_get_widget(main_window->xmls->main, "data_type_window"));
 }
@@ -544,6 +940,9 @@ static void dt_ok_button_clicked(GtkWidget *widget, gpointer data)
 				  log_message(main_window, G_LOG_LEVEL_DEBUG, "Adding %s data type name to treeview", a_data_type->name);
 				  add_data_type_name_to_treeview(main_window, a_data_type->name);
 
+				  /* data interpretor part */
+				  gtk_label_set_text(GTK_LABEL(a_data_type->di_label), a_data_type->name);
+
 				  main_window->data_type_list = g_list_prepend(main_window->data_type_list, a_data_type);
 			  }
 		  else
@@ -553,12 +952,25 @@ static void dt_ok_button_clicked(GtkWidget *widget, gpointer data)
 				   *  and we simply replace the old data_type_t structure by the new one !
 				   */
 				  log_message(main_window, G_LOG_LEVEL_DEBUG, "Editing mode (%s exists)", a_data_type->name);
+				  
+				  /* We kill the old widget's that are unsefull (we replace them) */
+				  destroy_a_single_widget(main_window->current_data_type->di_label);
+				  destroy_a_single_widget(main_window->current_data_type->di_entry);
+				  destroy_a_single_widget(((data_type_t *)data_type_list->data)->di_label);
+				  destroy_a_single_widget(((data_type_t *)data_type_list->data)->di_entry);
+
 				  free_data_type((data_type_t *)data_type_list->data);
+				  create_ud_data_interpretor_widgets(main_window, a_data_type);
+
+				  /* data interpretor part */
+				  gtk_label_set_text(GTK_LABEL(a_data_type->di_label), a_data_type->name);
+
 				  data_type_list->data = a_data_type;
 			  }
 
+		  refresh_hex_datas_entry(main_window);
+
 		  close_data_type_window(main_window);
- 
 	  }
 }
 
@@ -569,7 +981,14 @@ static void dt_ok_button_clicked(GtkWidget *widget, gpointer data)
 static void dt_cancel_button_clicked(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
+	data_type_t *a_data_type = NULL;
 
+	a_data_type = main_window->current_data_type;
+
+	/* the data interpretor part */
+	destroy_a_single_widget(a_data_type->di_label);
+	destroy_a_single_widget(a_data_type->di_entry);
+   
 	close_data_type_window(main_window);
 }
 
@@ -581,9 +1000,22 @@ static void dt_cancel_button_clicked(GtkWidget *widget, gpointer data)
 static void dt_size_spinbutton_value_changed(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
+	GtkSpinButton *dt_size_spinbutton = GTK_SPIN_BUTTON(heraia_get_widget(main_window->xmls->main, "dt_size_spinbutton"));
+	guint length = 0;
 
 	if (main_window != NULL)
 		{
+
+		length = gtk_spin_button_get_value_as_int(dt_size_spinbutton);
+			
+		if (length >= DT_SPIN_MIN && length <= DT_SPIN_MAX)
+			{
+				if (main_window->current_data_type != NULL)
+					{
+						main_window->current_data_type->size = length;
+					}	
+			}
+
 			refresh_hex_datas_entry(main_window);
 		}
 }
@@ -609,6 +1041,7 @@ static void dt_name_entry_leave_notify_event(GtkWidget *widget, GdkEventCrossing
 				}
 
 			main_window->current_data_type->name = g_strdup(gtk_entry_get_text(entry));
+
 		}
 }
 

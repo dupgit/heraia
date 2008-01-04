@@ -478,7 +478,7 @@ gchar *decode_packed_BCD(guchar *data)
 	else
 		{
 			memcpy(&total, data, sizeof(guchar));
-			bcd = (gchar *) g_malloc0(3*sizeof(gchar));
+			bcd = (gchar *) g_malloc0(3 * sizeof(gchar));
 			transform_bcd_to_human(bcd, (total & 0x0F), 0);
 			transform_bcd_to_human(bcd, ((total & 0xF0)>>4), 1);
 			bcd[2] = '\0';

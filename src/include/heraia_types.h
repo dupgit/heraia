@@ -85,6 +85,40 @@ typedef struct
 
 } data_window_t;
 
+/* Treatment Stuff (if one wants to add new data types) */
+typedef GList *(* TreatmentDoFunc) (GList *);     /* Treatment function called while operating the treatment */
+typedef void (* TreatmentInitFunc) (gpointer);    /* Treatment init function                                 */
+typedef void (* TreatmentDelFunc) (gpointer);     /* Treatment delete function                               */
+typedef gpointer (*TreatmentCopyFunc) (gpointer); /* Treatment copy function that have to copy internal 
+													 structures (widgets and all stuff in it)                */
+/**
+ *  Treatment structure
+ */
+typedef struct
+{
+	gchar *name;               /* Treatment name  */
+	TreatmentDoFunc do_it;     /* Treatment function that manages the whole treatment (interface + treatment itself) */
+	TreatmentInitFunc init;    /* inits the interface */
+	TreatmentDelFunc kill;     /* kills the treatment itself */
+	TreatmentCopyFunc copy;    /* Copy the gpointer data sub structure of the treatment itself */
+	gpointer data;             /* Generic treatment data. Each instantiated treatment may have it's own              */
+} treatment_t;
+
+/**
+ *  Structure in order to contain one treatment
+ */
+typedef struct
+{
+	GtkWidget *container_box;  /* Upper box containing the whole stuff                */
+	GtkWidget *button_box;     /* Right part of the hbox. Contains "-", GtkEntry, "+" */
+	GtkWidget *combo_box;      /* Left box where we have the combobox                 */
+	GtkWidget *tment_list;     /* Combobox containning the treatment list             */
+	GtkWidget *result;         /* The GtkEntry in the vbox                            */
+	GtkWidget *moins;          /* "-" button                                          */
+	GtkWidget *plus;           /* "+" button                                          */
+	treatment_t *treatment;    /* Selected treatment                                  */
+} treatment_container_t;
+
 
 /**
  *  Data type structure entry that contains user defined data types
@@ -101,6 +135,8 @@ typedef struct
 	guint size;              /* size of the data type  (here we may limit size entry, eg <= 16 for example) */
 	GList *treatment_c_list; /* Treatments containers to be applied (in the list order) to the data 
 								(treatment_container_t *)                                                   */
+	GtkWidget *di_label;     /* label for the data_interpretor window                                       */
+	GtkWidget *di_entry;     /* entry for the data interpretor window                                       */
 } data_type_t;
 
 
@@ -159,5 +195,6 @@ typedef struct
 #include "plugin_list.h"
 #include "list_data_types.h"
 #include "data_type.h"
+#include "treatments.h"
 
 #endif /* _HERAIA_TYPES_H_ */

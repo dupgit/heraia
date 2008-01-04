@@ -81,18 +81,19 @@ static heraia_window_t *heraia_init_main_struct(void)
 			return NULL;
 		}
 
-	/* First, in this early stage of the development we want to toggle debugging
-	   mode ON : 
-	*/
+	/**
+	 * First, in this early stage of the development we want to toggle debugging
+	 *  mode ON which is enabled by default in the configure.ac file !
+	 */
 	herwin->debug = ENABLE_DEBUG;
 	herwin->filename = NULL;
 	
 	herwin->current_doc = NULL;
 	herwin->plugins_list = NULL; 
-	herwin->location_list = init_heraia_location_list();
+	herwin->location_list = init_heraia_location_list(); /* location list initilization */
 	herwin->data_type_list = NULL;
 	herwin->current_data_type = NULL;
-	herwin->available_treatment_list = NULL; /* init this list here */
+	herwin->available_treatment_list = init_treatments(); /* treatment list initialization */
 
 	/* xml_t structure initialisation */
 	xmls = (xml_t *) g_malloc0(sizeof(xml_t));
@@ -220,7 +221,7 @@ static gboolean manage_command_line_options(Options *opt, int argc, char ** argv
 
 	if (optind < argc) /* filename */
 		{
-			opt->filename = (char*) malloc (sizeof(char) * strlen(argv[optind]) + 1);
+			opt->filename = (char *) malloc (sizeof(char) * strlen(argv[optind]) + 1);
 			strcpy(opt->filename, argv[optind]);
 		}
 	/**
