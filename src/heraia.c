@@ -24,7 +24,7 @@
 
 #include "heraia_types.h"
 
-static void version(void);
+static gboolean version(void);
 static gboolean usage(int status);
 static heraia_window_t *heraia_init_main_struct(void);
 static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window);
@@ -35,9 +35,10 @@ static gboolean manage_command_line_options(Options *opt, int argc, char ** argv
  *  prints program name, version, author, date and licence
  *  to the standard output
  */
-static void version(void)
+static gboolean version(void)
 {
 	fprintf (stdout, "heraia, %s - %s - Version %s - License %s\n", HERAIA_AUTHORS, HERAIA_DATE, HERAIA_VERSION, HERAIA_LICENSE);
+	return TRUE;
 }
 
 
@@ -205,7 +206,8 @@ static gboolean manage_command_line_options(Options *opt, int argc, char ** argv
 					break;
 	  
 				case 'v':
-					version();
+					exit_value = version();
+					opt->usage = TRUE;  /* We do not want to continue after */
 					break;
 	 
 				case 'h':
@@ -242,6 +244,9 @@ static gboolean manage_command_line_options(Options *opt, int argc, char ** argv
 
 /**
  *  main program
+ *  options :
+ *   --version
+ *   --help
  */
 int main (int argc, char ** argv) 
 {  

@@ -1,3 +1,12 @@
+08.07.2008
+   - Olivier Delhomme <heraia@delhomme.org>
+   * added comments
+   * now --version option does not show any graphic part
+
+01.07.2008
+	- Olivier Delhomme <heraia@delhomme.org>
+	* version 0.0.1 released
+
 04.01.2008
 	- Olivier Delhomme <heraia@delhomme.org>
 	* Modified a lot of things in the data type creation part
