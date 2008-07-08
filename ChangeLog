@@ -1,7 +1,10 @@
 08.07.2008
-   - Olivier Delhomme <heraia@delhomme.org>
-   * added comments
-   * now --version option does not show any graphic part
+   	- Olivier Delhomme <heraia@delhomme.org>
+ 	* added comments
+ 	* now --version option does not show any graphic part
+  	* Changed version to 0.0.2 wich will be the next release
+  	* autoclean now deletes gmon.out file also
+        * got rid of a "-trigraph" compilation warning 
 
 01.07.2008
 	- Olivier Delhomme <heraia@delhomme.org>

@@ -3,7 +3,7 @@
   heraia.h
   heraia - an hexadecimal file editor and analyser based on ghex
  
-  (C) Copyright 2005 - 2007 Olivier Delhomme
+  (C) Copyright 2005 - 2008 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -27,7 +27,7 @@
 #define HERAIA_AUTHORS "Olivier Delhomme"
 #define HERAIA_DATE "20 02 2005"
 #define HERAIA_LICENSE "GPL"
-#define HERAIA_VERSION "0.0.1 (20.02.2005)"
+#define HERAIA_VERSION "0.0.2 (00.00.2000)"
 
 typedef struct
 {

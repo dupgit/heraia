@@ -3,7 +3,7 @@
  *  heraia.c
  *  heraia - an hexadecimal file editor and analyser based on ghex
  * 
- *  (C) Copyright 2005 - 2007 Olivier Delhomme
+ *  (C) Copyright 2005 - 2008 Olivier Delhomme
  *  e-mail : heraia@delhomme.org
  *  URL    : http://heraia.tuxfamily.org
  * 
@@ -29,7 +29,7 @@ static gboolean usage(int status);
 static heraia_window_t *heraia_init_main_struct(void);
 static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window);
 static GList *init_heraia_location_list(void);
-static gboolean manage_command_line_options(Options *opt, int argc, char ** argv);
+static gboolean manage_command_line_options(Options *opt, int argc, char **argv);
 
 /**
  *  prints program name, version, author, date and licence

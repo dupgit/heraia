@@ -45,3 +45,8 @@ find . -name *.gcov -exec rm -f {} \;
 echo "find . -name *.gcov -exec rm -f {} \;"
 find . -name *.gcno -exec rm -f {} \;
 echo "find . -name *.gcno -exec rm -f {} \;"
+find . -name gmon.out -exec rm -f {} \;
+echo "find . -name gmon.out -exec rm -f {} \;"
+
+
+
