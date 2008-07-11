@@ -1,8 +1,8 @@
 #! /bin/sh
 
-aclocal-1.9 \
+aclocal \
 && libtoolize \
-&& automake-1.9 --gnu --add-missing \
+&& automake --gnu --add-missing \
 && autoconf
 
 if [ -e ./configure ]; then
