@@ -48,11 +48,19 @@ void on_nouveau1_activate(GtkWidget *widget, gpointer data)
 /**
  *  Shows apropos's dialog box
  */
-void on_a_propos1_activate( GtkWidget *widget, gpointer data )
+void a_propos_activate(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
+	GtkWidget *about_dialog = NULL;
 	
-	gtk_widget_show(heraia_get_widget(main_window->xmls->main, "about_dialog"));
+	about_dialog = heraia_get_widget(main_window->xmls->main, "about_dialog");
+	
+	if (about_dialog != NULL)
+		{				
+			gtk_about_dialog_set_program_name(GTK_ABOUT_DIALOG(about_dialog), PACKAGE_NAME);
+			gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(about_dialog), PACKAGE_VERSION);
+			gtk_widget_show(about_dialog);
+		}
 }
 
 /**
@@ -293,7 +301,7 @@ static gchar *make_absolute_path(gchar *filename)
 /**
  *  Sets the working directory for the file chooser to the directory of the
  *  filename (even if filename is a relative filename such as 
- *  ../docs/test_file
+ *  ../docs/test_file)
  */
 static void set_the_working_directory(GtkFileChooser *file_chooser, gchar *filename)
 {
@@ -510,7 +518,7 @@ static void heraia_ui_connect_signals(heraia_window_t *main_window)
 
 	/* about dialog box */		
 	g_signal_connect (G_OBJECT(heraia_get_widget(main_window->xmls->main, "a_propos1")), "activate",  
-					  G_CALLBACK(on_a_propos1_activate), main_window); 
+					  G_CALLBACK(a_propos_activate), main_window); 
 
 	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "about_dialog")), "close",
 					 G_CALLBACK(a_propos_close), main_window);

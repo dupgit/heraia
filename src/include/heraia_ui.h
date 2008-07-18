@@ -32,7 +32,7 @@ extern void on_ouvrir1_activate( GtkWidget *widget,  gpointer data );
 extern void on_enregistrer1_activate( GtkWidget *widget,  gpointer data );
 extern void on_enregistrer_sous1_activate( GtkWidget *widget, gpointer data );
 extern void on_supprimer1_activate( GtkWidget *widget, gpointer data );
-extern void on_a_propos1_activate( GtkWidget *widget, gpointer data );
+extern void a_propos_activate( GtkWidget *widget, gpointer data );
 extern void on_couper1_activate( GtkWidget *widget, gpointer data );
 extern void on_copier1_activate( GtkWidget *widget, gpointer data );
 extern void on_coller1_activate( GtkWidget *widget, gpointer data );

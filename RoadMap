@@ -1,0 +1,24 @@
+Heraia's version roadmap
+
+. 0.0.2
+   * save and save as functions
+   * record window positions
+   * add somewhere, the cursor's position and file length
+
+- 0.0.3
+   * rewrite the data_type creation in order to allow a script, or an extern 
+     program execution
+   * ability to open more than one file at a time
+   * have the selection positions added near the cursor's position
+   
+- 0.0.4
+   * translatable project
+   * ability to pass a part of the file to an extern program and analyse it's
+     output -> ie gunzip, unzip, sed, ...
+   * new visualisation on stat plugin (3D visualisation for the 2D histo)
+
+- 0.0.5
+   * have a usable version of the template manager
+
+- 0.0.6
+   * have color for the template fields (directly in the editor)

@@ -1,3 +1,12 @@
+18.07.2008
+ 	- Olivier Delhomme <heraia@delhomme.org>
+	* A propos changes : 
+      - renamed a function to have coherence between a_propos functions
+      - added the PACKAGE_VERSION config variable in order to avoid to have
+        to modify the .glade file at each version.
+    * translated some french strings in the stat plugin window
+    * added some info bubbles to comment the 1D and 2D options
+
 12.07.2008
 	- Olivier Delhomme <heraia@delhomme.org>
 	* Got rid of aclocal and automake specific version requirements

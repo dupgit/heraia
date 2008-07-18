@@ -265,9 +265,7 @@
   <widget class="GtkAboutDialog" id="about_dialog">
     <property name="title" translatable="yes">About Heraia</property>
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
-    <property name="name">heraia</property>
-    <property name="version">0.0.1</property>
-    <property name="copyright">(C) 2005 - 2007 Two or more autors (see Credits)</property>
+    <property name="copyright">(C) 2005 - 2008 Two or more autors (see Credits)</property>
     <property name="comments" translatable="yes">An hexadecimal analyser and editor</property>
     <property name="website">http://heraia.tuxfamily.org/</property>
     <property name="website_label" translatable="yes">Heraia web site</property>
@@ -502,8 +500,8 @@ PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGES.
 
 		     END OF TERMS AND CONDITIONS</property>
-    <property name="authors">(C) 2005 - 2007 Olivier Delhomme 
-(C) 2005 - 2007 Sébastien Tricaud</property>
+    <property name="authors">(C) 2005 - 2008 Olivier Delhomme 
+(C) 2005 - 2008 Sébastien Tricaud</property>
     <property name="documenters"></property>
     <property name="translator_credits" translatable="yes" comments="TRANSLATORS: Replace this string with your names, one name per line.">translator-credits</property>
     <property name="artists">(C) 2005 - 2007 Gregory Audet</property>
@@ -1078,9 +1076,6 @@ POSSIBILITY OF SUCH DAMAGES.
                       <placeholder/>
                     </child>
                   </widget>
-                  <packing>
-                    <property name="tab_expand">False</property>
-                  </packing>
                 </child>
                 <child>
                   <widget class="GtkLabel" id="label8">
@@ -1090,7 +1085,6 @@ POSSIBILITY OF SUCH DAMAGES.
                   </widget>
                   <packing>
                     <property name="type">tab</property>
-                    <property name="tab_expand">False</property>
                     <property name="tab_fill">False</property>
                   </packing>
                 </child>
@@ -1260,7 +1254,6 @@ POSSIBILITY OF SUCH DAMAGES.
                   </widget>
                   <packing>
                     <property name="position">1</property>
-                    <property name="tab_expand">False</property>
                   </packing>
                 </child>
                 <child>
@@ -1272,7 +1265,6 @@ POSSIBILITY OF SUCH DAMAGES.
                   <packing>
                     <property name="type">tab</property>
                     <property name="position">1</property>
-                    <property name="tab_expand">False</property>
                     <property name="tab_fill">False</property>
                   </packing>
                 </child>
@@ -1388,7 +1380,6 @@ POSSIBILITY OF SUCH DAMAGES.
                   </widget>
                   <packing>
                     <property name="position">2</property>
-                    <property name="tab_expand">False</property>
                   </packing>
                 </child>
                 <child>
@@ -1400,7 +1391,6 @@ POSSIBILITY OF SUCH DAMAGES.
                   <packing>
                     <property name="type">tab</property>
                     <property name="position">2</property>
-                    <property name="tab_expand">False</property>
                     <property name="tab_fill">False</property>
                   </packing>
                 </child>
@@ -1490,7 +1480,6 @@ POSSIBILITY OF SUCH DAMAGES.
                   </widget>
                   <packing>
                     <property name="position">3</property>
-                    <property name="tab_expand">False</property>
                   </packing>
                 </child>
                 <child>
@@ -1502,7 +1491,6 @@ POSSIBILITY OF SUCH DAMAGES.
                   <packing>
                     <property name="type">tab</property>
                     <property name="position">3</property>
-                    <property name="tab_expand">False</property>
                     <property name="tab_fill">False</property>
                   </packing>
                 </child>

@@ -17,19 +17,21 @@
            0 == sucess else errno 
 31.07.2006 the code needs a serious review
 03.01.2006 add an option to specify wether the log output should be done
-	   also to the stdout stream.
+	       also to the stdout stream.
 07.07.2005 review the heraia_window_t struct (add a new struct to manage the
            window itself).
 06.01.2007 add a structure to manage (in a list) the filenames and the
-	   GtkHex Widget
+	       GtkHex Widget
 06.01.2007 By the way : get rid of that GtkHex Widget (too many limitations)
 06.01.2007 in io.c :
-		. modifies the load_file_to_analyse function in order
-		  to be more coherent with the structure (filename)
+		   . modifies the load_file_to_analyse function in order
+		     to be more coherent with the structure (filename)
 08.01.2007 Add a configuration button to the plugin_list window. This button
-	   would ideally be visible if the plugin is configurable.
-06.11.2007 Reduce McCabe complexity to make the code more readable and undertandable
-08.07.2008 Add a swig hability and begin doing thing in ruby.
+	       would ideally be visible if the plugin is configurable.
+06.11.2007 Reduce McCabe complexity to make the code more readable and 
+           understandable
+08.07.2008 Add a swig hability and begin doing thing in ruby <-- is this really 
+           a thing that I want ?
 
 
 [Done List]
