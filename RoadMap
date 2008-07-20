@@ -19,6 +19,7 @@ Heraia's version roadmap
 
 - 0.0.5
    * have a usable version of the template manager
+   * have .deb and .rpm package (and scripts)
 
 - 0.0.6
    * have color for the template fields (directly in the editor)
