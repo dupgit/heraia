@@ -26,21 +26,21 @@
 
 #define H_DEBUG 1
 
-extern void on_quitter1_activate( GtkWidget *widget,  gpointer data );
-extern void on_nouveau1_activate( GtkWidget *widget, gpointer data );
-extern void on_ouvrir1_activate( GtkWidget *widget,  gpointer data );
-extern void on_enregistrer1_activate( GtkWidget *widget,  gpointer data );
-extern void on_enregistrer_sous1_activate( GtkWidget *widget, gpointer data );
-extern void on_supprimer1_activate( GtkWidget *widget, gpointer data );
-extern void a_propos_activate( GtkWidget *widget, gpointer data );
-extern void on_couper1_activate( GtkWidget *widget, gpointer data );
-extern void on_copier1_activate( GtkWidget *widget, gpointer data );
-extern void on_coller1_activate( GtkWidget *widget, gpointer data );
+extern void on_quitter1_activate(GtkWidget *widget, gpointer data);
+extern void on_nouveau1_activate(GtkWidget *widget, gpointer data);
+extern void on_ouvrir1_activate(GtkWidget *widget, gpointer data);
+extern void on_enregistrer1_activate(GtkWidget *widget, gpointer data);
+extern void on_enregistrer_sous1_activate(GtkWidget *widget, gpointer data);
+extern void on_supprimer1_activate(GtkWidget *widget, gpointer data);
+extern void a_propos_activate(GtkWidget *widget, gpointer data);
+extern void on_couper1_activate(GtkWidget *widget, gpointer data);
+extern void on_copier1_activate(GtkWidget *widget, gpointer data);
+extern void on_coller1_activate(GtkWidget *widget, gpointer data);
 extern void on_DIMenu_activate(GtkWidget *widget, gpointer data);
-extern gboolean delete_main_window_event( GtkWidget *widget, GdkEvent  *event, gpointer   data );
+extern gboolean delete_main_window_event(GtkWidget *widget, GdkEvent *event, gpointer data);
 
-extern gboolean delete_dt_window_event( GtkWidget *widget, GdkEvent  *event, gpointer data );
-extern void destroy_dt_window( GtkWidget *widget, GdkEvent  *event, gpointer data );
+extern gboolean delete_dt_window_event(GtkWidget *widget, GdkEvent *event, gpointer data);
+extern void destroy_dt_window(GtkWidget *widget, GdkEvent  *event, gpointer data);
 
 extern gboolean select_file_to_load(heraia_window_t *main_window);
 extern void init_heraia_interface(heraia_window_t *main_window);

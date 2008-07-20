@@ -3,7 +3,7 @@
   types.h
   types.h - all data types and pieces of common declarations
  
-  (C) Copyright 2006 - 2007 Olivier Delhomme
+  (C) Copyright 2006 - 2008 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -28,7 +28,7 @@
 /* I have some problems under windows if #ifdef statement is activated */
 
 /* #ifdef HAVE_CONFIG_H */ 
-#  include "config.h"
+#include "config.h"
 /* #endif */  /* HAVE_CONFIG_H */
 
 
@@ -119,7 +119,6 @@ typedef struct
 	treatment_t *treatment;    /* Selected treatment                                  */
 } treatment_container_t;
 
-
 /**
  *  Data type structure entry that contains user defined data types
  *  This is integrated within a GList.
@@ -150,6 +149,23 @@ typedef struct
 } xml_t;
 
 
+
+/**
+ * Window positions
+ *
+ */
+typedef struct
+{
+	gint x;
+	gint y;
+} window_position;
+
+
+typedef struct
+{
+	window_position *about_box;
+} all_window_pos;
+
 /**
  *  This is the main structure (mainly named main_window due to historycal reasons)
  *  It contains all things that the program needs
@@ -167,6 +183,7 @@ typedef struct
 	data_type_t *current_data_type; /* data type that is being edited                                            */
 	GList *available_treatment_list;/* Available treatments that can be used by the user in the data type window */
 	RefreshType event;              /* Tells what is happening                                                   */
+	all_window_pos *win_pos;        /* Keeps window positions                                                    */
 } heraia_window_t;
 
 

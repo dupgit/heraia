@@ -26,6 +26,7 @@
 
 static gboolean version(void);
 static gboolean usage(int status);
+static heraia_window_t *init_window_position_struct(heraia_window_t *main_window);
 static heraia_window_t *heraia_init_main_struct(void);
 static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window);
 static GList *init_heraia_location_list(void);
@@ -64,6 +65,28 @@ static gboolean usage(int status)
   -v, --version\tProgram version information.\n");
 			return TRUE;
 		}
+}
+
+/** 
+ *  Inits the window position structure
+ *
+ */
+static heraia_window_t *init_window_position_struct(heraia_window_t *main_window)
+{
+	all_window_pos *win_pos = NULL;
+	window_position *about_box = NULL;
+	
+	win_pos = (all_window_pos *) g_malloc0(sizeof(all_window_pos));
+	about_box = (window_position *) g_malloc0(sizeof(window_position));
+	
+	about_box->x = 0;
+	about_box->y = 0;
+	
+	win_pos->about_box = about_box;
+	
+	main_window->win_pos = win_pos;
+	
+	return main_window;
 }
 
 
@@ -108,6 +131,9 @@ static heraia_window_t *heraia_init_main_struct(void)
 	herwin->current_DW->window_displayed = FALSE;
 	herwin->current_DW->tab_displayed = 0;  /* the first tab */
 
+	/* init window position structure */
+	herwin = init_window_position_struct(herwin);
+	
 	return herwin;
 }
 

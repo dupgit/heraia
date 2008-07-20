@@ -3,7 +3,7 @@
   heraia_ui.c
   main menus, callback and utility functions
   
-  (C) Copyright 2005 - 2007 Olivier Delhomme
+  (C) Copyright 2005 - 2008 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -59,9 +59,32 @@ void a_propos_activate(GtkWidget *widget, gpointer data)
 		{				
 			gtk_about_dialog_set_program_name(GTK_ABOUT_DIALOG(about_dialog), PACKAGE_NAME);
 			gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(about_dialog), PACKAGE_VERSION);
+			gtk_window_move(GTK_WINDOW(about_dialog), main_window->win_pos->about_box->x, main_window->win_pos->about_box->y);
 			gtk_widget_show(about_dialog);
 		}
 }
+
+
+/**
+ *  Record position and hide about dialog box
+ */
+static void record_and_hide_about_box(heraia_window_t *main_window)
+{
+	GtkWidget *about_dialog = NULL;	
+ 	gint x = 0;
+	gint y = 0;
+	
+	about_dialog = heraia_get_widget(main_window->xmls->main, "about_dialog");
+	
+	gtk_window_get_position(GTK_WINDOW(about_dialog), &x, &y);
+
+	main_window->win_pos->about_box->x = x;
+	main_window->win_pos->about_box->y = y;
+
+	gtk_widget_hide(about_dialog);
+
+}
+
 
 /**
  *  To close the A propos dialog box (with the "close" button)
@@ -69,23 +92,20 @@ void a_propos_activate(GtkWidget *widget, gpointer data)
 static void a_propos_response(GtkWidget *widget, gint response, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
- 	
-	gtk_widget_hide(heraia_get_widget(main_window->xmls->main, "about_dialog"));
+	record_and_hide_about_box(main_window);
 }
 
 static void a_propos_close(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
-	
-	gtk_widget_hide(heraia_get_widget(main_window->xmls->main, "about_dialog"));
+	record_and_hide_about_box(main_window);
 }
 
 static gboolean a_propos_delete(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
- 	
-	gtk_widget_hide(heraia_get_widget(main_window->xmls->main, "about_dialog"));
- 	
+ 	record_and_hide_about_box(main_window);
+	
 	return TRUE;
 }
 
