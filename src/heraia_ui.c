@@ -26,6 +26,9 @@
 
 static gboolean load_heraia_glade_xml(heraia_window_t *main_window);
 static void heraia_ui_connect_signals(heraia_window_t *main_window);
+static void move_and_show_dialog_box(GtkWidget *dialog_box, window_position *dialog_pos);
+static void record_and_hide_dialog_box(GtkWidget *dialog_box, window_position *dialog_pos);
+static void record_and_hide_about_box(heraia_window_t *main_window);
 
 /**
  *  Quit, file menu
@@ -59,9 +62,37 @@ void a_propos_activate(GtkWidget *widget, gpointer data)
 		{				
 			gtk_about_dialog_set_program_name(GTK_ABOUT_DIALOG(about_dialog), PACKAGE_NAME);
 			gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(about_dialog), PACKAGE_VERSION);
-			gtk_window_move(GTK_WINDOW(about_dialog), main_window->win_pos->about_box->x, main_window->win_pos->about_box->y);
-			gtk_widget_show(about_dialog);
+			
+			move_and_show_dialog_box(about_dialog, main_window->win_pos->about_box);
 		}
+}
+
+/** 
+ *  Move the dialog box to the wanted position 
+ */
+static void move_and_show_dialog_box(GtkWidget *dialog_box, window_position *dialog_pos)
+{
+	
+	gtk_window_move(GTK_WINDOW(dialog_box), dialog_pos->x, dialog_pos->y);
+	gtk_widget_show_all(dialog_box);
+}
+
+
+/**
+ *  Record position and hide a dialog box
+ */
+static void record_and_hide_dialog_box(GtkWidget *dialog_box, window_position *dialog_pos)
+{
+ 	gint x = 0;
+	gint y = 0;
+	
+	
+	gtk_window_get_position(GTK_WINDOW(dialog_box), &x, &y);
+
+	dialog_pos->x = x;
+	dialog_pos->y = y;
+
+	gtk_widget_hide(dialog_box);
 }
 
 
@@ -71,19 +102,31 @@ void a_propos_activate(GtkWidget *widget, gpointer data)
 static void record_and_hide_about_box(heraia_window_t *main_window)
 {
 	GtkWidget *about_dialog = NULL;	
- 	gint x = 0;
-	gint y = 0;
-	
+ 	
 	about_dialog = heraia_get_widget(main_window->xmls->main, "about_dialog");
 	
-	gtk_window_get_position(GTK_WINDOW(about_dialog), &x, &y);
-
-	main_window->win_pos->about_box->x = x;
-	main_window->win_pos->about_box->y = y;
-
-	gtk_widget_hide(about_dialog);
-
+	if (about_dialog != NULL)
+		{
+			record_and_hide_dialog_box(about_dialog, main_window->win_pos->about_box);
+		}
 }
+
+/**
+ *  Record position and hide data interpretor dialog box
+ */
+static void record_and_hide_data_interpretor(heraia_window_t *main_window)
+{
+	GtkWidget *about_dialog = NULL;	
+ 	
+	about_dialog = heraia_get_widget(main_window->xmls->main, "data_interpretor_window");
+	
+	if (about_dialog != NULL)
+		{
+			record_and_hide_dialog_box(about_dialog, main_window->win_pos->data_interpretor);
+		}
+}
+
+
 
 
 /**
@@ -231,17 +274,21 @@ void on_DIMenu_activate(GtkWidget *widget, gpointer data)
 
 							if (dw->window_displayed == TRUE)
 								{
-									gtk_widget_show_all(dw->diw);
-
 									/* Setting the first page of the notebook as default (Numbers) */					
 									gtk_notebook_set_current_page(notebook, dw->tab_displayed);
 
+									/* moving to the right position */
+									move_and_show_dialog_box(dw->diw, main_window->win_pos->data_interpretor);
+									/* gtk_widget_show_all(dw->diw); */
+									
 									refresh_data_interpretor_window(widget, data);
 								}
 							else
 								{
+									/* recording some prefs from the dialog : position + opened tab */
 									dw->tab_displayed = gtk_notebook_get_current_page(notebook);
-									gtk_widget_hide_all(dw->diw);
+									record_and_hide_dialog_box(dw->diw, main_window->win_pos->data_interpretor);
+									/* gtk_widget_hide_all(dw->diw); */
 								}
 						}
 				}

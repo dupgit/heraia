@@ -2,7 +2,7 @@ Heraia's version roadmap
 
 . 0.0.2
    * save and save as functions
-   * record window positions
+   * record window positions (save them to a user preference file)
    * add somewhere, the cursor's position and file length
 
 - 0.0.3

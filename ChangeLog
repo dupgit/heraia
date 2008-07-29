@@ -1,3 +1,13 @@
+29.07.2008
+	- Olivier Delhomme <heraia@delhomme.org>
+	* data interpretor's window position is now saved (for the session)
+
+20.07.2008
+	- Olivier Delhomme <heraia@delhomme.org>
+	* About dialog box's position is saved (in a single session)
+    * Added a RoadMap file to record which features I want to have in heraia's
+      next versions (Hey feel free to contribute !)
+
 18.07.2008
  	- Olivier Delhomme <heraia@delhomme.org>
 	* A propos changes : 

@@ -164,6 +164,7 @@ typedef struct
 typedef struct
 {
 	window_position *about_box;
+	window_position *data_interpretor;
 } all_window_pos;
 
 /**
