@@ -1,6 +1,8 @@
 29.07.2008
 	- Olivier Delhomme <heraia@delhomme.org>
 	* data interpretor's window position is now saved (for the session)
+	* renamed functions to be cleaner (translated to english)
+    * "save" does work basicaly
 
 20.07.2008
 	- Olivier Delhomme <heraia@delhomme.org>

@@ -28,5 +28,7 @@
 #define HERAIA_NOERR 0
 #define HERAIA_MEMORY_ERROR 1
 #define HERAIA_NO_PLUGINS 2
+#define HERAIA_FILE_ERROR 3  /* We may use errno to have more accurate file
+                                errors */
 
 #endif /* _HERAIA_ERRORS_H_ */

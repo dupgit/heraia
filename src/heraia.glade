@@ -38,7 +38,7 @@
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkImageMenuItem" id="enregistrer1">
+                      <widget class="GtkImageMenuItem" id="save">
                         <property name="visible">True</property>
                         <property name="label">gtk-save</property>
                         <property name="use_underline">True</property>
@@ -47,7 +47,7 @@
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkImageMenuItem" id="enregistrer_sous1">
+                      <widget class="GtkImageMenuItem" id="save_as">
                         <property name="visible">True</property>
                         <property name="label">gtk-save-as</property>
                         <property name="use_underline">True</property>

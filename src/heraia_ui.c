@@ -111,23 +111,6 @@ static void record_and_hide_about_box(heraia_window_t *main_window)
 		}
 }
 
-/**
- *  Record position and hide data interpretor dialog box
- */
-static void record_and_hide_data_interpretor(heraia_window_t *main_window)
-{
-	GtkWidget *about_dialog = NULL;	
- 	
-	about_dialog = heraia_get_widget(main_window->xmls->main, "data_interpretor_window");
-	
-	if (about_dialog != NULL)
-		{
-			record_and_hide_dialog_box(about_dialog, main_window->win_pos->data_interpretor);
-		}
-}
-
-
-
 
 /**
  *  To close the A propos dialog box (with the "close" button)
@@ -231,14 +214,28 @@ void on_ouvrir1_activate(GtkWidget *widget, gpointer data )
 	refresh_event_handler(main_window->current_DW->current_hexwidget, main_window);
 }
 
-void on_enregistrer1_activate( GtkWidget *widget,  gpointer data )
+
+/**
+ *  Here we attemp to save the edited file
+ *  TODO : be more accurate on error (error type, message and filename)
+ */
+void on_save_activate( GtkWidget *widget,  gpointer data )
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	
-	log_message(main_window, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
+	HERAIA_ERROR erreur;
+	
+	if (main_window != NULL)
+	   {
+			erreur = heraia_hex_document_save(main_window);
+	   }
+	if (erreur != HERAIA_NOERR)
+	   {
+			log_message(main_window, G_LOG_LEVEL_ERROR, "Error while saving file.");
+	   }
 }
 
-void on_enregistrer_sous1_activate( GtkWidget *widget, gpointer data )
+void on_save_as_activate( GtkWidget *widget, gpointer data )
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 
@@ -563,12 +560,12 @@ static void heraia_ui_connect_signals(heraia_window_t *main_window)
 					  G_CALLBACK (on_ouvrir1_activate), main_window);
 
 	/* Save, file menu */
-	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "enregistrer1")), "activate",  
-					  G_CALLBACK (on_enregistrer1_activate), main_window);
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "save")), "activate",  
+					  G_CALLBACK (on_save_activate), main_window);
 
 	/* Save As, file menu */
-	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "enregistrer_sous1")), "activate",  
-					  G_CALLBACK (on_enregistrer_sous1_activate), main_window); 
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "save_as")), "activate",  
+					  G_CALLBACK (on_save_as_activate), main_window); 
 	
 	/* Cut, edit menu */
 	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "couper1")), "activate",  
@@ -582,11 +579,11 @@ static void heraia_ui_connect_signals(heraia_window_t *main_window)
 	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "coller1")), "activate",  
 					  G_CALLBACK (on_coller1_activate), main_window); 
 
-
+	
 	/* about dialog box */		
 	g_signal_connect (G_OBJECT(heraia_get_widget(main_window->xmls->main, "a_propos1")), "activate",  
 					  G_CALLBACK(a_propos_activate), main_window); 
-
+	
 	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "about_dialog")), "close",
 					 G_CALLBACK(a_propos_close), main_window);
 
@@ -596,7 +593,7 @@ static void heraia_ui_connect_signals(heraia_window_t *main_window)
 	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "about_dialog")), "delete-event",
 					 G_CALLBACK(a_propos_delete), main_window);
 
-
+	
 	/* main window killed or destroyed */
 	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "main_window")), "delete_event", 
 					  G_CALLBACK (delete_main_window_event), NULL);

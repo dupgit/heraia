@@ -48,6 +48,26 @@ HERAIA_ERROR heraia_hex_document_new(heraia_window_t *main_window, char *filenam
 	return HERAIA_NOERR;
 }
 
+HERAIA_ERROR heraia_hex_document_save(heraia_window_t *main_window)
+{
+	gint return_value = FALSE;
+	
+	if (main_window->current_doc != NULL)
+	   {
+				return_value = hex_document_write(main_window->current_doc);
+		}
+	
+	if (return_value != FALSE)
+	   {
+				return HERAIA_NOERR;
+		}
+	 else
+	   {	
+				return HERAIA_FILE_ERROR;
+	   }
+}
+
+
 /**
  *  Deals with the endianness of 'len' bytes located in 'result'
  *  for BIG_ENDIAN we only swap bytes if we have two or more of them
@@ -159,3 +179,5 @@ guint64 ghex_file_size(GtkHex *gh)
 			return 0;
 		}
 }
+
+

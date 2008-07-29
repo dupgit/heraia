@@ -28,6 +28,7 @@ extern gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, guint endianness, 
 extern gboolean ghex_get_data(data_window_t *data_window, guint length, guint endianness, guchar *c);
 
 extern HERAIA_ERROR heraia_hex_document_new(heraia_window_t *main_window, char *filename);
+extern HERAIA_ERROR heraia_hex_document_save(heraia_window_t *main_window);
 extern guint64 ghex_file_size(GtkHex *gh);
 
 #endif /* _GHEX_HERAIA_INTERFACE_H_ */
