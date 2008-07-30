@@ -204,17 +204,17 @@ void log_message(heraia_window_t *main_window, GLogLevelFlags log_level, const c
 
 void show_hide_log_window(heraia_window_t *main_window, gboolean show)
 {
-	GtkWidget *log_window = NULL;
+	GtkWidget *log_dialog = NULL;
 	
-	log_window = heraia_get_widget(main_window->xmls->main, "log_window");
+	log_dialog = heraia_get_widget(main_window->xmls->main, "log_window");
 	
 	if (show == TRUE)
 	   {
-			move_and_show_dialog_box(log_window, main_window->win_pos->log);
+			move_and_show_dialog_box(log_dialog, main_window->win_pos->log);
 	   }
 	else
 	  {
-			main_window->win_pos->log = record_and_hide_dialog_box(log_window, main_window->win_pos->log);
+			main_window->win_pos->log = record_and_hide_dialog_box(log_dialog, main_window->win_pos->log);
 	  }
 
 }
@@ -256,8 +256,8 @@ static void logw_close_clicked(GtkWidget *widget, gpointer data)
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	GtkCheckMenuItem *cmi = GTK_CHECK_MENU_ITEM(heraia_get_widget(main_window->xmls->main, "mw_cmi_affiche_logw"));
 
-	show_hide_log_window(main_window, FALSE);
 	gtk_check_menu_item_set_active(cmi, FALSE);
+	show_hide_log_window(main_window, FALSE);
 }
 
 
