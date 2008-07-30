@@ -76,6 +76,7 @@ static heraia_window_t *init_window_position_struct(heraia_window_t *main_window
 	all_window_pos *win_pos = NULL;
 	window_position *about_box = NULL;
 	window_position *data_interpretor = NULL;
+	window_position *log = NULL;
 
 	/* global struct */
 	win_pos = (all_window_pos *) g_malloc0(sizeof(all_window_pos));
@@ -83,16 +84,20 @@ static heraia_window_t *init_window_position_struct(heraia_window_t *main_window
 	/* malloc dialog's structs */
 	about_box = (window_position *) g_malloc0(sizeof(window_position));
 	data_interpretor = (window_position *) g_malloc0(sizeof(window_position));
+	log = (window_position *) g_malloc0(sizeof(window_position));
 	
 	/* initial states for the dialog boxes */
 	about_box->x = 0;
 	about_box->y = 0;
 	data_interpretor->x = 0;
 	data_interpretor->y = 0;
+	log->x = 0;
+	log->y = 0;
 	
 	/* attach to the struct */
 	win_pos->about_box = about_box;
 	win_pos->data_interpretor = data_interpretor;
+	win_pos->log = log;
 	
 	/* attach it to the main struct so that it can be read everywhere */
 	main_window->win_pos = win_pos;

@@ -3,7 +3,7 @@
   heraia_ui.h
   main menus, callback and utility functions
  
-  (C) Copyright 2005 - 2007 Olivier Delhomme
+  (C) Copyright 2005 - 2008 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -47,6 +47,10 @@ extern void init_heraia_interface(heraia_window_t *main_window);
 extern int load_heraia_ui(heraia_window_t *main_window);
 extern void refresh_event_handler(GtkWidget *widget, gpointer data);
 extern void connect_cursor_moved_signal(heraia_window_t *main_window);
+
+/* window positionning system */
+extern void move_and_show_dialog_box(GtkWidget *dialog_box, window_position *dialog_pos);
+extern window_position *record_and_hide_dialog_box(GtkWidget *dialog_box, window_position *dialog_pos);
 
 /* libglade wrapper */
 GtkWidget *heraia_get_widget(GladeXML *xml, gchar *widget_name);

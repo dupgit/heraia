@@ -3,7 +3,7 @@
   log.c
   log functions for heraia
  
-  (C) Copyright 2006 - 2007 Olivier Delhomme
+  (C) Copyright 2006 - 2008 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org 
  
@@ -24,15 +24,20 @@
 
 #include "heraia_types.h"
 
-/* ma fonction de log qui me permet d'afficher sur stdout et dans la fenêtre de log */
+/**
+ *  A function that allow me to printy things on stdout and in th log window
+ */
 static void my_log(heraia_window_t *main_window, gchar *log_domain, GLogLevelFlags log_level, const char *format, ...);
 
-/* les signaux */
+
 static void log_window_connect_signals(heraia_window_t *main_window);
 static gboolean delete_log_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data );
 static void destroy_log_window(GtkWidget *widget, GdkEvent  *event, gpointer data);
 static void logw_close_clicked(GtkWidget *widget, gpointer data);
 
+/**
+ * Prints a	 message to stdout
+ */
 void print_message(const char *format, ...)
 {
 	va_list args;
@@ -62,6 +67,7 @@ void print_message(const char *format, ...)
 
 	g_free(str);
 }
+
 
 /**
  *  The log function 
@@ -198,11 +204,18 @@ void log_message(heraia_window_t *main_window, GLogLevelFlags log_level, const c
 
 void show_hide_log_window(heraia_window_t *main_window, gboolean show)
 {
-
-	if (show)
-		gtk_widget_show(GTK_WIDGET(heraia_get_widget(main_window->xmls->main, "log_window")));
+	GtkWidget *log_window = NULL;
+	
+	log_window = heraia_get_widget(main_window->xmls->main, "log_window");
+	
+	if (show == TRUE)
+	   {
+			move_and_show_dialog_box(log_window, main_window->win_pos->log);
+	   }
 	else
-		gtk_widget_hide(GTK_WIDGET(heraia_get_widget(main_window->xmls->main, "log_window")));
+	  {
+			main_window->win_pos->log = record_and_hide_dialog_box(log_window, main_window->win_pos->log);
+	  }
 
 }
 
@@ -215,7 +228,6 @@ void mw_cmi_affiche_logw_toggle(GtkWidget *widget, gpointer data)
 	GtkCheckMenuItem *cmi = GTK_CHECK_MENU_ITEM(widget);
 
 	show_hide_log_window(main_window, gtk_check_menu_item_get_active(cmi));
-
 }
 
 
@@ -236,6 +248,9 @@ static void destroy_log_window(GtkWidget *widget, GdkEvent  *event, gpointer dat
 	logw_close_clicked(widget, data);
 }
 
+/**
+ *  Close button is clicked
+ */
 static void logw_close_clicked(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;

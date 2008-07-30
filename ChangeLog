@@ -1,3 +1,10 @@
+30.07.2008
+	- Olivier Delhomme <heraia@delhomme.org>
+	* log's window position is now saved (for the session)
+      There is a bug when closing the window with the "close" button : it 
+      resets the window's position !!!
+	* translated some french comments in log.c
+
 29.07.2008
 	- Olivier Delhomme <heraia@delhomme.org>
 	* data interpretor's window position is now saved (for the session)

@@ -3,7 +3,7 @@
   ghex_heraia_interface.c
   heraia - an hexadecimal file editor and analyser based on ghex
  
-  (C) Copyright 2005 - 2007 Olivier Delhomme
+  (C) Copyright 2005 - 2008 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -48,6 +48,10 @@ HERAIA_ERROR heraia_hex_document_new(heraia_window_t *main_window, char *filenam
 	return HERAIA_NOERR;
 }
 
+
+/**
+ * Saves an open and edited document
+ */
 HERAIA_ERROR heraia_hex_document_save(heraia_window_t *main_window)
 {
 	gint return_value = FALSE;

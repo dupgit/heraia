@@ -26,8 +26,6 @@
 
 static gboolean load_heraia_glade_xml(heraia_window_t *main_window);
 static void heraia_ui_connect_signals(heraia_window_t *main_window);
-static void move_and_show_dialog_box(GtkWidget *dialog_box, window_position *dialog_pos);
-static void record_and_hide_dialog_box(GtkWidget *dialog_box, window_position *dialog_pos);
 static void record_and_hide_about_box(heraia_window_t *main_window);
 
 /**
@@ -70,9 +68,8 @@ void a_propos_activate(GtkWidget *widget, gpointer data)
 /** 
  *  Move the dialog box to the wanted position 
  */
-static void move_and_show_dialog_box(GtkWidget *dialog_box, window_position *dialog_pos)
+void move_and_show_dialog_box(GtkWidget *dialog_box, window_position *dialog_pos)
 {
-	
 	gtk_window_move(GTK_WINDOW(dialog_box), dialog_pos->x, dialog_pos->y);
 	gtk_widget_show_all(dialog_box);
 }
@@ -81,7 +78,7 @@ static void move_and_show_dialog_box(GtkWidget *dialog_box, window_position *dia
 /**
  *  Record position and hide a dialog box
  */
-static void record_and_hide_dialog_box(GtkWidget *dialog_box, window_position *dialog_pos)
+window_position *record_and_hide_dialog_box(GtkWidget *dialog_box, window_position *dialog_pos)
 {
  	gint x = 0;
 	gint y = 0;
@@ -93,6 +90,8 @@ static void record_and_hide_dialog_box(GtkWidget *dialog_box, window_position *d
 	dialog_pos->y = y;
 
 	gtk_widget_hide(dialog_box);
+	
+	return dialog_pos;
 }
 
 
@@ -107,7 +106,7 @@ static void record_and_hide_about_box(heraia_window_t *main_window)
 	
 	if (about_dialog != NULL)
 		{
-			record_and_hide_dialog_box(about_dialog, main_window->win_pos->about_box);
+			main_window->win_pos->about_box = record_and_hide_dialog_box(about_dialog, main_window->win_pos->about_box);
 		}
 }
 
@@ -200,7 +199,9 @@ void refresh_event_handler(GtkWidget *widget, gpointer data)
 }
 
 
-/* This handles the menuitem "Ouvrir" to open a file */
+/**
+ *  This handles the menuitem "Ouvrir" to open a file 
+ */
 void on_ouvrir1_activate(GtkWidget *widget, gpointer data )
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
@@ -223,12 +224,13 @@ void on_save_activate( GtkWidget *widget,  gpointer data )
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	
-	HERAIA_ERROR erreur;
+	HERAIA_ERROR erreur = HERAIA_NOERR;
 	
 	if (main_window != NULL)
 	   {
 			erreur = heraia_hex_document_save(main_window);
 	   }
+	
 	if (erreur != HERAIA_NOERR)
 	   {
 			log_message(main_window, G_LOG_LEVEL_ERROR, "Error while saving file.");
@@ -284,7 +286,7 @@ void on_DIMenu_activate(GtkWidget *widget, gpointer data)
 								{
 									/* recording some prefs from the dialog : position + opened tab */
 									dw->tab_displayed = gtk_notebook_get_current_page(notebook);
-									record_and_hide_dialog_box(dw->diw, main_window->win_pos->data_interpretor);
+									main_window->win_pos->data_interpretor = record_and_hide_dialog_box(dw->diw, main_window->win_pos->data_interpretor);
 									/* gtk_widget_hide_all(dw->diw); */
 								}
 						}

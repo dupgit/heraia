@@ -165,6 +165,7 @@ typedef struct
 {
 	window_position *about_box;
 	window_position *data_interpretor;
+	window_position *log;
 } all_window_pos;
 
 /**
