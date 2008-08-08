@@ -1,4 +1,4 @@
-08.08.2008
+08.08.2008 [0.0.2 release]
 	- Olivier Delhomme <heraia@delhomme.org>
 	* Changed roadmap numbers to allow more subversion (private joke)
     * Changed window position structure to window properties structure.
