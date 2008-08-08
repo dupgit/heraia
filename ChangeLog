@@ -1,3 +1,10 @@
+08.08.2008
+	- Olivier Delhomme <heraia@delhomme.org>
+	* Changed roadmap numbers to allow more subversion (private joke)
+    * Changed window position structure to window properties structure.
+	  I don't know why I haven't done this before !!! It corrects a bug 
+	  with the log window and a bug with the about box
+
 30.07.2008
 	- Olivier Delhomme <heraia@delhomme.org>
 	* log's window position is now saved (for the session)

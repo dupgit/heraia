@@ -202,21 +202,26 @@ void log_message(heraia_window_t *main_window, GLogLevelFlags log_level, const c
  *  Shows and hides the log window
  */
 
-void show_hide_log_window(heraia_window_t *main_window, gboolean show)
+void show_hide_log_window(heraia_window_t *main_window, gboolean show, GtkCheckMenuItem *cmi)
 {
 	GtkWidget *log_dialog = NULL;
+	window_prop *log_box_prop = main_window->win_prop->log_box;
 	
 	log_dialog = heraia_get_widget(main_window->xmls->main, "log_window");
 	
 	if (show == TRUE)
 	   {
-			move_and_show_dialog_box(log_dialog, main_window->win_pos->log);
+			main_window->win_prop->log_box = move_and_show_dialog_box(log_dialog, log_box_prop);
 	   }
 	else
 	  {
-			main_window->win_pos->log = record_and_hide_dialog_box(log_dialog, main_window->win_pos->log);
+		  if (log_box_prop->displayed == TRUE)
+			{
+				gtk_check_menu_item_set_active(cmi, FALSE);
+				main_window->win_prop->log_box = record_and_hide_dialog_box(log_dialog, log_box_prop);
+				log_message(main_window, G_LOG_LEVEL_DEBUG, "Window position : %ld, %ld", log_box_prop->x, log_box_prop->y);
+			}
 	  }
-
 }
 
 /**
@@ -226,8 +231,9 @@ void mw_cmi_affiche_logw_toggle(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	GtkCheckMenuItem *cmi = GTK_CHECK_MENU_ITEM(widget);
+	gboolean checked = gtk_check_menu_item_get_active(cmi);
 
-	show_hide_log_window(main_window, gtk_check_menu_item_get_active(cmi));
+	show_hide_log_window(main_window, checked, cmi);
 }
 
 
@@ -240,7 +246,7 @@ static gboolean delete_log_window_event(GtkWidget *widget, GdkEvent  *event, gpo
 {
 	logw_close_clicked(widget, data);
 
-	return TRUE;
+	return FALSE;
 }
 
 static void destroy_log_window(GtkWidget *widget, GdkEvent  *event, gpointer data)
@@ -256,8 +262,7 @@ static void logw_close_clicked(GtkWidget *widget, gpointer data)
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	GtkCheckMenuItem *cmi = GTK_CHECK_MENU_ITEM(heraia_get_widget(main_window->xmls->main, "mw_cmi_affiche_logw"));
 
-	gtk_check_menu_item_set_active(cmi, FALSE);
-	show_hide_log_window(main_window, FALSE);
+	show_hide_log_window(main_window, FALSE, cmi);
 }
 
 

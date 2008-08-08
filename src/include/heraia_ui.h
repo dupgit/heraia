@@ -49,8 +49,8 @@ extern void refresh_event_handler(GtkWidget *widget, gpointer data);
 extern void connect_cursor_moved_signal(heraia_window_t *main_window);
 
 /* window positionning system */
-extern void move_and_show_dialog_box(GtkWidget *dialog_box, window_position *dialog_pos);
-extern window_position *record_and_hide_dialog_box(GtkWidget *dialog_box, window_position *dialog_pos);
+extern window_prop *move_and_show_dialog_box(GtkWidget *dialog_box, window_prop *dialog_pos);
+extern window_prop *record_and_hide_dialog_box(GtkWidget *dialog_box, window_prop *dialog_pos);
 
 /* libglade wrapper */
 GtkWidget *heraia_get_widget(GladeXML *xml, gchar *widget_name);

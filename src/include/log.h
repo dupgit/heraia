@@ -3,7 +3,7 @@
   log.h
   log functions for heraia
  
-  (C) Copyright 2006 Olivier Delhomme
+  (C) Copyright 2006 - 2008 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -29,7 +29,7 @@
 extern void print_message(const char *format, ...);
 extern void log_message(heraia_window_t *main_window, GLogLevelFlags log_level, const char *format, ...);
 extern void log_window_init_interface(heraia_window_t *main_window);
-extern void show_hide_log_window(heraia_window_t *main_window, gboolean show);
+extern void show_hide_log_window(heraia_window_t *main_window, gboolean show, GtkCheckMenuItem *cmi);
 extern void mw_cmi_affiche_logw_toggle(GtkWidget *widget, gpointer data);
 
 #endif /* _HERAIA_LOG_H_ */

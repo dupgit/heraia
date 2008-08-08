@@ -151,22 +151,26 @@ typedef struct
 
 
 /**
- * Window positions
- *
+ * Window properties 
+ * position (x,y)
+ * displayed (boolean)
  */
 typedef struct
 {
 	gint x;
 	gint y;
-} window_position;
+	gboolean displayed;
+} window_prop;
 
-
+/**
+ *  Structure to keep window properties for each window
+ */
 typedef struct
 {
-	window_position *about_box;
-	window_position *data_interpretor;
-	window_position *log;
-} all_window_pos;
+	window_prop *about_box;
+	window_prop *data_interpretor;
+	window_prop *log_box;
+} all_window_prop;
 
 /**
  *  This is the main structure (mainly named main_window due to historycal reasons)
@@ -185,7 +189,7 @@ typedef struct
 	data_type_t *current_data_type; /* data type that is being edited                                            */
 	GList *available_treatment_list;/* Available treatments that can be used by the user in the data type window */
 	RefreshType event;              /* Tells what is happening                                                   */
-	all_window_pos *win_pos;        /* Keeps window positions                                                    */
+	all_window_prop *win_prop;        /* Keeps window properties                                                   */
 } heraia_window_t;
 
 
