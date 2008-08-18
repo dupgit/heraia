@@ -1,8 +1,16 @@
-SUBDIRS = src plugins
+SUBDIRS = src plugins pixmaps
 
-EXTRA_DIST = 		\
-	HISTORY 	    \
-	autogen.sh	    \
-	autoclean.sh	\
-    RoadMap			\
-	heraia.iss
+gnomemenufiles =		\
+	heraia.desktop
+
+gnomemenudir = $(datadir)/applications/
+
+dist_gnomemenu_DATA = $(gnomemenufiles)
+
+EXTRA_DIST =			\
+	HISTORY				\
+	autogen.sh			\
+	autoclean.sh		\
+	RoadMap				\
+	heraia.iss			\
+	$(gnomemenufiles)

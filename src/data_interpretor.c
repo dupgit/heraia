@@ -175,7 +175,7 @@ void refresh_data_interpretor_window(GtkWidget *widget, gpointer data)
 	heraia_window_t *main_window = (heraia_window_t *) data;  /* data interpretor window structure */
 	guint endianness = 0;
 
-	if (main_window != NULL && main_window->current_DW != NULL && main_window->current_DW->window_displayed == TRUE)
+	if (main_window != NULL && main_window->current_DW != NULL && main_window->win_prop->main_dialog->displayed == TRUE)
 		{
 			endianness = which_endianness(main_window);  /* Endianness is computed only once here */
 			interpret_as_number(main_window, decode_8bits_unsigned, "diw_8bits_us", 1, endianness);
@@ -248,7 +248,7 @@ void data_interpretor_init_interface(heraia_window_t *main_window)
 			if (dw != NULL)
 				{
 					/* Says whether the data interpretor window is displayed or not */
-					dw->window_displayed = H_DI_DISPLAYED;
+					/* dw->window_displayed = H_DI_DISPLAYED; */
 					dw->diw = heraia_get_widget(main_window->xmls->main, "data_interpretor_window");
 					dw->tab_displayed = 0; /* the first tab */
 				}

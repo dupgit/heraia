@@ -80,7 +80,7 @@ typedef struct
 	GtkWidget *current_hexwidget;  /* we may want to move this from here to heraia_window_t structure */
 	GtkWidget *diw;                /* data interpretor window                                         */
 
-	gboolean window_displayed;     /* says whether the window is displayed or not                     */
+	/* gboolean window_displayed;     says whether the window is displayed or not                     */
 	gint tab_displayed;            /* keeps the last displayed tab's number before closing            */
 
 } data_window_t;
@@ -138,7 +138,6 @@ typedef struct
 	GtkWidget *di_entry;     /* entry for the data interpretor window                                       */
 } data_type_t;
 
-
 /**
  *  Structure that contains all the xml definitions loaded at 
  *  running time using libglade
@@ -152,8 +151,8 @@ typedef struct
 
 /**
  * Window properties 
- * position (x,y)
- * displayed (boolean)
+ *  . position (x,y) record window's position
+ *  . displayed (boolean) say whether the window is displayed or not
  */
 typedef struct
 {
@@ -168,9 +167,12 @@ typedef struct
 typedef struct
 {
 	window_prop *about_box;
-	window_prop *data_interpretor;
+	window_prop *data_interpretor;  /* data interpretor window  */
 	window_prop *log_box;
-} all_window_prop;
+	window_prop *main_dialog;
+	window_prop *plugin_list;       /* plugin description window */
+	window_prop *ldt;               /* list data types window    */
+} all_window_prop; 
 
 /**
  *  This is the main structure (mainly named main_window due to historycal reasons)

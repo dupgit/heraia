@@ -47,11 +47,11 @@ void on_ldt_menu_activate(GtkWidget *widget, gpointer data)
 
 			if (is_cmi_checked(check_menu_item) == TRUE)
 				{  /* if the menu is checked, shows the window */
-					gtk_widget_show_all(heraia_get_widget(main_window->xmls->main, "list_data_types_window")); 
+					move_and_show_dialog_box(heraia_get_widget(main_window->xmls->main, "list_data_types_window"), main_window->win_prop->ldt);
 				}
 			else
 				{
-					gtk_widget_hide(heraia_get_widget(main_window->xmls->main, "list_data_types_window")); 
+					record_and_hide_dialog_box(heraia_get_widget(main_window->xmls->main, "list_data_types_window"), main_window->win_prop->ldt);
 				}
 		}
 }

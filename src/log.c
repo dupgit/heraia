@@ -29,7 +29,6 @@
  */
 static void my_log(heraia_window_t *main_window, gchar *log_domain, GLogLevelFlags log_level, const char *format, ...);
 
-
 static void log_window_connect_signals(heraia_window_t *main_window);
 static gboolean delete_log_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data );
 static void destroy_log_window(GtkWidget *widget, GdkEvent  *event, gpointer data);
@@ -90,19 +89,19 @@ static void my_log(heraia_window_t *main_window, gchar *log_domain, GLogLevelFla
 		case G_LOG_FLAG_RECURSION:
 			display = g_strdup_printf("%s - RECURSION: %s\n%c", log_domain, str, '\0');
 			g_print("%s\n", display);
-			exit(log_level);
+			/* exit(log_level); */
 			break;
  
 		case G_LOG_FLAG_FATAL:
 			display = g_strdup_printf("%s - FATAL: %s\n%c", log_domain, str, '\0');
 			g_print("%s\n", display);
-			exit(log_level);
+			/* exit(log_level); */
 			break;
 
 		case G_LOG_LEVEL_ERROR:
 			display = g_strdup_printf("%s - ERROR: %s\n%c", log_domain, str, '\0');
 			g_print("%s\n", display);
-			exit(log_level);
+			/* exit(log_level); */
 			break;
 
 		case G_LOG_LEVEL_CRITICAL:
@@ -219,7 +218,6 @@ void show_hide_log_window(heraia_window_t *main_window, gboolean show, GtkCheckM
 			{
 				gtk_check_menu_item_set_active(cmi, FALSE);
 				main_window->win_prop->log_box = record_and_hide_dialog_box(log_dialog, log_box_prop);
-				log_message(main_window, G_LOG_LEVEL_DEBUG, "Window position : %ld, %ld", log_box_prop->x, log_box_prop->y);
 			}
 	  }
 }

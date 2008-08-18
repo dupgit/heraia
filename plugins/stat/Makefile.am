@@ -2,15 +2,15 @@ SUBDIRS =
 
 DEFS = -I$(SRCDIR) -I$(SRCDIR)/include		\
         -DPLUGINS_DIR=\"$(plugins_dir)\"	\
-	-DDATA_DIR=\"$(data_dir)\" 		\
-	$(GTKHEX_CFLAGS) $(LIBGLADE_CFLAGS) 	\
-	$(GMODULE_CFLAGS) $(CFLAGS) 		\
+	-DDATA_DIR=\"$(data_dir)\"				\
+	$(GTKHEX_CFLAGS) $(LIBGLADE_CFLAGS)		\
+	$(GMODULE_CFLAGS) $(CFLAGS)				\
 	$(GTK2_CFLAGS) $(GLIB2_CFLAGS)
 
 pkglib_LTLIBRARIES = libstat.la
 
 libstat_la_SOURCES = 	\
-	stat.c		\
+	stat.c				\
 	stat.h
 
 libstat_la_LDFLAGS = $(LDFLAGS)

@@ -1,6 +1,6 @@
 Heraia's version roadmap
 
-. 0.0.2
+. 0.0.2 [08.08.2008]
    * save function
 
 . 0.0.3
@@ -8,10 +8,12 @@ Heraia's version roadmap
 
 . 0.0.4
    * save as function
+   * add curent edited file name in the main window name
 
 . 0.0.5
    * add a user preference file
-   * add the cursor position somewhere, somehow 
+   * add the cursor position somewhere, somehow (a new property zone
+     may be welcomed)
 
 . 0.0.6
    * save window properties to the user config file
@@ -23,10 +25,20 @@ Heraia's version roadmap
    * add a preference window where the user may be able to reset 
      window properties
      
-. 0.1.0
+- 0.1.0
    * save and save as functions
    * record window positions (save them to a user preference file)
    * add somewhere, the cursor's position and file length
+
+. 0.1.1
+   * have the selection positions added near the cursor's position
+
+. 0.1.5
+   * have the ability to open more than one file at a time
+
+. 0.1.8
+   * rewrite data_type creation in order to allow a script or an extern
+     program execution
 
 - 0.2.0
    * rewrite the data_type creation in order to allow a script, or an extern 
@@ -35,12 +47,14 @@ Heraia's version roadmap
    * have the selection positions added near the cursor's position
    * enhance python bindings
    
-- 0.3.0
+- 0.3.0 
    * translatable project
    * ability to pass a part of the file to an extern program and analyse it's
      output -> ie gunzip, unzip, sed, ...
    * have parts of the template manager
    * new visualisation on stat plugin (3D visualisation for the 2D histo)
+   * add more functions to the plugin list (a configure button if the plugin is
+     configurable, and so on)
 
 - 0.4.0
    * have a usable version of the template manager
@@ -48,3 +62,4 @@ Heraia's version roadmap
 
 - 0.5.0
    * have color for the template fields (directly in the editor)
+   * first version for a "search with the templates" function

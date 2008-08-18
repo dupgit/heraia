@@ -1,6 +1,6 @@
 AC_PREREQ(2.59)
 
-AC_INIT([Heraia], [0.0.2],
+AC_INIT([Heraia], [0.0.3],
         [Olivier Delhomme],
         [heraia])
 AC_CONFIG_SRCDIR([src/heraia.c])
@@ -169,7 +169,6 @@ dnl **************************************************
 dnl * ./configure options                            *
 dnl **************************************************
 
-
 dnl *******************************
 dnl debug option
 dnl *******************************
@@ -238,20 +237,42 @@ AC_SUBST(GLIB2_LIBS)
 AC_SUBST(GTK2_CFLAGS)
 AC_SUBST(GTK2_LIBS)
 
-AC_CONFIG_FILES([Makefile src/Makefile plugins/Makefile plugins/stat/Makefile])
+AC_CONFIG_FILES([
+Makefile 
+src/Makefile 
+plugins/Makefile 
+plugins/stat/Makefile
+pixmaps/Makefile
+pixmaps/hicolor/Makefile
+pixmaps/hicolor/16x16/Makefile
+pixmaps/hicolor/16x16/apps/Makefile
+pixmaps/hicolor/32x32/Makefile
+pixmaps/hicolor/32x32/apps/Makefile
+pixmaps/hicolor/48x48/Makefile
+pixmaps/hicolor/48x48/apps/Makefile
+pixmaps/hicolor/64x64/Makefile
+pixmaps/hicolor/64x64/apps/Makefile
+pixmaps/hicolor/128x128/Makefile
+pixmaps/hicolor/128x128/apps/Makefile
+])
 AC_OUTPUT
 
 echo
 echo "*** Dumping configuration ***"
 echo 
-echo "    - Build For OS           : $build_os"
-echo "    - Compiler               : ${CC}"
-echo "    - Generate documentation : $enable_gtk_doc"
-echo "    - Prefix                 : $prefix"
-echo "    - Exec prefix            : $exec_prefix"
-echo "    - Src dir                : $srcdir"
-echo "    - Data dir               : $datadir"
-echo "    - Plugins dir            : $plugins_dir"
+echo "    - Build For OS             : $build_os"
+echo "    - Compiler                 : ${CC}"
+echo "    - Options                  :"
+echo "      . Generate documentation : $enable_gtk_doc"
+echo "      . is code profiling on ? : $gprof"
+echo "      . Code coverage is on ?  : $gcov"
+echo "      . debbuging is on ?      : $debug"
+echo "    - Prefix                   : $prefix"
+echo "    - Exec prefix              : $exec_prefix"
+echo "    - Src dir                  : $srcdir"
+echo "    - Data root dir            : $datarootdir"
+echo "    - Data dir                 : $datadir"
+echo "    - Plugins dir              : $plugins_dir"
 echo
 echo "    You can now run 'make' to compile heraia"
 echo

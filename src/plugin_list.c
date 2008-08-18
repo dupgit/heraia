@@ -65,7 +65,7 @@ static void plw_close_clicked(GtkWidget *widget, gpointer data)
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	GtkCheckMenuItem *cmi = GTK_CHECK_MENU_ITEM(heraia_get_widget(main_window->xmls->main, "mw_cmi_plugin_list"));
 
-	show_hide_widget(GTK_WIDGET(heraia_get_widget(main_window->xmls->main, "plugin_list_window")), FALSE);
+	record_and_hide_dialog_box(GTK_WIDGET(heraia_get_widget(main_window->xmls->main, "plugin_list_window")), main_window->win_prop->plugin_list);
 	gtk_check_menu_item_set_active(cmi, FALSE);
 }
 
@@ -81,7 +81,6 @@ static void plw_refresh_clicked(GtkWidget *widget, gpointer data)
 	init_plugin_name_tv(main_window);
 	kill_text_from_textview(textview);	
 }
-
 
 
 /**
@@ -102,10 +101,15 @@ static void mw_cmi_plw_toggle(GtkWidget *widget, gpointer data)
 					pos = 100;
 					gtk_paned_set_position(paned, pos);
 				}
+			move_and_show_dialog_box(heraia_get_widget(main_window->xmls->main, "plugin_list_window"), main_window->win_prop->plugin_list);
 		}
+	else
+	    {
+			record_and_hide_dialog_box(GTK_WIDGET(heraia_get_widget(main_window->xmls->main, "plugin_list_window")), main_window->win_prop->plugin_list);
+	    }
 
-	show_hide_widget(GTK_WIDGET(heraia_get_widget(main_window->xmls->main, "plugin_list_window")), 
-					 gtk_check_menu_item_get_active(cmi));
+	/* show_hide_widget(GTK_WIDGET(heraia_get_widget(main_window->xmls->main, "plugin_list_window")), 
+					 gtk_check_menu_item_get_active(cmi));*/
 }
 
 

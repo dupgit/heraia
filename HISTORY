@@ -1,3 +1,18 @@
+16 August 2008
+    I forgot ot write here for a while !
+    I recently added a roadmap file in order to know where to go. This is
+    because Isabelle Hurbain (a friend of mine) told me that I have to 
+    release early and often. Before that I was considering each svn version 
+    as a "release" itself.
+    Now one can contribute freely for the next release.
+
+    Thanks to Sebastien Tricaud there is also a new branche that creates 
+    python bindings and a libheraia ibrary which anyone could use in their
+    projects (I don't know who will use this, no one is even using the main
+    program !!). Anyway this is long term interest. I hope Sebastien will
+    take care of that branche and thus it might merge with the "official"
+    one soon.
+
 08 January 2007
 	The heraia program has now a new plugin interface. It has been proved
 	that this interface is fully functionnal. It lacks already a number
@@ -44,11 +59,10 @@
 		- using the product and saying your opinion about it,
 		  the features you may want to see added, ...
 
-
 14 May 2005
 	Héraia is not meant to be an hexadecimal document creator thus it is
 	not possible to call heraia from the command line with a file that does
-        not exists or that has a length of 0 byte.
+    not exists or that has a length of 0 byte.
 
 29 January 2005
 	Project creation
@@ -56,5 +70,5 @@
 	http://www.educnet.education.fr/musagora/manuel/sequence4/tradHeraia.htm
 	(french)
 	This is my first project in gtk+ so there might be surprising things for
-        one used to it. Please report anything that seems strange to you. 
+    one used to it. Please report anything that seems strange to you. 
         

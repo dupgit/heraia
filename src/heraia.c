@@ -26,7 +26,8 @@
 
 static gboolean version(void);
 static gboolean usage(int status);
-static heraia_window_t *init_window_position_struct(heraia_window_t *main_window);
+static window_prop *init_window_properties(gint x, gint y, gboolean displayed);
+static heraia_window_t *init_window_property_struct(heraia_window_t *main_window);
 static heraia_window_t *heraia_init_main_struct(void);
 static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window);
 static GList *init_heraia_location_list(void);
@@ -67,40 +68,57 @@ static gboolean usage(int status)
 		}
 }
 
-/** 
- *  Inits the window position structure
- *
+
+/**
+ *  Inits the properties of a window with defined values
  */
-static heraia_window_t *init_window_position_struct(heraia_window_t *main_window)
+static window_prop *init_window_properties(gint x, gint y, gboolean displayed)
+{
+	window_prop *window_p; 
+	
+	/* Malloc the window properties struct */
+	window_p = (window_prop *) g_malloc0(sizeof(window_prop));
+	
+	/* Sets the default values */
+	window_p->x = x;              
+	window_p->y = y;
+	window_p->displayed = displayed;
+	
+	return window_p;
+}
+
+ 
+/** 
+ *  Inits the window property structure
+ */
+static heraia_window_t *init_window_property_struct(heraia_window_t *main_window)
 {
 	all_window_prop *win_prop = NULL;
 	window_prop *about_box = NULL;
 	window_prop *data_interpretor = NULL;
 	window_prop *log_box = NULL;
+	window_prop *main_dialog = NULL;
+	window_prop *plugin_list = NULL;
+	window_prop *ldt = NULL;
 
-	/* global struct */
+	/* Global struct */
 	win_prop = (all_window_prop *) g_malloc0(sizeof(all_window_prop));
 	
-	/* malloc dialog's structs */
-	about_box = (window_prop *) g_malloc0(sizeof(window_prop));
-	data_interpretor = (window_prop *) g_malloc0(sizeof(window_prop));
-	log_box = (window_prop *) g_malloc0(sizeof(window_prop));
-	
-	/* initial states for the dialog boxes */
-	about_box->x = 0;
-	about_box->y = 0;
-	about_box->displayed = FALSE;
-	data_interpretor->x = 0;
-	data_interpretor->y = 0;
-	data_interpretor->displayed = FALSE;
-	log_box->x = 0;
-	log_box->y = 0;
-	log_box->displayed = FALSE;
-	
-	/* attach to the struct */
+	/* Initial states for the dialog boxes (default values) */
+	about_box = init_window_properties(0, 0, FALSE);
+	data_interpretor = init_window_properties(0, 0, H_DI_DISPLAYED);
+	log_box = init_window_properties(0, 0, FALSE);
+    main_dialog = init_window_properties(0, 0, TRUE);
+	plugin_list = init_window_properties(0, 0, FALSE);
+	ldt = init_window_properties(0, 0, FALSE);
+
+	/* Attach to the struct */
 	win_prop->about_box = about_box;
 	win_prop->data_interpretor = data_interpretor;
 	win_prop->log_box = log_box;
+	win_prop->main_dialog = main_dialog;
+	win_prop->plugin_list = plugin_list;
+	win_prop->ldt = ldt;
 	
 	/* attach it to the main struct so that it can be read everywhere */
 	main_window->win_prop = win_prop;
@@ -121,6 +139,8 @@ static heraia_window_t *heraia_init_main_struct(void)
 	
 	if (!herwin)
 		{
+			fprintf(stderr, "Main structure could not be initialiazed !");
+			fprintf(stderr, "Do you have a memory problem ?\n");
 			return NULL;
 		}
 
@@ -147,11 +167,11 @@ static heraia_window_t *heraia_init_main_struct(void)
 	herwin->current_DW = (data_window_t *) g_malloc0 (sizeof(data_window_t));
 	herwin->current_DW->current_hexwidget = NULL;
 	herwin->current_DW->diw = NULL;
-	herwin->current_DW->window_displayed = FALSE;
+	/* herwin->current_DW->window_displayed = FALSE; */
 	herwin->current_DW->tab_displayed = 0;  /* the first tab */
 
-	/* init window position structure */
-	herwin = init_window_position_struct(herwin);
+	/* init window property structure */
+	herwin = init_window_property_struct(herwin);
 	
 	return herwin;
 }

@@ -27,11 +27,11 @@
 #define HERAIA_AUTHORS "Olivier Delhomme"
 #define HERAIA_DATE "20 02 2005"
 #define HERAIA_LICENSE "GPL"
-#define HERAIA_VERSION "0.0.2 (00.00.2000)"
+#define HERAIA_VERSION "0.0.3 (00.00.2008)"
 
 typedef struct
 {
-	char *filename;    /* The filename to open */
+	char *filename;    /* The filename to open                      */
 	char usage;        /* To know if we displayed the usage message */
 } Options;
 

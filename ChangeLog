@@ -1,3 +1,29 @@
+16.08.2008
+	- Olivier Delhomme <heraia@delhomme.org>
+	* Added a preference window in heraia.glade
+    * Enhanced roadmap
+    * Added heraia.desktop file that describes the heraia gnome menu entry 
+      and modified Makefile.am and configure.ac accordingly (inspired from
+      the glade project)
+    * changed "img" directory name to "pixmaps" and added hicolor 
+      subdirectories
+    * Added some new pixmaps (16x16, 32x32, 48x48, 64x64, 128x128) 
+      unfortunally the original logo is not in a scalable format.
+
+12.08.2008
+	- Olivier Delhomme <heraia@delhomme.org>
+    * Added a preference menu (still not activated)
+    * Commented out some exit() commands when logging errors, fatals or
+      recursion
+    * Changed things a bit in the about box in order that heraia could
+      compile even if gtk's version is < 2.12
+
+11.08.2008
+	- Olivier Delhomme <heraia@delhomme.org>
+	* Now plugin_list, main_window and list data types properties are
+      saved.
+    * Got rid of an old display variable in the data_window_t struct.
+
 08.08.2008 [0.0.2 release]
 	- Olivier Delhomme <heraia@delhomme.org>
 	* Changed roadmap numbers to allow more subversion (private joke)
