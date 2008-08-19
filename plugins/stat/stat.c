@@ -50,7 +50,8 @@ static void do_pixbuf_2D_from_histo2D(stat_t *extra, guint max_2D);
  */
 heraia_plugin_t *heraia_plugin_init(heraia_plugin_t *plugin)
 {
-	stat_t *extra;
+	stat_t *extra = NULL;
+	window_prop *stat_prop = NULL;
 
 	plugin->state             = PLUGIN_STATE_INITIALIZING;
 	plugin->xml = NULL;
@@ -79,6 +80,14 @@ heraia_plugin_t *heraia_plugin_init(heraia_plugin_t *plugin)
 	extra->infos_1D = (histo_infos_t *) g_malloc0 (sizeof(histo_infos_t));
 	extra->infos_2D = (histo_infos_t *) g_malloc0 (sizeof(histo_infos_t));
 
+	/* window properties */
+	stat_prop = (window_prop *) g_malloc0(sizeof(window_prop));
+	stat_prop->displayed = FALSE; /* by default, it might be anything else */
+	stat_prop->x = 0;
+	stat_prop->y = 0;
+	
+	plugin->win_prop = stat_prop;
+	
 	plugin->extra = extra;
 	
 
@@ -103,12 +112,23 @@ void init(heraia_window_t *main_struct)
 			/* load the xml interface */
 			log_message(main_struct, G_LOG_LEVEL_INFO, "Plugin from %s found !", plugin->info->author);
 			if (load_plugin_glade_xml(main_struct, plugin) == TRUE)
+			{
 				log_message(main_struct, G_LOG_LEVEL_INFO, "%s xml interface loaded.", plugin->info->name);
+			}
 			else
+			{
 				log_message(main_struct, G_LOG_LEVEL_WARNING, "Unable to load %s xml interface.", plugin->info->name);
+			}
 			
-			/* hide the interface */
-			gtk_widget_hide(GTK_WIDGET(glade_xml_get_widget(plugin->xml, "stat_window")));
+			/* shows or hide the interface (hides it at first as all windows shows up) */
+			if (plugin->win_prop->displayed == FALSE)
+			{
+				gtk_widget_hide(GTK_WIDGET(glade_xml_get_widget(plugin->xml, "stat_window")));
+			}
+			else
+			{
+				gtk_check_menu_item_set_active(plugin->cmi_entry, TRUE);
+			}
 
 			/* connect some signals handlers */
 			stat_window_connect_signals(plugin);
@@ -139,7 +159,7 @@ void run(GtkWidget *widget, gpointer data)
 	if (plugin != NULL)
 		{
 			show_hide_widget(GTK_WIDGET(glade_xml_get_widget(plugin->xml, "stat_window")),
-							 gtk_check_menu_item_get_active(plugin->cmi_entry));
+							 gtk_check_menu_item_get_active(plugin->cmi_entry), plugin->win_prop);
 			if (gtk_check_menu_item_get_active(plugin->cmi_entry) == TRUE)
 				{
 					plugin->state = PLUGIN_STATE_RUNNING;
@@ -198,7 +218,7 @@ static void statw_close_clicked(GtkWidget *widget, gpointer data)
 
 	if (plugin != NULL)
 		{
-			show_hide_widget(GTK_WIDGET(glade_xml_get_widget(plugin->xml, "stat_window")), FALSE);
+			show_hide_widget(GTK_WIDGET(glade_xml_get_widget(plugin->xml, "stat_window")), FALSE, plugin->win_prop);
 			gtk_check_menu_item_set_active(plugin->cmi_entry, FALSE);
 		}
 }

@@ -9,21 +9,26 @@ Heraia's version roadmap
 . 0.0.4
    * save as function
    * add curent edited file name in the main window name
+   * rename window_prop and all_window_prop with and "_t" at the end of the
+     name
 
 . 0.0.5
-   * add a user preference file
+   * add a user preferences file
    * add the cursor position somewhere, somehow (a new property zone
      may be welcomed)
 
 . 0.0.6
    * save window properties to the user config file
+   * add plugins preferences files
 
 . 0.0.7
    * load window properties from user config file
+   * save plugins preferences to the config file
 
 . 0.0.8
    * add a preference window where the user may be able to reset 
      window properties
+   * load plugins preferences from the config file (when initialiazing plugins)
      
 - 0.1.0
    * save and save as functions

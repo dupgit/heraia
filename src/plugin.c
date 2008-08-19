@@ -301,12 +301,30 @@ gboolean load_plugin_glade_xml(heraia_window_t *main_window, heraia_plugin_t *pl
 /**
  *  To help plugins to deal with widgets, shows or hide a specific widget
  */
-void show_hide_widget(GtkWidget *widget, gboolean show)
+void show_hide_widget(GtkWidget *widget, gboolean show, window_prop *win_prop)
 {
-	if (show)
-		gtk_widget_show(widget);
+	if (win_prop != NULL)
+	{
+		if (show)
+		{
+			move_and_show_dialog_box(widget, win_prop);
+		}
+		else
+		{
+			record_and_hide_dialog_box(widget, win_prop);
+		}
+	}
 	else
-		gtk_widget_hide(widget);
+	{
+		if (show)
+		{
+			gtk_widget_show(widget);
+		}
+		else
+		{
+			gtk_widget_hide(widget);
+		}
+	}
 }
 
 

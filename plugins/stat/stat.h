@@ -46,6 +46,9 @@ typedef struct
 } histo_infos_t;
 
 
+/**
+ *  This is the stat structure
+ */
 typedef struct 
 {
 	guint64 histo1D[256];        /* The values for the 1D histogram                 */
@@ -53,7 +56,7 @@ typedef struct
 	histo_infos_t *infos_1D;     /* stores mathematical datas on the histogram (1D) */
 	histo_infos_t *infos_2D;     /* stores mathematical datas on the histogram (2D) */
 	GdkPixbuf *pixbuf_1D;        /* Pixbuf to be displayed (1D)                     */
-	GdkPixbuf *pixbuf_2D;        /* Pixbuf to be displayed (2D)                     */ 
+	GdkPixbuf *pixbuf_2D;        /* Pixbuf to be displayed (2D)                     */
 } stat_t;
 
 /* the plugin interface functions */

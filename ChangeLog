@@ -1,3 +1,10 @@
+19.08.2008 [release 0.0.3]
+	- Olivier Delhomme <heraia@delhomme.org>
+    * Changed the show_hide_widget function in plugin.c to allow this function
+      to use the added window_prop struc in the plugin_t struct. This allow a
+      plugin to manage it's window properties (that are x,y position and if
+      displayed or not)
+
 16.08.2008
 	- Olivier Delhomme <heraia@delhomme.org>
 	* Added a preference window in heraia.glade
