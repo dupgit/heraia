@@ -50,6 +50,15 @@ HERAIA_ERROR heraia_hex_document_new(heraia_window_t *main_window, char *filenam
 
 
 /**
+ * Retrieves the filename of a document which ever it is !
+ */
+gchar *heraia_hex_document_get_filename(Heraia_Document *doc)
+{
+	return doc->file_name;
+}
+
+
+/**
  * Saves an open and edited document
  */
 HERAIA_ERROR heraia_hex_document_save(heraia_window_t *main_window)
@@ -71,6 +80,51 @@ HERAIA_ERROR heraia_hex_document_save(heraia_window_t *main_window)
 	   }
 }
 
+/**
+ * Saves an open and edited document to a new file
+ */
+HERAIA_ERROR heraia_hex_document_save_as(heraia_window_t *main_window, gchar *filename)
+{
+	gint return_value = FALSE;
+	FILE *fp = NULL;
+	gint i = 0;
+	gchar *path_end = NULL;
+	
+	if (main_window->current_doc != NULL && filename != NULL)
+	   {
+			fp = fopen(filename, "w");
+			if (fp != NULL)
+			{
+				return_value = hex_document_write_to_file(main_window->current_doc, fp);
+				fclose(fp);
+				 if (main_window->current_doc->file_name)
+				 {
+					 g_free(main_window->current_doc->file_name);
+				 }
+				main_window->current_doc->file_name = filename;
+				
+				/* path_end stuff from ghex-window.c from ghex project !!! */
+				for(i = strlen(main_window->current_doc->file_name);
+                        (i >= 0) && (main_window->current_doc->file_name[i] != '/');
+                        i--);
+				if (main_window->current_doc->file_name[i] == '/')
+                path_end = &main_window->current_doc->file_name[i+1];
+				else
+               path_end = main_window->current_doc->file_name;
+            
+				main_window->current_doc->path_end = g_filename_to_utf8(path_end, -1, NULL, NULL, NULL);
+			}
+		}
+	
+	if (return_value != FALSE)
+	   {
+				return HERAIA_NOERR;
+		}
+	 else
+	   {	
+				return HERAIA_FILE_ERROR;
+	   }
+}
 
 /**
  *  Deals with the endianness of 'len' bytes located in 'result'

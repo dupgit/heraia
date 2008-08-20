@@ -1,3 +1,9 @@
+20.08.2008
+	- Olivier Delhomme <heraia@delhomme.org>
+	* Commented out a bunch of things in the init_heraia_interface in 
+      heraia_ui.c file. Code coverage tests in that part
+    * begining work leading to the next release
+
 19.08.2008 [release 0.0.3]
 	- Olivier Delhomme <heraia@delhomme.org>
     * Changed the show_hide_widget function in plugin.c to allow this function

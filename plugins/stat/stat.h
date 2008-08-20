@@ -4,7 +4,7 @@
   an heraia plugin to calculate some stats on the opened file
   done as an example
  
-  (C) Copyright 2007 Olivier Delhomme
+  (C) Copyright 2007 - 2008 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  

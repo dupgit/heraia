@@ -42,7 +42,10 @@ extern gboolean delete_main_window_event(GtkWidget *widget, GdkEvent *event, gpo
 extern gboolean delete_dt_window_event(GtkWidget *widget, GdkEvent *event, gpointer data);
 extern void destroy_dt_window(GtkWidget *widget, GdkEvent  *event, gpointer data);
 
+/* file selection */
 extern gboolean select_file_to_load(heraia_window_t *main_window);
+extern gchar *select_a_file_to_save(GtkWidget *parent);
+
 extern void init_heraia_interface(heraia_window_t *main_window);
 extern int load_heraia_ui(heraia_window_t *main_window);
 extern void refresh_event_handler(GtkWidget *widget, gpointer data);

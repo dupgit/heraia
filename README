@@ -19,3 +19,18 @@ If you downloaded the sources from the svn repository the
 file heraia.csv does not mean anything (as it is not generated
 for every commit - but only for distribution packages upon new
 versions).
+
+
+Code coverage and profiling tests do the following :
+ ./configure --enable-gcov --enable-gprof --enable-debug
+ make
+ ./src/heraia src/heraia
+
+Then do whatever you want and :
+
+ cd src
+ lcov -c -o coverage.info --directory=./
+ genhtml coverage.info
+
+open index.html generated file with your favorite web browser, and you're done. 
+
