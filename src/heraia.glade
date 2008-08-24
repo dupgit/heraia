@@ -1,6 +1,7 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
+<!--Generated with glade3 3.4.5 on Sun Aug 24 17:52:11 2008 -->
 <glade-interface>
-  <requires-version lib="gtk+" version="2.12"/>
   <widget class="GtkWindow" id="main_preferences_window">
     <property name="title" translatable="yes">Main Preferences</property>
     <child>
@@ -22,7 +23,6 @@
           <widget class="GtkNotebook" id="mp_first_notebook">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="show_tabs">False</property>
             <child>
               <placeholder/>
             </child>
@@ -32,8 +32,8 @@
                 <property name="label" translatable="yes">page 1</property>
               </widget>
               <packing>
-                <property name="tab_fill">False</property>
                 <property name="type">tab</property>
+                <property name="tab_fill">False</property>
               </packing>
             </child>
             <child>
@@ -45,9 +45,9 @@
                 <property name="label" translatable="yes">page 2</property>
               </widget>
               <packing>
+                <property name="type">tab</property>
                 <property name="position">1</property>
                 <property name="tab_fill">False</property>
-                <property name="type">tab</property>
               </packing>
             </child>
             <child>
@@ -59,9 +59,9 @@
                 <property name="label" translatable="yes">page 3</property>
               </widget>
               <packing>
+                <property name="type">tab</property>
                 <property name="position">2</property>
                 <property name="tab_fill">False</property>
-                <property name="type">tab</property>
               </packing>
             </child>
           </widget>
@@ -859,8 +859,8 @@
                     <property name="label" translatable="yes">Numbers</property>
                   </widget>
                   <packing>
-                    <property name="tab_fill">False</property>
                     <property name="type">tab</property>
+                    <property name="tab_fill">False</property>
                   </packing>
                 </child>
                 <child>
@@ -1038,9 +1038,9 @@
                     <property name="label" translatable="yes">Dates and times</property>
                   </widget>
                   <packing>
+                    <property name="type">tab</property>
                     <property name="position">1</property>
                     <property name="tab_fill">False</property>
-                    <property name="type">tab</property>
                   </packing>
                 </child>
                 <child>
@@ -1164,9 +1164,9 @@
                     <property name="label" translatable="yes">Binary based</property>
                   </widget>
                   <packing>
+                    <property name="type">tab</property>
                     <property name="position">2</property>
                     <property name="tab_fill">False</property>
-                    <property name="type">tab</property>
                   </packing>
                 </child>
                 <child>
@@ -1264,9 +1264,9 @@
                     <property name="label" translatable="yes">User defined</property>
                   </widget>
                   <packing>
+                    <property name="type">tab</property>
                     <property name="position">3</property>
                     <property name="tab_fill">False</property>
-                    <property name="type">tab</property>
                   </packing>
                 </child>
               </widget>
@@ -1661,7 +1661,7 @@ POSSIBILITY OF SUCH DAMAGES.
 
 		     END OF TERMS AND CONDITIONS</property>
     <property name="authors">(C) 2005 - 2008 Olivier Delhomme 
-(C) 2005 - 2008 S&#xE9;bastien Tricaud</property>
+(C) 2005 - 2008 Sébastien Tricaud</property>
     <property name="documenters"></property>
     <property name="translator_credits" translatable="yes" comments="TRANSLATORS: Replace this string with your names, one name per line.">translator-credits</property>
     <property name="artists">(C) 2005 - 2007 Gregory Audet</property>
@@ -1669,7 +1669,8 @@ POSSIBILITY OF SUCH DAMAGES.
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox1">
         <child internal-child="action_area">
-          <widget class="GtkHButtonBox" id="dialog-action_area1"/>
+          <widget class="GtkHButtonBox" id="dialog-action_area1">
+          </widget>
           <packing>
             <property name="expand">False</property>
             <property name="pack_type">GTK_PACK_END</property>
@@ -1872,7 +1873,7 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="label" translatable="yes">Data _Interpretor</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_DIMenu_activate"/>
-                        <accelerator key="I" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="I" modifiers="GDK_CONTROL_MASK" signal="activate"/>
                       </widget>
                     </child>
                     <child>
@@ -1889,7 +1890,7 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">_Log</property>
                         <property name="use_underline">True</property>
-                        <accelerator key="L" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="L" modifiers="GDK_CONTROL_MASK" signal="activate"/>
                       </widget>
                     </child>
                   </widget>
@@ -1912,7 +1913,7 @@ POSSIBILITY OF SUCH DAMAGES.
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkSeparatorMenuItem" id="s&#xE9;parateur1">
+                      <widget class="GtkSeparatorMenuItem" id="séparateur1">
                         <property name="visible">True</property>
                       </widget>
                     </child>

@@ -30,5 +30,6 @@
 #define HERAIA_NO_PLUGINS 2
 #define HERAIA_FILE_ERROR 3  /* We may use errno to have more accurate file
                                 errors */
+#define HERAIA_CANCELLED 4   /* an operation has been cancelled */
 
 #endif /* _HERAIA_ERRORS_H_ */

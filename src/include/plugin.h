@@ -141,7 +141,7 @@ typedef struct
 
 	GtkCheckMenuItem *cmi_entry; /* The CheckMenuItem that may be created in the héraia interface */
 	GladeXML *xml;               /* Eventually the plugin Glade XML interface */
-	window_prop *win_prop;       /* Stores the window's properties            */
+	window_prop_t *win_prop;       /* Stores the window's properties            */
 
 } heraia_plugin_t;
 
@@ -157,7 +157,7 @@ extern void load_plugins(heraia_window_t *main_window);
 extern void add_entry_to_plugins_menu(heraia_window_t *main_window, heraia_plugin_t *plugin);
 extern heraia_plugin_t *find_plugin_by_name(GList *plugins_list, gchar *name);
 extern gboolean load_plugin_glade_xml(heraia_window_t *main_window, heraia_plugin_t *plugin);
-extern void show_hide_widget(GtkWidget *widget, gboolean show, window_prop *win_prop);
+extern void show_hide_widget(GtkWidget *widget, gboolean show, window_prop_t *win_prop);
 extern void refresh_all_plugins(heraia_window_t *main_window);
 
 #endif /* _HERAIA_PLUGIN_H_ */

@@ -1,4 +1,9 @@
-Heraia's version roadmap
+Heraia's version roadmap. 
+
+I consider a minor release as a cumulative number of micro releases. So the
+functions I need for 0.1.0 will be done in 0.0.x micro releases. I expect
+functions to be tested for a micro release and more tested for a minor release,
+I let you imagine what I expect before I do a major release !!!
 
 . 0.0.2 [08.08.2008]
    * save function
@@ -6,7 +11,7 @@ Heraia's version roadmap
 . 0.0.3 [19.08.2008]
    * record window properties
 
-. 0.0.4
+. 0.0.4 [24.08.2008]
    * save as function
    * add curent edited file name in the main window name
    * rename window_prop and all_window_prop with and "_t" at the end of the
@@ -20,6 +25,7 @@ Heraia's version roadmap
 . 0.0.6
    * save window properties to the user config file
    * add plugins preferences files
+   * translate all french function names in the code into english ones
 
 . 0.0.7
    * load window properties from user config file
@@ -29,6 +35,10 @@ Heraia's version roadmap
    * add a preference window where the user may be able to reset 
      window properties
    * load plugins preferences from the config file (when initialiazing plugins)
+
+. 0.0.9
+   * get rid of the filename structure in the heraia_window_t (it does 
+     duplicates the one contained in the hexdocument structure)
      
 - 0.1.0
    * save and save as functions
@@ -36,6 +46,11 @@ Heraia's version roadmap
    * add somewhere, the cursor's position and file length
 
 . 0.1.1
+   * rename main_window variable and heraia_window_t structure in 
+     main_struct variable and heraia_struct_t structure which
+	 will be less confusing.
+
+. 0.1.2
    * have the selection positions added near the cursor's position
 
 . 0.1.5
@@ -46,6 +61,8 @@ Heraia's version roadmap
      program execution
 
 - 0.2.0
+   * rename tha main_window_t structure in main_struct_t structure which
+	 will be less confusing.
    * rewrite the data_type creation in order to allow a script, or an extern 
      program execution
    * ability to open more than one file at a time

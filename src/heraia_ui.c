@@ -73,7 +73,7 @@ void a_propos_activate(GtkWidget *widget, gpointer data)
 /** 
  *  Move the dialog box to the wanted position, shows it and says it in the displayed prop
  */
-window_prop *move_and_show_dialog_box(GtkWidget *dialog_box, window_prop *dialog_prop)
+window_prop_t *move_and_show_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_prop)
 {
 	if (dialog_prop->displayed == FALSE)
 	{
@@ -90,7 +90,7 @@ window_prop *move_and_show_dialog_box(GtkWidget *dialog_box, window_prop *dialog
 /**
  *  Record position and hide a dialog box
  */
-window_prop *record_and_hide_dialog_box(GtkWidget *dialog_box, window_prop *dialog_prop)
+window_prop_t *record_and_hide_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_prop)
 {
 	gint x = 0;
 	gint y = 0;
@@ -255,7 +255,7 @@ void on_save_activate( GtkWidget *widget,  gpointer data )
 }
 
 /**
- *  This handle the save_as menu entry
+ *  This handle the save_as menu entry (here the filename changes)
  */
 void on_save_as_activate( GtkWidget *widget, gpointer data )
 {
@@ -265,16 +265,35 @@ void on_save_as_activate( GtkWidget *widget, gpointer data )
 
 	if (main_window != NULL)
 	{
-		filename = select_a_file_to_save(heraia_get_widget(main_window->xmls->main, "main_window"));
-		erreur = heraia_hex_document_save_as(main_window, filename);
+		filename = select_a_file_to_save(main_window);
+		
+		if (filename != NULL)
+		{
+			erreur = heraia_hex_document_save_as(main_window, filename);
+		}
+		else
+		{
+			erreur = HERAIA_CANCELLED;
+		}
+		
+		if (erreur != HERAIA_NOERR)
+		{
+			if (erreur == HERAIA_CANCELLED)
+			{
+				log_message(main_window, G_LOG_LEVEL_DEBUG, "Saving file as... : operation cancelled.");
+			}
+			else
+			{
+				log_message(main_window, G_LOG_LEVEL_ERROR, "Error while saving file as %s", main_window->current_doc->file_name);
+			}
+		}
+		else
+		{
+			/* updating the window name */
+			update_main_window_name(main_window);
+			log_message(main_window, G_LOG_LEVEL_DEBUG, "File %s saved and now edited.", main_window->current_doc->file_name);
+		}
 	}
-	
-	if (erreur != HERAIA_NOERR)
-	{
-		log_message(main_window, G_LOG_LEVEL_ERROR, "Error while saving file !");
-	}
-	
-	log_message(main_window, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
 }
 
 /**
@@ -423,10 +442,10 @@ static void set_the_working_directory(GtkFileChooser *file_chooser, gchar *filen
  */
 gboolean select_file_to_load(heraia_window_t *main_window)
 {
-	GtkWidget *parent = NULL; /* A parent window (we use main_window)                         */
+	GtkWidget *parent = NULL; /* A parent window (we use main_window)      */
 	GtkFileChooser *file_chooser = NULL;
 	gboolean success = FALSE;
-	gchar *filename = NULL;   /* filename selected (if any) to be openned                     */
+	gchar *filename = NULL;   /* filename selected (if any) to be openned  */
 	
 	parent = heraia_get_widget(main_window->xmls->main, "main_window");
 	
@@ -459,7 +478,7 @@ gboolean select_file_to_load(heraia_window_t *main_window)
 			filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(file_chooser));
 			log_message(main_window, G_LOG_LEVEL_DEBUG, "filename selected : %s", filename);
 			
-			/* this should be managed with lists */		
+			/* this should be managed with lists and not here !! */		
 			if (main_window->filename != NULL)
 		       {
 					g_free(main_window->filename);
@@ -484,11 +503,14 @@ gboolean select_file_to_load(heraia_window_t *main_window)
  *  This function opens a dialog box that allow one to choose a 
  *  file name to the file which is about to be saved
  */
-gchar *select_a_file_to_save(GtkWidget *parent)
+gchar *select_a_file_to_save(heraia_window_t *main_window)
 {
+	GtkWidget *parent = NULL;     /* A parent window (we use main_window) */
 	GtkFileChooser *fcd = NULL;
 	gchar *filename = NULL; 
 
+	parent = heraia_get_widget(main_window->xmls->main, "main_window");
+	
 	/* Selection a name to the file to save */
 	fcd = GTK_FILE_CHOOSER(gtk_file_chooser_dialog_new("Save As...",
 													   GTK_WINDOW(parent),
@@ -496,12 +518,18 @@ gchar *select_a_file_to_save(GtkWidget *parent)
 													   GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 													   GTK_STOCK_SAVE, GTK_RESPONSE_OK, 
 													   NULL));
- 
+
 	/* window properties : modal, without multi-selection and with confirmation */
 	gtk_window_set_modal(GTK_WINDOW(fcd), TRUE);
 	gtk_file_chooser_set_select_multiple(fcd, FALSE);
 	gtk_file_chooser_set_do_overwrite_confirmation(fcd, TRUE);
 
+	/* we do want to have the file's directory where to save the new file */
+	if (main_window->filename != NULL)
+	   {
+			set_the_working_directory(fcd, main_window->filename);
+	   }
+	
 	switch(gtk_dialog_run(GTK_DIALOG(fcd)))
 		{
 		case GTK_RESPONSE_OK:
@@ -519,7 +547,22 @@ gchar *select_a_file_to_save(GtkWidget *parent)
 }
 
 
-
+/**
+ *  Update main window heraia's name to reflect the current edited file
+ */
+void update_main_window_name(heraia_window_t *main_window)
+{
+	GtkWidget *widget = NULL;
+	gchar *filename;
+	
+	if (main_window != NULL && main_window->current_doc != NULL)
+	   {
+			widget = heraia_get_widget(main_window->xmls->main, "main_window");
+		    filename = g_filename_display_basename(main_window->current_doc->file_name);
+		   
+			gtk_window_set_title(GTK_WINDOW(widget), filename);
+	   }
+}
 
 /**
  *  Here we might init some call backs and menu options
@@ -533,7 +576,12 @@ void init_heraia_interface(heraia_window_t *main_window)
 	GtkWidget *diw = NULL;     /* data interpretor window    */
 	GtkWidget *menu = NULL;    /* the DIMenu diplay option   */
 	GtkWidget *window = NULL;  /* the main window widget     */ 
-	all_window_prop *win_prop; /* window properties (all)    */
+	all_window_prop_t *win_prop; /* window properties (all)    */
+	
+/**
+ *  I can not record why I wrote this code. But it is very clear that
+ *  nowdays it will never be used and is totally useless !!
+ */	
 	
 	if (main_window != NULL)
 	{
@@ -542,15 +590,17 @@ void init_heraia_interface(heraia_window_t *main_window)
 		menu = heraia_get_widget(main_window->xmls->main, "DIMenu");
 		window = heraia_get_widget(main_window->xmls->main, "main_window");
 		win_prop = main_window->win_prop;
-			
-		if (dw != NULL && diw != NULL) /* Something's wrong here ! */
-		{
+	
+		
+		/* if (dw != NULL && diw != NULL) *//* Something's wrong here ! */
+		/* {  */
 			/*  Connection of the signal to the right function
 			 *  in order to interpret things when the cursor is
 			 *  moving                                          
 			 */
+		     /*
 			 connect_cursor_moved_signal(main_window);
-			
+			 */
 			/* gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menu), win_prop->data_interpretor->displayed);  */   
 			
 			/* Shows all widgets */
@@ -566,8 +616,8 @@ void init_heraia_interface(heraia_window_t *main_window)
 		      {
 			     record_and_hide_dialog_box(diw, win_prop->main_dialog);
 		      }
-		*/
-		}
+		 
+		}*/
 	}
 }
 

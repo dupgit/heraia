@@ -204,7 +204,7 @@ void log_message(heraia_window_t *main_window, GLogLevelFlags log_level, const c
 void show_hide_log_window(heraia_window_t *main_window, gboolean show, GtkCheckMenuItem *cmi)
 {
 	GtkWidget *log_dialog = NULL;
-	window_prop *log_box_prop = main_window->win_prop->log_box;
+	window_prop_t *log_box_prop = main_window->win_prop->log_box;
 	
 	log_dialog = heraia_get_widget(main_window->xmls->main, "log_window");
 	

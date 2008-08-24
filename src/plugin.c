@@ -301,7 +301,7 @@ gboolean load_plugin_glade_xml(heraia_window_t *main_window, heraia_plugin_t *pl
 /**
  *  To help plugins to deal with widgets, shows or hide a specific widget
  */
-void show_hide_widget(GtkWidget *widget, gboolean show, window_prop *win_prop)
+void show_hide_widget(GtkWidget *widget, gboolean show, window_prop_t *win_prop)
 {
 	if (win_prop != NULL)
 	{

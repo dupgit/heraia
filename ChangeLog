@@ -1,3 +1,14 @@
+24.08.2008 [release 0.0.4]
+	- Olivier Delhomme <heraia@delhomme.org>
+	* Roadmap changes, added a task and an explanation on how I see heraia's
+      releases.
+	* Readme appended
+    * heraia.desktop : more precise description of heraia's job
+    * corrected bugs in on_save_as_activate function.
+    * added a function to display file's name (without the complete path)
+    * Changed the window_prop and all_window_prop structures to window_prop_t
+      and all_window_prop_t structures to reflect naming scheme in heraia.
+
 20.08.2008
 	- Olivier Delhomme <heraia@delhomme.org>
 	* Commented out a bunch of things in the init_heraia_interface in 
@@ -37,7 +48,7 @@
       saved.
     * Got rid of an old display variable in the data_window_t struct.
 
-08.08.2008 [0.0.2 release]
+08.08.2008 [release 0.0.2]
 	- Olivier Delhomme <heraia@delhomme.org>
 	* Changed roadmap numbers to allow more subversion (private joke)
     * Changed window position structure to window properties structure.
@@ -82,9 +93,9 @@
  	* now --version option does not show any graphic part
   	* Changed version to 0.0.2 wich will be the next release
   	* autoclean now deletes gmon.out file also
-        * got rid of a "-trigraph" compilation warning 
+    * got rid of a "-trigraph" compilation warning 
 
-01.07.2008
+01.07.2008 [release 0.0.1]
 	- Olivier Delhomme <heraia@delhomme.org>
 	* version 0.0.1 released
 

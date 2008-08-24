@@ -159,20 +159,20 @@ typedef struct
 	gint x;
 	gint y;
 	gboolean displayed;
-} window_prop;
+} window_prop_t;
 
 /**
  *  Structure to keep window properties for each window
  */
 typedef struct
 {
-	window_prop *about_box;
-	window_prop *data_interpretor;  /* data interpretor window  */
-	window_prop *log_box;
-	window_prop *main_dialog;
-	window_prop *plugin_list;       /* plugin description window */
-	window_prop *ldt;               /* list data types window    */
-} all_window_prop; 
+	window_prop_t *about_box;
+	window_prop_t *data_interpretor;  /* data interpretor window  */
+	window_prop_t *log_box;
+	window_prop_t *main_dialog;
+	window_prop_t *plugin_list;       /* plugin description window */
+	window_prop_t *ldt;               /* list data types window    */
+} all_window_prop_t; 
 
 /**
  *  This is the main structure (mainly named main_window due to historycal reasons)
@@ -191,7 +191,7 @@ typedef struct
 	data_type_t *current_data_type; /* data type that is being edited                                            */
 	GList *available_treatment_list;/* Available treatments that can be used by the user in the data type window */
 	RefreshType event;              /* Tells what is happening                                                   */
-	all_window_prop *win_prop;        /* Keeps window properties                                                   */
+	all_window_prop_t *win_prop;        /* Keeps window properties                                                   */
 } heraia_window_t;
 
 

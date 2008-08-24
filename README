@@ -1,14 +1,15 @@
-Compiling the program (the easy way)
+Compiling the program if you have the svn sources (the easy way)
 
  ./autoclean.sh
  ./autogen.sh
  ./configure
  make
 
-Optional :
+Optional (system installation) :
  sudo make install
 
-Now you can run the program : 
+Now you can run the program (filename is a file of your own choice, for
+instance src/heraia :) :
  src/heraia filename
 
 If you have installed it : 
@@ -20,7 +21,7 @@ file heraia.csv does not mean anything (as it is not generated
 for every commit - but only for distribution packages upon new
 versions).
 
-
+*****
 Code coverage and profiling tests do the following :
  ./configure --enable-gcov --enable-gprof --enable-debug
  make
@@ -34,3 +35,9 @@ Then do whatever you want and :
 
 open index.html generated file with your favorite web browser, and you're done. 
 
+*****
+For a release do not forget to :
+
+ - change configure.ac version number
+ - heraia.h version number and date
+ - generate the doxygen documentation

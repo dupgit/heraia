@@ -66,6 +66,9 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 					main_window->filename = g_strdup_printf("%s", filename);
 				}
 		
+			/* updating the window name */
+		    update_main_window_name(main_window);
+			
 			log_message(main_window, G_LOG_LEVEL_DEBUG, "file %s loaded !", main_window->filename);
 				
 		} 
@@ -81,7 +84,7 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 				}
 			success = FALSE;
 		}
-
+	
 	g_free(stat_buf);
 
 	return success;

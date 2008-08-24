@@ -51,7 +51,7 @@ static void do_pixbuf_2D_from_histo2D(stat_t *extra, guint max_2D);
 heraia_plugin_t *heraia_plugin_init(heraia_plugin_t *plugin)
 {
 	stat_t *extra = NULL;
-	window_prop *stat_prop = NULL;
+	window_prop_t *stat_prop = NULL;
 
 	plugin->state             = PLUGIN_STATE_INITIALIZING;
 	plugin->xml = NULL;
@@ -81,7 +81,7 @@ heraia_plugin_t *heraia_plugin_init(heraia_plugin_t *plugin)
 	extra->infos_2D = (histo_infos_t *) g_malloc0 (sizeof(histo_infos_t));
 
 	/* window properties */
-	stat_prop = (window_prop *) g_malloc0(sizeof(window_prop));
+	stat_prop = (window_prop_t *) g_malloc0(sizeof(window_prop_t));
 	stat_prop->displayed = FALSE; /* by default, it might be anything else */
 	stat_prop->x = 0;
 	stat_prop->y = 0;

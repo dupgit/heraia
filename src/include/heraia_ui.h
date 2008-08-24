@@ -44,16 +44,17 @@ extern void destroy_dt_window(GtkWidget *widget, GdkEvent  *event, gpointer data
 
 /* file selection */
 extern gboolean select_file_to_load(heraia_window_t *main_window);
-extern gchar *select_a_file_to_save(GtkWidget *parent);
+extern gchar *select_a_file_to_save(heraia_window_t *main_window);
 
+/* initialisation process */
 extern void init_heraia_interface(heraia_window_t *main_window);
 extern int load_heraia_ui(heraia_window_t *main_window);
 extern void refresh_event_handler(GtkWidget *widget, gpointer data);
 extern void connect_cursor_moved_signal(heraia_window_t *main_window);
 
 /* window positionning system */
-extern window_prop *move_and_show_dialog_box(GtkWidget *dialog_box, window_prop *dialog_pos);
-extern window_prop *record_and_hide_dialog_box(GtkWidget *dialog_box, window_prop *dialog_pos);
+extern window_prop_t *move_and_show_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_pos);
+extern window_prop_t *record_and_hide_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_pos);
 
 /* libglade wrapper */
 GtkWidget *heraia_get_widget(GladeXML *xml, gchar *widget_name);
@@ -71,5 +72,6 @@ extern gboolean is_cmi_checked(GtkWidget *check_menu_item);
 
 /* Widget */
 extern void destroy_a_single_widget(GtkWidget *widget);
+extern void update_main_window_name(heraia_window_t *main_window);
 
 #endif /* _HERAIA_UI_H_ */

@@ -26,7 +26,7 @@
 
 static gboolean version(void);
 static gboolean usage(int status);
-static window_prop *init_window_properties(gint x, gint y, gboolean displayed);
+static window_prop_t *init_window_properties(gint x, gint y, gboolean displayed);
 static heraia_window_t *init_window_property_struct(heraia_window_t *main_window);
 static heraia_window_t *heraia_init_main_struct(void);
 static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window);
@@ -72,12 +72,12 @@ static gboolean usage(int status)
 /**
  *  Inits the properties of a window with defined values
  */
-static window_prop *init_window_properties(gint x, gint y, gboolean displayed)
+static window_prop_t *init_window_properties(gint x, gint y, gboolean displayed)
 {
-	window_prop *window_p; 
+	window_prop_t *window_p; 
 	
 	/* Malloc the window properties struct */
-	window_p = (window_prop *) g_malloc0(sizeof(window_prop));
+	window_p = (window_prop_t *) g_malloc0(sizeof(window_prop_t));
 	
 	/* Sets the default values */
 	window_p->x = x;              
@@ -93,16 +93,16 @@ static window_prop *init_window_properties(gint x, gint y, gboolean displayed)
  */
 static heraia_window_t *init_window_property_struct(heraia_window_t *main_window)
 {
-	all_window_prop *win_prop = NULL;
-	window_prop *about_box = NULL;
-	window_prop *data_interpretor = NULL;
-	window_prop *log_box = NULL;
-	window_prop *main_dialog = NULL;
-	window_prop *plugin_list = NULL;
-	window_prop *ldt = NULL;
+	all_window_prop_t *win_prop = NULL;
+	window_prop_t *about_box = NULL;
+	window_prop_t *data_interpretor = NULL;
+	window_prop_t *log_box = NULL;
+	window_prop_t *main_dialog = NULL;
+	window_prop_t *plugin_list = NULL;
+	window_prop_t *ldt = NULL;
 
 	/* Global struct */
-	win_prop = (all_window_prop *) g_malloc0(sizeof(all_window_prop));
+	win_prop = (all_window_prop_t *) g_malloc0(sizeof(all_window_prop_t));
 	
 	/* Initial states for the dialog boxes (default values) */
 	about_box = init_window_properties(0, 0, FALSE);
