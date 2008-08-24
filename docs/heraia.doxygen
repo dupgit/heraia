@@ -5,8 +5,8 @@
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = Heraia
-PROJECT_NUMBER         = 0.0.1
-OUTPUT_DIRECTORY       = C:/msys/1.0/home/0659562/patchs/trunk/docs/doxygen
+PROJECT_NUMBER         = 0.0.4
+OUTPUT_DIRECTORY       = /media/disk/projets/Fichiers/Heraia/heraia/website/0.0.4/
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
 BRIEF_MEMBER_DESC      = YES
@@ -25,7 +25,7 @@ ABBREVIATE_BRIEF       = "The $name class " \
 ALWAYS_DETAILED_SEC    = NO
 INLINE_INHERITED_MEMB  = NO
 FULL_PATH_NAMES        = YES
-STRIP_FROM_PATH        = "C:/Documents and Settings/DELHOMME/ "
+STRIP_FROM_PATH        = "/media/disk/projets/Fichiers/Heraia"
 STRIP_FROM_INC_PATH    = 
 SHORT_NAMES            = NO
 JAVADOC_AUTOBRIEF      = NO
@@ -87,7 +87,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = C:/msys/1.0/home/0659562/patchs/trunk
+INPUT                  = /media/disk/projets/Fichiers/Heraia/heraia/trunk
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.c \
                          *.cc \
@@ -170,7 +170,7 @@ TREEVIEW_WIDTH         = 250
 #---------------------------------------------------------------------------
 # configuration options related to the LaTeX output
 #---------------------------------------------------------------------------
-GENERATE_LATEX         = YES
+GENERATE_LATEX         = NO
 LATEX_OUTPUT           = latex
 LATEX_CMD_NAME         = latex
 MAKEINDEX_CMD_NAME     = makeindex

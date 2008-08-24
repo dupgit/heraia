@@ -8,6 +8,7 @@
     * added a function to display file's name (without the complete path)
     * Changed the window_prop and all_window_prop structures to window_prop_t
       and all_window_prop_t structures to reflect naming scheme in heraia.
+	* generated documentation files with doxygen (update heraia.doxygen file)
 
 20.08.2008
 	- Olivier Delhomme <heraia@delhomme.org>
