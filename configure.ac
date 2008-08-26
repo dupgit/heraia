@@ -12,7 +12,7 @@ SRCDIR="${TOP_SRCDIR}/src"
 AC_SUBST(TOP_SRCDIR)
 AC_SUBST(SRCDIR)
 
-dnl Put the preprocessor macros in a header file instead of command line 
+dnl Put the preprocessor macros in a header file instead of command line
 AC_CONFIG_HEADER([config.h])
 
 dnl Libraries requirements
@@ -172,7 +172,7 @@ dnl **************************************************
 dnl *******************************
 dnl debug option
 dnl *******************************
-dnl At this early stage debugging IS activated 
+dnl At this early stage debugging IS activated
 dnl by default
 AC_ARG_ENABLE([debug],
      [  --enable-debug    Turn on debugging],
@@ -238,9 +238,10 @@ AC_SUBST(GTK2_CFLAGS)
 AC_SUBST(GTK2_LIBS)
 
 AC_CONFIG_FILES([
-Makefile 
-src/Makefile 
-plugins/Makefile 
+Makefile
+src/Makefile
+libheraia/Makefile
+plugins/Makefile
 plugins/stat/Makefile
 pixmaps/Makefile
 pixmaps/hicolor/Makefile
@@ -259,7 +260,7 @@ AC_OUTPUT
 
 echo
 echo "*** Dumping configuration ***"
-echo 
+echo
 echo "    - Build For OS             : $build_os"
 echo "    - Compiler                 : ${CC}"
 echo "    - Options                  :"
