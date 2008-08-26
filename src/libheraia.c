@@ -23,11 +23,16 @@
 
 #include <stdio.h>
 
-#include <libheraia.h>
-#include "../src/include/heraia_types.h"
+#include "libheraia.h"
+#include "heraia_types.h"
 
-int foo(void)
+int library_test(void)
 {
-	printf("bar\n");
+	heraia_window_t *main_struct = NULL;
+	
+	
+	main_struct = get_main_struct();
+	fprintf(stdout, "main_struct : %p\n", main_struct);
+	
 	return 0;
 }

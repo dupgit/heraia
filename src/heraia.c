@@ -23,7 +23,6 @@
  */
 
 #include <libheraia.h>
-
 #include "heraia_types.h"
 
 static gboolean version(void);
@@ -34,6 +33,19 @@ static heraia_window_t *heraia_init_main_struct(void);
 static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window);
 static GList *init_heraia_location_list(void);
 static gboolean manage_command_line_options(Options *opt, int argc, char **argv);
+
+static heraia_window_t *libheraia_main_struct = NULL;  /* this is a global variable that points to the main structure  */
+													   /* it is intended for the library ONLY ! and should not be used */
+												       /* Anywhere else                                                */
+
+/**
+ * This is intended to be called by the library or any program that will use
+ *  the library in order to get the pointer to the main structure heraia_window_t.
+ */
+heraia_window_t *get_main_struct(void)
+{
+	return libheraia_main_struct;
+}
 
 /**
  *  prints program name, version, author, date and licence
@@ -174,9 +186,14 @@ static heraia_window_t *heraia_init_main_struct(void)
 
 	/* init window property structure */
 	herwin = init_window_property_struct(herwin);
-
+	
+	/* init global variable for the library */
+	libheraia_main_struct = herwin;
+	
 	return herwin;
 }
+
+
 
 /**
  *  Function that initializes the plugin system if any :
@@ -341,7 +358,7 @@ int main (int argc, char ** argv)
 			if (main_window->debug == TRUE)
 				{
 					fprintf(stderr, "Beginning things\n");
-					foo();
+					library_test(); /* testing libheraia */
 				}
 
 			/* init of gtk and new window */

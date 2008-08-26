@@ -1,3 +1,16 @@
+26.08.2008
+    - Sébastien Tricaud <toady@gscore.org>
+    * Added libheraia skeleton
+
+	- Olivier Delhomme <heraia@delhomme.org>
+    * I was not happy with the skeleton so I tried to put that directly in the
+      src tree. I'm getting nervous with thoses things but it seems that I have
+      somethings that works.
+   
+25.08.2008
+	- Olivier Delhomme <heraia@delhomme.org>
+	* Testing new window designs
+
 24.08.2008 [release 0.0.4]
 	- Olivier Delhomme <heraia@delhomme.org>
 	* Roadmap changes, added a task and an explanation on how I see heraia's

@@ -240,7 +240,6 @@ AC_SUBST(GTK2_LIBS)
 AC_CONFIG_FILES([
 Makefile
 src/Makefile
-libheraia/Makefile
 plugins/Makefile
 plugins/stat/Makefile
 pixmaps/Makefile

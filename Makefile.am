@@ -1,4 +1,4 @@
-SUBDIRS = libheraia src plugins pixmaps
+SUBDIRS = src plugins pixmaps
 
 gnomemenufiles =		\
 	heraia.desktop

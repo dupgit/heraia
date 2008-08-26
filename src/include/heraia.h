@@ -42,5 +42,6 @@ static struct option const long_options[] =
 	{NULL, 0, NULL, 0} 
 };
 
+extern heraia_window_t *get_main_struct(void);
 
 #endif /* _HERAIA_H_ */

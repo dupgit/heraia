@@ -1,7 +1,7 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
-  libheraia.c
-  Heraia's library
+  libheraia.h
+  Heraia's library header
  
   (C) Copyright 2008 Sébastien Tricaud, Olivier Delhomme
   e-mail : heraia@delhomme.org
@@ -21,13 +21,9 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
 
-#include <stdio.h>
+#ifndef _LIBHERAIA_H_
+#define _LIBHERAIA_H_
 
-#include <libheraia.h>
-#include "../src/include/heraia_types.h"
+extern int library_test(void);
 
-int foo(void)
-{
-	printf("bar\n");
-	return 0;
-}
+#endif /* _LIBHERAIA_H_ */
