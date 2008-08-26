@@ -2,24 +2,26 @@
 /*
   data_interpretor.c
   heraia - an hexadecimal file editor and analyser based on ghex
- 
+
   (C) Copyright 2005 - 2007 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
- 
+
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
-  the Free Software Foundation; either version 2, or  (at your option) 
+  the Free Software Foundation; either version 2, or  (at your option)
   any later version.
- 
+
   This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY;  without even the implied warranty of
   MERCHANTABILITY  or  FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
+
+#include <libheraia.h>
 
 #include "heraia_types.h"
 
@@ -41,7 +43,7 @@ static guint which_endianness(heraia_window_t *main_window)
 
 	activated = gtk_radio_button_get_active_from_widget(rb);
 	widget_name = gtk_widget_get_name(activated);
-  
+
 	if (g_ascii_strcasecmp(widget_name, "diw_rb_little_endian") == 0)
 		{
 			return H_DI_LITTLE_ENDIAN;
@@ -54,7 +56,7 @@ static guint which_endianness(heraia_window_t *main_window)
 		{
 			return H_DI_MIDDLE_ENDIAN;
 		}
-	else 
+	else
 		return H_DI_LITTLE_ENDIAN;  /* default interpretation case */
 }
 
@@ -69,23 +71,23 @@ static guint which_endianness(heraia_window_t *main_window)
  *    . guint endianness : the endianness to be applied to the datas
  */
 static void interpret_as_date(heraia_window_t *main_window, DecodeDateFunc decode_it, gchar *widget_name, guint length, guint endianness)
-{	
+{
 	gint result = 0;       /* used to test different results of function calls */
 	guchar *c = NULL;      /* the character under the cursor                   */
 	gchar *text = NULL;
 	data_window_t *data_window = main_window->current_DW;
 	GtkWidget *entry = heraia_get_widget(main_window->xmls->main, widget_name);
 	date_and_time_t *mydate = NULL; /* date resulting of interpretation       */
-	
+
 	c = (guchar *) g_malloc0 (sizeof(guchar) * length);
 	mydate = (date_and_time_t *) g_malloc0 (sizeof(date_and_time_t));
 
 	result = ghex_get_data(data_window, length, endianness, c);
-	
+
 	if (result == TRUE)
 		{
 			text = decode_it(c, mydate);
- 
+
 			if (text != NULL)
 				{
 					gtk_entry_set_text(GTK_ENTRY(entry), text);
@@ -94,12 +96,12 @@ static void interpret_as_date(heraia_window_t *main_window, DecodeDateFunc decod
 				{
 					text = g_strdup_printf("Something's wrong!");
 					gtk_entry_set_text(GTK_ENTRY(entry), text);
-				}			
+				}
 		}
 	else
 		{
 			text = g_strdup_printf("Cannot interpret as a %d byte(s) date", length);
-			gtk_entry_set_text(GTK_ENTRY(entry), text);		
+			gtk_entry_set_text(GTK_ENTRY(entry), text);
 		}
 
 	g_free(c);
@@ -113,14 +115,14 @@ static void interpret_as_date(heraia_window_t *main_window, DecodeDateFunc decod
  *    . heraia_window_t *main_window : the main structure
  *    . DecodeFunc decode_it : a function to be called to decode the stream
  *    . gchar *widget_name : the name of the widget where the result may go
- *    . guint length : the length of the data to be decoded 
+ *    . guint length : the length of the data to be decoded
  *    . guint endianness : the endianness to be applied to the datas
  */
 static void interpret_as_number(heraia_window_t *main_window, DecodeFunc decode_it, gchar *widget_name, guint length, guint endianness)
-{	
+{
 	gint result = 0;       /* used to test different results of function calls */
 	guchar *c = NULL;      /* the character under the cursor                   */
-	gchar *text = NULL; 
+	gchar *text = NULL;
 	data_window_t *data_window = main_window->current_DW;   /* We allready know that it's not NULL */
 	GtkWidget *entry = heraia_get_widget(main_window->xmls->main, widget_name);  /* we might test the result as this is user input*/
 
@@ -131,7 +133,7 @@ static void interpret_as_number(heraia_window_t *main_window, DecodeFunc decode_
 	if (result == TRUE)
 		{
 			text = decode_it(c);
- 
+
 			if (text != NULL)
 				{
 					gtk_entry_set_text(GTK_ENTRY(entry), text);
@@ -140,12 +142,12 @@ static void interpret_as_number(heraia_window_t *main_window, DecodeFunc decode_
 				{
 					text = g_strdup_printf("Something's wrong!");
 					gtk_entry_set_text(GTK_ENTRY(entry), text);
-				}			
+				}
 		}
 	else
 		{
 			text = g_strdup_printf("Cannot interpret as a %d byte(s) number", length);
-			gtk_entry_set_text(GTK_ENTRY(entry), text);		
+			gtk_entry_set_text(GTK_ENTRY(entry), text);
 		}
 
 	g_free(c);
@@ -206,26 +208,26 @@ void refresh_data_interpretor_window(GtkWidget *widget, gpointer data)
 static void connect_data_interpretor_signals(heraia_window_t *main_window)
 {
 	/* When data interpretor's window is killed or destroyed */
-	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "data_interpretor_window")), "delete_event", 
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "data_interpretor_window")), "delete_event",
 						  G_CALLBACK(delete_dt_window_event), main_window);
 
-	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "data_interpretor_window")), "destroy", 
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "data_interpretor_window")), "destroy",
 						  G_CALLBACK(destroy_dt_window), main_window);
 
 	/* Menu "close" */
-	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "diw_close_menu")), "activate", 
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "diw_close_menu")), "activate",
 						  G_CALLBACK(close_data_interpretor_window), main_window);
 
 	/* Radio Button "Little Endian" */
-	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "diw_rb_little_endian")), "toggled", 
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "diw_rb_little_endian")), "toggled",
 						  G_CALLBACK(refresh_data_interpretor_window), main_window);
 
 	/* Radio Button "Big Endian" */
-	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "diw_rb_big_endian")), "toggled", 
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "diw_rb_big_endian")), "toggled",
 						  G_CALLBACK(refresh_data_interpretor_window), main_window);
 
 	/* Radio Button "Middle Endian" */
-	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "diw_rb_middle_endian")), "toggled", 
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "diw_rb_middle_endian")), "toggled",
 						  G_CALLBACK(refresh_data_interpretor_window), main_window);
 }
 
@@ -244,7 +246,7 @@ void data_interpretor_init_interface(heraia_window_t *main_window)
 			connect_data_interpretor_signals(main_window);
 
 			dw = main_window->current_DW;
-       
+
 			if (dw != NULL)
 				{
 					/* Says whether the data interpretor window is displayed or not */

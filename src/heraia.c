@@ -2,25 +2,27 @@
 /*
  *  heraia.c
  *  heraia - an hexadecimal file editor and analyser based on ghex
- * 
+ *
  *  (C) Copyright 2005 - 2008 Olivier Delhomme
  *  e-mail : heraia@delhomme.org
  *  URL    : http://heraia.tuxfamily.org
- * 
+ *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2, or  (at your option) 
+ *  the Free Software Foundation; either version 2, or  (at your option)
  *  any later version.
- * 
+ *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY;  without even the implied warranty of
  *  MERCHANTABILITY  or  FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
- * 
+ *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
+
+#include <libheraia.h>
 
 #include "heraia_types.h"
 
@@ -52,7 +54,7 @@ static gboolean usage(int status)
 {
 	if (status == 0)
 		{
-			fprintf (stderr, 
+			fprintf (stderr,
 					 "Try `heraia --help' for more information.\n");
 			return FALSE;
 		}
@@ -74,21 +76,21 @@ static gboolean usage(int status)
  */
 static window_prop_t *init_window_properties(gint x, gint y, gboolean displayed)
 {
-	window_prop_t *window_p; 
-	
+	window_prop_t *window_p;
+
 	/* Malloc the window properties struct */
 	window_p = (window_prop_t *) g_malloc0(sizeof(window_prop_t));
-	
+
 	/* Sets the default values */
-	window_p->x = x;              
+	window_p->x = x;
 	window_p->y = y;
 	window_p->displayed = displayed;
-	
+
 	return window_p;
 }
 
- 
-/** 
+
+/**
  *  Inits the window property structure
  */
 static heraia_window_t *init_window_property_struct(heraia_window_t *main_window)
@@ -103,7 +105,7 @@ static heraia_window_t *init_window_property_struct(heraia_window_t *main_window
 
 	/* Global struct */
 	win_prop = (all_window_prop_t *) g_malloc0(sizeof(all_window_prop_t));
-	
+
 	/* Initial states for the dialog boxes (default values) */
 	about_box = init_window_properties(0, 0, FALSE);
 	data_interpretor = init_window_properties(0, 0, H_DI_DISPLAYED);
@@ -119,10 +121,10 @@ static heraia_window_t *init_window_property_struct(heraia_window_t *main_window
 	win_prop->main_dialog = main_dialog;
 	win_prop->plugin_list = plugin_list;
 	win_prop->ldt = ldt;
-	
+
 	/* attach it to the main struct so that it can be read everywhere */
 	main_window->win_prop = win_prop;
-	
+
 	return main_window;
 }
 
@@ -136,7 +138,7 @@ static heraia_window_t *heraia_init_main_struct(void)
 	xml_t *xmls = NULL;
 
 	herwin = (heraia_window_t *) g_malloc0(sizeof(heraia_window_t));
-	
+
 	if (!herwin)
 		{
 			fprintf(stderr, "Main structure could not be initialiazed !");
@@ -150,9 +152,9 @@ static heraia_window_t *heraia_init_main_struct(void)
 	 */
 	herwin->debug = ENABLE_DEBUG;
 	herwin->filename = NULL;
-	
+
 	herwin->current_doc = NULL;
-	herwin->plugins_list = NULL; 
+	herwin->plugins_list = NULL;
 	herwin->location_list = init_heraia_location_list(); /* location list initilization */
 	herwin->data_type_list = NULL;
 	herwin->current_data_type = NULL;
@@ -172,7 +174,7 @@ static heraia_window_t *heraia_init_main_struct(void)
 
 	/* init window property structure */
 	herwin = init_window_property_struct(herwin);
-	
+
 	return herwin;
 }
 
@@ -218,7 +220,7 @@ static GList *init_heraia_location_list(void)
 	/* heraia's binary path */
 	path = g_strdup_printf("%s", g_get_current_dir());
 	location_list = g_list_prepend(location_list, path);
-	
+
 	/* System data dirs */
 	system_data_dirs = g_get_system_data_dirs();
 	i = 0;
@@ -269,12 +271,12 @@ static gboolean manage_command_line_options(Options *opt, int argc, char ** argv
 				{
 				case 0:			/* long options handler */
 					break;
-	  
+
 				case 'v':
 					exit_value = version();
 					opt->usage = TRUE;  /* We do not want to continue after */
 					break;
-	 
+
 				case 'h':
 					exit_value = usage(1);
 					opt->usage = TRUE;
@@ -313,17 +315,17 @@ static gboolean manage_command_line_options(Options *opt, int argc, char ** argv
  *   --version
  *   --help
  */
-int main (int argc, char ** argv) 
-{  
+int main (int argc, char ** argv)
+{
 	Options *opt; /* A structure to manage the command line options  */
 	gboolean exit_value = TRUE;
 	heraia_window_t *main_window = NULL;
 
 	opt = (Options *) g_malloc0(sizeof(Options));
 
-	opt->filename = NULL;  /* At first we do not have any filename */	
+	opt->filename = NULL;  /* At first we do not have any filename */
 	opt->usage = FALSE;
-	
+
 	main_window = heraia_init_main_struct();
 
 	if (main_window->debug == TRUE)
@@ -333,38 +335,39 @@ int main (int argc, char ** argv)
 
 	/* Command line options evaluation */
 	exit_value = manage_command_line_options(opt, argc, argv);
-	
+
 	if (opt->usage != TRUE)
 		{
 			if (main_window->debug == TRUE)
 				{
 					fprintf(stderr, "Beginning things\n");
+					foo();
 				}
-		
+
 			/* init of gtk and new window */
 			exit_value = gtk_init_check(&argc, &argv);
-			
+
 			if (load_heraia_ui(main_window) == TRUE)
-				{	
-			  
+				{
+
 					log_message(main_window, G_LOG_LEVEL_INFO, "Main interface loaded (%s)", main_window->xmls->main->filename);
-										
+
 					init_heraia_plugin_system(main_window);
 
 					if (opt->filename != NULL)
 						{
 							load_file_to_analyse(main_window, opt->filename);
 						}
-	 
-						
+
+
 					log_message(main_window, G_LOG_LEVEL_DEBUG, "Main_window : %p", main_window);
-					
+
 					init_heraia_interface(main_window);
-					
+
 					/* gtk main loop */
 					gtk_main();
-					
-					exit_value = TRUE;				
+
+					exit_value = TRUE;
 				}
 			else
 				{

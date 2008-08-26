@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "libheraia.h"
+#include <libheraia.h>
 
 int foo(void)
 {

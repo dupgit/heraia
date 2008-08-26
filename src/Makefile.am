@@ -9,7 +9,7 @@ DEFS = -I$(SRCDIR) -I$(top_builddir)/libheraia/include -I$(SRCDIR)/include		\
 
 bin_PROGRAMS = heraia
 heraia_LDFLAGS = $(LDFLAGS)
-heraia_LDADD = $(GTKHEX_LIBS) $(LIBGLADE_LIBS) $(GMODULES_LIBS) $(GLIB2_LIBS) $(GTK2_LIBS) -L$(top_builddir)/libheraia/libheraia.la
+heraia_LDADD = $(GTKHEX_LIBS) $(LIBGLADE_LIBS) $(GMODULES_LIBS) $(GLIB2_LIBS) $(GTK2_LIBS) -L$(top_builddir)/libheraia/ -lheraia
 
 heraia_SOURCES = 					\
 	heraia.c						\
