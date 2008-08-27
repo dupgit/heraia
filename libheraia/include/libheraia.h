@@ -24,6 +24,8 @@
 #ifndef _LIBHERAIA_H_
 #define _LIBHERAIA_H_
 
+#include "decode.h"
+
 int library_test(void);
 
 #endif /* _LIBHERAIA_H_ */

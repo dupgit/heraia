@@ -2,24 +2,24 @@
 /*
   decode.c
   heraia - an hexadecimal file editor and analyser based on ghex
- 
+
   (C) Copyright 2005 - 2007 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
- 
+
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
-  the Free Software Foundation; either version 2, or  (at your option) 
+  the Free Software Foundation; either version 2, or  (at your option)
   any later version.
- 
+
   This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY;  without even the implied warranty of
   MERCHANTABILITY  or  FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
+  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
 #include "heraia_types.h"
@@ -96,8 +96,8 @@ static void which_month_day(date_and_time_t *mydate, guint32 day, gboolean bi)
 	if (bi == TRUE)
 		{
 			if (day <= 366)
-				{		 
-					guint tab_ns_months[12] = { 31, 60, 91, 121, 152, 182, 
+				{
+					guint tab_ns_months[12] = { 31, 60, 91, 121, 152, 182,
 														 213, 244, 274, 305, 335, 366 } ;
 					calc_which_month_day(mydate, day, tab_ns_months);
 				}
@@ -111,7 +111,7 @@ static void which_month_day(date_and_time_t *mydate, guint32 day, gboolean bi)
 		{
 			if (day <= 365)
 				{
-					guint tab_ns_months[12] = { 31, 59, 90, 120, 151, 181, 
+					guint tab_ns_months[12] = { 31, 59, 90, 120, 151, 181,
 														 212, 243, 273, 304, 334, 365 };
 					calc_which_month_day(mydate, day, tab_ns_months);
 				}
@@ -128,9 +128,9 @@ static void which_month_day(date_and_time_t *mydate, guint32 day, gboolean bi)
  *  eg 15/02/base_year --> 31 + 15 = 46
  */
 static guint32 remove_days_from_first_january(guint32 base_year, guint8 base_month, guint8 base_day)
-{ 
+{
 	guint tab_ns_months[11];
-  
+
 	if (base_day > 0 && base_day < 32)
 		{
 			base_day -= 1;
@@ -201,12 +201,12 @@ static void which_year_month_day (date_and_time_t *mydate, guint32 days, guint32
 	guint32 modulus = 0;
 	guint32 reste = 0;
 	guint32 nbdays = 0;
-	
+
 	days -= remove_days_from_first_january(base_year, base_month, base_day);
 
 	if (days > 146100)
 		{
-			modulus = days / 146100;	
+			modulus = days / 146100;
 			mydate->year = modulus * 400;
 			reste = modulus * 3;     /* To add centuries in the 400 years modulus */
 			days = days % 146100;
@@ -225,14 +225,14 @@ static void which_year_month_day (date_and_time_t *mydate, guint32 days, guint32
 
 	while (reste > nbdays)
 		{
-			reste -= nbdays; 
+			reste -= nbdays;
 			mydate->year += 1;
 			if (bissextile_year(mydate->year))
 				nbdays = 366;
 			else
 				nbdays = 365;
 		}
- 
+
 	which_month_day(mydate, reste, bissextile_year(mydate->year));
 }
 
@@ -255,12 +255,12 @@ static gchar *date_printf(date_and_time_t *mydate)
  *  and convert it as if it is a dos date. If it is not, the result
  *  may be funny !
  *  data : 4 guchars
- *  returns a gchar* that may be freed when no longer needed 
+ *  returns a gchar* that may be freed when no longer needed
 */
 gchar *decode_dos_date(guchar *data, date_and_time_t *mydate)
 {
 
-	if (data == NULL) 
+	if (data == NULL)
 		{
 			return NULL;
 		}
@@ -293,7 +293,7 @@ static void make_date_and_time(date_and_time_t *mydate, guchar *data, guint8 len
 {
 	guint64 total = 0;
 	guint32 days = 0;
-  
+
 	memcpy(&total, data, len * sizeof (guchar));
 
 	total = (total / nbticks);         /* 1 seconds represents nbticks */
@@ -312,7 +312,7 @@ static void make_date_and_time(date_and_time_t *mydate, guchar *data, guint8 len
  *  and convert it as if it is a filetime date. If it is not, the result
  *  may be funny ! Counting 100th of nanoseconds from 01/01/1601
  *  data : 8 guchars
- *  returns a gchar* that may be freed when no longer needed 
+ *  returns a gchar* that may be freed when no longer needed
 */
 gchar *decode_filetime_date(guchar *data, date_and_time_t *mydate)
 {
@@ -330,13 +330,13 @@ gchar *decode_filetime_date(guchar *data, date_and_time_t *mydate)
 
 /**
  *  general purpose of this function is to take a 4 byte data stream
- *  and convert it as if it is a C date. If it is not, the result may 
+ *  and convert it as if it is a C date. If it is not, the result may
  *  be funny ! Counting seconds from 01/01/1970
  *  data : 4 guchars
- *  returns a gchar* that may be freed when no longer needed 
+ *  returns a gchar* that may be freed when no longer needed
 */
 gchar *decode_C_date(guchar *data, date_and_time_t *mydate)
-{ 
+{
 	if (data == NULL)
 		{
 			return NULL;
@@ -350,10 +350,10 @@ gchar *decode_C_date(guchar *data, date_and_time_t *mydate)
 
 /**
  *  general purpose of this function is to take a 4 byte data stream
- *  and convert it as if it is a HFS date. If it is not, the result may 
+ *  and convert it as if it is a HFS date. If it is not, the result may
  *  be funny ! Counting seconds 01/01/1904
  *  data : 4 guchars
- *  returns a gchar* that may be freed when no longer needed 
+ *  returns a gchar* that may be freed when no longer needed
 */
 gchar *decode_HFS_date(guchar *data, date_and_time_t *mydate)
 {
@@ -384,20 +384,20 @@ gchar *decode_to_bits(guchar *data)
 	else
 		{
 			return g_strdup_printf("%1u%1u%1u%1u%1u%1u%1u%1u",
-										  (data[0] & 0x80) > 0 ? 1 : 0, 
+										  (data[0] & 0x80) > 0 ? 1 : 0,
 										  (data[0] & 0x40) > 0 ? 1 : 0,
-										  (data[0] & 0x20) > 0 ? 1 : 0, 
+										  (data[0] & 0x20) > 0 ? 1 : 0,
 										  (data[0] & 0x10) > 0 ? 1 : 0,
-										  (data[0] & 0x08) > 0 ? 1 : 0, 
+										  (data[0] & 0x08) > 0 ? 1 : 0,
 										  (data[0] & 0x04) > 0 ? 1 : 0,
-										  (data[0] & 0x02) > 0 ? 1 : 0, 
+										  (data[0] & 0x02) > 0 ? 1 : 0,
 										  (data[0] & 0x01));
 		}
 }
 
 
 /**
- *  transcribes the bcd number "part" into a 
+ *  transcribes the bcd number "part" into a
  *  gchar * human readable string
  *  Coding style is from ETSI GSM 04.08 ETS 300557 p387
  *  TODO : give choice of coding style (eg for numbers >=10)
@@ -463,7 +463,7 @@ static void transform_bcd_to_human(gchar *bcd, guint8 part, guint8 part_number)
 
 /**
  *  Decode one byte as a Packed BCD (Binary Coded Decimal)
- *  and return a gchar* that me be freed when no longer 
+ *  and return a gchar* that me be freed when no longer
  *  needed
  */
 gchar *decode_packed_BCD(guchar *data)
@@ -492,7 +492,7 @@ gchar *decode_packed_BCD(guchar *data)
  *  general purpose of this function is to take a 1 byte data stream
  *  and convert it as if it is an 8 bits signed number
  *  data : 1 guchar
- *  returns a gchar* that may be freed when no longer needed 
+ *  returns a gchar* that may be freed when no longer needed
  */
 gchar *decode_8bits_signed(guchar *data)
 {
@@ -509,28 +509,11 @@ gchar *decode_8bits_signed(guchar *data)
 		}
 }
 
-
-/**
- *  general purpose of this function is to take a 1 byte data stream
- *  and convert it as if it is an 8 bits unsigned number
- *  data : 1 guchar
- *  returns a gchar* that may be freed when no longer needed
-*/
+/*
 gchar *decode_8bits_unsigned(guchar *data)
-{
-	guint8 total = 0;
 
-	if (data == NULL)
-		{
-			return NULL;
-		}
-	else
-		{
-			memcpy(&total, data, sizeof (guchar));
-			return g_strdup_printf("%u", total);
-		}
-}
-
+This function moved into libheraia
+*/
 
 /**
  *  general purpose of this function is to take a 2 byte data stream

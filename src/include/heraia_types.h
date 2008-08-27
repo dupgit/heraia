@@ -2,24 +2,24 @@
 /*
   types.h
   types.h - all data types and pieces of common declarations
- 
+
   (C) Copyright 2006 - 2008 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
- 
+
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
-  the Free Software Foundation; either version 2, or  (at your option) 
+  the Free Software Foundation; either version 2, or  (at your option)
   any later version.
- 
+
   This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY;  without even the implied warranty of
   MERCHANTABILITY  or  FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
+  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
 #ifndef _HERAIA_TYPES_H_
@@ -27,12 +27,12 @@
 
 /* I have some problems under windows if #ifdef statement is activated */
 
-/* #ifdef HAVE_CONFIG_H */ 
+/* #ifdef HAVE_CONFIG_H */
 #include "config.h"
 /* #endif */  /* HAVE_CONFIG_H */
 
 
-/** 
+/**
  *  As there seems to be huge differences between the linux
  *  and the windows developpement platform such as that
  *  the included paths are correctly taken into account
@@ -41,21 +41,19 @@
  *  even if it's ugly, this is supposed to solve the problem.
  */
 
-#include <getopt.h>
-#include <glib.h>
-#include <glib/gprintf.h>
-#include <glib/gstdio.h>
-#include <gmodule.h>
-#include <gtk/gtk.h>
-#include <gtkhex/gtkhex.h>
-#include <glade/glade.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <getopt.h>
+
+#include <glade/glade.h>
+#include <gmodule.h>
+
+#include <gtkhex/gtkhex.h>
 
 
 typedef HexDocument Heraia_Document;
@@ -89,7 +87,7 @@ typedef struct
 typedef GList *(* TreatmentDoFunc) (GList *);     /* Treatment function called while operating the treatment */
 typedef void (* TreatmentInitFunc) (gpointer);    /* Treatment init function                                 */
 typedef void (* TreatmentDelFunc) (gpointer);     /* Treatment delete function                               */
-typedef gpointer (*TreatmentCopyFunc) (gpointer); /* Treatment copy function that have to copy internal 
+typedef gpointer (*TreatmentCopyFunc) (gpointer); /* Treatment copy function that have to copy internal
 													 structures (widgets and all stuff in it)                */
 /**
  *  Treatment structure
@@ -132,14 +130,14 @@ typedef struct
 {
 	gchar *name;             /* Name of the data type                                                       */
 	guint size;              /* size of the data type  (here we may limit size entry, eg <= 16 for example) */
-	GList *treatment_c_list; /* Treatments containers to be applied (in the list order) to the data 
+	GList *treatment_c_list; /* Treatments containers to be applied (in the list order) to the data
 								(treatment_container_t *)                                                   */
 	GtkWidget *di_label;     /* label for the data_interpretor window                                       */
 	GtkWidget *di_entry;     /* entry for the data interpretor window                                       */
 } data_type_t;
 
 /**
- *  Structure that contains all the xml definitions loaded at 
+ *  Structure that contains all the xml definitions loaded at
  *  running time using libglade
  */
 typedef struct
@@ -150,7 +148,7 @@ typedef struct
 
 
 /**
- * Window properties 
+ * Window properties
  *  . position (x,y) record window's position
  *  . displayed (boolean) say whether the window is displayed or not
  */
@@ -172,7 +170,7 @@ typedef struct
 	window_prop_t *main_dialog;
 	window_prop_t *plugin_list;       /* plugin description window */
 	window_prop_t *ldt;               /* list data types window    */
-} all_window_prop_t; 
+} all_window_prop_t;
 
 /**
  *  This is the main structure (mainly named main_window due to historycal reasons)
@@ -201,7 +199,7 @@ typedef struct
 	guint32 year;
 	guint32 month;
 	guint32 day;
-	
+
 	guint32 hour;
 	guint32 minutes;
 	guint32 seconds;
