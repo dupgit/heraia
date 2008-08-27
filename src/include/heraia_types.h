@@ -50,6 +50,7 @@
 #include <sys/stat.h>
 #include <getopt.h>
 
+#include <glib/gstdio.h>
 #include <glade/glade.h>
 #include <gmodule.h>
 

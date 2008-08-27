@@ -2,6 +2,12 @@
     - Sebastien Tricaud <toady@gscore.org>
     * Pushing back the libheraia skeleton, we need this!
 
+	- Olivier Delhomme <heraia@delhomme.org>
+	* Added licenses at file's begining, added "extern" keyword to 
+      exported functions, copy-paste typo, added a #include directive
+      (glib/gstdio.h) to avoid a warning on g_chdir.
+     
+
 26.08.2008
     - Sébastien Tricaud <toady@gscore.org>
     * Added libheraia skeleton

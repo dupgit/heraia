@@ -26,8 +26,9 @@
 
 #include "decode.h"
 
-int libheraia_test(void);
-void libheraia_initialize(void);
-void libheraia_initialize(void);
+extern int libheraia_test(void);
+
+extern void libheraia_initialize(void);
+extern void libheraia_finalize(void);
 
 #endif /* _LIBHERAIA_H_ */

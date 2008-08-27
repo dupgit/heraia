@@ -39,7 +39,7 @@ static heraia_window_t *libheraia_main_struct = NULL;  /* this is a global varia
 												       /* Anywhere else                                                */
 
 /**
- * This is intended to be called by the library or any program that will use
+ *  This is intended to be called by the library or any program that will use
  *  the library in order to get the pointer to the main structure heraia_window_t.
  */
 heraia_window_t *get_main_struct(void)
