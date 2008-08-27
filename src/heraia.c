@@ -186,10 +186,10 @@ static heraia_window_t *heraia_init_main_struct(void)
 
 	/* init window property structure */
 	herwin = init_window_property_struct(herwin);
-	
+
 	/* init global variable for the library */
 	libheraia_main_struct = herwin;
-	
+
 	return herwin;
 }
 
@@ -345,6 +345,8 @@ int main (int argc, char ** argv)
 
 	main_window = heraia_init_main_struct();
 
+	libheraia_initialize();
+
 	if (main_window->debug == TRUE)
 		{
 			fprintf(stdout, "Main struct initialized !\n");
@@ -358,7 +360,7 @@ int main (int argc, char ** argv)
 			if (main_window->debug == TRUE)
 				{
 					fprintf(stderr, "Beginning things\n");
-					library_test(); /* testing libheraia */
+					libheraia_test(); /* testing libheraia */
 				}
 
 			/* init of gtk and new window */
@@ -391,6 +393,8 @@ int main (int argc, char ** argv)
 					fprintf(stderr, "File heraia.glade not found !\n");
 				}
 		}
+
+	libheraia_finalize();
 
 	return !exit_value; /* Apparently gtk TRUE and FALSE are inverted compared to bash ! */
 }

@@ -22,11 +22,21 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
 
 #include <stdio.h>
-
 #include <libheraia.h>
 
-int library_test(void)
+int libheraia_test(void)
 {
 	printf("Libheraia library test OK\n");
 	return 0;
 }
+
+void libheraia_initialize(void)
+{
+
+}
+
+void libheraia_finalize(void)
+{
+
+}
+
