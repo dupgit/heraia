@@ -1,6 +1,6 @@
 SUBDIRS =
 
-DEFS = -I$(SRCDIR)  -I$(SRCDIR)/include		\
+DEFS = -I$(SRCDIR)  -I$(SRCDIR)/include -I$(top_builddir)/libheraia/include\
 	-DPLUGINS_DIR=\"$(plugins_dir)\"		\
 	-DDATA_DIR=\"$(data_dir)\"				\
 	$(GTKHEX_CFLAGS) $(LIBGLADE_CFLAGS)		\
@@ -9,7 +9,7 @@ DEFS = -I$(SRCDIR)  -I$(SRCDIR)/include		\
 
 bin_PROGRAMS = heraia
 heraia_LDFLAGS = $(LDFLAGS)
-heraia_LDADD = $(GTKHEX_LIBS) $(LIBGLADE_LIBS) $(GMODULES_LIBS) $(GLIB2_LIBS) $(GTK2_LIBS) -lheraia
+heraia_LDADD = $(GTKHEX_LIBS) $(LIBGLADE_LIBS) $(GMODULES_LIBS) $(GLIB2_LIBS) $(GTK2_LIBS) -L$(top_builddir)/libheraia/ -lheraia
 
 heraia_SOURCES = 					\
 	heraia.c						\
@@ -45,16 +45,3 @@ gladedir = $(datadir)/@PACKAGE@
 glade_DATA = $(gladefiles)
 EXTRA_DIST = $(gladefiles)
 
-
-noinst_LTLIBRARIES = libheraia.la
-
-headerfiles = 				\
-		include/libheraia.h
-
-libheraia_la_CPPFLAGS = -I$(SRCDIR)/include
-libheraia_la_LIBADD = $(GTKHEX_LIBS) $(LIBGLADE_LIBS) $(GMODULES_LIBS) $(GLIB2_LIBS) $(GTK2_LIBS)
-include_HEADERS = $(headerfiles)
-
-libheraia_la_SOURCES =  	\
-		libheraia.c 		\
-		$(headerfiles)

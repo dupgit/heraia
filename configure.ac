@@ -239,6 +239,7 @@ AC_SUBST(GTK2_LIBS)
 
 AC_CONFIG_FILES([
 Makefile
+libheraia/Makefile
 src/Makefile
 plugins/Makefile
 plugins/stat/Makefile
