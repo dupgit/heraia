@@ -263,7 +263,7 @@ void on_save_as_activate( GtkWidget *widget, gpointer data )
 	HERAIA_ERROR erreur = HERAIA_NOERR;
 	gchar *filename = NULL;  /* Auto malloc'ed, do not free */
 
-	if (main_window != NULL)
+	if (main_window != NULL && main_window->current_doc != NULL)
 	{
 		filename = select_a_file_to_save(main_window);
 		
