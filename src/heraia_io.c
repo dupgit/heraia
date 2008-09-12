@@ -34,6 +34,7 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 {
 	struct stat *stat_buf = NULL;
 	gboolean success = FALSE;
+	GtkWidget *notebook = NULL;
 
 	g_return_val_if_fail(filename != NULL, FALSE);
 	g_return_val_if_fail(main_window != NULL, FALSE);
@@ -66,11 +67,17 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 					main_window->filename = g_strdup_printf("%s", filename);
 				}
 		
-			/* updating the window name */
+			/* updating the window name and tab's name */
 		    update_main_window_name(main_window);
+			set_notebook_tab_name(main_window);
+			
+			/* Showing all the widgets */
+			notebook = heraia_get_widget(main_window->xmls->main, "file_notebook");
+			gtk_widget_show(notebook);
 			
 			log_message(main_window, G_LOG_LEVEL_DEBUG, "file %s loaded !", main_window->filename);
-				
+			
+			
 		} 
 	else
 		{

@@ -1,3 +1,13 @@
+12.09.2008
+    - Olivier Delhomme <heraia@delhomme.org>
+    * took notebook's tab's names into account (this may be usefull when 
+      we'll have more than one file edited at a time.
+
+11.09.2008
+    - Olivier Delhomme <heraia@delhomme.org>
+    * Corrected a bug that crashed the program when using the saving as
+      menu while no file were opened.
+
 27.08.2008
     - Sebastien Tricaud <toady@gscore.org>
     * Pushing back the libheraia skeleton, we need this!

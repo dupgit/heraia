@@ -97,7 +97,8 @@ HERAIA_ERROR heraia_hex_document_save_as(heraia_window_t *main_window, gchar *fi
 			{
 				return_value = hex_document_write_to_file(main_window->current_doc, fp);
 				fclose(fp);
-				 if (main_window->current_doc->file_name)
+				
+				if (main_window->current_doc->file_name)
 				 {
 					 g_free(main_window->current_doc->file_name);
 				 }

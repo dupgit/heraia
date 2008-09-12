@@ -74,4 +74,8 @@ extern gboolean is_cmi_checked(GtkWidget *check_menu_item);
 extern void destroy_a_single_widget(GtkWidget *widget);
 extern void update_main_window_name(heraia_window_t *main_window);
 
+/* NoteBook */
+extern void set_notebook_tab_name(heraia_window_t *main_window);
+
+
 #endif /* _HERAIA_UI_H_ */

@@ -205,7 +205,9 @@ void refresh_event_handler(GtkWidget *widget, gpointer data)
 	{
 		/* Beware, this mechanism is not thread safe ! */
 		if (main_window->event == HERAIA_REFRESH_NOTHING)
+		{
 			main_window->event = HERAIA_REFRESH_CURSOR_MOVE;
+		}
 		
 		refresh_data_interpretor_window(widget, main_window);
 		refresh_all_plugins(main_window);
@@ -289,8 +291,9 @@ void on_save_as_activate( GtkWidget *widget, gpointer data )
 		}
 		else
 		{
-			/* updating the window name */
+			/* updating the window name and tab's name */
 			update_main_window_name(main_window);
+			set_notebook_tab_name(main_window);
 			log_message(main_window, G_LOG_LEVEL_DEBUG, "File %s saved and now edited.", main_window->current_doc->file_name);
 		}
 	}
@@ -553,7 +556,7 @@ gchar *select_a_file_to_save(heraia_window_t *main_window)
 void update_main_window_name(heraia_window_t *main_window)
 {
 	GtkWidget *widget = NULL;
-	gchar *filename;
+	gchar *filename = NULL;
 	
 	if (main_window != NULL && main_window->current_doc != NULL)
 	   {
@@ -565,6 +568,30 @@ void update_main_window_name(heraia_window_t *main_window)
 }
 
 /**
+ *  Sets notebook's tab's name. This function should only be called
+ *  when a new filename was set (open and save as functions)
+ */
+void set_notebook_tab_name(heraia_window_t *main_window)
+{
+	GtkWidget *notebook = NULL; /* file notebook in main window       */
+	GtkWidget *page = NULL;     /* Current page for the file notebook */
+	GtkWidget *label = NULL;    /* tab's label                        */
+	gchar *filename = NULL;
+	gint current = 0;
+	
+	if (main_window != NULL && main_window->current_doc != NULL)
+	   {
+		   notebook = heraia_get_widget(main_window->xmls->main, "file_notebook");
+		   current = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
+		   page = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), current);
+		   label = gtk_notebook_get_tab_label(GTK_NOTEBOOK(notebook), page);
+		   filename = g_filename_display_basename(main_window->current_doc->file_name);
+		   gtk_label_set_text(GTK_LABEL(label), filename);
+	   }
+}
+
+
+/**
  *  Here we might init some call backs and menu options
  *  and display the interface (main && sub-windows)
  *  This function should be called only once at main program's 
@@ -572,11 +599,12 @@ void update_main_window_name(heraia_window_t *main_window)
  */
 void init_heraia_interface(heraia_window_t *main_window)
 {
-	data_window_t *dw = NULL;  /* data interpretor structure */
-	GtkWidget *diw = NULL;     /* data interpretor window    */
-	GtkWidget *menu = NULL;    /* the DIMenu diplay option   */
-	GtkWidget *window = NULL;  /* the main window widget     */ 
-	all_window_prop_t *win_prop; /* window properties (all)    */
+	data_window_t *dw = NULL;    /* data interpretor structure   */
+	GtkWidget *diw = NULL;       /* data interpretor window      */
+	GtkWidget *menu = NULL;      /* the DIMenu diplay option     */
+	GtkWidget *window = NULL;    /* the main window widget       */ 
+	GtkWidget *notebook = NULL;  /* file notebook in main window */
+	all_window_prop_t *win_prop; /* window properties (all)      */
 	
 /**
  *  I can not record why I wrote this code. But it is very clear that
@@ -591,6 +619,19 @@ void init_heraia_interface(heraia_window_t *main_window)
 		window = heraia_get_widget(main_window->xmls->main, "main_window");
 		win_prop = main_window->win_prop;
 	
+		/* New usefull part of code */
+		notebook = heraia_get_widget(main_window->xmls->main, "file_notebook");
+		gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 1);
+		if (main_window->current_doc != NULL)
+		{
+			gtk_widget_show(notebook);
+		}
+		else
+		{
+			gtk_widget_hide(notebook); 
+		}
+		
+		
 		
 		/* if (dw != NULL && diw != NULL) *//* Something's wrong here ! */
 		/* {  */
