@@ -587,6 +587,7 @@ void set_notebook_tab_name(heraia_window_t *main_window)
 		   label = gtk_notebook_get_tab_label(GTK_NOTEBOOK(notebook), page);
 		   filename = g_filename_display_basename(main_window->current_doc->file_name);
 		   gtk_label_set_text(GTK_LABEL(label), filename);
+		   gtk_widget_set_tooltip_text(label, g_filename_display_name(main_window->current_doc->file_name));
 	   }
 }
 
