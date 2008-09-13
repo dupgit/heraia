@@ -190,7 +190,9 @@ typedef struct
 	data_type_t *current_data_type; /* data type that is being edited                                            */
 	GList *available_treatment_list;/* Available treatments that can be used by the user in the data type window */
 	RefreshType event;              /* Tells what is happening                                                   */
-	all_window_prop_t *win_prop;        /* Keeps window properties                                                   */
+	all_window_prop_t *win_prop;    /* Keeps window properties                                                   */
+	gchar *pref_filename;           /* user preference file file name                                            */
+	gchar *pref_pathname;           /* user preference file path name                                            */
 } heraia_window_t;
 
 

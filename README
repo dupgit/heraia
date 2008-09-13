@@ -27,7 +27,8 @@ Code coverage and profiling tests do the following :
  make
  ./src/heraia src/heraia
 
-Then do whatever you want and :
+Then do whatever you want with the program (eg. test the functions you
+need to) and :
 
  cd src
  lcov -c -o coverage.info --directory=./

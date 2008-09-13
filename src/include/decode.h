@@ -25,7 +25,7 @@
 #ifndef _DECODE_H_
 #define _DECODE_H_
 /* templates */
-typedef gchar *(* DecodeFunc) (guchar *); /* Decode gunction template for numbers*/
+typedef gchar *(* DecodeFunc) (guchar *); /* Decode function template for numbers*/
 typedef gchar *(* DecodeDateFunc) (guchar *, date_and_time_t *mydate); /* Decode function template for dates */
 
 /* bits */
@@ -40,16 +40,17 @@ extern gchar *decode_HFS_date(guchar *data, date_and_time_t *mydate);
 /* bcd */
 extern gchar *decode_packed_BCD(guchar *data);
 
-/* numbers */
-extern gchar *decode_8bits_signed(guchar *data);
-/* See libheraia -> extern gchar *decode_8bits_unsigned(guchar *data);*/
-extern gchar *decode_16bits_signed(guchar *data);
-extern gchar *decode_16bits_unsigned(guchar *data);
-extern gchar *decode_32bits_signed(guchar *data);
-extern gchar *decode_32bits_unsigned(guchar *data);
-extern gchar *decode_64bits_signed(guchar *data);
-extern gchar *decode_64bits_unsigned(guchar *data);
-
+/* numbers ->  See libheraia
+ extern gchar *decode_8bits_signed(guchar *data);
+ extern gchar *decode_8bits_unsigned(guchar *data); 
+ extern gchar *decode_16bits_signed(guchar *data);
+ extern gchar *decode_16bits_unsigned(guchar *data);
+ extern gchar *decode_32bits_signed(guchar *data);
+ extern gchar *decode_32bits_unsigned(guchar *data);
+ extern gchar *decode_64bits_signed(guchar *data);
+ extern gchar *decode_64bits_unsigned(guchar *data);
+*/
+ 
 /* Utils */
 extern gboolean swap_bytes(guchar *to_swap, guint first, guint last);
 extern void reverse_byte_order(guchar *to_reverse);

@@ -29,6 +29,13 @@
 
 /* Numbers */
 extern gchar *decode_8bits_unsigned(guchar *data);
+extern gchar *decode_8bits_signed(guchar *data);
+extern gchar *decode_16bits_signed(guchar *data);
+extern gchar *decode_16bits_unsigned(guchar *data);
+extern gchar *decode_32bits_signed(guchar *data);
+extern gchar *decode_32bits_unsigned(guchar *data);
+extern gchar *decode_64bits_signed(guchar *data);
+extern gchar *decode_64bits_unsigned(guchar *data);
 
 #endif /* _LIBHERAIA_DECODE_H_ */
 

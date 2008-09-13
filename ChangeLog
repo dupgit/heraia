@@ -1,3 +1,9 @@
+13.09.2008
+    - Olivier Delhomme <heraia@delhomme.org>
+	* migrated some functions from decode.c into libheraia (decode.c)
+    * preference file added (empty for now - it's still not possible to load
+      or save anything).
+
 12.09.2008
     - Olivier Delhomme <heraia@delhomme.org>
     * took notebook's tab's names into account (this may be usefull when 

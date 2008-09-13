@@ -14,6 +14,8 @@ http://msdn.microsoft.com/library/default.asp?url=/library/en-us/sysinfo/base/sy
 JAVATIME
 http://www.javaworld.com/javaworld/jw-03-2001/jw-0330-time.html
 
+OLETIME is a 64-bit double representing the number of days since 12/30/1899 12:00 AM
+
 See also :
  - http://blogs.msdn.com/oldnewthing/archive/2003/09/05/54806.aspx
    Beware this link has some funny examples ... 
