@@ -1,3 +1,15 @@
+16.09.2008
+   - Olivier Delhomme <heraia@delhomme.org>
+	* continuation of the migration work on libheraia.h
+    * added one test to avoid using 2.12 functions were 2.12 is not available
+    * added user_prefs.[ch] files to manage user preference window and 
+      properties
+    * deleted decode.c and decode.h as they are migrated in libheraia
+    * changed heraia.glade and added two labels that will receive cursor's
+      position and cursor's selection
+    * added cursor position
+    * forgot to include decode.h in libheraia files
+
 13.09.2008
     - Olivier Delhomme <heraia@delhomme.org>
 	* migrated some functions from decode.c into libheraia (decode.c)

@@ -32,5 +32,6 @@ extern HERAIA_ERROR heraia_hex_document_save(heraia_window_t *main_window);
 extern HERAIA_ERROR heraia_hex_document_save_as(heraia_window_t *main_window, gchar *filename);
 extern gchar *heraia_hex_document_get_filename(Heraia_Document *doc);
 extern guint64 ghex_file_size(GtkHex *gh);
+extern guint64 ghex_get_cursor_position(data_window_t *data_window);
 
 #endif /* _GHEX_HERAIA_INTERFACE_H_ */

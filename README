@@ -21,7 +21,11 @@ file heraia.csv does not mean anything (as it is not generated
 for every commit - but only for distribution packages upon new
 versions).
 
-*****
+And also, if you have any question regarding heraia, please e-mail me at
+heraia@delhomme.org
+
+***** Reminding for code coverage *****
+
 Code coverage and profiling tests do the following :
  ./configure --enable-gcov --enable-gprof --enable-debug
  make
@@ -36,7 +40,9 @@ need to) and :
 
 open index.html generated file with your favorite web browser, and you're done. 
 
-*****
+
+***** Reminding for developpers *****
+
 For a release do not forget to :
 
  - change configure.ac version number

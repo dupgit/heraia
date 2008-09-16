@@ -27,6 +27,7 @@
 static gboolean load_heraia_glade_xml(heraia_window_t *main_window);
 static void heraia_ui_connect_signals(heraia_window_t *main_window);
 static void record_and_hide_about_box(heraia_window_t *main_window);
+static void refresh_file_labels(heraia_window_t *main_window);
 
 /**
  *  Quit, file menu
@@ -193,6 +194,30 @@ void on_coller1_activate( GtkWidget *widget, gpointer data )
 }
 
 
+/**
+ *  This function is refreshing the labels on the main
+ *  window in order to reflect cursor position, selected
+ *  positions and total selected size
+ */
+static void refresh_file_labels(heraia_window_t *main_window)
+{
+	GtkWidget *label = NULL;
+	guint64 position = 0;
+	gchar *text = NULL;
+	
+	if (main_window != NULL && main_window->current_DW != NULL)
+	{
+		label = heraia_get_widget(main_window->xmls->main, "file_position_label");
+		position = ghex_get_cursor_position(main_window->current_DW);
+		/* position begins at 0 and this is not really human readable */
+		/* it's more confusing that anything so we do + 1             */
+		text = g_strdup_printf("%Ld", position + 1);
+		gtk_label_set_text(label, text);
+		g_free(text);
+	}
+}
+
+
 /** 
  *  This function is here to ensure that everything will be
  *  refreshed upon a signal event.
@@ -211,6 +236,7 @@ void refresh_event_handler(GtkWidget *widget, gpointer data)
 		
 		refresh_data_interpretor_window(widget, main_window);
 		refresh_all_plugins(main_window);
+		refresh_file_labels(main_window);
 		
 		main_window->event = HERAIA_REFRESH_NOTHING;
 	}
@@ -587,7 +613,12 @@ void set_notebook_tab_name(heraia_window_t *main_window)
 		   label = gtk_notebook_get_tab_label(GTK_NOTEBOOK(notebook), page);
 		   filename = g_filename_display_basename(main_window->current_doc->file_name);
 		   gtk_label_set_text(GTK_LABEL(label), filename);
-		   gtk_widget_set_tooltip_text(label, g_filename_display_name(main_window->current_doc->file_name));
+		   
+		   /* gtk_widget_set_tooltip_text is available since gtk 2.12 */
+		   if (GTK_MINOR_VERSION >= 12) 
+			{ 
+				gtk_widget_set_tooltip_text(label, g_filename_display_name(main_window->current_doc->file_name));
+			}
 	   }
 }
 
@@ -632,6 +663,7 @@ void init_heraia_interface(heraia_window_t *main_window)
 			gtk_widget_hide(notebook); 
 		}
 		
+		refresh_file_labels(main_window);
 		
 		
 		/* if (dw != NULL && diw != NULL) *//* Something's wrong here ! */

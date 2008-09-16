@@ -227,6 +227,7 @@ gboolean ghex_get_data(data_window_t *data_window, guint length, guint endiannes
 		{
 			result = FALSE;
 		}
+	
 	return result;
 }
 
@@ -246,4 +247,21 @@ guint64 ghex_file_size(GtkHex *gh)
 		}
 }
 
-
+/**
+ *  Retrieves the cursor's position from the hexwidget
+ */
+guint64 ghex_get_cursor_position(data_window_t *data_window)
+{
+	GtkHex *gh = NULL;
+	
+	gh = GTK_HEX(data_window->current_hexwidget);
+	
+	if (gh != NULL)
+	{
+		  return gtk_hex_get_cursor(gh);
+	}
+	else
+	{
+		  return 0;
+	}
+}

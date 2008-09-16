@@ -56,6 +56,7 @@
 
 #include <gtkhex/gtkhex.h>
 
+#include <libheraia.h>
 
 typedef HexDocument Heraia_Document;
 typedef GtkHex Heraia_Hex;
@@ -194,20 +195,6 @@ typedef struct
 	gchar *pref_filename;           /* user preference file file name                                            */
 	gchar *pref_pathname;           /* user preference file path name                                            */
 } heraia_window_t;
-
-
-/* a human struct to store a date with a time. TODO : add an UTC info */
-typedef struct
-{
-	guint32 year;
-	guint32 month;
-	guint32 day;
-
-	guint32 hour;
-	guint32 minutes;
-	guint32 seconds;
-
-} date_and_time_t;
 
 #include "data_interpretor.h"
 #include "decode.h"

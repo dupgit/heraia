@@ -123,7 +123,7 @@ static void interpret_as_number(heraia_window_t *main_window, DecodeFunc decode_
 	guchar *c = NULL;      /* the character under the cursor                   */
 	gchar *text = NULL;
 	data_window_t *data_window = main_window->current_DW;   /* We allready know that it's not NULL */
-	GtkWidget *entry = heraia_get_widget(main_window->xmls->main, widget_name);  /* we might test the result as this is user input*/
+	GtkWidget *entry = heraia_get_widget(main_window->xmls->main, widget_name);  /* we might test the result as this is user input */
 
 	c = (guchar *) g_malloc0(sizeof(guchar) * length);
 

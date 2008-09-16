@@ -27,6 +27,22 @@
 #include <glib.h>
 #include <string.h>
 
+/* A human struct to store a date with a time. TODO : add an UTC info */
+typedef struct
+{
+	guint32 year;
+	guint32 month;
+	guint32 day;
+
+	guint32 hour;
+	guint32 minutes;
+	guint32 seconds;
+} date_and_time_t;
+
+/* templates */
+typedef gchar *(* DecodeFunc) (guchar *); /* Decode function template for numbers*/
+typedef gchar *(* DecodeDateFunc) (guchar *, date_and_time_t *mydate); /* Decode function template for dates */
+
 /* Numbers */
 extern gchar *decode_8bits_unsigned(guchar *data);
 extern gchar *decode_8bits_signed(guchar *data);
@@ -36,6 +52,22 @@ extern gchar *decode_32bits_signed(guchar *data);
 extern gchar *decode_32bits_unsigned(guchar *data);
 extern gchar *decode_64bits_signed(guchar *data);
 extern gchar *decode_64bits_unsigned(guchar *data);
+
+/* bits */
+extern gchar *decode_to_bits(guchar *data);
+
+/* dates */
+extern gchar *decode_dos_date(guchar *data, date_and_time_t *mydate);
+extern gchar *decode_filetime_date(guchar *data, date_and_time_t *mydate);
+extern gchar *decode_C_date(guchar *data, date_and_time_t *mydate);
+extern gchar *decode_HFS_date(guchar *data, date_and_time_t *mydate);
+
+/* bcd */
+extern gchar *decode_packed_BCD(guchar *data);
+ 
+/* Utils */
+extern gboolean swap_bytes(guchar *to_swap, guint first, guint last);
+extern void reverse_byte_order(guchar *to_reverse);
 
 #endif /* _LIBHERAIA_DECODE_H_ */
 
