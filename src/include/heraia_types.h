@@ -197,7 +197,6 @@ typedef struct
 } heraia_window_t;
 
 #include "data_interpretor.h"
-#include "decode.h"
 #include "ghex_heraia_interface.h"
 #include "heraia.h"
 #include "heraia_errors.h"
