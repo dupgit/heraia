@@ -1,3 +1,9 @@
+19.09.2008
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Flexibility with doxygen, using relative paths. Do not to forget to
+       change version numbers (when creating a new doxygen documentation)
+     * Suppressed the number for the position field when no file is open
+
 16.09.2008
    - Olivier Delhomme <heraia@delhomme.org>
 	* continuation of the migration work on libheraia.h
