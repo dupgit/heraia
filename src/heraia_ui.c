@@ -212,9 +212,10 @@ static void refresh_file_labels(heraia_window_t *main_window)
 					label = heraia_get_widget(main_window->xmls->main, "file_position_label");
 					position = ghex_get_cursor_position(main_window->current_DW);
 					/* position begins at 0 and this is not really human readable */
-					/* it's more confusing that anything so we do + 1             */
-					text = g_strdup_printf("%ld", position + 1);
-					gtk_label_set_text(GTK_LABEL(label), text);
+					/* it's more confusing than anything so we do + 1             */
+					/* To translators : do not translate <small> and such         */
+					text = g_strdup_printf("<small>%Ld</small>", position + 1);
+					gtk_label_set_markup(GTK_LABEL(label), text);
 					g_free(text);
 				}
 			else

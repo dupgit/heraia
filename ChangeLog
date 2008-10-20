@@ -1,3 +1,9 @@
+20.10.2008
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Small fonts used with file position and selection labels 
+     
+
+
 19.09.2008
    - Olivier Delhomme <heraia@delhomme.org>
      * Flexibility with doxygen, using relative paths. Do not to forget to
