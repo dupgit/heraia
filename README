@@ -48,7 +48,8 @@ For a release do not forget to :
  - change configure.ac version number
  - heraia.h version number and date
  - generate the doxygen documentation in the docs directory. Edit 
-   heraia.doxygen file to reflect version number and directories. 
+   heraia.doxygen file to reflect version number and directories (basicaly
+   lines PROJECT_NUMBER and OUTPUT_DIRECTORY).
    Execute "doxygen heraia.doxygen"
  - generate code coverage tests
     

@@ -17,7 +17,7 @@ I let you imagine what I expect before I do a major release !!!
    * rename window_prop and all_window_prop with and "_t" at the end of the
      name
 
-. 0.0.5
+. 0.0.5 [20.10.2008]
    * add a user preferences file
    * add the cursor position somewhere, somehow (a new property zone
      may be welcomed)

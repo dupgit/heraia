@@ -27,7 +27,7 @@
 #define HERAIA_AUTHORS "Olivier Delhomme"
 #define HERAIA_DATE "20 02 2005"
 #define HERAIA_LICENSE "GPL"
-#define HERAIA_VERSION "0.0.5 (00.00.2008)"
+#define HERAIA_VERSION "0.0.5 (20.10.2008)"
 
 typedef struct
 {

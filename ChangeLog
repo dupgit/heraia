@@ -1,4 +1,4 @@
-20.10.2008
+20.10.2008 [release 0.0.5]
    - Olivier Delhomme <heraia@delhomme.org>
      * Small fonts used with file position and selection labels
      * moving user_prefs to libheraia
