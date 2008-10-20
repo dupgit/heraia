@@ -1,3 +1,8 @@
+20.10.2008
+   - Olivier Delhomme <heraia@delhomme.org>  
+	 * Changed version numbers for upcoming release
+     * Destroyed a scrooledwindow in heraia.glade to avoid a warning
+
 20.10.2008 [release 0.0.5]
    - Olivier Delhomme <heraia@delhomme.org>
      * Small fonts used with file position and selection labels
@@ -30,7 +35,7 @@
 12.09.2008
     - Olivier Delhomme <heraia@delhomme.org>
     * took notebook's tab's names into account (this may be usefull when 
-      we'll have more than one file edited at a time.
+      we'll have more than one file edited at a time).
 
 11.09.2008
     - Olivier Delhomme <heraia@delhomme.org>

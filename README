@@ -51,6 +51,7 @@ For a release do not forget to :
    heraia.doxygen file to reflect version number and directories (basicaly
    lines PROJECT_NUMBER and OUTPUT_DIRECTORY).
    Execute "doxygen heraia.doxygen"
+   make a tar.gz available in the download directory (as for sources)
  - generate code coverage tests
     
     

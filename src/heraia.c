@@ -316,17 +316,6 @@ static gboolean manage_command_line_options(Options *opt, int argc, char ** argv
 			opt->filename = (char *) malloc (sizeof(char) * strlen(argv[optind]) + 1);
 			strcpy(opt->filename, argv[optind]);
 		}
-	/**
-	 *  We do not bother anymore if there is no file name to load
-	 *  else
-	 *	{
-	 *		if (opt->usage != TRUE)
-	 *			{
-	 *              exit_value = usage(0);
-	 *				opt->usage = TRUE;
-	 *			}
-	 *	}
-	 */
 
 	return exit_value;
 }
@@ -376,7 +365,8 @@ int main (int argc, char ** argv)
 				{
 
 					log_message(main_window, G_LOG_LEVEL_INFO, "Main interface loaded (%s)", main_window->xmls->main->filename);
-
+                    log_message(main_window, G_LOG_LEVEL_DEBUG, "Preference file is %s", main_window->pref_filename);
+					
 					init_heraia_plugin_system(main_window);
 
 					if (opt->filename != NULL)
