@@ -21,9 +21,9 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
 
-#ifndef _USER_PREFS_H_
-#define _USER_PREFS_H_
+#ifndef _LIBHERAIA_USER_PREFS_H_
+#define _LIBHERAIA_USER_PREFS_H_
 
-extern void verify_preference_file(gchar *pathname, gchar *filename)
+extern void verify_preference_file(gchar *pathname, gchar *filename);
 
-#endif /* _USER_PREFS_H_ */
+#endif /* _LIBHERAIA_USER_PREFS_H_ */

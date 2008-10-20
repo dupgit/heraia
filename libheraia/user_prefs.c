@@ -22,7 +22,7 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include "heraia_types.h"
+#include <libheraia.h>
 
 static void verify_preference_file_path_presence(gchar *pathname);
 static void verify_preference_file_name_presence(gchar *filename);

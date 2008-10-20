@@ -139,65 +139,6 @@ static heraia_window_t *init_window_property_struct(heraia_window_t *main_window
 	return main_window;
 }
 
-/**
- *  verify preference file path presence and creates it if it does
- *  not already exists
- */
-static void verify_preference_file_path_presence(gchar *pathname)
-{
-	struct stat *buf = NULL;
-	gint result = 0;
-	
-	buf = (struct stat *) g_malloc0(sizeof(struct stat));
-	result = g_stat(pathname, buf);
-
-	if (result != 0)
-	{
-		g_mkdir_with_parents(pathname, 488);
-	}
-}
-
-/**
- *  Verify preference file's presence
- */
-static void verify_preference_file_name_presence(gchar *filename)
-{
-	FILE *fp = NULL;
-	
-	
-	
-	fp = g_fopen(filename, "r");
-	
-	if (fp == NULL)
-	{
-	  	fp = g_fopen(filename, "w");	
-		if (fp == NULL)
-		{
-			fprintf(stderr, "Unable to open and create the main preference file %s\n", filename);
-		}
-		else
-		{
-			fprintf(stderr, "Main preference file %s created successfully\n", filename);
-			fclose(fp);
-		}
-	}
-	else
-	{
-		fclose(fp);
-	}
-}
-
-/**
- *  Verify preference file presence and creates it if it does not
- *  already exists
- */
-static void verify_preference_file(gchar *pathname, gchar *filename)
-{
-	
-	verify_preference_file_path_presence(pathname);
-	verify_preference_file_name_presence(filename);
-	
-}
 
 
 /**

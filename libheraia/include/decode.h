@@ -24,9 +24,6 @@
 #ifndef _LIBHERAIA_DECODE_H_
 #define _LIBHERAIA_DECODE_H_
 
-#include <glib.h>
-#include <string.h>
-
 /* A human struct to store a date with a time. TODO : add an UTC info */
 typedef struct
 {

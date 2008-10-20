@@ -24,6 +24,9 @@
 #include <stdio.h>
 #include <libheraia.h>
 
+#include "decode.h"
+#include "user_prefs.h"
+
 int libheraia_test(void)
 {
 	printf("Libheraia library test OK\n");

@@ -24,7 +24,14 @@
 #ifndef _LIBHERAIA_H_
 #define _LIBHERAIA_H_
 
+#include <string.h>
+
+#include <glib.h>
+#include <glib/gstdio.h>
+
+
 #include "decode.h"
+#include "user_prefs.h"
 
 extern int libheraia_test(void);
 
