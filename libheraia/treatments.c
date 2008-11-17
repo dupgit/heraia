@@ -3,7 +3,7 @@
   treatments.c
   Treatments that may be applied to make a new data type
   
-  (C) Copyright 2007 - 2007 Olivier Delhomme
+  (C) Copyright 2007 - 2008 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -22,7 +22,7 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
 */
 
-#include "heraia_types.h"
+#include <libheraia.h>
 
 /**
  *  General background : 

@@ -24,12 +24,22 @@
 #include <stdio.h>
 #include <libheraia.h>
 
+#include "config.h"
+#include "data_interpretor.h"
 #include "decode.h"
+#include "ghex_heraia_interface.h"
+#include "heraia_errors.h"
+#include "heraia_io.h"
+#include "heraia_ui.h"
+#include "list_data_types.h"
+#include "log.h"
+#include "main_pref_window.h"
+#include "plugin.h"
 #include "user_prefs.h"
 
 int libheraia_test(void)
 {
-	printf("Libheraia library test OK\n");
+	fprintf(stdout, "Libheraia library test OK\n");
 	return 0;
 }
 

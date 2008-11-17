@@ -22,7 +22,7 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
 */
 
-#include "heraia_types.h"
+#include <libheraia.h>
 
 /**
  *  A function that allow me to printy things on stdout and in th log window
@@ -282,7 +282,7 @@ static void log_window_connect_signals(heraia_window_t *main_window)
 
 	/* the toogle button */
 	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "mw_cmi_affiche_logw")), "toggled",
-							 G_CALLBACK(mw_cmi_affiche_logw_toggle), main_window);
+					 G_CALLBACK(mw_cmi_affiche_logw_toggle), main_window);
 
 }
 

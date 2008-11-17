@@ -22,7 +22,6 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
 
 #include <libheraia.h>
-#include "heraia_types.h"
 
 static guint which_endianness(heraia_window_t *main_window);
 static void interpret_as_date(heraia_window_t *main_window, DecodeDateFunc decode_it, gchar *widget_name, guint length, guint endianness);

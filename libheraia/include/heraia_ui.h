@@ -21,21 +21,22 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
 
-#ifndef _HERAIA_UI_H_
-#define _HERAIA_UI_H_
+#ifndef _LIBHERAIA_HERAIA_UI_H_
+#define _LIBHERAIA_HERAIA_UI_H_
 
 #define H_DEBUG 1
 
-extern void on_quitter1_activate(GtkWidget *widget, gpointer data);
-extern void on_nouveau1_activate(GtkWidget *widget, gpointer data);
-extern void on_ouvrir1_activate(GtkWidget *widget, gpointer data);
+extern void on_quit_activate(GtkWidget *widget, gpointer data);
+extern void on_new_activate(GtkWidget *widget, gpointer data);
+extern void on_open_activate(GtkWidget *widget, gpointer data);
 extern void on_save_activate(GtkWidget *widget, gpointer data);
 extern void on_save_as_activate(GtkWidget *widget, gpointer data);
-extern void on_supprimer1_activate(GtkWidget *widget, gpointer data);
+extern void on_preferences_activate(GtkWidget *widget, gpointer data);
+extern void on_delete_activate(GtkWidget *widget, gpointer data);
 extern void a_propos_activate(GtkWidget *widget, gpointer data);
-extern void on_couper1_activate(GtkWidget *widget, gpointer data);
-extern void on_copier1_activate(GtkWidget *widget, gpointer data);
-extern void on_coller1_activate(GtkWidget *widget, gpointer data);
+extern void on_cut_activate(GtkWidget *widget, gpointer data);
+extern void on_copy_activate(GtkWidget *widget, gpointer data);
+extern void on_paste_activate(GtkWidget *widget, gpointer data);
 extern void on_DIMenu_activate(GtkWidget *widget, gpointer data);
 extern gboolean delete_main_window_event(GtkWidget *widget, GdkEvent *event, gpointer data);
 
@@ -78,4 +79,4 @@ extern void update_main_window_name(heraia_window_t *main_window);
 extern void set_notebook_tab_name(heraia_window_t *main_window);
 
 
-#endif /* _HERAIA_UI_H_ */
+#endif /* _LIBHERAIA_HERAIA_UI_H_ */

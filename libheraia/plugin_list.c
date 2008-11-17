@@ -22,7 +22,7 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
  */
 
-#include "heraia_types.h"
+#include <libheraia.h>
 
 static gboolean delete_plw_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data);
 static void destroy_plw_window(GtkWidget *widget, GdkEvent  *event, gpointer data);
@@ -44,7 +44,8 @@ static void print_plugin_state(GtkTextView *textview, heraia_plugin_t *plugin);
 
 /*** call back function for the plugins_window ***/
 /**
- *  Signal handler called when the user closes the window */
+ *  Signal handler called when the user closes the window 
+ */
 static gboolean delete_plw_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {
 	plw_close_clicked(widget, data);

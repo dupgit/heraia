@@ -638,7 +638,7 @@ static void transform_bcd_to_human(gchar *bcd, guint8 part, guint8 part_number)
 
 /**
  *  Decode one byte as a Packed BCD (Binary Coded Decimal)
- *  and return a gchar* that me be freed when no longer
+ *  and return a gchar* that may be freed when no longer
  *  needed
  */
 gchar *decode_packed_BCD(guchar *data)

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Mon Oct 20 22:52:08 2008 -->
+<?xml version="1.0"?>
 <glade-interface>
+  <requires-version lib="gtk+" version="2.12"/>
   <widget class="GtkWindow" id="main_preferences_window">
     <property name="title" translatable="yes">Main Preferences</property>
+    <property name="modal">True</property>
     <child>
       <widget class="GtkVBox" id="vbox7">
         <property name="visible">True</property>
@@ -32,8 +32,8 @@
                 <property name="label" translatable="yes">page 1</property>
               </widget>
               <packing>
-                <property name="type">tab</property>
                 <property name="tab_fill">False</property>
+                <property name="type">tab</property>
               </packing>
             </child>
             <child>
@@ -45,9 +45,9 @@
                 <property name="label" translatable="yes">page 2</property>
               </widget>
               <packing>
-                <property name="type">tab</property>
                 <property name="position">1</property>
                 <property name="tab_fill">False</property>
+                <property name="type">tab</property>
               </packing>
             </child>
             <child>
@@ -59,9 +59,9 @@
                 <property name="label" translatable="yes">page 3</property>
               </widget>
               <packing>
-                <property name="type">tab</property>
                 <property name="position">2</property>
                 <property name="tab_fill">False</property>
+                <property name="type">tab</property>
               </packing>
             </child>
           </widget>
@@ -859,8 +859,8 @@
                     <property name="label" translatable="yes">Numbers</property>
                   </widget>
                   <packing>
-                    <property name="type">tab</property>
                     <property name="tab_fill">False</property>
+                    <property name="type">tab</property>
                   </packing>
                 </child>
                 <child>
@@ -1038,9 +1038,9 @@
                     <property name="label" translatable="yes">Dates and times</property>
                   </widget>
                   <packing>
-                    <property name="type">tab</property>
                     <property name="position">1</property>
                     <property name="tab_fill">False</property>
+                    <property name="type">tab</property>
                   </packing>
                 </child>
                 <child>
@@ -1164,9 +1164,9 @@
                     <property name="label" translatable="yes">Binary based</property>
                   </widget>
                   <packing>
-                    <property name="type">tab</property>
                     <property name="position">2</property>
                     <property name="tab_fill">False</property>
+                    <property name="type">tab</property>
                   </packing>
                 </child>
                 <child>
@@ -1264,9 +1264,9 @@
                     <property name="label" translatable="yes">User defined</property>
                   </widget>
                   <packing>
-                    <property name="type">tab</property>
                     <property name="position">3</property>
                     <property name="tab_fill">False</property>
+                    <property name="type">tab</property>
                   </packing>
                 </child>
               </widget>
@@ -1661,7 +1661,7 @@ POSSIBILITY OF SUCH DAMAGES.
 
 		     END OF TERMS AND CONDITIONS</property>
     <property name="authors">(C) 2005 - 2008 Olivier Delhomme 
-(C) 2005 - 2008 Sébastien Tricaud</property>
+(C) 2005 - 2008 S&#xE9;bastien Tricaud</property>
     <property name="documenters"></property>
     <property name="translator_credits" translatable="yes" comments="TRANSLATORS: Replace this string with your names, one name per line.">translator-credits</property>
     <property name="artists">(C) 2005 - 2007 Gregory Audet</property>
@@ -1669,8 +1669,7 @@ POSSIBILITY OF SUCH DAMAGES.
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox1">
         <child internal-child="action_area">
-          <widget class="GtkHButtonBox" id="dialog-action_area1">
-          </widget>
+          <widget class="GtkHButtonBox" id="dialog-action_area1"/>
           <packing>
             <property name="expand">False</property>
             <property name="pack_type">GTK_PACK_END</property>
@@ -1747,21 +1746,21 @@ POSSIBILITY OF SUCH DAMAGES.
                 <child>
                   <widget class="GtkMenu" id="menuitem4_menu">
                     <child>
-                      <widget class="GtkImageMenuItem" id="nouveau1">
+                      <widget class="GtkImageMenuItem" id="new">
                         <property name="visible">True</property>
                         <property name="label">gtk-new</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_nouveau1_activate"/>
+                        <signal name="activate" handler="on_new_activate"/>
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkImageMenuItem" id="ouvrir1">
+                      <widget class="GtkImageMenuItem" id="open">
                         <property name="visible">True</property>
                         <property name="label">gtk-open</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_ouvrir1_activate"/>
+                        <signal name="activate" handler="on_open_activate"/>
                       </widget>
                     </child>
                     <child>
@@ -1770,7 +1769,7 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="label">gtk-save</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_enregistrer1_activate"/>
+                        <signal name="activate" handler="on_save_activate"/>
                       </widget>
                     </child>
                     <child>
@@ -1779,7 +1778,7 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="label">gtk-save-as</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_enregistrer_sous1_activate"/>
+                        <signal name="activate" handler="on_save_as_activate"/>
                       </widget>
                     </child>
                     <child>
@@ -1802,12 +1801,12 @@ POSSIBILITY OF SUCH DAMAGES.
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkImageMenuItem" id="quitter1">
+                      <widget class="GtkImageMenuItem" id="quit">
                         <property name="visible">True</property>
                         <property name="label">gtk-quit</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_quitter1_activate"/>
+                        <signal name="activate" handler="on_quit_activate"/>
                       </widget>
                     </child>
                   </widget>
@@ -1821,39 +1820,39 @@ POSSIBILITY OF SUCH DAMAGES.
                 <child>
                   <widget class="GtkMenu" id="menuitem5_menu">
                     <child>
-                      <widget class="GtkImageMenuItem" id="couper1">
+                      <widget class="GtkImageMenuItem" id="cut">
                         <property name="visible">True</property>
                         <property name="label">gtk-cut</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_couper1_activate"/>
+                        <signal name="activate" handler="on_cut_activate"/>
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkImageMenuItem" id="copier1">
+                      <widget class="GtkImageMenuItem" id="copy">
                         <property name="visible">True</property>
                         <property name="label">gtk-copy</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_copier1_activate"/>
+                        <signal name="activate" handler="on_copy_activate"/>
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkImageMenuItem" id="coller1">
+                      <widget class="GtkImageMenuItem" id="paste">
                         <property name="visible">True</property>
                         <property name="label">gtk-paste</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_coller1_activate"/>
+                        <signal name="activate" handler="on_paste_activate"/>
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkImageMenuItem" id="supprimer1">
+                      <widget class="GtkImageMenuItem" id="delete">
                         <property name="visible">True</property>
                         <property name="label">gtk-delete</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_supprimer1_activate"/>
+                        <signal name="activate" handler="on_delete_activate"/>
                       </widget>
                     </child>
                   </widget>
@@ -1873,7 +1872,7 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="label" translatable="yes">Data _Interpretor</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_DIMenu_activate"/>
-                        <accelerator key="I" modifiers="GDK_CONTROL_MASK" signal="activate"/>
+                        <accelerator key="I" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </widget>
                     </child>
                     <child>
@@ -1890,7 +1889,7 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">_Log</property>
                         <property name="use_underline">True</property>
-                        <accelerator key="L" modifiers="GDK_CONTROL_MASK" signal="activate"/>
+                        <accelerator key="L" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </widget>
                     </child>
                   </widget>
@@ -1913,7 +1912,7 @@ POSSIBILITY OF SUCH DAMAGES.
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkSeparatorMenuItem" id="séparateur1">
+                      <widget class="GtkSeparatorMenuItem" id="s&#xE9;parateur1">
                         <property name="visible">True</property>
                       </widget>
                     </child>
@@ -1929,7 +1928,7 @@ POSSIBILITY OF SUCH DAMAGES.
                 <child>
                   <widget class="GtkMenu" id="menuitem7_menu">
                     <child>
-                      <widget class="GtkImageMenuItem" id="a_propos1">
+                      <widget class="GtkImageMenuItem" id="a_propos">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">gtk-about</property>
                         <property name="use_underline">True</property>
@@ -2099,8 +2098,8 @@ POSSIBILITY OF SUCH DAMAGES.
                     <property name="label" translatable="yes">page 1</property>
                   </widget>
                   <packing>
-                    <property name="type">tab</property>
                     <property name="tab_fill">False</property>
+                    <property name="type">tab</property>
                   </packing>
                 </child>
                 <child>
@@ -2112,9 +2111,9 @@ POSSIBILITY OF SUCH DAMAGES.
                     <property name="label" translatable="yes">page 2</property>
                   </widget>
                   <packing>
-                    <property name="type">tab</property>
                     <property name="position">1</property>
                     <property name="tab_fill">False</property>
+                    <property name="type">tab</property>
                   </packing>
                 </child>
                 <child>
@@ -2126,9 +2125,9 @@ POSSIBILITY OF SUCH DAMAGES.
                     <property name="label" translatable="yes">page 3</property>
                   </widget>
                   <packing>
-                    <property name="type">tab</property>
                     <property name="position">2</property>
                     <property name="tab_fill">False</property>
+                    <property name="type">tab</property>
                   </packing>
                 </child>
               </widget>

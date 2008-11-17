@@ -52,8 +52,6 @@ static void verify_preference_file_name_presence(gchar *filename)
 {
 	FILE *fp = NULL;
 	
-	
-	
 	fp = g_fopen(filename, "r");
 	
 	if (fp == NULL)

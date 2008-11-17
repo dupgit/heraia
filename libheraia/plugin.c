@@ -22,7 +22,7 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
  */
 
-#include "heraia_types.h"
+#include <libheraia.h>
 
 static heraia_plugin_t *get_plugin_handle(heraia_window_t *main_window, heraia_plugin_t *plugin, 
 										  const gchar *full_filename, const gchar *filename);
@@ -341,7 +341,9 @@ void refresh_all_plugins(heraia_window_t *main_window)
 		{
 			plugin = (heraia_plugin_t *) list->data;
 			if (plugin != NULL && plugin->refresh_proc != NULL)
-				plugin->refresh_proc(main_window, list->data);  /* Une petite astuce ! */
+			{ /* Beware : here a tricky thing that works ! */
+				plugin->refresh_proc(main_window, list->data);  
+			}
 				
 			list = list->next;
  		}

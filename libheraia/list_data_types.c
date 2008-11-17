@@ -23,7 +23,7 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
 */
 
-#include "heraia_types.h"
+#include <libheraia.h>
 
 static gboolean delete_ldt_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data);
 static void destroy_ldt_window(GtkWidget *widget, GdkEvent  *event, gpointer data);

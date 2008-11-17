@@ -22,8 +22,6 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
 */
 
-#include <libheraia.h>
-#include "heraia_types.h"
 #include "stat.h"
 
 /* The functions for the plugin's usage */
@@ -97,6 +95,7 @@ heraia_plugin_t *heraia_plugin_init(heraia_plugin_t *plugin)
 
 /* the plugin interface functions */
 
+
 /**
  *  The real init function of the plugin
  */
@@ -137,6 +136,7 @@ void init(heraia_window_t *main_struct)
 		}
 }
 
+
 /**  
  *  Normaly this is called when the plugin is unloaded
  *  One may wait it's entire life for this to be called !! ;)
@@ -145,6 +145,7 @@ void quit(void)
 {
 	g_print("Quitting %s\n", PLUGIN_NAME);
 }
+
 
 /**
  *  This function is called via a signal handler when the menu entry is toggled
@@ -171,6 +172,7 @@ void run(GtkWidget *widget, gpointer data)
 		}
 
 }
+
 
 /**
  *  The refresh function Called when a new file is loaded or when the cursor is moved
@@ -207,12 +209,16 @@ static gboolean delete_stat_window_event(GtkWidget *widget, GdkEvent  *event, gp
 	return TRUE;
 }
 
+
 static void destroy_stat_window(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {
 	statw_close_clicked(widget, data);
 }
 
-/* What to do when the window is closed */
+
+/**
+ *  What to do when the window is closed 
+ */
 static void statw_close_clicked(GtkWidget *widget, gpointer data)
 {
 	heraia_plugin_t *plugin = (heraia_plugin_t *) data;
@@ -224,7 +230,10 @@ static void statw_close_clicked(GtkWidget *widget, gpointer data)
 		}
 }
 
-/* What to do when the save as button is clicked */
+
+/**
+ *  What to do when the save as button is clicked 
+ */
 static void statw_save_as_clicked(GtkWidget *widget, gpointer data)
 {
 	heraia_plugin_t *plugin = (heraia_plugin_t *) data;
@@ -243,6 +252,7 @@ static void statw_save_as_clicked(GtkWidget *widget, gpointer data)
 				g_free(filename);
 		}
 }
+
 
 static gchar *stat_select_file_to_save(void)
 {
@@ -272,6 +282,7 @@ static gchar *stat_select_file_to_save(void)
 
 	return filename;
 }
+
 
 /* What to do when the user chooses a 1D or 2D histo */
 static void histo_radiobutton_toggled(GtkWidget *widget, gpointer data)
@@ -392,8 +403,6 @@ static void init_stats_histos(heraia_plugin_t *plugin)
 				extra->histo2D[i][j] = 0 ;
 		}
 }
-
-
 
 
 /**

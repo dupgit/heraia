@@ -26,13 +26,15 @@ I let you imagine what I expect before I do a major release !!!
    * save window properties to the user config file
    * add plugins preferences files
    * translate all french function names in the code into english ones
+   * add a preference window
 
 . 0.0.7
    * load window properties from user config file
    * save plugins preferences to the config file
+   * add a preference option to display thousands or not in the main window
 
 . 0.0.8
-   * add a preference window where the user may be able to reset 
+   * add a preference option where the user may be able to reset 
      window properties
    * load plugins preferences from the config file (when initialiazing plugins)
 

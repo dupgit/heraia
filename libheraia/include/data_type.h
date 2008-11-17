@@ -3,7 +3,7 @@
   data_type.h
   Window allowing the user to create or edit a new data type
  
-  (C) Copyright 2005 - 2007 Olivier Delhomme
+  (C) Copyright 2005 - 2008 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  

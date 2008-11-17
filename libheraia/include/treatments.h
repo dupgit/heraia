@@ -3,7 +3,7 @@
   treatments.h
   Treatments that may be applied to make a new data type
  
-  (C) Copyright 2007 - 2007 Olivier Delhomme
+  (C) Copyright 2007 - 2008 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  

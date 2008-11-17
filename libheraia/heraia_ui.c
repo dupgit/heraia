@@ -22,7 +22,7 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
 */
 
-#include "heraia_types.h"
+#include <libheraia.h>
 
 static gboolean load_heraia_glade_xml(heraia_window_t *main_window);
 static void heraia_ui_connect_signals(heraia_window_t *main_window);
@@ -32,7 +32,7 @@ static void refresh_file_labels(heraia_window_t *main_window);
 /**
  *  Quit, file menu
  */
-void on_quitter1_activate( GtkWidget *widget, gpointer data )
+void on_quit_activate( GtkWidget *widget, gpointer data )
 {
 	gtk_main_quit();
 }
@@ -40,11 +40,29 @@ void on_quitter1_activate( GtkWidget *widget, gpointer data )
 /**
  *  New, file menu
  */
-void on_nouveau1_activate(GtkWidget *widget, gpointer data)
+void on_new_activate(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	
 	log_message(main_window, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
+}
+
+/**
+ *  Preferences, file menu :
+ *  Displays the preference window (as a modal window)
+ */
+void on_preferences_activate(GtkWidget *widget, gpointer data)
+{
+	heraia_window_t *main_window = (heraia_window_t *) data;
+	GtkWidget *pref_window = NULL;
+	
+	pref_window = heraia_get_widget(main_window->xmls->main, "main_preferences_window");
+	
+	if (pref_window != NULL)
+	{
+		main_window->win_prop->main_pref_window = move_and_show_dialog_box(pref_window, main_window->win_prop->main_pref_window);
+	}
+	
 }
 
 /**
@@ -67,6 +85,7 @@ void a_propos_activate(GtkWidget *widget, gpointer data)
 		{
 			gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(about_dialog), PACKAGE_VERSION);
 		}
+		
 		main_window->win_prop->about_box = move_and_show_dialog_box(about_dialog, main_window->win_prop->about_box);
 	}
 }
@@ -155,7 +174,7 @@ static gboolean a_propos_delete(GtkWidget *widget, GdkEvent  *event, gpointer da
 /**
  *  Delete, edit menu
  */
-void on_supprimer1_activate( GtkWidget *widget, gpointer data )
+void on_delete_activate( GtkWidget *widget, gpointer data )
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	
@@ -165,7 +184,7 @@ void on_supprimer1_activate( GtkWidget *widget, gpointer data )
 /**
  *  Cut, edit menu
  */
-void on_couper1_activate( GtkWidget *widget, gpointer data )
+void on_cut_activate( GtkWidget *widget, gpointer data )
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	
@@ -175,7 +194,7 @@ void on_couper1_activate( GtkWidget *widget, gpointer data )
 /**
  *  Copy, edit menu
  */
-void on_copier1_activate( GtkWidget *widget, gpointer data )
+void on_copy_activate( GtkWidget *widget, gpointer data )
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	
@@ -186,7 +205,7 @@ void on_copier1_activate( GtkWidget *widget, gpointer data )
 /**
  *  Paste, edit menu
  */
-void on_coller1_activate( GtkWidget *widget, gpointer data )
+void on_paste_activate( GtkWidget *widget, gpointer data )
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	
@@ -214,7 +233,7 @@ static void refresh_file_labels(heraia_window_t *main_window)
 					/* position begins at 0 and this is not really human readable */
 					/* it's more confusing than anything so we do + 1             */
 					/* To translators : do not translate <small> and such         */
-					text = g_strdup_printf("<small>%Ld</small>", position + 1);
+					text = g_strdup_printf("<small>%'Ld</small>", position + 1);
 					gtk_label_set_markup(GTK_LABEL(label), text);
 					g_free(text);
 				}
@@ -255,7 +274,7 @@ void refresh_event_handler(GtkWidget *widget, gpointer data)
 /**
  *  This handles the menuitem "Ouvrir" to open a file 
  */
-void on_ouvrir1_activate(GtkWidget *widget, gpointer data )
+void on_open_activate(GtkWidget *widget, gpointer data )
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	
@@ -641,7 +660,7 @@ void set_notebook_tab_name(heraia_window_t *main_window)
 void init_heraia_interface(heraia_window_t *main_window)
 {
 	data_window_t *dw = NULL;    /* data interpretor structure   */
-	GtkWidget *diw = NULL;       /* data interpretor window      */
+	/* GtkWidget *diw = NULL; */ /* data interpretor window      */
 	GtkWidget *menu = NULL;      /* the DIMenu diplay option     */
 	GtkWidget *window = NULL;    /* the main window widget       */ 
 	GtkWidget *notebook = NULL;  /* file notebook in main window */
@@ -663,6 +682,7 @@ void init_heraia_interface(heraia_window_t *main_window)
 		/* New usefull part of code */
 		notebook = heraia_get_widget(main_window->xmls->main, "file_notebook");
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 1);
+		
 		if (main_window->current_doc != NULL)
 		{
 			gtk_widget_show(notebook);
@@ -760,16 +780,16 @@ static void heraia_ui_connect_signals(heraia_window_t *main_window)
 					  G_CALLBACK (on_DIMenu_activate), main_window);
 	
 	/* Quit, file menu */
-	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "quitter1")), "activate", 
-					  G_CALLBACK (on_quitter1_activate), main_window);
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "quit")), "activate", 
+					  G_CALLBACK (on_quit_activate), main_window);
 	
 	/* New, file menu */
-	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "nouveau1")), "activate",  
-					  G_CALLBACK (on_nouveau1_activate), main_window);
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "new")), "activate",  
+					  G_CALLBACK (on_new_activate), main_window);
 	
 	/* Open, file menu */
-	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "ouvrir1")), "activate",  
-					  G_CALLBACK (on_ouvrir1_activate), main_window);
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "open")), "activate",  
+					  G_CALLBACK (on_open_activate), main_window);
 	
 	/* Save, file menu */
 	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "save")), "activate",  
@@ -779,21 +799,29 @@ static void heraia_ui_connect_signals(heraia_window_t *main_window)
 	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "save_as")), "activate",  
 					  G_CALLBACK (on_save_as_activate), main_window); 
 	
+	/* Preferences, file menu */
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "preferences")), "activate",  
+					  G_CALLBACK (on_preferences_activate), main_window);
+	
 	/* Cut, edit menu */
-	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "couper1")), "activate",  
-					  G_CALLBACK (on_couper1_activate), main_window); 
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "cut")), "activate",  
+					  G_CALLBACK (on_cut_activate), main_window); 
 	
 	/* Copy, edit menu */
-	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "copier1")), "activate",  
-					  G_CALLBACK (on_copier1_activate), main_window); 
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "copy")), "activate",  
+					  G_CALLBACK (on_copy_activate), main_window); 
 	
 	/* Paste, edit menu */
-	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "coller1")), "activate",  
-					  G_CALLBACK (on_coller1_activate), main_window); 
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "paste")), "activate",  
+					  G_CALLBACK (on_paste_activate), main_window); 
+	
+	/* Delete, edit menu */
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "delete")), "activate",  
+					  G_CALLBACK (on_delete_activate), main_window); 
 	
 	
 	/* about dialog box */		
-	g_signal_connect (G_OBJECT(heraia_get_widget(main_window->xmls->main, "a_propos1")), "activate",  
+	g_signal_connect (G_OBJECT(heraia_get_widget(main_window->xmls->main, "a_propos")), "activate",  
 					  G_CALLBACK(a_propos_activate), main_window); 
 	
 	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "about_dialog")), "close",
@@ -811,7 +839,7 @@ static void heraia_ui_connect_signals(heraia_window_t *main_window)
 					  G_CALLBACK (delete_main_window_event), NULL);
 	
 	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "main_window")), "destroy", 
-					  G_CALLBACK (on_quitter1_activate), NULL);
+					  G_CALLBACK (on_quit_activate), NULL);
 	
 }
 
@@ -834,7 +862,7 @@ int load_heraia_ui(heraia_window_t *main_window)
 		/* Heraia UI signals */
 		if (main_window->debug == TRUE)
 		{
-			fprintf(stdout, "connecting heraia_ui signals   ");
+			fprintf(stdout, "connecting heraia_ui signals     ");
 		}
 		
 		heraia_ui_connect_signals(main_window);
@@ -848,10 +876,23 @@ int load_heraia_ui(heraia_window_t *main_window)
 		/* The Log window */
 		if (main_window->debug == TRUE)
 		{
-			fprintf(stdout, "log window init interface      ");
+			fprintf(stdout, "log window init interface        ");
 		}
 		
 		log_window_init_interface(main_window);
+		
+		if (main_window->debug == TRUE)
+		{
+			fprintf(stdout, " [Done]\n");
+		}
+		
+		/* Preferences window */
+		if (main_window->debug == TRUE)
+		{
+			fprintf(stdout, "preferences window init interface");
+		}
+		
+		main_pref_window_init_interface(main_window);
 		
 		if (main_window->debug == TRUE)
 		{
@@ -862,7 +903,7 @@ int load_heraia_ui(heraia_window_t *main_window)
 		/* The data interpretor window */
 		if (main_window->debug == TRUE)
 		{
-			fprintf(stdout, "data interpretor init interface");
+			fprintf(stdout, "data interpretor init interface  ");
 		}
 		
 		data_interpretor_init_interface(main_window);
@@ -876,7 +917,7 @@ int load_heraia_ui(heraia_window_t *main_window)
 		/* The list data types window */
 		if (main_window->debug == TRUE)
 		{
-			fprintf(stdout, "list data types init interface ");
+			fprintf(stdout, "list data types init interface   ");
 		}
 		
 		list_data_types_init_interface(main_window);
@@ -890,7 +931,7 @@ int load_heraia_ui(heraia_window_t *main_window)
 		/* The data type window (create or edit one type) */
 		if (main_window->debug == TRUE)
 		{
-			fprintf(stdout, "data type init interface       ");
+			fprintf(stdout, "data type init interface         ");
 		}
 		
 		data_type_init_interface(main_window);

@@ -22,6 +22,7 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+
 #include "heraia_types.h"
 
 static gboolean version(void);
@@ -113,6 +114,7 @@ static heraia_window_t *init_window_property_struct(heraia_window_t *main_window
 	window_prop_t *main_dialog = NULL;
 	window_prop_t *plugin_list = NULL;
 	window_prop_t *ldt = NULL;
+	window_prop_t *main_pref_window = NULL;
 
 	/* Global struct */
 	win_prop = (all_window_prop_t *) g_malloc0(sizeof(all_window_prop_t));
@@ -124,6 +126,7 @@ static heraia_window_t *init_window_property_struct(heraia_window_t *main_window
     main_dialog = init_window_properties(0, 0, TRUE);
 	plugin_list = init_window_properties(0, 0, FALSE);
 	ldt = init_window_properties(0, 0, FALSE);
+	main_pref_window = init_window_properties(0, 0, FALSE);
 
 	/* Attach to the struct */
 	win_prop->about_box = about_box;
@@ -132,6 +135,7 @@ static heraia_window_t *init_window_property_struct(heraia_window_t *main_window
 	win_prop->main_dialog = main_dialog;
 	win_prop->plugin_list = plugin_list;
 	win_prop->ldt = ldt;
+	win_prop->main_pref_window = main_pref_window;
 
 	/* attach it to the main struct so that it can be read everywhere */
 	main_window->win_prop = win_prop;

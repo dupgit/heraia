@@ -26,6 +26,8 @@
 #ifndef _PLUGIN_STAT_H_
 #define _PLUGIN_STAT_H_
 
+#include <libheraia.h>
+
 #define API_VERSION 1
 #define PLUGIN_TYPE HERAIA_PLUGIN_ACTION
 
@@ -35,7 +37,6 @@
 #define PLUGIN_DESCRIPTION "Does some stats on the opened file"
 #define PLUGIN_AUTHOR "Olivier Delhomme <heraia@delhomme.org>"
 #define PLUGIN_HOMEPAGE "http://heraia.tuxfamily.org/"
-
 
 typedef struct
 {
@@ -59,11 +60,13 @@ typedef struct
 	GdkPixbuf *pixbuf_2D;        /* Pixbuf to be displayed (2D)                     */
 } stat_t;
 
-/* the plugin interface functions */
 
-extern void init(heraia_window_t *);      /* When the application initialy starts up */
-extern void quit(void);                   /* When the application exits */
-extern void run (GtkWidget *, gpointer);  /* To run anything everytime the plugin is called */
+/** 
+ *  The plugin interface functions
+ */
+extern void init(heraia_window_t *);            /* When the application initialy starts up */
+extern void quit(void);                         /* When the application exits */
+extern void run (GtkWidget *, gpointer);        /* To run anything everytime the plugin is called */
 extern void refresh(heraia_window_t *, void *); /* Called every refresh time (New file & cursor move) */
 extern heraia_plugin_t *heraia_plugin_init(heraia_plugin_t *);
 

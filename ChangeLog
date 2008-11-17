@@ -1,3 +1,17 @@
+12.11.2008
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Changed french function names and comments to english ones
+     * Supressed some unecessary "\n" from log output
+     * new main_pref_window.[ch] files to handle main preferences window
+       directly in libheraia
+     * moved all struct declarations from heraia_types.h to libheraia.h
+     * moved heraia_ui.[ch], log.[ch], ghex_heraia_interface.[ch],
+       data_interpretor.[ch], heraia_errors.[ch], plugin.[ch], heraia_io.[ch], 
+       list_data_types.[ch], data_types.[ch], treatments.[ch] to libheraia
+     * commented some instructions in the Makefile.am from libheraia
+     * Changed Makefile.am from the plugin stat to reflect all huge changes
+       in heraia's and libheraia's included files.
+
 20.10.2008
    - Olivier Delhomme <heraia@delhomme.org>  
 	 * Changed version numbers for upcoming release

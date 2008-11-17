@@ -1,9 +1,9 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
-  io.c
-  io.c - input and output functions for heraia
+  heraia_io.c
+  heraia_io.c - input and output functions for heraia
  
-  (C) Copyright 2005 - 2007 Olivier Delhomme
+  (C) Copyright 2005 - 2008 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -21,7 +21,7 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
 
-#include "heraia_types.h"
+#include <libheraia.h>
 
 static GladeXML *load_glade_xml_if_it_exists(char *file_to_load);
 
@@ -83,11 +83,11 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 		{
 			if (S_ISREG(stat_buf->st_mode))
 				{
-					log_message(main_window, G_LOG_LEVEL_WARNING, "The file %s is empty !\n", filename);
+					log_message(main_window, G_LOG_LEVEL_WARNING, "The file %s is empty !", filename);
 				}
 			else
 				{
-					log_message(main_window, G_LOG_LEVEL_WARNING, "The file %s does not exist !\n", filename);
+					log_message(main_window, G_LOG_LEVEL_WARNING, "The file %s does not exist !", filename);
 				}
 			success = FALSE;
 		}

@@ -32,6 +32,8 @@
            understandable
 08.07.2008 Add a swig hability and begin doing thing in ruby <-- is this really 
            a thing that I want ?
+12.11.2008 Add options to separate thousands when displaying numbers (in the
+           main program and another in the data interpretor window).
 
 
 [Done List]
