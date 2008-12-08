@@ -1,3 +1,10 @@
+08.12.2008
+   - Olivier Delhomme <heraia@delhomme.org>
+	 * Forgot to include some files into the svn repository.
+	 * Corrected bugs in the main preference dialog window (seg fault when 
+       closing)
+	 * New function to load a preference file
+
 12.11.2008
    - Olivier Delhomme <heraia@delhomme.org>
      * Changed french function names and comments to english ones

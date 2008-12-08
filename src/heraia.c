@@ -151,6 +151,7 @@ static heraia_window_t *init_window_property_struct(heraia_window_t *main_window
 static heraia_window_t *heraia_init_main_struct(void)
 {
 	heraia_window_t *herwin = NULL;
+	prefs_t *prefs = NULL;
 	xml_t *xmls = NULL;
 
 	herwin = (heraia_window_t *) g_malloc0(sizeof(heraia_window_t));
@@ -163,9 +164,11 @@ static heraia_window_t *heraia_init_main_struct(void)
 		}
 
 	/* preference file name initialisation */
-	herwin->pref_pathname = g_strdup_printf("%s%c.%s", g_get_home_dir(), G_DIR_SEPARATOR, "heraia");
-	herwin->pref_filename = g_strdup_printf("%s%c%s", herwin->pref_pathname, G_DIR_SEPARATOR, "main_preferences");
-	verify_preference_file(herwin->pref_pathname, herwin->pref_filename);
+	prefs = (prefs_t *) g_malloc0(sizeof(prefs_t));
+	herwin->prefs = prefs;
+	herwin->prefs->pathname = g_strdup_printf("%s%c.%s", g_get_home_dir(), G_DIR_SEPARATOR, "heraia");
+	herwin->prefs->filename = g_strdup_printf("%s%c%s", herwin->prefs->pathname, G_DIR_SEPARATOR, "main_preferences");
+	verify_preference_file(herwin->prefs->pathname, herwin->prefs->filename);
 	
 	/**
 	 * First, in this early stage of the development we want to toggle debugging
@@ -369,7 +372,7 @@ int main (int argc, char ** argv)
 				{
 
 					log_message(main_window, G_LOG_LEVEL_INFO, "Main interface loaded (%s)", main_window->xmls->main->filename);
-                    log_message(main_window, G_LOG_LEVEL_DEBUG, "Preference file is %s", main_window->pref_filename);
+                    log_message(main_window, G_LOG_LEVEL_DEBUG, "Preference file is %s", main_window->prefs->filename);
 					
 					init_heraia_plugin_system(main_window);
 

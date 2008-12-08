@@ -24,24 +24,12 @@
 
 #include <libheraia.h>
 
-static gboolean delete_main_pref_window(GtkWidget *widget, GdkEvent  *event, gpointer data );
-static void destroy_main_pref_window(GtkWidget *widget, GdkEvent  *event, gpointer data);
+static void pref_window_close(GtkWidget *widget, gpointer data);
+static gboolean pref_window_delete(GtkWidget *widget, GdkEvent  *event, gpointer data);
 static void main_pref_window_connect_signals(heraia_window_t *main_window);
 
-
-static void main_pref_window_close(GtkWidget *widget, gpointer data)
-{
-	heraia_window_t *main_window = (heraia_window_t *) data;
-	GtkWidget *pref_window = NULL;
-	
-	pref_window = heraia_get_widget(main_window->xmls->main, "main_preferences_window");
-	log_message(main_window, G_LOG_LEVEL_DEBUG, "Killed main preferences window");
-	
-	if (pref_window != NULL)
-	{
-		main_window->win_prop->main_pref_window = record_and_hide_dialog_box(pref_window, main_window->win_prop->main_pref_window);
-	}
-}
+/* ToolBar buttons */
+static void on_mp_tb_fp_bt_clicked(GtkToolButton *toolbutton, gpointer data);
 
 
 /**** The Signals ****/
@@ -49,16 +37,18 @@ static void main_pref_window_close(GtkWidget *widget, gpointer data)
 /** 
  *  Closing the window 
  */
-static gboolean delete_main_pref_window(GtkWidget *widget, GdkEvent  *event, gpointer data)
+static gboolean pref_window_delete(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {
-	main_pref_window_close(widget, data);
-
-	return FALSE;
-}
-
- static void destroy_main_pref_window(GtkWidget *widget, GdkEvent  *event, gpointer data)
-{
-	main_pref_window_close(widget, data);
+	heraia_window_t *main_window = (heraia_window_t *) data;
+	GtkWidget *pref_window = NULL;
+	
+	if (main_window != NULL && main_window->win_prop != NULL && main_window->win_prop->main_pref_window != NULL)
+	{
+		pref_window = heraia_get_widget(main_window->xmls->main, "main_preferences_window");
+		record_and_hide_dialog_box(pref_window, main_window->win_prop->main_pref_window);
+	}
+	
+	return TRUE;
 }
 
 /**
@@ -66,15 +56,37 @@ static gboolean delete_main_pref_window(GtkWidget *widget, GdkEvent  *event, gpo
  */
 static void main_pref_window_connect_signals(heraia_window_t *main_window)
 {
+	/* Closing the window */
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "main_preferences_window")), "delete-event",
+					 G_CALLBACK(pref_window_delete), main_window);
 
-	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "main_preferences_window")), "delete_event", 
-					 G_CALLBACK(delete_main_pref_window), main_window);
+	/* Clicking on the file preference button of the toolbar */
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "mp_tb_fp_bt")), "clicked",
+					 G_CALLBACK(on_mp_tb_fp_bt_clicked), main_window);
+}
 
-	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "main_preferences_window")), "destroy", 
-					 G_CALLBACK(destroy_main_pref_window), main_window);
+
+/**
+ * Tool buttons
+ */
+
+/**
+ * Main preference ToolBar, File Preference Button
+ */
+static void on_mp_tb_fp_bt_clicked(GtkToolButton *toolbutton, gpointer data)
+{
+	heraia_window_t *main_window = (heraia_window_t *) data;
+	GtkWidget *notebook = NULL;  /* Main Preference Window's Notebook */
+	
+	if (main_window != NULL && main_window->xmls != NULL && main_window->xmls->main != NULL)
+	{
+		notebook = heraia_get_widget(main_window->xmls->main, "mp_first_notebook");
+		gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 0);
+	}
 }
 
 /**** End Signals ****/
+
 
 /**
  *  Inits the main preferences window interface 

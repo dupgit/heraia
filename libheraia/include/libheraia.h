@@ -157,6 +157,14 @@ typedef struct
 	window_prop_t *main_pref_window;  /* main preference window    */
 } all_window_prop_t;
 
+
+typedef struct
+{
+   gchar *filename;    /* user preference file file name   */
+   gchar *pathname;    /* user preference file path name   */	
+   GKeyFile *file;     /* preference file contents         */
+} prefs_t;
+
 /**
  *  This is the main structure (mainly named main_window due to historycal reasons)
  *  It contains all things that the program needs
@@ -175,8 +183,7 @@ typedef struct
 	GList *available_treatment_list;/* Available treatments that can be used by the user in the data type window */
 	RefreshType event;              /* Tells what is happening                                                   */
 	all_window_prop_t *win_prop;    /* Keeps window properties                                                   */
-	gchar *pref_filename;           /* user preference file file name                                            */
-	gchar *pref_pathname;           /* user preference file path name                                            */
+	prefs_t *prefs;                 /* All datas related to main preferences                                     */
 } heraia_window_t;
 
 #include "config.h"

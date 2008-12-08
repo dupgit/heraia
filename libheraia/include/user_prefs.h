@@ -25,5 +25,7 @@
 #define _LIBHERAIA_USER_PREFS_H_
 
 extern void verify_preference_file(gchar *pathname, gchar *filename);
+extern void save_main_preferences(heraia_window_t *main_window);
+extern gboolean load_preference_file(heraia_window_t *main_window);
 
 #endif /* _LIBHERAIA_USER_PREFS_H_ */

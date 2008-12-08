@@ -681,7 +681,7 @@ void init_heraia_interface(heraia_window_t *main_window)
 	
 		/* New usefull part of code */
 		notebook = heraia_get_widget(main_window->xmls->main, "file_notebook");
-		gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 1);
+		gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 0);
 		
 		if (main_window->current_doc != NULL)
 		{
@@ -799,7 +799,7 @@ static void heraia_ui_connect_signals(heraia_window_t *main_window)
 	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "save_as")), "activate",  
 					  G_CALLBACK (on_save_as_activate), main_window); 
 	
-	/* Preferences, file menu */
+	/* Preferences, file menu ; See main_pref_window.c for main_pref_window's signals */
 	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "preferences")), "activate",  
 					  G_CALLBACK (on_preferences_activate), main_window);
 	
@@ -1043,6 +1043,9 @@ gboolean is_cmi_checked(GtkWidget *check_menu_item)
  */
 GtkWidget *heraia_get_widget(GladeXML *xml, gchar *widget_name)
 {
+   /** For debug purposes only (verbose)
+	*	fprintf(stdout, "Getting Widget named %s\n", widget_name); 
+	*/
 	if (xml != NULL && widget_name != NULL)
 	{
 		return glade_xml_get_widget(xml, widget_name);

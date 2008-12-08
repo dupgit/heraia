@@ -84,3 +84,46 @@ void verify_preference_file(gchar *pathname, gchar *filename)
 	verify_preference_file_name_presence(filename);
 	
 }
+
+/**
+ *  Load the preference file
+ */
+
+gboolean load_preference_file(heraia_window_t *main_window)
+{
+	prefs_t *prefs = NULL;
+	GError **error;
+	
+	if (main_window != NULL && main_window->prefs != NULL)
+	{
+		prefs = main_window->prefs;
+		return g_key_file_load_from_file(prefs->file, prefs->filename,  G_KEY_FILE_KEEP_COMMENTS & G_KEY_FILE_KEEP_TRANSLATIONS, error);
+	}
+	
+	return FALSE;
+}
+
+
+/**
+ *  Saves only file preferences related options
+ */
+static void save_mp_file_preferences_options(heraia_window_t *main_window)
+{
+	
+	
+}
+
+
+/**
+ * Save all preferences to the user preference file
+ */
+void save_main_preferences(heraia_window_t *main_window)
+{
+	if (main_window != NULL)
+	{
+		save_mp_file_preferences_options(main_window);
+	}
+}
+
+
+
