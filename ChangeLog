@@ -1,3 +1,8 @@
+22.12.2008
+   - Olivier Delhomme <heraia@delhomme.org>
+	* Corrected a bug that crashed heraia when saving a non existing file
+	* Suppressed a warning in a printf format 
+
 08.12.2008
    - Olivier Delhomme <heraia@delhomme.org>
 	 * Forgot to include some files into the svn repository.

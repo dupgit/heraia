@@ -233,7 +233,7 @@ static void refresh_file_labels(heraia_window_t *main_window)
 					/* position begins at 0 and this is not really human readable */
 					/* it's more confusing than anything so we do + 1             */
 					/* To translators : do not translate <small> and such         */
-					text = g_strdup_printf("<small>%'Ld</small>", position + 1);
+					text = g_strdup_printf("<small>%'ld</small>", position + 1);
 					gtk_label_set_markup(GTK_LABEL(label), text);
 					g_free(text);
 				}
@@ -274,7 +274,7 @@ void refresh_event_handler(GtkWidget *widget, gpointer data)
 /**
  *  This handles the menuitem "Ouvrir" to open a file 
  */
-void on_open_activate(GtkWidget *widget, gpointer data )
+void on_open_activate(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	
@@ -292,21 +292,21 @@ void on_open_activate(GtkWidget *widget, gpointer data )
  *  Here we attemp to save the edited file
  *  TODO : be more accurate on error (error type, message and filename)
  */
-void on_save_activate( GtkWidget *widget,  gpointer data )
+void on_save_activate(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;	
 	HERAIA_ERROR erreur = HERAIA_NOERR;
 	gchar *filename = NULL;
 	
-	if (main_window != NULL)
+	if (main_window != NULL && main_window->current_doc != NULL)
 	{
-		erreur = heraia_hex_document_save(main_window);
-	}
-	
-	if (erreur != HERAIA_NOERR)
-	{
-		filename = heraia_hex_document_get_filename(main_window->current_doc);
-		log_message(main_window, G_LOG_LEVEL_ERROR, "Error while saving file %s !", filename);
+		erreur = heraia_hex_document_save(main_window);	
+
+		if (erreur != HERAIA_NOERR)
+		{
+			filename = heraia_hex_document_get_filename(main_window->current_doc);
+			log_message(main_window, G_LOG_LEVEL_ERROR, "Error while saving file %s !", filename);
+		}
 	}
 }
 
