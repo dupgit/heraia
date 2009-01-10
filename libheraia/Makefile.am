@@ -17,7 +17,7 @@ headerfiles = 							\
 		include/plugin_list.h			\
 		include/log.h
 
-libheraia_la_CPPFLAGS = -I$(top_builddir) -DPLUGINS_DIR=\"$(plugins_dir)\"	 \ 
+libheraia_la_CPPFLAGS = -I$(top_builddir) -DPLUGINS_DIR=\"$(plugins_dir)\"	 \
 						-I$(top_builddir)/libheraia/include $(GTKHEX_CFLAGS) \
 						$(LIBGLADE_CFLAGS) $(GMODULE_CFLAGS) $(CFLAGS)		 \
 						$(GTK2_CFLAGS) $(GLIB2_CFLAGS)

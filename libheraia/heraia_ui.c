@@ -28,12 +28,16 @@ static gboolean load_heraia_glade_xml(heraia_window_t *main_window);
 static void heraia_ui_connect_signals(heraia_window_t *main_window);
 static void record_and_hide_about_box(heraia_window_t *main_window);
 static void refresh_file_labels(heraia_window_t *main_window);
+static void close_heraia(heraia_window_t *main_window);
 
 /**
  *  Quit, file menu
  */
 void on_quit_activate( GtkWidget *widget, gpointer data )
 {
+	heraia_window_t *main_window = (heraia_window_t *) data;
+	
+	close_heraia(main_window);
 	gtk_main_quit();
 }
 
@@ -233,7 +237,7 @@ static void refresh_file_labels(heraia_window_t *main_window)
 					/* position begins at 0 and this is not really human readable */
 					/* it's more confusing than anything so we do + 1             */
 					/* To translators : do not translate <small> and such         */
-					text = g_strdup_printf("<small>%'ld</small>", position + 1);
+					text = g_strdup_printf("<small>%'lld</small>", position + 1);
 					gtk_label_set_markup(GTK_LABEL(label), text);
 					g_free(text);
 				}
@@ -408,6 +412,9 @@ void on_DIMenu_activate(GtkWidget *widget, gpointer data)
  */
 gboolean delete_main_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {
+	heraia_window_t *main_window = (heraia_window_t *) data;
+	
+	close_heraia(main_window);
 	gtk_widget_destroy(widget);
 	return TRUE;
 }
@@ -659,27 +666,11 @@ void set_notebook_tab_name(heraia_window_t *main_window)
  */
 void init_heraia_interface(heraia_window_t *main_window)
 {
-	data_window_t *dw = NULL;    /* data interpretor structure   */
-	/* GtkWidget *diw = NULL; */ /* data interpretor window      */
-	GtkWidget *menu = NULL;      /* the DIMenu diplay option     */
-	GtkWidget *window = NULL;    /* the main window widget       */ 
 	GtkWidget *notebook = NULL;  /* file notebook in main window */
-	all_window_prop_t *win_prop; /* window properties (all)      */
-	
-/**
- *  I can not record why I wrote this code. But it is very clear that
- *  nowdays it will never be used and is totally useless !!
- */	
 	
 	if (main_window != NULL)
 	{
-		dw = main_window->current_DW;
-		
-		menu = heraia_get_widget(main_window->xmls->main, "DIMenu");
-		window = heraia_get_widget(main_window->xmls->main, "main_window");
-		win_prop = main_window->win_prop;
-	
-		/* New usefull part of code */
+		/* Notebook selection */
 		notebook = heraia_get_widget(main_window->xmls->main, "file_notebook");
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 0);
 		
@@ -694,33 +685,8 @@ void init_heraia_interface(heraia_window_t *main_window)
 		
 		refresh_file_labels(main_window);
 		
-		
-		/* if (dw != NULL && diw != NULL) *//* Something's wrong here ! */
-		/* {  */
-			/*  Connection of the signal to the right function
-			 *  in order to interpret things when the cursor is
-			 *  moving                                          
-			 */
-		     /*
-			 connect_cursor_moved_signal(main_window);
-			 */
-			/* gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menu), win_prop->data_interpretor->displayed);  */   
-			
-			/* Shows all widgets */
-			/* move_and_show_dialog_box(window, win_prop->main_dialog); */
-			
-			/* Shows or hide the data interpretor window */
-			/*
-			 if (win_prop->main_dialog->displayed == TRUE)
-			  {
-				 move_and_show_dialog_box(diw, win_prop->main_dialog);
-		      }
-		     else
-		      {
-			     record_and_hide_dialog_box(diw, win_prop->main_dialog);
-		      }
-		 
-		}*/
+		/* inits window states (shows or hide windows) */
+		init_window_states(main_window);
 	}
 }
 
@@ -862,7 +828,7 @@ int load_heraia_ui(heraia_window_t *main_window)
 		/* Heraia UI signals */
 		if (main_window->debug == TRUE)
 		{
-			fprintf(stdout, "connecting heraia_ui signals     ");
+			fprintf(stdout, "Connecting heraia_ui signals     ");
 		}
 		
 		heraia_ui_connect_signals(main_window);
@@ -872,6 +838,19 @@ int load_heraia_ui(heraia_window_t *main_window)
 			fprintf(stdout, " [Done]\n");
 		}
 	
+		fprintf(stdout, "Loading heraia preference file   ");
+		
+		if (load_preference_file(main_window) != TRUE)
+		{
+			fprintf(stdout, " [FAILED]\n");
+		}
+		else /* Setting up preferences */
+		{
+			fprintf(stdout, " [Done]\n");
+			fprintf(stdout, "Setting up preferences           ");
+			setup_preferences(main_window);
+			fprintf(stdout, " [Done]\n");
+		}
 		
 		/* The Log window */
 		if (main_window->debug == TRUE)
@@ -1065,5 +1044,68 @@ void destroy_a_single_widget(GtkWidget *widget)
 	if (widget != NULL)
 	{
 		gtk_widget_destroy(widget);
+	}
+}
+
+/**
+ * Before closing heraia we need to do few things
+ */
+static void close_heraia(heraia_window_t *main_window)
+{
+	/* 1. Saving preferences */
+	save_main_preferences(main_window);
+}
+
+
+static void init_one_cmi_window_state(GtkWidget *dialog_box, GtkWidget *cmi, window_prop_t *dialog_prop)
+{
+	gboolean activated = FALSE;
+	
+	if (dialog_box != NULL && cmi != NULL && dialog_prop != NULL)
+	{
+		activated = dialog_prop->displayed;
+		gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(cmi), activated);
+		if (activated == TRUE)
+		{
+			fprintf(stdout, "x: %d\t y: %d\n", dialog_prop->x, dialog_prop->y);
+			gtk_window_move(GTK_WINDOW(dialog_box), dialog_prop->x, dialog_prop->y);
+			gtk_widget_show_all(dialog_box);
+		}
+	}
+}
+
+
+/**
+ *  Inits the window states 
+ */
+void init_window_states(heraia_window_t *main_window)
+{
+	GtkWidget *cmi = NULL;
+	GtkWidget *dialog_box = NULL;
+	
+	if (main_window != NULL)
+	{
+		if (main_window->win_prop)
+		{
+			/* Log Window Interface */
+			cmi = heraia_get_widget(main_window->xmls->main, "mw_cmi_show_logw");
+			dialog_box = heraia_get_widget(main_window->xmls->main, "log_window");
+			init_one_cmi_window_state(dialog_box, cmi, main_window->win_prop->log_box);
+			
+			/* Data Interpretor Interface */		
+			cmi = heraia_get_widget(main_window->xmls->main, "DIMenu");
+			/* emit the specific signal here to activate the check_menu_item */
+			gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(cmi), main_window->win_prop->data_interpretor->displayed);
+			
+			/* List Data type Interface */
+			cmi = heraia_get_widget(main_window->xmls->main, "ldt_menu");
+			dialog_box = heraia_get_widget(main_window->xmls->main, "list_data_types_window");
+			init_one_cmi_window_state(dialog_box, cmi, main_window->win_prop->ldt);
+			
+			/* Plugin List Interface */
+			cmi = heraia_get_widget(main_window->xmls->main, "mw_cmi_plugin_list");
+			dialog_box = heraia_get_widget(main_window->xmls->main, "plugin_list_window");
+			init_one_cmi_window_state(dialog_box, cmi, main_window->win_prop->plugin_list);						   
+		}
 	}
 }

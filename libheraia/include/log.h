@@ -30,6 +30,6 @@ extern void print_message(const char *format, ...);
 extern void log_message(heraia_window_t *main_window, GLogLevelFlags log_level, const char *format, ...);
 extern void log_window_init_interface(heraia_window_t *main_window);
 extern void show_hide_log_window(heraia_window_t *main_window, gboolean show, GtkCheckMenuItem *cmi);
-extern void mw_cmi_affiche_logw_toggle(GtkWidget *widget, gpointer data);
+extern void mw_cmi_show_logw_toggle(GtkWidget *widget, gpointer data);
 
 #endif /* _HERAIA_LOG_H_ */

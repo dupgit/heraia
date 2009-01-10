@@ -24,19 +24,12 @@ I let you imagine what I expect before I do a major release !!!
 
 . 0.0.6
    * save window properties to the user config file
-   * add plugins preferences files
    * translate all french function names in the code into english ones
    * add a preference window
 
 . 0.0.7
    * load window properties from user config file
-   * save plugins preferences to the config file
    * add a preference option to display thousands or not in the main window
-
-. 0.0.8
-   * add a preference option where the user may be able to reset 
-     window properties
-   * load plugins preferences from the config file (when initialiazing plugins)
 
 . 0.0.9
    * get rid of the filename structure in the heraia_window_t (it does 
@@ -46,6 +39,13 @@ I let you imagine what I expect before I do a major release !!!
    * save and save as functions
    * record window positions (save them to a user preference file)
    * add somewhere, the cursor's position and file length
+
+	Delayed features : I may do this if someone wants it :
+     . save plugins preferences to the config file
+	 . add plugins preferences files
+     . load plugins preferences from the config file (when initialiazing plugins)
+     . add a preference option where the user may be able to reset window 
+       properties (not necessary as one may only uncheck saving properties)
 
 . 0.1.1
    * rename main_window variable and heraia_window_t structure in 

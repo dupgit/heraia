@@ -24,8 +24,23 @@
 #ifndef _LIBHERAIA_USER_PREFS_H_
 #define _LIBHERAIA_USER_PREFS_H_
 
+/**
+ *  GN == Group Name
+ *  KN == Key Name
+ *  Thoses variables are the one to use in the main preference file
+ */
+#define GN_GLOBAL_PREFS "Global Preferences"
+#define KN_SAVE_WINDOW_PREFS "Save Window Preferences"
+#define KN_ABOUT_BOX "About Box"
+#define KN_DATA_INTERPRETOR "Data Interpretor"
+#define KN_LOG_BOX "Log Box"
+#define KN_MAIN_DIALOG "Main Dialog"
+#define KN_PLUGIN_LIST "Plugin List"
+#define KN_LDT "List Data Types"
+#define KN_MAIN_PREFS "Main Preferences"
+
 extern void verify_preference_file(gchar *pathname, gchar *filename);
 extern void save_main_preferences(heraia_window_t *main_window);
-extern gboolean load_preference_file(heraia_window_t *main_window);
+extern void setup_preferences(heraia_window_t *main_window);
 
 #endif /* _LIBHERAIA_USER_PREFS_H_ */

@@ -1,7 +1,32 @@
+30.12.2008
+   - Olivier Delhomme <heraia@delhomme.org>
+	 * Corrected the bug discovered yesterday
+     * Added a closing_heraia function that is called when one quits heraia
+       and that saves the preferences.
+     * Killed unecessary code in the init_heraia_interfac function (it was
+       so old that I couldn't record why it was for !
+     * Loading preference file is done earlier
+     * New function to init windows states (log window taken into account)
+     * Changed the roadmap to clear what's unecessary now (to my point of view)
+
+29.12.2008
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Corrected some mistakes which prevented the user
+       preference file code to work.
+     * BUG : when closing the log window : it crashes heraia
+
+28.12.2008
+   - Olivier Delhomme <heraia@delhomme.org>
+     * saving preferences to file.
+
+26.12.2008
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Working on preference file
+
 22.12.2008
    - Olivier Delhomme <heraia@delhomme.org>
-	* Corrected a bug that crashed heraia when saving a non existing file
-	* Suppressed a warning in a printf format 
+	 * Corrected a bug that crashed heraia when saving a non existing file
+	 * Suppressed a warning in a printf format 
 
 08.12.2008
    - Olivier Delhomme <heraia@delhomme.org>

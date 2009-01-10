@@ -52,6 +52,7 @@ extern void init_heraia_interface(heraia_window_t *main_window);
 extern int load_heraia_ui(heraia_window_t *main_window);
 extern void refresh_event_handler(GtkWidget *widget, gpointer data);
 extern void connect_cursor_moved_signal(heraia_window_t *main_window);
+extern void init_window_states(heraia_window_t *main_window);
 
 /* window positionning system */
 extern window_prop_t *move_and_show_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_pos);

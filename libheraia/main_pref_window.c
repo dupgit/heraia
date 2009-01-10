@@ -45,6 +45,7 @@ static gboolean pref_window_delete(GtkWidget *widget, GdkEvent  *event, gpointer
 	if (main_window != NULL && main_window->win_prop != NULL && main_window->win_prop->main_pref_window != NULL)
 	{
 		pref_window = heraia_get_widget(main_window->xmls->main, "main_preferences_window");
+		save_main_preferences(main_window);
 		record_and_hide_dialog_box(pref_window, main_window->win_prop->main_pref_window);
 	}
 	
@@ -71,7 +72,7 @@ static void main_pref_window_connect_signals(heraia_window_t *main_window)
  */
 
 /**
- * Main preference ToolBar, File Preference Button
+ *  Main Preferences, ToolBar, File Preference Button
  */
 static void on_mp_tb_fp_bt_clicked(GtkToolButton *toolbutton, gpointer data)
 {

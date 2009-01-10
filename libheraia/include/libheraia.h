@@ -120,6 +120,7 @@ typedef struct
 	GtkWidget *di_entry;     /* entry for the data interpretor window                                       */
 } data_type_t;
 
+
 /**
  *  Structure that contains all the xml definitions loaded at
  *  running time using libglade
@@ -128,8 +129,6 @@ typedef struct
 {
 	GladeXML *main;       /* the main interface xml description       */
 } xml_t;
-
-
 
 /**
  * Window properties
@@ -157,7 +156,9 @@ typedef struct
 	window_prop_t *main_pref_window;  /* main preference window    */
 } all_window_prop_t;
 
-
+/**
+ *  Data type related to preferences
+ */
 typedef struct
 {
    gchar *filename;    /* user preference file file name   */

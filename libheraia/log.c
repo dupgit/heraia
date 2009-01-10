@@ -225,7 +225,7 @@ void show_hide_log_window(heraia_window_t *main_window, gboolean show, GtkCheckM
 /**
  *  The Check menu item for the Log window 
  */
-void mw_cmi_affiche_logw_toggle(GtkWidget *widget, gpointer data)
+void mw_cmi_show_logw_toggle(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	GtkCheckMenuItem *cmi = GTK_CHECK_MENU_ITEM(widget);
@@ -244,7 +244,7 @@ static gboolean delete_log_window_event(GtkWidget *widget, GdkEvent  *event, gpo
 {
 	logw_close_clicked(widget, data);
 
-	return FALSE;
+	return TRUE;
 }
 
 static void destroy_log_window(GtkWidget *widget, GdkEvent  *event, gpointer data)
@@ -258,9 +258,11 @@ static void destroy_log_window(GtkWidget *widget, GdkEvent  *event, gpointer dat
 static void logw_close_clicked(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
-	GtkCheckMenuItem *cmi = GTK_CHECK_MENU_ITEM(heraia_get_widget(main_window->xmls->main, "mw_cmi_affiche_logw"));
+	GtkWidget *cmi = NULL;
+	
+	cmi = heraia_get_widget(main_window->xmls->main, "mw_cmi_show_logw");
 
-	show_hide_log_window(main_window, FALSE, cmi);
+	show_hide_log_window(main_window, FALSE, GTK_CHECK_MENU_ITEM(cmi));
 }
 
 
@@ -281,19 +283,22 @@ static void log_window_connect_signals(heraia_window_t *main_window)
 					 G_CALLBACK(logw_close_clicked), main_window);
 
 	/* the toogle button */
-	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "mw_cmi_affiche_logw")), "toggled",
-					 G_CALLBACK(mw_cmi_affiche_logw_toggle), main_window);
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "mw_cmi_show_logw")), "toggled",
+					 G_CALLBACK(mw_cmi_show_logw_toggle), main_window);
 
 }
 
 /**** End Signals ****/
 
-
-
 /**
  *  Inits the log window interface 
+ *  Called once at init time
  */
 void log_window_init_interface(heraia_window_t *main_window)
 {
-	log_window_connect_signals(main_window);
+	if (main_window != NULL)
+	{
+		/* Connecting signals */
+		log_window_connect_signals(main_window);
+	}	
 }

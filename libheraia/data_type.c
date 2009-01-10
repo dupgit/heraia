@@ -542,7 +542,7 @@ static guchar *print_bin_to_hex(GtkWidget *entry, GList *values_list)
 			else
 				{
 					aux = final;
-					final = (guchar *) g_strconcat((gchar *) aux, " / ", (gchar *) hex);
+					final = (guchar *) g_strconcat((gchar *) aux, " / ", (gchar *) hex, NULL);
 					g_free(aux);
 				}
 

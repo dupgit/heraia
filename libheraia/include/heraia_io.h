@@ -25,5 +25,7 @@
 
 extern gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename);
 extern GladeXML *load_glade_xml_file(GList *location_list, gchar *filename);
+extern gboolean save_preferences_to_file(prefs_t *prefs);
+extern gboolean load_preference_file(heraia_window_t *main_window);
 
 #endif /* _HERAIA_IO_H_ */

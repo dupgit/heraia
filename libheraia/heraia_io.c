@@ -149,3 +149,40 @@ GladeXML *load_glade_xml_file(GList *location_list, gchar *filename)
 	
 	return xml;
 }
+
+
+/**
+ *  Load the preference file
+ */
+gboolean load_preference_file(heraia_window_t *main_window)
+{	
+	if (main_window != NULL && main_window->prefs != NULL)
+	{
+		return g_key_file_load_from_file(main_window->prefs->file, main_window->prefs->filename,  G_KEY_FILE_KEEP_COMMENTS & G_KEY_FILE_KEEP_TRANSLATIONS, NULL);
+	}
+	
+	return FALSE;
+}
+
+
+/**
+ *  Saves the preferences to the file preferences
+ */
+gboolean save_preferences_to_file(prefs_t *prefs)
+{
+	gsize length = 0;
+	gchar *contents = NULL;
+	gboolean result = FALSE;
+	
+	if (prefs != NULL && prefs->file != NULL && prefs->filename != NULL)
+	{
+		contents = g_key_file_to_data(prefs->file, &length, NULL);
+		result = g_file_set_contents(prefs->filename, contents, length, NULL);
+		g_free(contents);
+	}
+	
+	return result;
+}
+
+
+

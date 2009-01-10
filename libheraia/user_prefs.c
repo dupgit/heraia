@@ -26,6 +26,8 @@
 
 static void verify_preference_file_path_presence(gchar *pathname);
 static void verify_preference_file_name_presence(gchar *filename);
+static void save_window_preferences(GKeyFile *file, gchar *name, window_prop_t *window_prop);
+static void save_mp_file_preferences_options(heraia_window_t *main_window);
 
 /**
  *  verify preference file path presence and creates it if it does
@@ -86,33 +88,64 @@ void verify_preference_file(gchar *pathname, gchar *filename)
 }
 
 /**
- *  Load the preference file
+ *  window preferences
  */
-
-gboolean load_preference_file(heraia_window_t *main_window)
+static void save_window_preferences(GKeyFile *file, gchar *name, window_prop_t *window_prop)
 {
-	prefs_t *prefs = NULL;
-	GError **error;
+	gchar *keyname = NULL;
 	
-	if (main_window != NULL && main_window->prefs != NULL)
-	{
-		prefs = main_window->prefs;
-		return g_key_file_load_from_file(prefs->file, prefs->filename,  G_KEY_FILE_KEEP_COMMENTS & G_KEY_FILE_KEEP_TRANSLATIONS, error);
-	}
+	keyname = g_strconcat(name, " Displayed", NULL);
+	g_key_file_set_boolean(file, GN_GLOBAL_PREFS, keyname, window_prop->displayed);
+	g_free(keyname);
 	
-	return FALSE;
+	keyname = g_strconcat(name, " X_pos", NULL);
+	g_key_file_set_integer(file, GN_GLOBAL_PREFS, keyname, window_prop->x);
+	g_free(keyname);
+	
+	keyname = g_strconcat(name, " Y_pos", NULL);
+	g_key_file_set_integer(file, GN_GLOBAL_PREFS, keyname, window_prop->y);
+	g_free(keyname);
 }
 
-
 /**
- *  Saves only file preferences related options
+ *  Save only file preferences related options
  */
 static void save_mp_file_preferences_options(heraia_window_t *main_window)
 {
+	prefs_t *prefs = NULL;
+	GtkWidget *save_window_position_bt = NULL;
+	gboolean activated = FALSE;
 	
-	
+	if (main_window != NULL)
+	{
+		prefs = main_window->prefs;
+		
+		if (prefs->file == NULL)
+		{
+			prefs->file = g_key_file_new();
+		}
+		
+		if (prefs != NULL && prefs->file != NULL)
+		{
+			/* Saves the position */
+			save_window_position_bt = heraia_get_widget(main_window->xmls->main, "save_window_position_bt");
+			activated = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(save_window_position_bt));
+			g_key_file_set_boolean(prefs->file, GN_GLOBAL_PREFS, KN_SAVE_WINDOW_PREFS, activated);
+			
+			/* Saving all window preferences if necessary */
+			if (activated == TRUE)
+			{
+				save_window_preferences(prefs->file, KN_ABOUT_BOX, main_window->win_prop->about_box);
+				save_window_preferences(prefs->file, KN_DATA_INTERPRETOR, main_window->win_prop->data_interpretor);
+				save_window_preferences(prefs->file, KN_LOG_BOX, main_window->win_prop->log_box);
+				save_window_preferences(prefs->file, KN_MAIN_DIALOG, main_window->win_prop->main_dialog);
+				save_window_preferences(prefs->file, KN_PLUGIN_LIST, main_window->win_prop->plugin_list);
+				save_window_preferences(prefs->file, KN_LDT, main_window->win_prop->ldt);
+				save_window_preferences(prefs->file, KN_MAIN_PREFS, main_window->win_prop->main_pref_window);
+			}
+		}
+	}
 }
-
 
 /**
  * Save all preferences to the user preference file
@@ -121,9 +154,83 @@ void save_main_preferences(heraia_window_t *main_window)
 {
 	if (main_window != NULL)
 	{
+		/* Saving main Preferences */
 		save_mp_file_preferences_options(main_window);
+		
+		if (main_window->prefs != NULL)
+		{
+			/* Saving to file */
+			save_preferences_to_file(main_window->prefs);
+		}
 	}
 }
 
 
+/**
+ *  window preferences
+ */
+static void load_window_preferences(GKeyFile *file, gchar *name, window_prop_t *window_prop)
+{
+	gchar *keyname = NULL;
+	
+	keyname = g_strconcat(name, " Displayed", NULL);
+	window_prop->displayed = g_key_file_get_boolean(file, GN_GLOBAL_PREFS, keyname, NULL);
+	g_free(keyname);
+	
+	keyname = g_strconcat(name, " X_pos", NULL);
+	window_prop->x = g_key_file_get_integer(file, GN_GLOBAL_PREFS, keyname, NULL);
+	g_free(keyname);
+	
+	keyname = g_strconcat(name, " Y_pos", NULL);
+	window_prop->y = g_key_file_get_integer(file, GN_GLOBAL_PREFS, keyname, NULL);
+	g_free(keyname);
+	
+	/* fprintf(stdout, "%s : %d %d %d\n", name, window_prop->displayed, window_prop->x, window_prop->y); */
+}
+
+
+/**
+ *  Load only file preferences related options
+ */
+static void load_mp_file_preferences_options(heraia_window_t *main_window)
+{
+	prefs_t *prefs = NULL;
+	GtkWidget *save_window_position_bt = NULL;
+	gboolean activated = FALSE;
+	
+	if (main_window != NULL)
+	{
+		prefs = main_window->prefs;
+		
+		if (prefs != NULL && prefs->file != NULL)
+		{
+			activated = g_key_file_get_boolean(prefs->file, GN_GLOBAL_PREFS, KN_SAVE_WINDOW_PREFS, NULL);
+			save_window_position_bt = heraia_get_widget(main_window->xmls->main, "save_window_position_bt");
+			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(save_window_position_bt), activated);
+			
+			if (activated == TRUE)
+			{
+				load_window_preferences(prefs->file, KN_ABOUT_BOX, main_window->win_prop->about_box);
+				load_window_preferences(prefs->file, KN_DATA_INTERPRETOR, main_window->win_prop->data_interpretor);
+				load_window_preferences(prefs->file, KN_LOG_BOX, main_window->win_prop->log_box);
+				load_window_preferences(prefs->file, KN_MAIN_DIALOG, main_window->win_prop->main_dialog);
+				load_window_preferences(prefs->file, KN_PLUGIN_LIST, main_window->win_prop->plugin_list);
+				load_window_preferences(prefs->file, KN_LDT, main_window->win_prop->ldt);
+				load_window_preferences(prefs->file, KN_MAIN_PREFS, main_window->win_prop->main_pref_window);	
+			}
+		}	
+	}
+}
+
+/**
+ *  Sets up the preferences as loaded in the preference file
+ */
+void setup_preferences(heraia_window_t *main_window)
+{
+	if (main_window != NULL)
+	{
+		/* 1. Main Preferences */
+		load_mp_file_preferences_options(main_window);
+	}
+}
 
