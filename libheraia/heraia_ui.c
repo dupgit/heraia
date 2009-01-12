@@ -3,7 +3,7 @@
   heraia_ui.c
   main menus, callback and utility functions
  
-  (C) Copyright 2005 - 2008 Olivier Delhomme
+  (C) Copyright 2005 - 2009 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 	 
@@ -110,6 +110,68 @@ window_prop_t *move_and_show_dialog_box(GtkWidget *dialog_box, window_prop_t *di
 	return dialog_prop;
 }
 
+
+void record_dialog_box_position(GtkWidget *dialog_box, window_prop_t *dialog_prop)
+{
+	gint x = 0;
+	gint y = 0;
+	
+	if (dialog_prop != NULL && dialog_prop->displayed == TRUE)
+	{
+		if (dialog_box != NULL)
+		{
+			gtk_window_get_position(GTK_WINDOW(dialog_box), &x, &y);
+			dialog_prop->x = x;
+			dialog_prop->y = y;
+		}
+	}
+}
+
+
+/**
+ * Records all the positions of the displayed windows
+ */
+void record_all_dialog_box_positions(heraia_window_t *main_window)
+{
+	GtkWidget *dialog_box = NULL;
+
+	if (main_window != NULL && 
+		main_window->xmls != NULL && 
+		main_window->xmls->main != NULL &&
+		main_window->win_prop != NULL &&
+		main_window->current_DW != NULL)
+	{
+		/* data interpretor */
+		dialog_box = main_window->current_DW->diw;
+		record_dialog_box_position(dialog_box, main_window->win_prop->data_interpretor);
+	
+		/* About box */
+		dialog_box = heraia_get_widget (main_window->xmls->main, "about_dialog");
+		record_dialog_box_position(dialog_box, main_window->win_prop->about_box);
+	
+		/* Log window */
+		dialog_box = heraia_get_widget (main_window->xmls->main, "log_window");
+		record_dialog_box_position(dialog_box, main_window->win_prop->log_box);
+	
+		/* main_dialog */
+		dialog_box = heraia_get_widget (main_window->xmls->main, "main_dialog");
+		record_dialog_box_position(dialog_box, main_window->win_prop->main_dialog);
+	
+		/* plugin_list */
+		dialog_box = heraia_get_widget (main_window->xmls->main, "plugin_list_window");
+		record_dialog_box_position(dialog_box, main_window->win_prop->plugin_list);
+	
+		/* list data types */
+		dialog_box = heraia_get_widget (main_window->xmls->main, "list_data_types_window");
+		record_dialog_box_position(dialog_box, main_window->win_prop->ldt);
+	
+		/* main_preferences */
+		dialog_box = heraia_get_widget (main_window->xmls->main, "main_preferences_window");
+		record_dialog_box_position(dialog_box, main_window->win_prop->main_pref_window);
+	}
+}
+	
+	
 
 /**
  *  Record position and hide a dialog box
@@ -1052,7 +1114,11 @@ void destroy_a_single_widget(GtkWidget *widget)
  */
 static void close_heraia(heraia_window_t *main_window)
 {
-	/* 1. Saving preferences */
+
+	/* recording window's position */
+	record_all_dialog_box_positions(main_window);
+	
+	/* . Saving preferences */
 	save_main_preferences(main_window);
 }
 
@@ -1067,7 +1133,7 @@ static void init_one_cmi_window_state(GtkWidget *dialog_box, GtkWidget *cmi, win
 		gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(cmi), activated);
 		if (activated == TRUE)
 		{
-			fprintf(stdout, "x: %d\t y: %d\n", dialog_prop->x, dialog_prop->y);
+			/* fprintf(stdout, "x: %d\t y: %d\n", dialog_prop->x, dialog_prop->y); */
 			gtk_window_move(GTK_WINDOW(dialog_box), dialog_prop->x, dialog_prop->y);
 			gtk_widget_show_all(dialog_box);
 		}
@@ -1083,7 +1149,7 @@ void init_window_states(heraia_window_t *main_window)
 	GtkWidget *cmi = NULL;
 	GtkWidget *dialog_box = NULL;
 	
-	if (main_window != NULL)
+	if (main_window != NULL && main_window->xmls != NULL  && main_window->xmls->main != NULL)
 	{
 		if (main_window->win_prop)
 		{
@@ -1094,9 +1160,14 @@ void init_window_states(heraia_window_t *main_window)
 			
 			/* Data Interpretor Interface */		
 			cmi = heraia_get_widget(main_window->xmls->main, "DIMenu");
-			/* emit the specific signal here to activate the check_menu_item */
-			gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(cmi), main_window->win_prop->data_interpretor->displayed);
-			
+			/* emit the specific signal to activate the check_menu_item */
+			if (main_window->win_prop->data_interpretor->displayed == TRUE)
+			{
+				/* fprintf(stdout, "displaying data interpretor !!\n"); */
+				main_window->win_prop->data_interpretor->displayed = FALSE;
+				g_signal_emit_by_name(heraia_get_widget(main_window->xmls->main, "DIMenu"), "activate");
+			}
+		
 			/* List Data type Interface */
 			cmi = heraia_get_widget(main_window->xmls->main, "ldt_menu");
 			dialog_box = heraia_get_widget(main_window->xmls->main, "list_data_types_window");
@@ -1105,7 +1176,25 @@ void init_window_states(heraia_window_t *main_window)
 			/* Plugin List Interface */
 			cmi = heraia_get_widget(main_window->xmls->main, "mw_cmi_plugin_list");
 			dialog_box = heraia_get_widget(main_window->xmls->main, "plugin_list_window");
-			init_one_cmi_window_state(dialog_box, cmi, main_window->win_prop->plugin_list);						   
+			init_one_cmi_window_state(dialog_box, cmi, main_window->win_prop->plugin_list);		
+			
+			dialog_box = heraia_get_widget(main_window->xmls->main, "main_window");
+			if (main_window->win_prop->main_dialog == TRUE)
+			{
+				gtk_window_move(GTK_WINDOW(dialog_box), main_window->win_prop->main_dialog->x, main_window->win_prop->main_dialog->y);
+				gtk_widget_show_all(dialog_box);
+			}
+			
+			/* Preferences window */
+			dialog_box = heraia_get_widget(main_window->xmls->main, "main_preferences_window");
+			if (main_window->win_prop->main_pref_window == TRUE)
+			{
+				gtk_window_move(GTK_WINDOW(dialog_box), main_window->win_prop->main_pref_window->x, main_window->win_prop->main_pref_window->y);
+				gtk_widget_show_all(dialog_box);
+			}
+			
+			
+			
 		}
 	}
 }

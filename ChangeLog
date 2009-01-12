@@ -1,3 +1,8 @@
+12.01.2009
+	- Olivier Delhomme <heraia@delhomme.org>
+      * Now data_interpretor's window displays nicely on startup when needed
+      * saving windows position when closing
+
 30.12.2008
    - Olivier Delhomme <heraia@delhomme.org>
 	 * Corrected the bug discovered yesterday

@@ -1,6 +1,7 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
+<!--Generated with glade3 3.4.5 on Mon Jan 12 22:17:42 2009 -->
 <glade-interface>
-  <requires-version lib="gtk+" version="2.12"/>
   <widget class="GtkWindow" id="main_window">
     <property name="visible">True</property>
     <property name="title" translatable="yes">Heraia</property>
@@ -145,7 +146,7 @@
                         <property name="label" translatable="yes">Data _Interpretor</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_DIMenu_activate"/>
-                        <accelerator key="I" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="I" modifiers="GDK_CONTROL_MASK" signal="activate"/>
                       </widget>
                     </child>
                     <child>
@@ -162,7 +163,7 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">_Log</property>
                         <property name="use_underline">True</property>
-                        <accelerator key="L" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="L" modifiers="GDK_CONTROL_MASK" signal="activate"/>
                       </widget>
                     </child>
                   </widget>
@@ -185,7 +186,7 @@
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkSeparatorMenuItem" id="s&#xE9;parateur1">
+                      <widget class="GtkSeparatorMenuItem" id="séparateur1">
                         <property name="visible">True</property>
                       </widget>
                     </child>
@@ -238,35 +239,48 @@
                     <property name="column_spacing">2</property>
                     <property name="row_spacing">2</property>
                     <child>
-                      <widget class="GtkLabel" id="file_selection_size_label">
+                      <widget class="GtkLabel" id="label36">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
                         <property name="ypad">2</property>
+                        <property name="label" translatable="yes">&lt;small&gt;Position :&lt;/small&gt;</property>
                         <property name="use_markup">True</property>
                       </widget>
                       <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">2</property>
-                        <property name="bottom_attach">3</property>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options">GTK_FILL</property>
+                        <property name="y_options"></property>
                         <property name="x_padding">2</property>
                         <property name="y_padding">2</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label37">
+                      <widget class="GtkLabel" id="label35">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
                         <property name="ypad">2</property>
-                        <property name="label" translatable="yes">&lt;small&gt;Selection size :&lt;/small&gt;</property>
+                        <property name="label" translatable="yes">&lt;small&gt;Selection :&lt;/small&gt;</property>
                         <property name="use_markup">True</property>
                       </widget>
                       <packing>
-                        <property name="top_attach">2</property>
-                        <property name="bottom_attach">3</property>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
                         <property name="x_options">GTK_FILL</property>
+                        <property name="y_options"></property>
+                        <property name="x_padding">2</property>
+                        <property name="y_padding">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="file_position_label">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="ypad">2</property>
+                        <property name="use_markup">True</property>
+                        <property name="selectable">True</property>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
                         <property name="y_options"></property>
                         <property name="x_padding">2</property>
                         <property name="y_padding">2</property>
@@ -291,49 +305,36 @@
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="file_position_label">
+                      <widget class="GtkLabel" id="label37">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="ypad">2</property>
+                        <property name="label" translatable="yes">&lt;small&gt;Selection size :&lt;/small&gt;</property>
+                        <property name="use_markup">True</property>
+                      </widget>
+                      <packing>
+                        <property name="top_attach">2</property>
+                        <property name="bottom_attach">3</property>
+                        <property name="x_options">GTK_FILL</property>
+                        <property name="y_options"></property>
+                        <property name="x_padding">2</property>
+                        <property name="y_padding">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="file_selection_size_label">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
                         <property name="ypad">2</property>
                         <property name="use_markup">True</property>
-                        <property name="selectable">True</property>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="right_attach">2</property>
-                        <property name="y_options"></property>
-                        <property name="x_padding">2</property>
-                        <property name="y_padding">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label35">
-                        <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="ypad">2</property>
-                        <property name="label" translatable="yes">&lt;small&gt;Selection :&lt;/small&gt;</property>
-                        <property name="use_markup">True</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
+                        <property name="top_attach">2</property>
+                        <property name="bottom_attach">3</property>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
-                        <property name="x_padding">2</property>
-                        <property name="y_padding">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label36">
-                        <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="ypad">2</property>
-                        <property name="label" translatable="yes">&lt;small&gt;Position :&lt;/small&gt;</property>
-                        <property name="use_markup">True</property>
-                      </widget>
-                      <packing>
-                        <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options">GTK_FILL</property>
                         <property name="x_padding">2</property>
                         <property name="y_padding">2</property>
                       </packing>
@@ -371,8 +372,8 @@
                     <property name="label" translatable="yes">page 1</property>
                   </widget>
                   <packing>
-                    <property name="tab_fill">False</property>
                     <property name="type">tab</property>
+                    <property name="tab_fill">False</property>
                   </packing>
                 </child>
                 <child>
@@ -384,9 +385,9 @@
                     <property name="label" translatable="yes">page 2</property>
                   </widget>
                   <packing>
+                    <property name="type">tab</property>
                     <property name="position">1</property>
                     <property name="tab_fill">False</property>
-                    <property name="type">tab</property>
                   </packing>
                 </child>
                 <child>
@@ -398,9 +399,9 @@
                     <property name="label" translatable="yes">page 3</property>
                   </widget>
                   <packing>
+                    <property name="type">tab</property>
                     <property name="position">2</property>
                     <property name="tab_fill">False</property>
-                    <property name="type">tab</property>
                   </packing>
                 </child>
               </widget>
@@ -471,7 +472,7 @@
   <widget class="GtkAboutDialog" id="about_dialog">
     <property name="title" translatable="yes">About Heraia</property>
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
-    <property name="copyright">(C) 2005 - 2008 Two or more autors (see Credits)</property>
+    <property name="copyright">(C) 2005 - 2009 Two or more autors (see Credits)</property>
     <property name="comments" translatable="yes">An hexadecimal analyser and editor</property>
     <property name="website">http://heraia.tuxfamily.org/</property>
     <property name="website_label" translatable="yes">Heraia web site</property>
@@ -706,8 +707,8 @@ PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGES.
 
 		     END OF TERMS AND CONDITIONS</property>
-    <property name="authors">(C) 2005 - 2008 Olivier Delhomme 
-(C) 2005 - 2008 S&#xE9;bastien Tricaud</property>
+    <property name="authors">(C) 2005 - 2009 Olivier Delhomme 
+(C) 2005 - 2008 Sébastien Tricaud</property>
     <property name="documenters"></property>
     <property name="translator_credits" translatable="yes" comments="TRANSLATORS: Replace this string with your names, one name per line.">translator-credits</property>
     <property name="artists">(C) 2005 - 2007 Gregory Audet</property>
@@ -715,7 +716,8 @@ POSSIBILITY OF SUCH DAMAGES.
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox1">
         <child internal-child="action_area">
-          <widget class="GtkHButtonBox" id="dialog-action_area1"/>
+          <widget class="GtkHButtonBox" id="dialog-action_area1">
+          </widget>
           <packing>
             <property name="expand">False</property>
             <property name="pack_type">GTK_PACK_END</property>
@@ -1289,8 +1291,8 @@ POSSIBILITY OF SUCH DAMAGES.
                     <property name="label" translatable="yes">Numbers</property>
                   </widget>
                   <packing>
-                    <property name="tab_fill">False</property>
                     <property name="type">tab</property>
+                    <property name="tab_fill">False</property>
                   </packing>
                 </child>
                 <child>
@@ -1468,9 +1470,9 @@ POSSIBILITY OF SUCH DAMAGES.
                     <property name="label" translatable="yes">Dates and times</property>
                   </widget>
                   <packing>
+                    <property name="type">tab</property>
                     <property name="position">1</property>
                     <property name="tab_fill">False</property>
-                    <property name="type">tab</property>
                   </packing>
                 </child>
                 <child>
@@ -1594,9 +1596,9 @@ POSSIBILITY OF SUCH DAMAGES.
                     <property name="label" translatable="yes">Binary based</property>
                   </widget>
                   <packing>
+                    <property name="type">tab</property>
                     <property name="position">2</property>
                     <property name="tab_fill">False</property>
-                    <property name="type">tab</property>
                   </packing>
                 </child>
                 <child>
@@ -1694,9 +1696,9 @@ POSSIBILITY OF SUCH DAMAGES.
                     <property name="label" translatable="yes">User defined</property>
                   </widget>
                   <packing>
+                    <property name="type">tab</property>
                     <property name="position">3</property>
                     <property name="tab_fill">False</property>
-                    <property name="type">tab</property>
                   </packing>
                 </child>
               </widget>
@@ -2066,7 +2068,6 @@ POSSIBILITY OF SUCH DAMAGES.
   </widget>
   <widget class="GtkWindow" id="main_preferences_window">
     <property name="title" translatable="yes">Main Preferences</property>
-    <property name="modal">True</property>
     <child>
       <widget class="GtkVBox" id="vbox7">
         <property name="visible">True</property>
@@ -2136,8 +2137,8 @@ POSSIBILITY OF SUCH DAMAGES.
                 <property name="label" translatable="yes">page 1</property>
               </widget>
               <packing>
-                <property name="tab_fill">False</property>
                 <property name="type">tab</property>
+                <property name="tab_fill">False</property>
               </packing>
             </child>
             <child>
@@ -2149,9 +2150,9 @@ POSSIBILITY OF SUCH DAMAGES.
                 <property name="label" translatable="yes">page 2</property>
               </widget>
               <packing>
+                <property name="type">tab</property>
                 <property name="position">1</property>
                 <property name="tab_fill">False</property>
-                <property name="type">tab</property>
               </packing>
             </child>
             <child>
@@ -2163,9 +2164,9 @@ POSSIBILITY OF SUCH DAMAGES.
                 <property name="label" translatable="yes">page 3</property>
               </widget>
               <packing>
+                <property name="type">tab</property>
                 <property name="position">2</property>
                 <property name="tab_fill">False</property>
-                <property name="type">tab</property>
               </packing>
             </child>
           </widget>

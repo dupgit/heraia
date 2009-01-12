@@ -3,7 +3,7 @@
   data_interpretor.c
   heraia - an hexadecimal file editor and analyser based on ghex
 
-  (C) Copyright 2005 - 2007 Olivier Delhomme
+  (C) Copyright 2005 - 2009 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -247,8 +247,6 @@ void data_interpretor_init_interface(heraia_window_t *main_window)
 
 			if (dw != NULL)
 				{
-					/* Says whether the data interpretor window is displayed or not */
-					/* dw->window_displayed = H_DI_DISPLAYED; */
 					dw->diw = heraia_get_widget(main_window->xmls->main, "data_interpretor_window");
 					dw->tab_displayed = 0; /* the first tab */
 				}

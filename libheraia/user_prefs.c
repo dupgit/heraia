@@ -3,7 +3,7 @@
  *  user_prefs.c
  *  heraia - an hexadecimal file editor and analyser based on ghex
  *
- *  (C) Copyright 2005 - 2008 Olivier Delhomme
+ *  (C) Copyright 2005 - 2009 Olivier Delhomme
  *  e-mail : heraia@delhomme.org
  *  URL    : http://heraia.tuxfamily.org
  *
@@ -184,13 +184,11 @@ static void load_window_preferences(GKeyFile *file, gchar *name, window_prop_t *
 	keyname = g_strconcat(name, " Y_pos", NULL);
 	window_prop->y = g_key_file_get_integer(file, GN_GLOBAL_PREFS, keyname, NULL);
 	g_free(keyname);
-	
-	/* fprintf(stdout, "%s : %d %d %d\n", name, window_prop->displayed, window_prop->x, window_prop->y); */
 }
 
 
 /**
- *  Load only file preferences related options
+ *  Load only main preferences related options
  */
 static void load_mp_file_preferences_options(heraia_window_t *main_window)
 {
@@ -204,12 +202,14 @@ static void load_mp_file_preferences_options(heraia_window_t *main_window)
 		
 		if (prefs != NULL && prefs->file != NULL)
 		{
+			/* Saving window's positions ? */
 			activated = g_key_file_get_boolean(prefs->file, GN_GLOBAL_PREFS, KN_SAVE_WINDOW_PREFS, NULL);
 			save_window_position_bt = heraia_get_widget(main_window->xmls->main, "save_window_position_bt");
 			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(save_window_position_bt), activated);
 			
 			if (activated == TRUE)
 			{
+				/* window's positions */
 				load_window_preferences(prefs->file, KN_ABOUT_BOX, main_window->win_prop->about_box);
 				load_window_preferences(prefs->file, KN_DATA_INTERPRETOR, main_window->win_prop->data_interpretor);
 				load_window_preferences(prefs->file, KN_LOG_BOX, main_window->win_prop->log_box);
