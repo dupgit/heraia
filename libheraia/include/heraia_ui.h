@@ -57,8 +57,8 @@ extern void init_window_states(heraia_window_t *main_window);
 /* window positionning system */
 extern void record_dialog_box_position(GtkWidget *dialog_box, window_prop_t *dialog_prop);
 extern void record_all_dialog_box_positions(heraia_window_t *main_window);
-extern window_prop_t *move_and_show_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_pos);
-extern window_prop_t *record_and_hide_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_pos);
+extern void move_and_show_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_pos);
+extern void record_and_hide_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_pos);
 
 /* libglade wrapper */
 GtkWidget *heraia_get_widget(GladeXML *xml, gchar *widget_name);

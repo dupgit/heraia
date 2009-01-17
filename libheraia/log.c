@@ -3,7 +3,7 @@
   log.c
   log functions for heraia
  
-  (C) Copyright 2006 - 2008 Olivier Delhomme
+  (C) Copyright 2006 - 2009 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org 
  
@@ -210,14 +210,14 @@ void show_hide_log_window(heraia_window_t *main_window, gboolean show, GtkCheckM
 	
 	if (show == TRUE)
 	   {
-			main_window->win_prop->log_box = move_and_show_dialog_box(log_dialog, log_box_prop);
+			move_and_show_dialog_box(log_dialog, log_box_prop);
 	   }
 	else
 	  {
 		  if (log_box_prop->displayed == TRUE)
 			{
 				gtk_check_menu_item_set_active(cmi, FALSE);
-				main_window->win_prop->log_box = record_and_hide_dialog_box(log_dialog, log_box_prop);
+				record_and_hide_dialog_box(log_dialog, log_box_prop);
 			}
 	  }
 }

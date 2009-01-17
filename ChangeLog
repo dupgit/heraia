@@ -1,3 +1,11 @@
+17.01.2009 [release 0.0.6]
+	- Olivier Delhomme <heraia@delhomme.org>
+      * corrected bugs and stupid typos errors, displaying system coupled
+        with saved preferences should now work correctly
+	  * Roadmoap modifications (folowing the version integration and adding 
+		new wanted features)
+      * New file : description that contains heraia's description
+
 12.01.2009
 	- Olivier Delhomme <heraia@delhomme.org>
       * Now data_interpretor's window displays nicely on startup when needed

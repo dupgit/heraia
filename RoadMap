@@ -22,14 +22,19 @@ I let you imagine what I expect before I do a major release !!!
    * add the cursor position somewhere, somehow (a new property zone
      may be welcomed)
 
-. 0.0.6
+. 0.0.6 [17.01.2009]
    * save window properties to the user config file
+   * load window properties from user config file
    * translate all french function names in the code into english ones
    * add a preference window
 
 . 0.0.7
-   * load window properties from user config file
    * add a preference option to display thousands or not in the main window
+   * begin code documentation effort
+
+. 0.0.8
+   * add height and weight to window properties (including saving and loading
+     to/from preference file)
 
 . 0.0.9
    * get rid of the filename structure in the heraia_window_t (it does 

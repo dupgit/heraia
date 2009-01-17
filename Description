@@ -1,0 +1,15 @@
+Heraia is a standalone hexadecimal file analyser. It provides tools to analyse 
+files in a hexadecimal way :
+ 
+  . a data interpretor
+  . a plugin that do some graphical analysis
+
+It contains :
+
+  . a fully functionnal plugin system
+  . an exentensible data interpretor 
+
+It is written in C using GTK and based on GtkHex Widget. It is known to run on 
+both Linux and Windows. It integrates smoothly with Gnome but it does not 
+depends on it.
+

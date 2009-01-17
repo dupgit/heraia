@@ -64,7 +64,7 @@ void on_preferences_activate(GtkWidget *widget, gpointer data)
 	
 	if (pref_window != NULL)
 	{
-		main_window->win_prop->main_pref_window = move_and_show_dialog_box(pref_window, main_window->win_prop->main_pref_window);
+		move_and_show_dialog_box(pref_window, main_window->win_prop->main_pref_window);
 	}
 	
 }
@@ -90,14 +90,14 @@ void a_propos_activate(GtkWidget *widget, gpointer data)
 			gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(about_dialog), PACKAGE_VERSION);
 		}
 		
-		main_window->win_prop->about_box = move_and_show_dialog_box(about_dialog, main_window->win_prop->about_box);
+		move_and_show_dialog_box(about_dialog, main_window->win_prop->about_box);
 	}
 }
 
 /** 
  *  Move the dialog box to the wanted position, shows it and says it in the displayed prop
  */
-window_prop_t *move_and_show_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_prop)
+void move_and_show_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_prop)
 {
 	if (dialog_prop->displayed == FALSE)
 	{
@@ -106,11 +106,11 @@ window_prop_t *move_and_show_dialog_box(GtkWidget *dialog_box, window_prop_t *di
 		gtk_widget_show_all(dialog_box);
 		dialog_prop->displayed = TRUE;
 	}
-	
-	return dialog_prop;
 }
 
-
+/**
+ * Records one dialog position
+ */
 void record_dialog_box_position(GtkWidget *dialog_box, window_prop_t *dialog_prop)
 {
 	gint x = 0;
@@ -154,7 +154,7 @@ void record_all_dialog_box_positions(heraia_window_t *main_window)
 		record_dialog_box_position(dialog_box, main_window->win_prop->log_box);
 	
 		/* main_dialog */
-		dialog_box = heraia_get_widget (main_window->xmls->main, "main_dialog");
+		dialog_box = heraia_get_widget (main_window->xmls->main, "main_window");
 		record_dialog_box_position(dialog_box, main_window->win_prop->main_dialog);
 	
 		/* plugin_list */
@@ -172,28 +172,19 @@ void record_all_dialog_box_positions(heraia_window_t *main_window)
 }
 	
 	
-
 /**
  *  Record position and hide a dialog box
  */
-window_prop_t *record_and_hide_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_prop)
+void record_and_hide_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_prop)
 {
-	gint x = 0;
-	gint y = 0;
-	
+
 	if (dialog_prop->displayed == TRUE)
 	{
-		
-		gtk_window_get_position(GTK_WINDOW(dialog_box), &x, &y);
-		
-		dialog_prop->x = x;
-		dialog_prop->y = y;
+		record_dialog_box_position(dialog_box, dialog_prop);
 		
 		gtk_widget_hide(dialog_box);
 		dialog_prop->displayed = FALSE;
 	}
-	
-	return dialog_prop;
 }
 
 
@@ -208,7 +199,7 @@ static void record_and_hide_about_box(heraia_window_t *main_window)
 	
 	if (about_dialog != NULL)
 	{
-		main_window->win_prop->about_box = record_and_hide_dialog_box(about_dialog, main_window->win_prop->about_box);
+		record_and_hide_dialog_box(about_dialog, main_window->win_prop->about_box);
 	}
 }
 
@@ -452,8 +443,7 @@ void on_DIMenu_activate(GtkWidget *widget, gpointer data)
 					gtk_notebook_set_current_page(notebook, dw->tab_displayed);
 					
 					/* moving to the right position */
-					main_window->win_prop->data_interpretor = move_and_show_dialog_box(dw->diw, main_window->win_prop->data_interpretor);
-					/* gtk_widget_show_all(dw->diw); */
+					move_and_show_dialog_box(dw->diw, main_window->win_prop->data_interpretor);
 					
 					refresh_data_interpretor_window(widget, data);
 				}
@@ -461,8 +451,7 @@ void on_DIMenu_activate(GtkWidget *widget, gpointer data)
 				{
 					/* recording some prefs from the dialog : position + opened tab */
 					dw->tab_displayed = gtk_notebook_get_current_page(notebook);
-					main_window->win_prop->data_interpretor = record_and_hide_dialog_box(dw->diw, main_window->win_prop->data_interpretor);
-					/* gtk_widget_hide_all(dw->diw); */
+					record_and_hide_dialog_box(dw->diw, main_window->win_prop->data_interpretor);
 				}
 			}
 		}
@@ -732,6 +721,9 @@ void init_heraia_interface(heraia_window_t *main_window)
 	
 	if (main_window != NULL)
 	{
+		/* inits window states (shows or hide windows) */
+		init_window_states(main_window);
+		
 		/* Notebook selection */
 		notebook = heraia_get_widget(main_window->xmls->main, "file_notebook");
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 0);
@@ -746,9 +738,6 @@ void init_heraia_interface(heraia_window_t *main_window)
 		}
 		
 		refresh_file_labels(main_window);
-		
-		/* inits window states (shows or hide windows) */
-		init_window_states(main_window);
 	}
 }
 
@@ -1051,7 +1040,7 @@ GtkWidget *gtk_radio_button_get_active(GSList *group)
  * gtk_radio_button_get_active_from_widget:
  * @radio_group_member: widget to get radio group from
  * 
- * @returns: the active #GtkRadioButton within the group from
+ * @returns the active #GtkRadioButton within the group from
  *           @radio_group_member
  **/
 GtkWidget *gtk_radio_button_get_active_from_widget(GtkRadioButton *radio_group_member)
@@ -1158,13 +1147,12 @@ void init_window_states(heraia_window_t *main_window)
 			dialog_box = heraia_get_widget(main_window->xmls->main, "log_window");
 			init_one_cmi_window_state(dialog_box, cmi, main_window->win_prop->log_box);
 			
-			/* Data Interpretor Interface */		
+			/* Data Interpretor Interface */
 			cmi = heraia_get_widget(main_window->xmls->main, "DIMenu");
 			/* emit the specific signal to activate the check_menu_item */
 			if (main_window->win_prop->data_interpretor->displayed == TRUE)
 			{
-				/* fprintf(stdout, "displaying data interpretor !!\n"); */
-				main_window->win_prop->data_interpretor->displayed = FALSE;
+				main_window->win_prop->data_interpretor->displayed = FALSE; /* dirty trick */
 				g_signal_emit_by_name(heraia_get_widget(main_window->xmls->main, "DIMenu"), "activate");
 			}
 		
@@ -1178,23 +1166,22 @@ void init_window_states(heraia_window_t *main_window)
 			dialog_box = heraia_get_widget(main_window->xmls->main, "plugin_list_window");
 			init_one_cmi_window_state(dialog_box, cmi, main_window->win_prop->plugin_list);		
 			
-			dialog_box = heraia_get_widget(main_window->xmls->main, "main_window");
-			if (main_window->win_prop->main_dialog == TRUE)
-			{
-				gtk_window_move(GTK_WINDOW(dialog_box), main_window->win_prop->main_dialog->x, main_window->win_prop->main_dialog->y);
-				gtk_widget_show_all(dialog_box);
-			}
-			
 			/* Preferences window */
 			dialog_box = heraia_get_widget(main_window->xmls->main, "main_preferences_window");
-			if (main_window->win_prop->main_pref_window == TRUE)
+			if (main_window->win_prop->main_pref_window->displayed == TRUE)
 			{
+				/* main_window->win_prop->main_pref_window->displayed = FALSE; dirty trick */
 				gtk_window_move(GTK_WINDOW(dialog_box), main_window->win_prop->main_pref_window->x, main_window->win_prop->main_pref_window->y);
 				gtk_widget_show_all(dialog_box);
 			}
 			
-			
-			
+			/* Main window (always the last one) */
+			dialog_box = heraia_get_widget(main_window->xmls->main, "main_window");
+			if (main_window->win_prop->main_dialog->displayed == TRUE)
+			{
+				gtk_window_move(GTK_WINDOW(dialog_box), main_window->win_prop->main_dialog->x, main_window->win_prop->main_dialog->y);
+				/* gtk_widget_show(dialog_box); may not be necessary as the window is already displayed */
+			}
 		}
 	}
 }
