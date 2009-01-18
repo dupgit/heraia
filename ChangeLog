@@ -1,10 +1,15 @@
+18.01.2009
+	- Olivier Delhomme <heraia@delhomme.org>
+      * Added a hpane to the "numbers" tab in order to be coherent with other
+        tabs
+
 17.01.2009 [release 0.0.6]
 	- Olivier Delhomme <heraia@delhomme.org>
       * corrected bugs and stupid typos errors, displaying system coupled
         with saved preferences should now work correctly
 	  * Roadmoap modifications (folowing the version integration and adding 
 		new wanted features)
-      * New file : description that contains heraia's description
+      * New file : Description that contains heraia's description
 
 12.01.2009
 	- Olivier Delhomme <heraia@delhomme.org>
@@ -16,8 +21,8 @@
 	 * Corrected the bug discovered yesterday
      * Added a closing_heraia function that is called when one quits heraia
        and that saves the preferences.
-     * Killed unecessary code in the init_heraia_interfac function (it was
-       so old that I couldn't record why it was for !
+     * Killed unecessary code in the init_heraia_interface function (it was
+       so old that I couldn't record why it was for !)
      * Loading preference file is done earlier
      * New function to init windows states (log window taken into account)
      * Changed the roadmap to clear what's unecessary now (to my point of view)
