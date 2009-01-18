@@ -50,9 +50,13 @@ extern gchar *select_a_file_to_save(heraia_window_t *main_window);
 /* initialisation process */
 extern void init_heraia_interface(heraia_window_t *main_window);
 extern int load_heraia_ui(heraia_window_t *main_window);
-extern void refresh_event_handler(GtkWidget *widget, gpointer data);
-extern void connect_cursor_moved_signal(heraia_window_t *main_window);
 extern void init_window_states(heraia_window_t *main_window);
+
+/* refreshing things */
+extern void refresh_event_handler(GtkWidget *widget, gpointer data);
+extern void refresh_file_labels(heraia_window_t *main_window);
+extern void connect_cursor_moved_signal(heraia_window_t *main_window);
+
 
 /* window positionning system */
 extern void record_dialog_box_position(GtkWidget *dialog_box, window_prop_t *dialog_prop);
@@ -73,6 +77,9 @@ extern GtkWidget *gtk_radio_button_get_active_from_widget(GtkRadioButton *radio_
 
 /* CheckMenuItem */
 extern gboolean is_cmi_checked(GtkWidget *check_menu_item);
+
+/* Toogle Button */
+extern gboolean is_toggle_button_activated(GladeXML *main_xml, gchar *check_button);
 
 /* Widget */
 extern void destroy_a_single_widget(GtkWidget *widget);

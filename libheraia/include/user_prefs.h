@@ -3,7 +3,7 @@
   user_prefs.h
   heraia - an hexadecimal file editor and analyser based on ghex
  
-  (C) Copyright 2008 - 2008 Olivier Delhomme
+  (C) Copyright 2008 - 2009 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -30,6 +30,8 @@
  *  Thoses variables are the one to use in the main preference file
  */
 #define GN_GLOBAL_PREFS "Global Preferences"
+#define GN_DISPLAY_PREFS "Display Preferences"
+
 #define KN_SAVE_WINDOW_PREFS "Save Window Preferences"
 #define KN_ABOUT_BOX "About Box"
 #define KN_DATA_INTERPRETOR "Data Interpretor"
@@ -38,6 +40,9 @@
 #define KN_PLUGIN_LIST "Plugin List"
 #define KN_LDT "List Data Types"
 #define KN_MAIN_PREFS "Main Preferences"
+
+#define KN_DISP_THOUSAND "Thousand"
+
 
 extern void verify_preference_file(gchar *pathname, gchar *filename);
 extern void save_main_preferences(heraia_window_t *main_window);

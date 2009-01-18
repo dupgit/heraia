@@ -62,11 +62,11 @@ static guint which_endianness(heraia_window_t *main_window)
 /**
  *   Here we do interpret a date according to the decode_it function
  *   We are assuming that main_window != NULL and main_window->xml != NULL
- *    . heraia_window_t *main_window : the main structure
- *    . DecodeDateFunc decode_it : a function to be called to decode the stream
- *    . gchar *widget_name : the name of the widget where the result may go
- *    . guint length : the length of the data to be decoded
- *    . guint endianness : the endianness to be applied to the datas
+ *    - heraia_window_t *main_window : the main structure
+ *    - DecodeDateFunc decode_it : a function to be called to decode the stream
+ *    - gchar *widget_name : the name of the widget where the result may go
+ *    - guint length : the length of the data to be decoded
+ *    - guint endianness : the endianness to be applied to the datas
  */
 static void interpret_as_date(heraia_window_t *main_window, DecodeDateFunc decode_it, gchar *widget_name, guint length, guint endianness)
 {
@@ -110,11 +110,11 @@ static void interpret_as_date(heraia_window_t *main_window, DecodeDateFunc decod
 /**
  *   Here we do interpret a number according to the decode_it function
  *   We are assuming that main_window != NULL and main_window->xml != NULL
- *    . heraia_window_t *main_window : the main structure
- *    . DecodeFunc decode_it : a function to be called to decode the stream
- *    . gchar *widget_name : the name of the widget where the result may go
- *    . guint length : the length of the data to be decoded
- *    . guint endianness : the endianness to be applied to the datas
+ *    - heraia_window_t *main_window : the main structure
+ *    - DecodeFunc decode_it : a function to be called to decode the stream
+ *    - gchar *widget_name : the name of the widget where the result may go
+ *    - guint length : the length of the data to be decoded
+ *    - guint endianness : the endianness to be applied to the datas
  */
 static void interpret_as_number(heraia_window_t *main_window, DecodeFunc decode_it, gchar *widget_name, guint length, guint endianness)
 {

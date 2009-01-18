@@ -1,6 +1,6 @@
 AC_PREREQ(2.59)
 
-AC_INIT([Heraia], [0.0.6],
+AC_INIT([Heraia], [0.0.7],
         [Olivier Delhomme],
         [heraia])
 AC_CONFIG_SRCDIR([src/heraia.c])

@@ -54,4 +54,24 @@ For a release do not forget to :
    make a tar.gz available in the download directory (as for sources)
  - generate code coverage tests
     
-    
+
+DocBook : (Heraia uses JavaDoc Style with @ instead of \)
+
+    * \see to do a see also comment
+    * \param to document parameters
+    * \return to document to result of a function
+    * \struct to document a C-struct.
+    * \union to document a union.
+    * \enum to document an enumeration type.
+    * \fn to document a function.
+    * \var to document a variable or typedef or enum value.
+    * \def to document a #define.
+    * \typedef to document a type definition.
+    * \file to document a file.
+    * \namespace to document a namespace.
+    * \package to document a Java package.
+    * \interface to document an IDL interface.
+    * \brief to document briefly
+
+See all available commands here :
+http://www.stack.nl/~dimitri/doxygen/commands.html

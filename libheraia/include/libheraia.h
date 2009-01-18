@@ -3,7 +3,7 @@
   libheraia.h
   Heraia's library header
 
-  (C) Copyright 2008 Sébastien Tricaud, Olivier Delhomme
+  (C) Copyright 2008-2009 Sébastien Tricaud, Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -132,8 +132,8 @@ typedef struct
 
 /**
  * Window properties
- *  . position (x,y) record window's position
- *  . displayed (boolean) say whether the window is displayed or not
+ *  - position (x,y) record window's position
+ *  - displayed (boolean) say whether the window is displayed or not
  */
 typedef struct
 {

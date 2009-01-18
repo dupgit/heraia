@@ -27,7 +27,6 @@
 static gboolean load_heraia_glade_xml(heraia_window_t *main_window);
 static void heraia_ui_connect_signals(heraia_window_t *main_window);
 static void record_and_hide_about_box(heraia_window_t *main_window);
-static void refresh_file_labels(heraia_window_t *main_window);
 static void close_heraia(heraia_window_t *main_window);
 
 /**
@@ -275,7 +274,7 @@ void on_paste_activate( GtkWidget *widget, gpointer data )
  *  window in order to reflect cursor position, selected
  *  positions and total selected size
  */
-static void refresh_file_labels(heraia_window_t *main_window)
+void refresh_file_labels(heraia_window_t *main_window)
 {
 	GtkWidget *label = NULL;
 	guint64 position = 0;
@@ -290,7 +289,15 @@ static void refresh_file_labels(heraia_window_t *main_window)
 					/* position begins at 0 and this is not really human readable */
 					/* it's more confusing than anything so we do + 1             */
 					/* To translators : do not translate <small> and such         */
-					text = g_strdup_printf("<small>%'lld</small>", position + 1);
+					
+					if (is_toggle_button_activated(main_window->xmls->main, "mp_thousand_bt") == TRUE)
+					{
+						text = g_strdup_printf("<small>%'lld</small>", position + 1);
+					}
+					else
+					{
+						text = g_strdup_printf("<small>%lld</small>", position + 1);
+					}
 					gtk_label_set_markup(GTK_LABEL(label), text);
 					g_free(text);
 				}
@@ -306,6 +313,7 @@ static void refresh_file_labels(heraia_window_t *main_window)
 /** 
  *  This function is here to ensure that everything will be
  *  refreshed upon a signal event.
+ *  @warning This function is not thread safe (do not use in a thread)
  */
 void refresh_event_handler(GtkWidget *widget, gpointer data)
 {
@@ -533,8 +541,7 @@ static gchar *make_absolute_path(gchar *filename)
 
 /**
  *  Sets the working directory for the file chooser to the directory of the
- *  filename (even if filename is a relative filename such as 
- *  ../docs/test_file)
+ *  filename (even if filename is a relative filename such as ../docs/test_file)
  */
 static void set_the_working_directory(GtkFileChooser *file_chooser, gchar *filename)
 {
@@ -1038,10 +1045,11 @@ GtkWidget *gtk_radio_button_get_active(GSList *group)
 
 /**
  * gtk_radio_button_get_active_from_widget:
- * @radio_group_member: widget to get radio group from
+ *
+ * @param radio_group_member: widget to get radio group from
  * 
- * @returns the active #GtkRadioButton within the group from
- *           @radio_group_member
+ * @returns the active GtkRadioButton within the group from
+ *          radio_group_member
  **/
 GtkWidget *gtk_radio_button_get_active_from_widget(GtkRadioButton *radio_group_member)
 { 
@@ -1062,6 +1070,23 @@ GtkWidget *gtk_radio_button_get_active_from_widget(GtkRadioButton *radio_group_m
 gboolean is_cmi_checked(GtkWidget *check_menu_item)
 {
 	return gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(check_menu_item));
+}
+
+
+/**
+ *  returns the state of a named check button contained 
+ *  in the Glade XML description
+ */
+gboolean is_toggle_button_activated(GladeXML *main_xml, gchar *check_button)
+{
+	gboolean activated = FALSE;
+	
+	if (main_xml != NULL)
+	{
+		activated = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(heraia_get_widget(main_xml, check_button)));
+	}
+	
+	return activated;
 }
 
 
@@ -1174,6 +1199,16 @@ void init_window_states(heraia_window_t *main_window)
 				gtk_window_move(GTK_WINDOW(dialog_box), main_window->win_prop->main_pref_window->x, main_window->win_prop->main_pref_window->y);
 				gtk_widget_show_all(dialog_box);
 			}
+			
+			/* About Box */
+			dialog_box = heraia_get_widget(main_window->xmls->main, "about_dialog");
+			if (main_window->win_prop->about_box->displayed == TRUE)
+			{
+				/* main_window->win_prop->main_pref_window->displayed = FALSE; dirty trick */
+				gtk_window_move(GTK_WINDOW(dialog_box), main_window->win_prop->about_box->x, main_window->win_prop->about_box->y);
+				gtk_widget_show_all(dialog_box);
+			}
+			
 			
 			/* Main window (always the last one) */
 			dialog_box = heraia_get_widget(main_window->xmls->main, "main_window");

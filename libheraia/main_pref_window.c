@@ -3,7 +3,7 @@
  *  main_pref_window.c
  *  heraia - an hexadecimal file editor and analyser based on ghex
  *
- *  (C) Copyright 2005 - 2008 Olivier Delhomme
+ *  (C) Copyright 2008 - 2009 Olivier Delhomme
  *  e-mail : heraia@delhomme.org
  *  URL    : http://heraia.tuxfamily.org
  *
@@ -30,6 +30,11 @@ static void main_pref_window_connect_signals(heraia_window_t *main_window);
 
 /* ToolBar buttons */
 static void on_mp_tb_fp_bt_clicked(GtkToolButton *toolbutton, gpointer data);
+static void on_mp_tb_display_bt_clicked(GtkToolButton *toolbutton, gpointer data);
+
+/* Toogle Buttons */
+static void on_mp_thousand_bt_toggled(GtkToggleButton *togglebutton, gpointer data);
+
 
 
 /**** The Signals ****/
@@ -64,6 +69,13 @@ static void main_pref_window_connect_signals(heraia_window_t *main_window)
 	/* Clicking on the file preference button of the toolbar */
 	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "mp_tb_fp_bt")), "clicked",
 					 G_CALLBACK(on_mp_tb_fp_bt_clicked), main_window);
+	
+	/* Clicking on the file preference button of the toolbar */
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "mp_tb_display_bt")), "clicked",
+					 G_CALLBACK(on_mp_tb_display_bt_clicked), main_window);
+	
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "mp_thousand_bt")), "toggled",
+					 G_CALLBACK(on_mp_thousand_bt_toggled), main_window);
 }
 
 
@@ -84,6 +96,31 @@ static void on_mp_tb_fp_bt_clicked(GtkToolButton *toolbutton, gpointer data)
 		notebook = heraia_get_widget(main_window->xmls->main, "mp_first_notebook");
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 0);
 	}
+}
+
+/**
+ * Main Preferences, ToolBar, Display Button
+ */
+static void on_mp_tb_display_bt_clicked(GtkToolButton *toolbutton, gpointer data)
+{
+	heraia_window_t *main_window = (heraia_window_t *) data;
+	GtkWidget *notebook = NULL;  /* Main Preference Window's Notebook */
+	
+	if (main_window != NULL && main_window->xmls != NULL && main_window->xmls->main != NULL)
+	{
+		notebook = heraia_get_widget(main_window->xmls->main, "mp_first_notebook");
+		gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 1);
+	}
+}
+
+/**
+ * Refreshes the file labels as an option has been sat
+ */
+static void on_mp_thousand_bt_toggled(GtkToggleButton *togglebutton, gpointer data)
+{
+	heraia_window_t *main_window = (heraia_window_t *) data;
+	
+	refresh_file_labels(main_window);
 }
 
 /**** End Signals ****/

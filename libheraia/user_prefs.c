@@ -26,12 +26,22 @@
 
 static void verify_preference_file_path_presence(gchar *pathname);
 static void verify_preference_file_name_presence(gchar *filename);
+
 static void save_window_preferences(GKeyFile *file, gchar *name, window_prop_t *window_prop);
+
 static void save_mp_file_preferences_options(heraia_window_t *main_window);
+static void save_mp_display_preferences_options(heraia_window_t *main_window);
+
+static void load_window_preferences(GKeyFile *file, gchar *name, window_prop_t *window_prop);
+
+static void load_mp_file_preferences_options(heraia_window_t *main_window);
+static void load_mp_display_preferences_options(heraia_window_t *main_window);
+
 
 /**
  *  verify preference file path presence and creates it if it does
  *  not already exists
+ *  @param pathname is a path to look presence for
  */
 static void verify_preference_file_path_presence(gchar *pathname)
 {
@@ -48,7 +58,9 @@ static void verify_preference_file_path_presence(gchar *pathname)
 }
 
 /**
- *  Verify preference file's presence
+ *  Verify preference file's presence and creates it if it does 
+ *  not exists already
+ *  @param filename is a name of a file to look presence for
  */
 static void verify_preference_file_name_presence(gchar *filename)
 {
@@ -78,6 +90,8 @@ static void verify_preference_file_name_presence(gchar *filename)
 /**
  *  Verify preference file presence and creates it if it does not
  *  already exists
+ * @param pathname is the full pathname
+ * @param filename is the filename containing the path itself
  */
 void verify_preference_file(gchar *pathname, gchar *filename)
 {
@@ -88,7 +102,10 @@ void verify_preference_file(gchar *pathname, gchar *filename)
 }
 
 /**
- *  window preferences
+ *  Window preferences
+ *  @param file a GKeyFile where values are stored
+ *  @param name a keyname (basically a window name)
+ *  @param window_prop all window properties to save (structure window_prop_t)
  */
 static void save_window_preferences(GKeyFile *file, gchar *name, window_prop_t *window_prop)
 {
@@ -109,11 +126,11 @@ static void save_window_preferences(GKeyFile *file, gchar *name, window_prop_t *
 
 /**
  *  Save only file preferences related options
+ *  @param main_window the main structure
  */
 static void save_mp_file_preferences_options(heraia_window_t *main_window)
 {
 	prefs_t *prefs = NULL;
-	GtkWidget *save_window_position_bt = NULL;
 	gboolean activated = FALSE;
 	
 	if (main_window != NULL)
@@ -128,8 +145,7 @@ static void save_mp_file_preferences_options(heraia_window_t *main_window)
 		if (prefs != NULL && prefs->file != NULL)
 		{
 			/* Saves the position */
-			save_window_position_bt = heraia_get_widget(main_window->xmls->main, "save_window_position_bt");
-			activated = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(save_window_position_bt));
+			activated = is_toggle_button_activated(main_window->xmls->main, "save_window_position_bt");
 			g_key_file_set_boolean(prefs->file, GN_GLOBAL_PREFS, KN_SAVE_WINDOW_PREFS, activated);
 			
 			/* Saving all window preferences if necessary */
@@ -148,14 +164,47 @@ static void save_mp_file_preferences_options(heraia_window_t *main_window)
 }
 
 /**
+ *  Save only display related preferences
+ *  @param main_window the main structure
+ */
+static void save_mp_display_preferences_options(heraia_window_t *main_window)
+{
+	prefs_t *prefs = NULL;
+	gboolean activated = FALSE;
+	
+	if (main_window != NULL)
+	{
+		prefs = main_window->prefs;
+		
+		if (prefs->file == NULL)
+		{
+			prefs->file = g_key_file_new();
+		}
+		
+		if (prefs != NULL && prefs->file != NULL)
+		{
+			/* Display Thousand (or not) */
+			activated = is_toggle_button_activated(main_window->xmls->main, "mp_thousand_bt");
+			g_key_file_set_boolean(prefs->file, GN_DISPLAY_PREFS, KN_DISP_THOUSAND, activated);
+		}
+	}
+}
+
+
+
+/**
  * Save all preferences to the user preference file
+ * @param main_window the main structure
  */
 void save_main_preferences(heraia_window_t *main_window)
 {
 	if (main_window != NULL)
 	{
-		/* Saving main Preferences */
+		/* 1. Saving main Preferences */
 		save_mp_file_preferences_options(main_window);
+		
+		/* 2. Saving Display Preferences */
+		save_mp_display_preferences_options(main_window);
 		
 		if (main_window->prefs != NULL)
 		{
@@ -168,6 +217,9 @@ void save_main_preferences(heraia_window_t *main_window)
 
 /**
  *  window preferences
+ *  @param file a GKeyFile where values are stored
+ *  @param name a keyname (basically a window name)
+ *  @param window_prop all window properties to save (structure window_prop_t)
  */
 static void load_window_preferences(GKeyFile *file, gchar *name, window_prop_t *window_prop)
 {
@@ -189,6 +241,7 @@ static void load_window_preferences(GKeyFile *file, gchar *name, window_prop_t *
 
 /**
  *  Load only main preferences related options
+ * @param main_window the main structure
  */
 static void load_mp_file_preferences_options(heraia_window_t *main_window)
 {
@@ -222,8 +275,35 @@ static void load_mp_file_preferences_options(heraia_window_t *main_window)
 	}
 }
 
+
+/**
+ *  Load display related preferences
+ * @param main_window the main structure
+ */
+static void load_mp_display_preferences_options(heraia_window_t *main_window)
+{
+	prefs_t *prefs = NULL;
+	GtkWidget *display_thousand_bt = NULL;
+	gboolean activated = FALSE;
+	
+	if (main_window != NULL)
+	{
+		prefs = main_window->prefs;
+		
+		if (prefs != NULL && prefs->file != NULL)
+		{
+			/* Display thousands (or not) */
+			activated = g_key_file_get_boolean(prefs->file, GN_DISPLAY_PREFS, KN_DISP_THOUSAND, NULL);
+			display_thousand_bt = heraia_get_widget(main_window->xmls->main, "mp_thousand_bt");
+			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(display_thousand_bt), activated);
+		}
+	}
+}
+
+
 /**
  *  Sets up the preferences as loaded in the preference file
+ * @param main_window the main structure
  */
 void setup_preferences(heraia_window_t *main_window)
 {
@@ -231,6 +311,8 @@ void setup_preferences(heraia_window_t *main_window)
 	{
 		/* 1. Main Preferences */
 		load_mp_file_preferences_options(main_window);
+		
+		/* 2. Display preferences */
+		load_mp_display_preferences_options(main_window);
 	}
 }
-

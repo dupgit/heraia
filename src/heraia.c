@@ -3,7 +3,7 @@
  *  heraia.c
  *  heraia - an hexadecimal file editor and analyser based on ghex
  *
- *  (C) Copyright 2005 - 2008 Olivier Delhomme
+ *  (C) Copyright 2005 - 2009 Olivier Delhomme
  *  e-mail : heraia@delhomme.org
  *  URL    : http://heraia.tuxfamily.org
  *
@@ -34,9 +34,13 @@ static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window);
 static GList *init_heraia_location_list(void);
 static gboolean manage_command_line_options(Options *opt, int argc, char **argv);
 
-static heraia_window_t *libheraia_main_struct = NULL;  /* this is a global variable that points to the main structure  */
-													   /* it is intended for the library ONLY ! and should not be used */
-												       /* Anywhere else                                                */
+/** 
+ *  libheraia_main_struct is a global variable that points 
+ *  to the main structure and is intended for the library use ONLY ! 
+ *  It should not be used anywhere else or for any other purpose
+ */
+static heraia_window_t *libheraia_main_struct = NULL;  
+
 
 /**
  *  This is intended to be called by the library or any program that will use
@@ -47,7 +51,7 @@ heraia_window_t *get_main_struct(void)
 	return libheraia_main_struct;
 }
 
-/**
+/** 
  *  prints program name, version, author, date and licence
  *  to the standard output
  */
@@ -58,9 +62,14 @@ static gboolean version(void)
 }
 
 
-/**
- *  Function that informs the user aboit the command line options
+/** 
+ *  Function that informs the user about the command line options
  *  available with heraia
+ *  @param status : integer that indicate wether to display help (!=0) or
+ *	                an error message (0)
+ *  @return 
+ *          - TRUE -> help message has been printed
+ *          - FALSE -> error message has been printed
  */
 static gboolean usage(int status)
 {
@@ -85,6 +94,9 @@ static gboolean usage(int status)
 
 /**
  *  Inits the properties of a window with defined values
+ *  @param  x,y are x,y coordinates on the screen
+ *  @param  displayed says wether the window is displayed or not
+ *  @return a new allocated window_prop_t * structure.
  */
 static window_prop_t *init_window_properties(gint x, gint y, gboolean displayed)
 {
@@ -104,6 +116,8 @@ static window_prop_t *init_window_properties(gint x, gint y, gboolean displayed)
 
 /**
  *  Inits the window property structure
+ *  @param main_window : main structure
+ *  @return main structure with an initiated window property structure
  */
 static heraia_window_t *init_window_property_struct(heraia_window_t *main_window)
 {
@@ -146,7 +160,8 @@ static heraia_window_t *init_window_property_struct(heraia_window_t *main_window
 
 
 /**
- *  Initialize the main structure (main_window)
+ * Initialize the main structure (main_window)
+ * @return a new initiated main structure 
  */
 static heraia_window_t *heraia_init_main_struct(void)
 {
@@ -211,6 +226,9 @@ static heraia_window_t *heraia_init_main_struct(void)
  *  Function that initializes the plugin system if any :
  *   - loads any plugin where expected to be found
  *   - inits the plugin window
+ * @param main_window : main structure
+ * @return HERAIA_NO_PLUGINS if no plugins where found or HERAIA_NOERR in
+ *         case of no errors
  */
 static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window)
 {
@@ -237,7 +255,8 @@ static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window)
 /**
  *  Here we want to init the location list where we might look for
  *  in the future. These can be viewed as default paths
- *  Beware : prepended list in reverse order.
+ *  @warning prepended list in reverse order.
+ *  @return a new allocatde GList containing all locations
  */
 static GList *init_heraia_location_list(void)
 {
@@ -330,8 +349,8 @@ static gboolean manage_command_line_options(Options *opt, int argc, char ** argv
 /**
  *  main program
  *  options :
- *   --version
- *   --help
+ *   - --version
+ *   - --help
  */
 int main (int argc, char ** argv)
 {

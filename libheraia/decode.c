@@ -455,13 +455,13 @@ gchar *decode_dos_date(guchar *data, date_and_time_t *mydate)
 
 /**
  *  Reads the data from the stream (specified length !! <= 64 bits )
- *   . date_and_time_t *mydate : the resulting date
- *   . guchar *data : the stream
- *   . guint8 len : length of the stream in bytes ( must be <= 64 bits)
- *   . guint64 nbticks : number of ticks per seconds (1, 1000, ...)
- *   . guint32 base_year : Epoch year (1970, 1904, ...)
- *   . guint8 base_month : Epoch month (january, ...)
- *   . guint8 base_day : Epoch day (01, 15, ...)
+ *   - date_and_time_t *mydate : the resulting date
+ *   - guchar *data : the stream
+ *   - guint8 len : length of the stream in bytes ( must be <= 64 bits)
+ *   - guint64 nbticks : number of ticks per seconds (1, 1000, ...)
+ *   - guint32 base_year : Epoch year (1970, 1904, ...)
+ *   - guint8 base_month : Epoch month (january, ...)
+ *   - guint8 base_day : Epoch day (01, 15, ...)
  *  populates the date_and_time_t structure
 */
 static void make_date_and_time(date_and_time_t *mydate, guchar *data, guint8 len, guint64 nbticks, guint32 base_year, guint base_month, guint8 base_day)

@@ -2,6 +2,13 @@
 	- Olivier Delhomme <heraia@delhomme.org>
       * Added a hpane to the "numbers" tab in order to be coherent with other
         tabs
+      * Wrote some help in the README file about DocBook documentation style
+      * Changed version numbers to reflect new development version
+      * Documenting the code (mainly heraia.c)
+	  * Added new preference tab. Added in it the preference option to display
+        or not the thousands separated with a blank
+	  * Effective option to separate with a blank thousands or not
+      * Changing the option in the preference window takes effect immediately
 
 17.01.2009 [release 0.0.6]
 	- Olivier Delhomme <heraia@delhomme.org>
