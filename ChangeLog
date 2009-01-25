@@ -1,3 +1,8 @@
+25.01.2009
+	- Olivier Delhomme <heraia@delhomme.org>
+      * Added a script that checks the package dependencies. This may be 
+        usefull to make packages.
+
 18.01.2009
 	- Olivier Delhomme <heraia@delhomme.org>
       * Added a hpane to the "numbers" tab in order to be coherent with other
