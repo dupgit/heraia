@@ -2,6 +2,9 @@
 	- Olivier Delhomme <heraia@delhomme.org>
       * Added a script that checks the package dependencies. This may be 
         usefull to make packages.
+      * Script amelioration and Makefile.am modification in order that the 
+        files Description and check_dependencies.sh beeing distributed with
+        the package (make dist)
 
 18.01.2009
 	- Olivier Delhomme <heraia@delhomme.org>
