@@ -17,9 +17,10 @@ rm -f /tmp/packages-build-dep /tmp/packages-dep
 
 for p in $(cat /tmp/packages); 
  do
-   version=$(dpkg -s $p | grep ^Version | cut -f2 -d":");
+   dpkg -s $p >/tmp/packages-desc;
+   version=$(grep ^Version /tmp/packages-desc | cut -f2 -d":");
 
-	if [[ $(echo $p | grep -e "-dev") ]]; then
+	if [[ $(grep ^Section /tmp/packages-desc | grep -e "devel") ]]; then
 		echo -n "$p (>=$version), " >>/tmp/packages-build-dep;
 	else
 		echo -n "$p (>=$version), " >>/tmp/packages-dep;

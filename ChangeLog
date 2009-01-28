@@ -1,3 +1,7 @@
+28.01.2009
+	- Olivier Delhomme <heraia@delhomme.org>
+      * Cleaning a bit configure.ac
+
 25.01.2009
 	- Olivier Delhomme <heraia@delhomme.org>
       * Added a script that checks the package dependencies. This may be 

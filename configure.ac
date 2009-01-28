@@ -53,9 +53,9 @@ AC_CHECK_TYPES(unsigned long long)
 dnl **************************************************
 dnl * Checks for library functions                   *
 dnl **************************************************
-AC_TYPE_SIGNAL
-AC_FUNC_VPRINTF
-AC_CHECK_FUNCS(gettimeofday select socket strdup strerror strstr)
+dnl AC_TYPE_SIGNAL
+dnl AC_FUNC_VPRINTF
+dnl AC_CHECK_FUNCS(gettimeofday select socket strdup strerror strstr)
 
 dnl **************************************************
 dnl * Checks dynamic libraries capabilities          *
@@ -96,13 +96,13 @@ dnl AC_DEFINE_UNQUOTED(PLUGINS_DIR, "$plugins_dir", [Directory where the plugins
 
 dnl **************************************************
 dnl * Check for Gtkdoc.                              *
+dnl * Commented out (we don't use this anyway)       * 
 dnl **************************************************
-AC_CHECK_PROG(GTKDOC, gtkdoc-mkdb, true, false)
-AM_CONDITIONAL(HAVE_GTK_DOC, test -n $GTKDOC)
-AC_SUBST(HAVE_GTK_DOC)
-
-AC_ARG_ENABLE(gtk-doc, [  --enable-gtk-doc  Use gtk-doc to build documentation [default=no]], enable_gtk_doc="$enableval", enable_gtk_doc=no)
-AM_CONDITIONAL(ENABLE_GTK_DOC, test x$enable_gtk_doc = xyes)
+dnl AC_CHECK_PROG(GTKDOC, gtkdoc-mkdb, true, false)
+dnl AM_CONDITIONAL(HAVE_GTK_DOC, test -n $GTKDOC)
+dnl AC_SUBST(HAVE_GTK_DOC)
+dnl AC_ARG_ENABLE(gtk-doc, [  --enable-gtk-doc  Use gtk-doc to build documentation [default=no]], enable_gtk_doc="$enableval", enable_gtk_doc=no)
+dnl AM_CONDITIONAL(ENABLE_GTK_DOC, test x$enable_gtk_doc = xyes)
 
 dnl **************************************************
 dnl * languages                                      *
@@ -155,14 +155,14 @@ dnl **************************************************
 
 case $build_os in
     *linux*)
-	AC_DEFINE_UNQUOTED(SYS_LINUX, 1, [This is a Linux system])
-	LDFLAGS="$LDFLAGS -export-dynamic -no-undefined -module"
+		AC_DEFINE_UNQUOTED(SYS_LINUX, 1, [This is a Linux system])
+		LDFLAGS="$LDFLAGS -export-dynamic -no-undefined -module"
 	;;
     *mingw*)
-	AC_DEFINE_UNQUOTED(SYS_MINGW, 1, [This is a Windows system using MinGW])
-	LDFLAGS="$LDFLAGS -export-dynamic -no-undefined -module -Wl,--export-all-symbols"
-        CFLAGS="$CFLAGS -mms-bitfields -mwindows -mno-cygwin"
-        ;;
+		AC_DEFINE_UNQUOTED(SYS_MINGW, 1, [This is a Windows system using MinGW])
+		LDFLAGS="$LDFLAGS -export-dynamic -no-undefined -module -Wl,--export-all-symbols"
+		CFLAGS="$CFLAGS -mms-bitfields -mwindows -mno-cygwin"
+	;;
 esac
 
 dnl **************************************************

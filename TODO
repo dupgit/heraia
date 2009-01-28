@@ -35,6 +35,7 @@
 12.11.2008 Add options to separate thousands when displaying numbers (in the
            main program and another in the data interpretor window).
 17.01.2009 Add the height and weight to the windows properties
+28.01.2009 generate a key in order to be able sign debian packages
 
 [Done List]
 19.03.2005 add a way to decode in big-endian or little-endian (Done 05.04.2005)
