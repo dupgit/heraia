@@ -21,7 +21,17 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-
+/** @file heraia.c
+ * This is the main program file.
+ * Initialization is done here and then hand is passed to gtk's main thread
+ */
+/**
+ * @author Olivier DELHOMME,
+ *         Sébastien TRICAUD,
+ *         Grégory AUDET
+ * @version 0.0.7
+ * @date 2005-2009
+ */
 
 #include "heraia_types.h"
 
@@ -45,6 +55,7 @@ static heraia_window_t *libheraia_main_struct = NULL;
 /**
  *  This is intended to be called by the library or any program that will use
  *  the library in order to get the pointer to the main structure heraia_window_t.
+ *  @return heraia_window_t *, a pointer to the main structure
  */
 heraia_window_t *get_main_struct(void)
 {
@@ -161,7 +172,7 @@ static heraia_window_t *init_window_property_struct(heraia_window_t *main_window
 
 /**
  * Initialize the main structure (main_window)
- * @return a new initiated main structure 
+ * @return a pointer to a newly initialized main structure 
  */
 static heraia_window_t *heraia_init_main_struct(void)
 {
@@ -226,7 +237,7 @@ static heraia_window_t *heraia_init_main_struct(void)
  *  Function that initializes the plugin system if any :
  *   - loads any plugin where expected to be found
  *   - inits the plugin window
- * @param main_window : main structure
+ * @param main_window : main structure (heraia_window_t *)
  * @return HERAIA_NO_PLUGINS if no plugins where found or HERAIA_NOERR in
  *         case of no errors
  */
@@ -255,7 +266,8 @@ static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window)
 /**
  *  Here we want to init the location list where we might look for
  *  in the future. These can be viewed as default paths
- *  @warning prepended list in reverse order.
+ *  @warning when adding new locations, keep in ming that the list is a 
+             prepended list in reverse order.
  *  @return a new allocatde GList containing all locations
  */
 static GList *init_heraia_location_list(void)
@@ -307,8 +319,12 @@ static GList *init_heraia_location_list(void)
 /**
  *  Manages all the command line options and populates the
  *  Options *opt structure accordingly
+ *  @param opt (Options *opt) filled here with the parameters found in **argv
+ *  @param argc : number of command line arguments
+ *  @param argv : array of string (char *) that contains arguments
+ *  @return gboolean that seems to always be TRUE
  */
-static gboolean manage_command_line_options(Options *opt, int argc, char ** argv)
+static gboolean manage_command_line_options(Options *opt, int argc, char **argv)
 {
 	int exit_value = TRUE;
 	int c = 0;
@@ -336,7 +352,7 @@ static gboolean manage_command_line_options(Options *opt, int argc, char ** argv
 				}
 		}
 
-	if (optind < argc) /* filename */
+	if (optind < argc) /** @todo manage a list of filenames instead of one filename */
 		{
 			opt->filename = (char *) malloc (sizeof(char) * strlen(argv[optind]) + 1);
 			strcpy(opt->filename, argv[optind]);

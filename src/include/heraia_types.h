@@ -32,13 +32,14 @@
 /* #endif */  /* HAVE_CONFIG_H */
 
 
-/**
+/** @file heraia_types.h
  *  As there seems to be huge differences between the linux
  *  and the windows developpement platform such as that
  *  the included paths are correctly taken into account
  *  under linux (and thus nobody bothers) but not under
  *  windows, I decided to put all the .h definitions here
  *  even if it's ugly, this is supposed to solve the problem.
+ *  Since libheraia is now created, everything has moved there !
  */
 
 #include <libheraia.h>

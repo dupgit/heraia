@@ -23,16 +23,37 @@
 
 #ifndef _HERAIA_H_
 #define _HERAIA_H_
-
-#define HERAIA_AUTHORS "Olivier Delhomme"
+ 
+/**
+ * @def HERAIA_DATE 
+ * defines heraia's creation date
+ *
+ * @def HERAIA_AUTHORS
+ * defines heraia's main authors
+ *
+ * @def HERAIA_LICENSE
+ * defines heraia's license (a least GPL)
+ *
+ * @def HERAIA_VERSION
+ * defines heraia's current version and release date of this version 
+ * (00.00.20XX means a development version)
+ */
+#define HERAIA_AUTHORS "Olivier Delhomme, Sébastien TRICAUD, Grégory AUDET"
 #define HERAIA_DATE "20 02 2005"
 #define HERAIA_LICENSE "GPL"
 #define HERAIA_VERSION "0.0.7 (00.00.2009)"
 
+/**
+ * @struct Options
+ * Structure Options gives a way to store program options passed from the
+ * command line.
+ * - char *filename is the filename to open (should be a list of filenames)
+ * - char usage is there to know which kind of usage message we want to display 
+ */
 typedef struct
 {
-	char *filename;    /* The filename to open                      */
-	char usage;        /* To know if we displayed the usage message */
+	char *filename;    /**< the filename to open                      */
+	char usage;        /**< to know if we displayed the usage message */
 } Options;
 
 static struct option const long_options[] =

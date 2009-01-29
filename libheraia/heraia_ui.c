@@ -21,6 +21,12 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
 */
+/** @file heraia_ui.c
+ * This file has all the functions to manage heraia's ui
+ * - signals definitions and functions
+ * - widgets activations
+ * - closing / openning windows
+ */
 
 #include <libheraia.h>
 
@@ -355,7 +361,7 @@ void on_open_activate(GtkWidget *widget, gpointer data)
 
 /**
  *  Here we attemp to save the edited file
- *  TODO : be more accurate on error (error type, message and filename)
+ *  @todo be more accurate on error (error type, message and filename) returns
  */
 void on_save_activate(GtkWidget *widget, gpointer data)
 {
@@ -867,7 +873,7 @@ static void heraia_ui_connect_signals(heraia_window_t *main_window)
 	
 }
 
-/**
+/** @fn load_heraia_ui(heraia_window_t *main_window)
  *  Loads, if possible, the glade xml file and then connects the
  *  signals and inits the following windows :
  *  - log window
