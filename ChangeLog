@@ -1,3 +1,16 @@
+30.01.2009
+	- Olivier Delhomme <heraia@delhomme.org>
+	  * Removing unecessary things in README file
+      * Documenting the code (I skip data_type.c as this file may disappear
+        in the future) :
+         - heraia.h
+         - heraia_types.h
+         - heraia.c
+         - libheraia.h
+         - libheraia.c
+         - data_interpretor.c
+         - decode.c
+
 29.01.2009
 	- Olivier Delhomme <heraia@delhomme.org>
       * Working on documentation.

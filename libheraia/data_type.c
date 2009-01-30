@@ -3,7 +3,7 @@
   data_types.c
   Window allowing the user to create or edit a new data type
   
-  (C) Copyright 2007 - 2008 Olivier Delhomme
+  (C) Copyright 2007 - 2009 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -21,7 +21,12 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
 */
-
+/**
+ * @file data_type.c
+ * This file must not be edited unless you know what you are
+ * doing : the main maintainer wants to destroy it in a near
+ * future !
+ */
 #include <libheraia.h>
 
 static gboolean delete_data_type_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data);

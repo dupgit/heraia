@@ -20,7 +20,10 @@
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
-
+/**
+ * @file data_interpretor.c
+ * Here one may find tools to manage the data_interpretor window
+ */
 #include <libheraia.h>
 
 static guint which_endianness(heraia_window_t *main_window);
@@ -30,8 +33,14 @@ static void close_data_interpretor_window(GtkWidget *widget, gpointer data);
 static void connect_data_interpretor_signals(heraia_window_t *main_window);
 
 /**
+ * @fn guint which_endianness(heraia_window_t *main_window)
  *  Determines which endianness is selected that is to say
  *  which radio button is active in the window
+ * @param main_window : main structure
+ * @return Something of the following, depending on what selected the user :
+ *         - H_DI_LITTLE_ENDIAN for little endian encoding (default answer)
+ *         - H_DI_BIG_ENDIAN for big endian encoding
+ *         - H_DI_MIDDLE_ENDIAN for middle endian encoding
  */
 static guint which_endianness(heraia_window_t *main_window)
 {
@@ -60,22 +69,28 @@ static guint which_endianness(heraia_window_t *main_window)
 
 
 /**
- *   Here we do interpret a date according to the decode_it function
- *   We are assuming that main_window != NULL and main_window->xml != NULL
- *    - heraia_window_t *main_window : the main structure
- *    - DecodeDateFunc decode_it : a function to be called to decode the stream
- *    - gchar *widget_name : the name of the widget where the result may go
- *    - guint length : the length of the data to be decoded
- *    - guint endianness : the endianness to be applied to the datas
+ * @fn void interpret_as_date(heraia_window_t *main_window, DecodeDateFunc decode_it, gchar *widget_name, guint length, guint endianness)
+ *   Here we do interpret a date according to the decode_it function and we 
+ *   write down the result in a widget name named "widget_name".
+ * @warning We are assuming that main_window != NULL and main_window->xml != NULL
+ *
+ *    @param main_window : main structure
+ *    @param decode_it : a DecodeDateFunc which is a function to be called to 
+ *				 decode the stream
+ *    @param widget_name : a gchar * containing the name of the widget where 
+ *				 the result may go
+ *    @param length : the length of the data to be decoded (guint)
+ *    @param endianness : the endianness to be applied to the datas (as 
+ * 			 returned by function which_endianness)
  */
 static void interpret_as_date(heraia_window_t *main_window, DecodeDateFunc decode_it, gchar *widget_name, guint length, guint endianness)
 {
-	gint result = 0;       /* used to test different results of function calls */
-	guchar *c = NULL;      /* the character under the cursor                   */
+	gint result = 0;       /**< used to test different results of function calls */
+	guchar *c = NULL;      /**< the character under the cursor                   */
 	gchar *text = NULL;
 	data_window_t *data_window = main_window->current_DW;
 	GtkWidget *entry = heraia_get_widget(main_window->xmls->main, widget_name);
-	date_and_time_t *mydate = NULL; /* date resulting of interpretation       */
+	date_and_time_t *mydate = NULL; /**< date resulting of interpretation        */
 
 	c = (guchar *) g_malloc0 (sizeof(guchar) * length);
 	mydate = (date_and_time_t *) g_malloc0 (sizeof(date_and_time_t));
@@ -108,21 +123,27 @@ static void interpret_as_date(heraia_window_t *main_window, DecodeDateFunc decod
 
 
 /**
- *   Here we do interpret a number according to the decode_it function
- *   We are assuming that main_window != NULL and main_window->xml != NULL
- *    - heraia_window_t *main_window : the main structure
- *    - DecodeFunc decode_it : a function to be called to decode the stream
- *    - gchar *widget_name : the name of the widget where the result may go
- *    - guint length : the length of the data to be decoded
- *    - guint endianness : the endianness to be applied to the datas
+ * @fn void interpret_as_number(heraia_window_t *main_window, DecodeFunc decode_it, gchar *widget_name, guint length, guint endianness)
+ *   Here we do interpret a number according to the decode_it function and we 
+ *   write down the result in a widget name named "widget_name".
+ * @warning We are assuming that main_window != NULL and main_window->xml != NULL
+*
+ *    @param main_window : main structure
+ *    @param decode_it : a DecodeDateFunc which is a function to be called to 
+ *				 decode the stream
+ *    @param widget_name : a gchar * containing the name of the widget where 
+ *				 the result may go
+ *    @param length : the length of the data to be decoded (guint)
+ *    @param endianness : the endianness to be applied to the datas (as 
+ * 			 returned by function which_endianness)
  */
 static void interpret_as_number(heraia_window_t *main_window, DecodeFunc decode_it, gchar *widget_name, guint length, guint endianness)
 {
-	gint result = 0;       /* used to test different results of function calls */
-	guchar *c = NULL;      /* the character under the cursor                   */
+	gint result = 0;       /**< used to test different results of function calls */
+	guchar *c = NULL;      /**< the character under the cursor                   */
 	gchar *text = NULL;
-	data_window_t *data_window = main_window->current_DW;   /* We allready know that it's not NULL */
-	GtkWidget *entry = heraia_get_widget(main_window->xmls->main, widget_name);  /* we might test the result as this is user input */
+	data_window_t *data_window = main_window->current_DW;   /**< We already know that it's not NULL (we hope so) */
+	GtkWidget *entry = heraia_get_widget(main_window->xmls->main, widget_name);  /**< @todo we might test the result as this is user input */
 
 	c = (guchar *) g_malloc0(sizeof(guchar) * length);
 
@@ -154,8 +175,12 @@ static void interpret_as_number(heraia_window_t *main_window, DecodeFunc decode_
 
 
 /**
+ * @fn void close_data_interpretor_window(GtkWidget *widget, gpointer data)
  *  "Emulates" the user click on the main window menu entry called DIMenu
  *  whose aim is to display or hide the data interpretor window
+ * @param widget : the widget caller (may be NULL here)
+ * @param data : a gpointer to the main structure : main_window, this must NOT
+ *        be NULL !
  */
 static void close_data_interpretor_window(GtkWidget *widget, gpointer data)
 {
@@ -168,16 +193,20 @@ static void close_data_interpretor_window(GtkWidget *widget, gpointer data)
 }
 
 /**
+ * @fn void refresh_data_interpretor_window(GtkWidget *widget, gpointer data)
  *  Refreshes the data interpretor window with the new values
+ * @param widget : the widget caller (may be NULL here)
+ * @param data : a gpointer to the main structure : main_window, this must NOT
+ *        be NULL !
  */
 void refresh_data_interpretor_window(GtkWidget *widget, gpointer data)
 {
-	heraia_window_t *main_window = (heraia_window_t *) data;  /* data interpretor window structure */
+	heraia_window_t *main_window = (heraia_window_t *) data;  /**< data interpretor window structure */
 	guint endianness = 0;
 
 	if (main_window != NULL && main_window->current_DW != NULL && main_window->win_prop->main_dialog->displayed == TRUE)
 		{
-			endianness = which_endianness(main_window);  /* Endianness is computed only once here */
+			endianness = which_endianness(main_window);  /**< Endianness is computed only once here */
 			interpret_as_number(main_window, decode_8bits_unsigned, "diw_8bits_us", 1, endianness);
 			interpret_as_number(main_window, decode_8bits_signed, "diw_8bits_s", 1, endianness);
 			interpret_as_number(main_window, decode_16bits_unsigned, "diw_16bits_us", 2, endianness);
@@ -200,8 +229,10 @@ void refresh_data_interpretor_window(GtkWidget *widget, gpointer data)
 
 
 /**
+ * @fn void connect_data_interpretor_signals(heraia_window_t *main_window)
  *  Connects data interpretor window's signals to the
  *  right functions
+ * @param main_window : main structure
  */
 static void connect_data_interpretor_signals(heraia_window_t *main_window)
 {
@@ -230,9 +261,9 @@ static void connect_data_interpretor_signals(heraia_window_t *main_window)
 }
 
 /**
- *  Inits the data interpretor structure and window
- *  with default values
- *  Should be called only once
+ * @fn void data_interpretor_init_interface(heraia_window_t *main_window)
+ *  Inits the data interpretor structure and window with default values
+ *  @warning Should be called only once at program's beginning
  */
 void data_interpretor_init_interface(heraia_window_t *main_window)
 {
@@ -248,7 +279,7 @@ void data_interpretor_init_interface(heraia_window_t *main_window)
 			if (dw != NULL)
 				{
 					dw->diw = heraia_get_widget(main_window->xmls->main, "data_interpretor_window");
-					dw->tab_displayed = 0; /* the first tab */
+					dw->tab_displayed = 0; /* the first tab (Numbers) */
 				}
 		}
 }

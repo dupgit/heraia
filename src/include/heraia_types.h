@@ -3,7 +3,7 @@
   types.h
   types.h - all data types and pieces of common declarations
 
-  (C) Copyright 2006 - 2008 Olivier Delhomme
+  (C) Copyright 2006 - 2009 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -21,18 +21,7 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
-
-#ifndef _HERAIA_TYPES_H_
-#define _HERAIA_TYPES_H_
-
-/* I have some problems under windows if #ifdef statement is activated */
-
-/* #ifdef HAVE_CONFIG_H */
-#include "config.h"
-/* #endif */  /* HAVE_CONFIG_H */
-
-
-/** @file heraia_types.h
+/** @file heraia_types.h 
  *  As there seems to be huge differences between the linux
  *  and the windows developpement platform such as that
  *  the included paths are correctly taken into account
@@ -41,6 +30,14 @@
  *  even if it's ugly, this is supposed to solve the problem.
  *  Since libheraia is now created, everything has moved there !
  */
+#ifndef _HERAIA_TYPES_H_
+#define _HERAIA_TYPES_H_
+
+/* I have some problems under windows if #ifdef statement is activated */
+
+/* #ifdef HAVE_CONFIG_H */
+#include "config.h"
+/* #endif */  /* HAVE_CONFIG_H */
 
 #include <libheraia.h>
 

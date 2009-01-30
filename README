@@ -69,8 +69,6 @@ DocBook : (Heraia uses JavaDoc Style with @ instead of \)
     * \typedef to document a type definition.
     * \file to document a file.
     * \namespace to document a namespace.
-    * \package to document a Java package.
-    * \interface to document an IDL interface.
     * \brief to document briefly
 
 See all available commands here :

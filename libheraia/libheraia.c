@@ -3,7 +3,7 @@
   libheraia.c
   Heraia's library
 
-  (C) Copyright 2008 Sébastien Tricaud, Olivier Delhomme
+  (C) Copyright 2008 - 2009 Sébastien Tricaud, Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -20,7 +20,15 @@
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
-
+/**
+ * @file libheraia.c
+ * 
+ * Contains function that may be usefull if we want all this beeing
+ * integrated in a python script or something similar
+ *
+ * @todo do the functions that may be called by python when initializing
+ *       the library.
+ */
 #include <stdio.h>
 #include <libheraia.h>
 

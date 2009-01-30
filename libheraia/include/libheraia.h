@@ -3,7 +3,7 @@
   libheraia.h
   Heraia's library header
 
-  (C) Copyright 2008-2009 Sébastien Tricaud, Olivier Delhomme
+  (C) Copyright 2008 - 2009 Sébastien Tricaud, Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -20,7 +20,13 @@
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
-
+/** 
+ * @file libheraia.h 
+ *
+ *  This file contains all the definitions and includes all other .h
+ *  file. This is not very friendly, but ease compilation on exotic
+ *  systems.
+ */
 #ifndef _LIBHERAIA_H_
 #define _LIBHERAIA_H_
 
@@ -40,13 +46,38 @@
 
 #include <gtkhex/gtkhex.h>
 
+/**
+ * @typedef HexDocument Heraia_Document
+ *  Abstract layer this may be usefull if we decide to leave GtkHex 
+ *  and use something else !
+ *
+ * @typedef GtkHex Heraia_Hex
+ *  Abstract layer this may be usefull if we decide to leave GtkHex 
+ *  and use something else !
+ */
+/**
+ * @typedef  gint HERAIA_ERROR
+ *  Defines heraia error type (this should be used !)
+ */
 typedef HexDocument Heraia_Document;
 typedef GtkHex Heraia_Hex;
 typedef gint HERAIA_ERROR;
 
+/** 
+ *  @typedef gint RefreshType
+ *   Refresh type (may be used to decide what to do
+ *   in a particular case)
+ *  @warning This is not thread safe !!
+ */
 /**
- *  Refresh type (may be used to decide what to do
- *  in a particular case)
+ *  @def HERAIA_REFRESH_NOTHING
+ *   When nothing is refreshed
+ *
+ *  @def HERAIA_REFRESH_NEW_FILE
+ *   When a new file has been loaded
+ *
+ *  @def HERAIA_REFRESH_CURSOR_MOVE
+ *   When the cursor is moving
  */
 typedef gint RefreshType;
 #define HERAIA_REFRESH_NOTHING 0
@@ -77,6 +108,9 @@ typedef gpointer (*TreatmentCopyFunc) (gpointer); /**< Treatment copy function t
 /**
  * @struct treatment_t
  *  Treatment structure
+ * @warning I'm not happy with this struct and all data_type.c file. I plan
+ *          to replace thoses ugly things with an embedded scripting language
+ *          such as python.
  */
 typedef struct
 {
@@ -91,6 +125,9 @@ typedef struct
 /**
  * @struct treatment_container_t
  *  Structure in order to contain one treatment
+ * @warning I'm not happy with this struct and all data_type.c file. I plan
+ *          to replace thoses ugly things with an embedded scripting language
+ *          such as python.
  */
 typedef struct
 {
@@ -109,10 +146,13 @@ typedef struct
  *  Data type structure entry that contains user defined data types
  *  This is integrated within a GList.
  *  !! Do not forget to update the functions related to this such as
- *   . new_data_type
- *   . free_data_type
- *   . copy_data_type
+ *   - new_data_type
+ *   - free_data_type
+ *   - copy_data_type
  *  See data_type.c for thoses functions
+ * @warning I'm not happy with this struct and all data_type.c file. I plan
+ *          to replace thoses ugly things with an embedded scripting language
+ *          such as python.
  */
 typedef struct
 {
@@ -132,7 +172,7 @@ typedef struct
  */
 typedef struct
 {
-	GladeXML *main;       /**< the main interface xml description */
+	GladeXML *main;      /**< the main interface xml description */
 } xml_t;
 
 /**
@@ -143,9 +183,9 @@ typedef struct
  */
 typedef struct
 {
-	gint x;
-	gint y;
-	gboolean displayed;
+	gint x;              /**< x position (upper left corner)     */
+	gint y;              /**< y position (upper left croner)     */
+	gboolean displayed;  /**< TRUE if displayed, FALSE otherwise */
 } window_prop_t;
 
 /** 
@@ -214,7 +254,9 @@ typedef struct
 
 extern int libheraia_test(void);
 
-/* Python specific */
+/** 
+ * Python specific 
+ */
 extern void libheraia_initialize(void);
 extern void libheraia_finalize(void);
 

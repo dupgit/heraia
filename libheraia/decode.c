@@ -3,7 +3,7 @@
   decode.c
   Heraia's library decode.c
 
-  (C) Copyright 2008 Sébastien Tricaud, Olivier Delhomme
+  (C) Copyright 2008 - 2009 Sébastien Tricaud, Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -20,7 +20,14 @@
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
-
+/**
+ * @file decode.c
+ * This file include all functions that may help in decoding a binary stream
+ * to something else such as numbers, dates, other binary stream and so on
+ * @todo I see, while putting some functions documentation that there may be
+ *       things to do to improve speed with date calculations -> should we fill
+ *       tab_ns_months at every function calls ? This may not be necessary
+ */
 #include <libheraia.h>
 
 static gboolean bissextile_year(guint32 year);
@@ -32,10 +39,11 @@ static void make_date_and_time(date_and_time_t *mydate, guchar *data, guint8 len
 static void transform_bcd_to_human(gchar *bcd, guint8 part, guint8 part_number);
 
 /**
+ * @fn gchar *decode_8bits_signed(guchar *data)
  *  General purpose of this function is to take a 1 byte data stream
  *  and convert it as if it is an 8 bits signed number
- *  data : 1 guchar
- *  returns a gchar* that may be freed when no longer needed
+ *  @param data : 1 guchar
+ *  @return returns a gchar * that may be freed when no longer needed
  */
 gchar *decode_8bits_signed(guchar *data)
 {
@@ -54,10 +62,11 @@ gchar *decode_8bits_signed(guchar *data)
 
 
 /**
+ * @fn gchar *decode_8bits_unsigned(guchar *data)
  *  general purpose of this function is to take a 1 byte data stream
  *  and convert it as if it is an 8 bits unsigned number
- *  data : 1 guchar
- *  returns a gchar* that may be freed when no longer needed
+ *  @param data : 1 guchar
+ *  @return returns a gchar * that may be freed when no longer needed
 */
 gchar *decode_8bits_unsigned(guchar *data)
 {
@@ -77,10 +86,11 @@ gchar *decode_8bits_unsigned(guchar *data)
 
 
 /**
+ * @fn gchar *decode_16bits_signed(guchar *data)
  *  general purpose of this function is to take a 2 byte data stream
  *  and convert it as if it is a 16 bits signed number
- *  data : 2 guchars
- *  returns a gchar* that may be freed when no longer needed
+ *  @param data : 2 guchars
+ *  @return returns a gchar * that may be freed when no longer needed
  */
 gchar *decode_16bits_signed(guchar *data)
 {
@@ -99,10 +109,11 @@ gchar *decode_16bits_signed(guchar *data)
 
 
 /**
+ * @fn gchar *decode_16bits_unsigned(guchar *data)
  *  general purpose of this function is to take a 2 byte data stream
  *  and convert it as if it is a 16 bits unsigned number
- *  data : 2 guchars
- *  returns a gchar* that may be freed when no longer needed
+ *  @param data : 2 guchars
+ *  @return returns a gchar * that may be freed when no longer needed
  */
 gchar *decode_16bits_unsigned(guchar *data)
 {
@@ -121,10 +132,11 @@ gchar *decode_16bits_unsigned(guchar *data)
 
 
 /**
+ * @fn gchar *decode_32bits_signed(guchar *data)
  *  general purpose of this function is to take a 4 byte data stream
  *  and convert it as if it is a 32 bits signed number
- *  data : 4 guchars
- *  returns a gchar* that may be freed when no longer needed
+ *  @param data : 4 guchars
+ *  @return returns a gchar * that may be freed when no longer needed
 */
 gchar *decode_32bits_signed(guchar *data)
 {
@@ -143,10 +155,11 @@ gchar *decode_32bits_signed(guchar *data)
 
 
 /**
+ * @fn gchar *decode_32bits_unsigned(guchar *data)
  *  general purpose of this function is to take a 4 byte data stream
  *  and convert it as if it is a 32 bits unsigned number
- *  data : 4 guchars
- *  returns a gchar* that may be freed when no longer needed
+ *  @param data : 4 guchars
+ *  @return returns a gchar * that may be freed when no longer needed
 */
 gchar *decode_32bits_unsigned(guchar *data)
 {
@@ -164,10 +177,11 @@ gchar *decode_32bits_unsigned(guchar *data)
 }
 
 /**
+ * @fn gchar *decode_64bits_signed(guchar *data)
  *  general purpose of this function is to take a 8 byte data stream
  *  and convert it as if it is a 64 bits signed number
- *  data : 8 guchars
- *  returns a gchar* that may be freed when no longer needed
+ *  @param data : 8 guchars
+ *  @return returns a gchar * that may be freed when no longer needed
 */
 gchar *decode_64bits_signed(guchar *data)
 {
@@ -186,10 +200,11 @@ gchar *decode_64bits_signed(guchar *data)
 
 
 /**
+ * @fn gchar *decode_64bits_unsigned(guchar *data)
  *  general purpose of this function is to take a 8 byte data stream
  *  and convert it as if it is a 64 bits unsigned number
- *  data : 8 guchars
- *  returns a gchar* that may be freed when no longer needed
+ *  @param data : 8 guchars
+ *  @return returns a gchar * that may be freed when no longer needed
 */
 gchar *decode_64bits_unsigned(guchar *data)
 {
@@ -208,11 +223,13 @@ gchar *decode_64bits_unsigned(guchar *data)
 
 
 /**
+ * @fn static gboolean bissextile_year(guint32 year)
  *  Says whether a year is a leap one or not
+ * @param year : a guint32 representing a year such as 2009
+ * @return TRUE if it's a leap year FALSE instead.
  */
 static gboolean bissextile_year(guint32 year)
 {
-
 	if ((year % 4) == 0)
 		{
 			if ((year % 100) == 0)
@@ -237,9 +254,14 @@ static gboolean bissextile_year(guint32 year)
 		}
 }
 
+
 /**
+ * @fn void calc_which_month_day(date_and_time_t *mydate, guint32 day, guint tab_ns_months[12])
  *  Says, from a number of days (eg 154), which month it is (eg  may)
  *  and which day in the corresponding month (eg 2 (leap year) or 3)
+ *  @param[out] mydate : Filled date structure
+ *	@param day : guint32 representing the number of day in the year (1..365/366)
+ *  @param tab_ns_months : an array filled with the cumulative number of days for each month (31 to 365/366)
  */
 static void calc_which_month_day(date_and_time_t *mydate, guint32 day, guint tab_ns_months[12])
 {
@@ -263,7 +285,11 @@ static void calc_which_month_day(date_and_time_t *mydate, guint32 day, guint tab
 }
 
 /**
+ * @fn void which_month_day(date_and_time_t *mydate, guint32 day, gboolean bi)
  *  Front end function for the calc_which_month_day function !
+ * @param[out] mydate : Filled date structure
+ * @param day : guint32 representing the number of day in the year (1..365/366)
+ * @param bi : TRUE if it's a leap year, FALSE instead
  */
 static void which_month_day(date_and_time_t *mydate, guint32 day, gboolean bi)
 {
@@ -299,8 +325,13 @@ static void which_month_day(date_and_time_t *mydate, guint32 day, gboolean bi)
 }
 
 /**
+ * @fn guint32 remove_days_from_first_january(guint32 base_year, guint8 base_month, guint8 base_day)
  *  Returns the number of days since 01/01/base_year
  *  eg 15/02/base_year --> 31 + 15 = 46
+ * @param base_year : year where we want to begin the calculation
+ * @param base_month : month (in the example 02)
+ * @param base_day : day in the month (from the example 15)
+ * @return returns a number of days since begining of the year (eg 1..365/366)
  */
 static guint32 remove_days_from_first_january(guint32 base_year, guint8 base_month, guint8 base_day)
 {
@@ -360,6 +391,7 @@ static guint32 remove_days_from_first_january(guint32 base_year, guint8 base_mon
 
 
 /**
+ * @fn void which_year_month_day(date_and_time_t *mydate, guint32 days, guint32 base_year, guint base_month, guint8 base_day)
  * About date calculation : Leap years are periods of 4 years except
  * the years that we can divide by 100 and not 400.
  * So we can distinguish 2 periods : one of 400 years and one of 4 years.
@@ -370,8 +402,13 @@ static guint32 remove_days_from_first_january(guint32 base_year, guint8 base_mon
  *  As we can calculate _exactly_ the number of days in a filetime or C_date
  *  format, we could calculate _exactly_ the number of periods of 400 years and
  *  then the number of periods of 4 years.
+ * @param[out] mydate : Filled date structure
+ * @param days : number of days calculated
+ * @param base_year : base year used for calculation (eg 1601 for filetime)
+ * @param base_month : base month used for calculation (eg 01, january for filetime)
+ * @param base_day : base day used for calculation (eg 01 for filetime)
 */
-static void which_year_month_day (date_and_time_t *mydate, guint32 days, guint32 base_year, guint base_month, guint8 base_day)
+static void which_year_month_day(date_and_time_t *mydate, guint32 days, guint32 base_year, guint base_month, guint8 base_day)
 {
 	guint32 modulus = 0;
 	guint32 reste = 0;
@@ -413,11 +450,15 @@ static void which_year_month_day (date_and_time_t *mydate, guint32 days, guint32
 
 
 /**
- *  Return a gchar* that contains the date and time
+ * @fn gchar *date_printf(date_and_time_t *mydate)
+ *  Return a gchar * that contains the date and time
  *  encoded from the values contained in the date_and_time_t structure
  *  it may be freed when no longer needed
  *  We do not use any of the g_date_strftime or strftime function
  *  because interpreted dates are not always valid !
+ * @param[in] mydate : structure that contains a date
+ * @return returns a gchar * printed out in a french like format "dd/mm/aaaa - hh:mm:ss"
+ * @todo Add a way to use a user defined format and/or predefined formats
  */
 static gchar *date_printf(date_and_time_t *mydate)
 {
@@ -426,11 +467,13 @@ static gchar *date_printf(date_and_time_t *mydate)
 
 
 /**
+ * @fn gchar *decode_dos_date(guchar *data, date_and_time_t *mydate)
  *  general purpose of this function is to take a 4 byte data stream
  *  and convert it as if it is a dos date. If it is not, the result
  *  may be funny !
- *  data : 4 guchars
- *  returns a gchar* that may be freed when no longer needed
+ *  @param data : 4 guchars
+ *  @param[out] mydate : date_and_time_t * structure that contain the resulting date
+ *  @return returns a gchar * that may be freed when no longer needed
 */
 gchar *decode_dos_date(guchar *data, date_and_time_t *mydate)
 {
@@ -454,15 +497,16 @@ gchar *decode_dos_date(guchar *data, date_and_time_t *mydate)
 
 
 /**
- *  Reads the data from the stream (specified length !! <= 64 bits )
- *   - date_and_time_t *mydate : the resulting date
- *   - guchar *data : the stream
- *   - guint8 len : length of the stream in bytes ( must be <= 64 bits)
- *   - guint64 nbticks : number of ticks per seconds (1, 1000, ...)
- *   - guint32 base_year : Epoch year (1970, 1904, ...)
- *   - guint8 base_month : Epoch month (january, ...)
- *   - guint8 base_day : Epoch day (01, 15, ...)
- *  populates the date_and_time_t structure
+ * @fn void make_date_and_time(date_and_time_t *mydate, guchar *data, guint8 len, guint64 nbticks, guint32 base_year, guint base_month, guint8 base_day)
+ *  Reads the data from the stream (specified length !! <= 8 or 64 bits to decode)
+ *  @param[out] mydate : date_and_time_t * structure that contain the resulting date
+ *  @param data : a guchar * as a stream to decode as a date
+ *  @param len : guint8 as length of the stream in bytes (must be <= 8 or 64 bits to decode)
+ *  @param nbticks : guint64 that tells the number of ticks per seconds (1, 1000, ...)
+ *  @param base_year : guint32, Epoch year (1970, 1904, ...)
+ *  @param base_month : guint32, Epoch month (january, ...)
+ *  @param base_day : guint32 Epoch day (01, 15, ...)
+ *  @return populates the date_and_time_t structure (my_date)
 */
 static void make_date_and_time(date_and_time_t *mydate, guchar *data, guint8 len, guint64 nbticks, guint32 base_year, guint base_month, guint8 base_day)
 {
@@ -483,11 +527,13 @@ static void make_date_and_time(date_and_time_t *mydate, guchar *data, guint8 len
 
 
 /**
+ * @fn gchar *decode_filetime_date(guchar *data, date_and_time_t *mydate)
  *  general purpose of this function is to take a 8 byte data stream
  *  and convert it as if it is a filetime date. If it is not, the result
  *  may be funny ! Counting 100th of nanoseconds from 01/01/1601
- *  data : 8 guchars
- *  returns a gchar* that may be freed when no longer needed
+ *  @param data : 8 guchars
+ *  @param[out] mydate : date_and_time_t * structure that contain the resulting date
+ *  @return returns a gchar * that may be freed when no longer needed
 */
 gchar *decode_filetime_date(guchar *data, date_and_time_t *mydate)
 {
@@ -504,11 +550,13 @@ gchar *decode_filetime_date(guchar *data, date_and_time_t *mydate)
 
 
 /**
+ * @fn gchar *decode_C_date(guchar *data, date_and_time_t *mydate)
  *  general purpose of this function is to take a 4 byte data stream
  *  and convert it as if it is a C date. If it is not, the result may
  *  be funny ! Counting seconds from 01/01/1970
- *  data : 4 guchars
- *  returns a gchar* that may be freed when no longer needed
+ *  @param data : 4 guchars
+ *  @param[out] mydate : date_and_time_t * structure that contain the resulting date
+ *  @return returns a gchar * that may be freed when no longer needed
 */
 gchar *decode_C_date(guchar *data, date_and_time_t *mydate)
 {
@@ -524,11 +572,13 @@ gchar *decode_C_date(guchar *data, date_and_time_t *mydate)
 }
 
 /**
+ * @fn gchar *decode_HFS_date(guchar *data, date_and_time_t *mydate)
  *  general purpose of this function is to take a 4 byte data stream
  *  and convert it as if it is a HFS date. If it is not, the result may
  *  be funny ! Counting seconds 01/01/1904
- *  data : 4 guchars
- *  returns a gchar* that may be freed when no longer needed
+ *  @param data : 4 guchars
+ *  @param[out] mydate : date_and_time_t * structure that contain the resulting date
+ *  @return returns a gchar* that may be freed when no longer needed
 */
 gchar *decode_HFS_date(guchar *data, date_and_time_t *mydate)
 {
@@ -546,8 +596,12 @@ gchar *decode_HFS_date(guchar *data, date_and_time_t *mydate)
 
 
 /**
+ * @fn gchar *decode_to_bits(guchar *data)
  *  decodes the stream represented by *data (one byte) to a
  *  string containing eight 0 or 1 (Little Endian style)
+ *  @param data : 1 guchar
+ *  @return 8 gchars that are either "1" or "0", the string may be freed when
+ *          no longer needed
  */
 gchar *decode_to_bits(guchar *data)
 {
@@ -572,10 +626,13 @@ gchar *decode_to_bits(guchar *data)
 
 
 /**
+ * @fn static void transform_bcd_to_human(gchar *bcd, guint8 part, guint8 part_number)
  *  transcribes the bcd number "part" into a
- *  gchar * human readable string
+ *  @param[out] bcd : gchar * human readable string
+ *  @param part : guint8 as an half byte to decode
+ *  @param part_number : 0 or 1 as MSB and LSB
  *  Coding style is from ETSI GSM 04.08 ETS 300557 p387
- *  TODO : give choice of coding style (eg for numbers >=10)
+ *  @todo give choice of coding style (eg for numbers >=10)
  */
 static void transform_bcd_to_human(gchar *bcd, guint8 part, guint8 part_number)
 {
@@ -637,9 +694,12 @@ static void transform_bcd_to_human(gchar *bcd, guint8 part, guint8 part_number)
 
 
 /**
+ * @fn gchar *decode_packed_BCD(guchar *data)
  *  Decode one byte as a Packed BCD (Binary Coded Decimal)
  *  and return a gchar* that may be freed when no longer
  *  needed
+ *  @param data : stream to decode as 1 guchar
+ *  @return returns a gchar * that contain the packed BCD interpretation
  */
 gchar *decode_packed_BCD(guchar *data)
 {
@@ -662,27 +722,15 @@ gchar *decode_packed_BCD(guchar *data)
 		}
 }
 
-
-
-
-/** Code that has moved into libheraia
-
- gchar *decode_8bits_signed(guchar *data)
- gchar *decode_8bits_unsigned(guchar *data)
- gchar *decode_16bits_signed(guchar *data)
- gchar *decode_16bits_unsigned(guchar *data)
- gchar *decode_32bits_signed(guchar *data)
- gchar *decode_32bits_unsigned(guchar *data)
- gchar *decode_64bits_signed(guchar *data)
- gchar *decode_64bits_unsigned(guchar *data)
-  
-*/
-
-
 /**
+ * @fn gboolean swap_bytes(guchar *to_swap, guint first, guint last)
  *  Swap bytes from the buffer to_swap
- *  recursive function !!
- *  call with first = 0 and last = last byte of buffer to swap
+ *  @warning recursive function !! Call with first = 0 and last = last byte 
+ *  of buffer to swap
+ *  @param[in,out] to_swap : buffer to swap
+ *  @param first : first byte in the buffer to swap
+ *  @param last : last byte in the buffer to swap
+ *  @return returns TRUE when first is >= to last and this end recursivity
  */
 gboolean swap_bytes(guchar *to_swap, guint first, guint last)
 {
@@ -702,8 +750,10 @@ gboolean swap_bytes(guchar *to_swap, guint first, guint last)
 }
 
 /**
+ * @fn reverse_byte_order(guchar *to_reverse)
  *  Reverse the byte order LSB -> MSB in MSB -> LSB
  *  12345678 in 87654321
+ * @param[in,out] to_reverse : one guchar to be reversed
  */
 void reverse_byte_order(guchar *to_reverse)
 {

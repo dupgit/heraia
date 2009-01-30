@@ -873,7 +873,7 @@ static void heraia_ui_connect_signals(heraia_window_t *main_window)
 	
 }
 
-/** @fn load_heraia_ui(heraia_window_t *main_window)
+/** @fn int load_heraia_ui(heraia_window_t *main_window)
  *  Loads, if possible, the glade xml file and then connects the
  *  signals and inits the following windows :
  *  - log window
