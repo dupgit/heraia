@@ -1,3 +1,9 @@
+31.01.2009
+	- Olivier Delhomme <heraia@delhomme.org>
+      * Documenting the code (and adding more todos's ;)
+        - ghex_heraia_interface.c
+		- heraia_io.c
+
 30.01.2009
 	- Olivier Delhomme <heraia@delhomme.org>
 	  * Removing unecessary things in README file

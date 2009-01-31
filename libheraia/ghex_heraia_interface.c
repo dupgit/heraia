@@ -3,7 +3,7 @@
   ghex_heraia_interface.c
   heraia - an hexadecimal file editor and analyser based on ghex
  
-  (C) Copyright 2005 - 2008 Olivier Delhomme
+  (C) Copyright 2005 - 2009 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -20,12 +20,20 @@
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
-
+/**
+ * @file ghex_heraia_interface.c
+ * An interface to the ghex library -> this adds an abstract layer.
+ */
 #include <libheraia.h>
 
 /**
+ * @fn HERAIA_ERROR heraia_hex_document_new(heraia_window_t *main_window, char *filename) 
  *  Removes the old document if it exists and adds a new one
  *  from the filename 'filename'
+ * @param main_window : main structure
+ * @param filename : a char * representing an existing file named "filename"
+ * @return Always returns HERAIA_NOERR; @todo : do something to take errors into
+ *         account
  */
 HERAIA_ERROR heraia_hex_document_new(heraia_window_t *main_window, char *filename) 
 {
@@ -49,7 +57,11 @@ HERAIA_ERROR heraia_hex_document_new(heraia_window_t *main_window, char *filenam
 
 
 /**
+ * @fn gchar *heraia_hex_document_get_filename(Heraia_Document *doc)
  * Retrieves the filename of a document which ever it is !
+ * @param doc : an existing Heraia_Document @todo : do something if
+ *        the document does not exist.
+ * @return returns the filename of that document.
  */
 gchar *heraia_hex_document_get_filename(Heraia_Document *doc)
 {
@@ -58,7 +70,10 @@ gchar *heraia_hex_document_get_filename(Heraia_Document *doc)
 
 
 /**
+ * @fn HERAIA_ERROR heraia_hex_document_save(heraia_window_t *main_window)
  * Saves an open and edited document
+ * @param main_window : main structure, @todo may be we only need main_window->current_doc here
+ * @return returns HERAIA_NOERR if everything went ok or HERAIA_FILE_ERROR in case of an error
  */
 HERAIA_ERROR heraia_hex_document_save(heraia_window_t *main_window)
 {
@@ -80,14 +95,18 @@ HERAIA_ERROR heraia_hex_document_save(heraia_window_t *main_window)
 }
 
 /**
+ * @fn HERAIA_ERROR heraia_hex_document_save_as(heraia_window_t *main_window, gchar *filename)
  * Saves an opened and edited document to a new file
+ * @param main_window : main structure
+ * @param filename : the new filename where to save the file
+ * @return returns HERAIA_NOERR if everything went ok or HERAIA_FILE_ERROR in case of an error
  */
 HERAIA_ERROR heraia_hex_document_save_as(heraia_window_t *main_window, gchar *filename)
 {
 	gint return_value = FALSE;
 	FILE *fp = NULL;
 	gint i = 0;
-	gchar *path_end = NULL;
+	gchar *path_end = NULL; /**< to make libghex happy ! */
 	
 	if (main_window->current_doc != NULL && filename != NULL)
 	   {
@@ -134,16 +153,22 @@ HERAIA_ERROR heraia_hex_document_save_as(heraia_window_t *main_window, gchar *fi
 }
 
 /**
+ * @fn void change_endianness(guint len, guint endianness, guchar *result)
  *  Deals with the endianness of 'len' bytes located in 'result'
  *  for BIG_ENDIAN we only swap bytes if we have two or more of them
  *  if we have only one byte, we reverse its order
  *  if endianness is MIDDLE_ENDIAN we swap only four or more bytes
  *  Here we might have funny things with len corresponding to 24 or 56 bits
  *  for example
- *  Assumption is made that the default order is LITTLE_ENDIAN (which may
- *  not be true on some systems !)
- *  We fo assume that 'result' really contains 'len' bytes of data previously
- *  gmalloc'ed
+ *  @warning Assumption is made that the default order is LITTLE_ENDIAN (which may
+ *           not be true on some systems !)
+ *  @warning We do assume that 'result' really contains 'len' bytes of data previously
+ *           gmalloc'ed
+ *  @param len : len bytes to change endianness
+ *  @param endianness : H_DI_BIG_ENDIAN or H_DI_MIDDLE_ENDIAN we consider that there
+ *         is nothing to do with H_DI_LITTLE_ENDIAN
+ *  @param[in,out] result : contains the bytes to be swaped and at the end, contains 
+ *                 the result.
  */
 static void change_endianness(guint len, guint endianness, guchar *result)
 {
@@ -167,13 +192,21 @@ static void change_endianness(guint len, guint endianness, guchar *result)
 
 
 /**
+ * @fn gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, guint endianness, guchar *result) 
  *  Returns 'len' number of bytes located at 'pos' in the GtkHex 
  *  document and puts it in the result variable
  *
- *  We assume that a previous g_malloc has been done in order to
- *  use the function. Here we need the "swap_bytes" function
- *  defined in the decode.h header in order to take the endianness
- *  into account
+ *  @warning We assume that a previous g_malloc has been done in order to
+ *           use the function. Here we need the "swap_bytes" function
+ *           defined in the decode.h header in order to take the endianness
+ *           into account
+ *  @param gh : A GtkHex document.
+ *  @param pos : position where we want to begin to copy bytes
+ *  @param len : number of bytes we want to copy
+ *  @param endianness : endianness we want to apply to the bytes we want to copy
+ *  @param[out] result : a previously g_malloc'ed gchar * string that will contain
+ *              copied bytes.
+ *  @return TRUE if everything went ok, FALSE otherwise
  */
 gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, guint endianness, guchar *result) 
 {
@@ -205,11 +238,17 @@ gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, guint endianness, guchar 
 
 
 /**
+ * @fn ghex_get_data(data_window_t *data_window, guint length, guint endianness, guchar *c)
  *  Gets the data from the hexwidget, a wrapper to the ghex_memcpy
- *  function. guchar *c MUST have been pre allocated BEFORE the call.
- *  endianness == H_DI_BIG_ENDIAN, H_DI_MIDDLE_ENDIAN or H_DI_LITTLE_ENDIAN
- *  length can be anything but MUST be strictly less than the size allocated 
- *  to *c
+ *  function. 
+ *  @warning guchar *c MUST have been pre allocated BEFORE the call.
+ *           
+ * @param data_window : data interpretor window structure
+ * @param length : can be anything but MUST be strictly less than the size allocated 
+ *        to *c
+ * @param endianness : H_DI_BIG_ENDIAN, H_DI_MIDDLE_ENDIAN or H_DI_LITTLE_ENDIAN
+ * @param c : a previously g_malloc'ed gchar * string that will contain
+ *              copied bytes.
  */
 gboolean ghex_get_data(data_window_t *data_window, guint length, guint endianness, guchar *c)
 {
@@ -232,7 +271,10 @@ gboolean ghex_get_data(data_window_t *data_window, guint length, guint endiannes
 
 
 /**
+ * @fn guint64 ghex_file_size(GtkHex *gh)
  *  Returns the file size of an opened GtkHex document.
+ * @param gh : an opened GtkHex document
+ * @return resturns the file size of that document
  */
 guint64 ghex_file_size(GtkHex *gh)
 {
@@ -247,7 +289,10 @@ guint64 ghex_file_size(GtkHex *gh)
 }
 
 /**
- *  Retrieves the cursor's position from the hexwidget
+ * @fn guint64 ghex_get_cursor_position(data_window_t *data_window)
+ *  Retrieves the cursor's position from the current hexwidget
+ * @param data_window : data interpretor window structure
+ * @return returns the cursor's position
  */
 guint64 ghex_get_cursor_position(data_window_t *data_window)
 {

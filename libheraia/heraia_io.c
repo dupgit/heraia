@@ -20,15 +20,22 @@
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
-
+/**
+ * @file heraia_io.c
+ * Here I want to see everything that deals with I/O, files, disk and so on.
+ */
 #include <libheraia.h>
 
 static GladeXML *load_glade_xml_if_it_exists(char *file_to_load);
 
 /**
+ * @fn gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
  *  Loads the file 'filename' to analyse and populates the
  *  corresponfing structure 'main_window' as needed thus
  *  main_window and filename must NOT be NULL pointers
+ * @param main_window : main structure (it must not be NULL)
+ * @param filename : filename of the file to load (it must not be NULL)
+ * @return TRUE if everything went ok, FALSE otherwise
  */
 gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 {
@@ -99,8 +106,11 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 
 
 /** 
+ * @fn GladeXML *load_glade_xml_if_it_exists(gchar *file_to_load)
  *  Checks if file_to_load exists and is valid and if possible, loads it
  *  in the xml structure
+ * @param file_to_load : a filename of a possibly existing glade file
+ * @return returns the GladeXML structure if any, NULL otherwise
  */
 static GladeXML *load_glade_xml_if_it_exists(gchar *file_to_load)
 {
@@ -124,9 +134,14 @@ static GladeXML *load_glade_xml_if_it_exists(gchar *file_to_load)
 	return xml;
 }
 
-/* loads the glade xml file ('filename') that describes an interface,
-   tries all the paths defined in the location_list and put the definition
-   in the 'xml' variable
+/**
+ * @fn GladeXML *load_glade_xml_file(GList *location_list, gchar *filename)
+ *  loads the glade xml file ('filename') that describes an interface,
+ *  tries all the paths defined in the location_list and put the definition
+ *  in the 'xml' variable. A frontend to load_glade_xml_if_it_exists function
+ * @param location_list : a Glist containing paths where we might found the file
+ * @param filename : glade's file's name that we want to load (possibly)
+ * @return returns the GladeXML structure if any, NULL otherwise
  */
 GladeXML *load_glade_xml_file(GList *location_list, gchar *filename)
 {	
@@ -152,7 +167,10 @@ GladeXML *load_glade_xml_file(GList *location_list, gchar *filename)
 
 
 /**
+ * @fn gboolean load_preference_file(heraia_window_t *main_window)
  *  Load the preference file
+ * @param main_window : main structure
+ * @return TRUE if everything went ok, FALSE otherwise
  */
 gboolean load_preference_file(heraia_window_t *main_window)
 {	
@@ -160,13 +178,18 @@ gboolean load_preference_file(heraia_window_t *main_window)
 	{
 		return g_key_file_load_from_file(main_window->prefs->file, main_window->prefs->filename,  G_KEY_FILE_KEEP_COMMENTS & G_KEY_FILE_KEEP_TRANSLATIONS, NULL);
 	}
-	
-	return FALSE;
+	else
+	{	
+		return FALSE;
+	}
 }
 
 
 /**
+ * @fn gboolean save_preferences_to_file(prefs_t *prefs)
  *  Saves the preferences to the file preferences
+ * @param prefs : preferences (from prefs_t structure)
+ * @return TRUE if everything went ok, FALSE otherwise
  */
 gboolean save_preferences_to_file(prefs_t *prefs)
 {
