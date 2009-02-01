@@ -37,9 +37,12 @@ static void record_and_hide_about_box(heraia_window_t *main_window);
 static void close_heraia(heraia_window_t *main_window);
 
 /**
+ * @fn void on_quit_activate(GtkWidget *widget, gpointer data)
  *  Quit, file menu
+ * @param widget : the widget that issued the signal
+ * @param data : user data MUST be heraia_window_t *main_window main structure
  */
-void on_quit_activate( GtkWidget *widget, gpointer data )
+void on_quit_activate(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	
@@ -48,7 +51,10 @@ void on_quit_activate( GtkWidget *widget, gpointer data )
 }
 
 /**
+ * @fn void on_new_activate(GtkWidget *widget, gpointer data)
  *  New, file menu
+ * @param widget : the widget that issued the signal
+ * @param data : user data MUST be heraia_window_t *main_window main structure
  */
 void on_new_activate(GtkWidget *widget, gpointer data)
 {
@@ -58,8 +64,11 @@ void on_new_activate(GtkWidget *widget, gpointer data)
 }
 
 /**
+ * @fn void on_preferences_activate(GtkWidget *widget, gpointer data)
  *  Preferences, file menu :
  *  Displays the preference window (as a modal window)
+ * @param widget : the widget that issued the signal
+ * @param data : user data MUST be heraia_window_t *main_window main structure
  */
 void on_preferences_activate(GtkWidget *widget, gpointer data)
 {
@@ -98,7 +107,10 @@ static void set_a_propos_properties(GtkWidget *about_dialog)
 
 
 /**
+ * @fn void a_propos_activate(GtkWidget *widget, gpointer data)
  *  Shows apropos's dialog box
+ * @param widget : the widget that issued the signal
+ * @param data : user data MUST be heraia_window_t *main_window main structure
  */
 void a_propos_activate(GtkWidget *widget, gpointer data)
 {
@@ -116,7 +128,10 @@ void a_propos_activate(GtkWidget *widget, gpointer data)
 }
 
 /** 
+ * @fn void move_and_show_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_prop)
  *  Move the dialog box to the wanted position, shows it and says it in the displayed prop
+ * @param dialog_box : the dialog box we want to move and show
+ * @param dialog_prop : window_prop_t properties structure corresponding to the dialog box
  */
 void move_and_show_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_prop)
 {
@@ -130,7 +145,10 @@ void move_and_show_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_prop)
 }
 
 /**
+ * @fn void record_dialog_box_position(GtkWidget *dialog_box, window_prop_t *dialog_prop)
  * Records one dialog position
+ * @param dialog_box : a dialog box from which we want to record the position
+ * @param[in,out] dialog_prop : window_prop_t properties structure corresponding to the dialog box
  */
 void record_dialog_box_position(GtkWidget *dialog_box, window_prop_t *dialog_prop)
 {
@@ -150,7 +168,9 @@ void record_dialog_box_position(GtkWidget *dialog_box, window_prop_t *dialog_pro
 
 
 /**
+ * @fn void record_all_dialog_box_positions(heraia_window_t *main_window)
  * Records all the positions of the displayed windows
+ * @param[in,out] main_window : main structure
  */
 void record_all_dialog_box_positions(heraia_window_t *main_window)
 {
@@ -194,7 +214,10 @@ void record_all_dialog_box_positions(heraia_window_t *main_window)
 	
 	
 /**
+ * @fn void record_and_hide_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_prop)
  *  Record position and hide a dialog box
+ * @param dialog_box : the dialog box we want to record its position and then hide
+ * @param dialog_prop : window_prop_t properties structure corresponding to the dialog box
  */
 void record_and_hide_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_prop)
 {
@@ -210,7 +233,9 @@ void record_and_hide_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_pro
 
 
 /**
+ * @fn static void record_and_hide_about_box(heraia_window_t *main_window)
  *  Record position and hide about dialog box
+ * @param [in,out] main_window : main structure
  */
 static void record_and_hide_about_box(heraia_window_t *main_window)
 {

@@ -4,6 +4,8 @@
         version and package name when initializing windows states, now fixed.
       * BUG #12920 Saving preference when closing : fixed (never connect a 
 		signal with no user data ...)
+      * Documenting the code :
+        - working on heraia_ui.c
 
 31.01.2009
 	- Olivier Delhomme <heraia@delhomme.org>
