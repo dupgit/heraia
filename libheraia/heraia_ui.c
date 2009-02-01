@@ -30,6 +30,7 @@
 
 #include <libheraia.h>
 
+static void set_a_propos_properties(GtkWidget *about_dialog);
 static gboolean load_heraia_glade_xml(heraia_window_t *main_window);
 static void heraia_ui_connect_signals(heraia_window_t *main_window);
 static void record_and_hide_about_box(heraia_window_t *main_window);
@@ -75,14 +76,12 @@ void on_preferences_activate(GtkWidget *widget, gpointer data)
 }
 
 /**
- *  Shows apropos's dialog box
+ * @fn void set_a_propos_properties(GtkWidget *about_dialog)
+ * Sets name and version in the dialog box
+ * @param about_dialog the widget that contain all the about box
  */
-void a_propos_activate(GtkWidget *widget, gpointer data)
+static void set_a_propos_properties(GtkWidget *about_dialog)
 {
-	heraia_window_t *main_window = (heraia_window_t *) data;
-	GtkWidget *about_dialog = NULL;
-	
-	about_dialog = heraia_get_widget(main_window->xmls->main, "about_dialog");
 	
 	if (about_dialog != NULL)
 	{
@@ -94,7 +93,24 @@ void a_propos_activate(GtkWidget *widget, gpointer data)
 		{
 			gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(about_dialog), PACKAGE_VERSION);
 		}
-		
+	}
+}
+
+
+/**
+ *  Shows apropos's dialog box
+ */
+void a_propos_activate(GtkWidget *widget, gpointer data)
+{
+	heraia_window_t *main_window = (heraia_window_t *) data;
+	GtkWidget *about_dialog = NULL;
+	
+	about_dialog = heraia_get_widget(main_window->xmls->main, "about_dialog");
+	
+	if (about_dialog != NULL)
+	{
+		set_a_propos_properties(about_dialog);
+	
 		move_and_show_dialog_box(about_dialog, main_window->win_prop->about_box);
 	}
 }
@@ -477,11 +493,13 @@ void on_DIMenu_activate(GtkWidget *widget, gpointer data)
  */
 gboolean delete_main_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {
-	heraia_window_t *main_window = (heraia_window_t *) data;
+	/* heraia_window_t *main_window = (heraia_window_t *) data; */
 	
-	close_heraia(main_window);
-	gtk_widget_destroy(widget);
-	return TRUE;
+	on_quit_activate(widget, data);
+	
+	/* gtk_widget_destroy(widget); */
+	
+	return FALSE;
 }
 
 
@@ -865,12 +883,14 @@ static void heraia_ui_connect_signals(heraia_window_t *main_window)
 	
 	
 	/* main window killed or destroyed */
-	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "main_window")), "delete_event", 
-					  G_CALLBACK (delete_main_window_event), NULL);
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "main_window")), "delete-event", 
+					  G_CALLBACK (delete_main_window_event), main_window);
 	
-	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "main_window")), "destroy", 
-					  G_CALLBACK (on_quit_activate), NULL);
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "main_window")), "response", 
+					  G_CALLBACK (delete_main_window_event), main_window);
 	
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "main_window")), "close", 
+					  G_CALLBACK (on_quit_activate), main_window);
 }
 
 /** @fn int load_heraia_ui(heraia_window_t *main_window)
@@ -1211,7 +1231,8 @@ void init_window_states(heraia_window_t *main_window)
 			if (main_window->win_prop->about_box->displayed == TRUE)
 			{
 				/* main_window->win_prop->main_pref_window->displayed = FALSE; dirty trick */
-				gtk_window_move(GTK_WINDOW(dialog_box), main_window->win_prop->about_box->x, main_window->win_prop->about_box->y);
+				gtk_window_move(GTK_WINDOW(dialog_box), main_window->win_prop->about_box->x, main_window->win_prop->about_box->y); 
+				set_a_propos_properties(dialog_box);
 				gtk_widget_show_all(dialog_box);
 			}
 			

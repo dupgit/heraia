@@ -1,3 +1,10 @@
+01.02.2009
+	- Olivier Delhomme <heraia@delhomme.org>
+      * BUG #12919 About box : I had forgot to include something to change
+        version and package name when initializing windows states, now fixed.
+      * BUG #12920 Saving preference when closing : fixed (never connect a 
+		signal with no user data ...)
+
 31.01.2009
 	- Olivier Delhomme <heraia@delhomme.org>
       * Documenting the code (and adding more todos's ;)
