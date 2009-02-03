@@ -1,3 +1,8 @@
+0.02.2009
+	- Olivier Delhomme <heraia@delhomme.org>
+      * Documenting and refactoring the code
+        - heraia_ui.c
+
 01.02.2009
 	- Olivier Delhomme <heraia@delhomme.org>
       * BUG #12919 About box : I had forgot to include something to change
