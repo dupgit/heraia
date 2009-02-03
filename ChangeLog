@@ -2,6 +2,9 @@
 	- Olivier Delhomme <heraia@delhomme.org>
       * Documenting and refactoring the code
         - heraia_ui.c
+      * stat.c
+        - corrected a typo, trying to smooth 2D histo
+        - translation
 
 01.02.2009
 	- Olivier Delhomme <heraia@delhomme.org>
