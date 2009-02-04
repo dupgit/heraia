@@ -652,6 +652,8 @@ static void do_pixbuf_2D_from_histo2D(stat_t *extra, guint max_2D)
 	gdouble mean = 0;
 	gdouble threshold1 = 0;
 	gdouble threshold2 = 0;
+	guchar ceill;
+	guchar floor;
 
 	max = extra->infos_2D->max;
 	min = extra->infos_2D->min;
@@ -659,6 +661,9 @@ static void do_pixbuf_2D_from_histo2D(stat_t *extra, guint max_2D)
 	
 	threshold1 = min + (mean - min) / 2;
 	threshold2 = mean + (max - mean) / 2;
+	
+	floor = (guchar) 50;
+	ceill = (guchar) 200;
 	
 	for (i=0; i<=255; i++)
 	{
@@ -671,9 +676,9 @@ static void do_pixbuf_2D_from_histo2D(stat_t *extra, guint max_2D)
 					
 					if (height >= min && height <= threshold1)
 					{
-						red = (guchar) 0;
-						green = (guchar) 0;
-						blue = (guchar) (height - min)*255 / threshold1;
+						red = floor;
+						green = floor;
+						blue = (guchar) (height - min)*(ceill-floor) / threshold1;
 						/*
 						 * height = (gdouble) (height*255) / (gdouble) extra->infos_2D->max;
 						 * red = (guchar)  height;
@@ -684,16 +689,16 @@ static void do_pixbuf_2D_from_histo2D(stat_t *extra, guint max_2D)
 					}
 					else if (height > threshold1 && height <= threshold2)
 					{
-						red = (guchar) 0;
-						green = (guchar) (height - threshold1)*255 / (threshold2 - threshold1);
-						blue = (guchar) 255 - green;
+						red = (guchar) floor;
+						green = (guchar) (height - threshold1)*(ceill-floor) / (threshold2 - threshold1);
+						blue = (guchar) floor; /* ceill - green;*/
 						plot_in_pixbuf(extra->pixbuf_2D, i, 255-j, red, green, blue, (guchar) 255);
 					}
 					else if (height > threshold2 && height <= max)
 					{
-						red = (guchar) (height - threshold2)*255 / (max - threshold2);
-						green = 255 - red;
-						blue = 0;
+						red = (guchar) (height - threshold2)*(ceill-floor) / (max - threshold2);
+						green = floor; /* ceill - red; */
+						blue = floor;
 						/*
 						 * height = (gdouble) height*255 / (gdouble) extra->infos_2D->max;
 						 * red = (guchar)  255 - (height);
