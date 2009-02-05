@@ -3,7 +3,7 @@
   stat.c
   an heraia plugin to calculate some stats on the opened file
  
-  (C) Copyright 2007 - 2008 Olivier Delhomme
+  (C) Copyright 2007 - 2009 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -21,7 +21,11 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
 */
-
+/**
+ * @file stat.c
+ * does some basic statistics on the file and displays them
+ * in a numerical or graphical way (histograms : 1D and 2D)
+ */
 #include "stat.h"
 
 /* The functions for the plugin's usage */
@@ -45,12 +49,16 @@ static void do_pixbuf_2D_from_histo2D(stat_t *extra, guint max_2D);
 
 
 /**
- *  Initialisation plugin called when the plugin is loaded (some sort of pre-init)
+ *  @fn heraia_plugin_t *heraia_plugin_init(heraia_plugin_t *plugin)
+ *  Initialisation plugin function called when the plugin is loaded
+ *  (some sort of pre-init)
+ *  @param[in,out] plugin : plugin's structure
+ *  @return returns the plugin structure
  */
 heraia_plugin_t *heraia_plugin_init(heraia_plugin_t *plugin)
 {
-	stat_t *extra = NULL;
-	window_prop_t *stat_prop = NULL;
+	stat_t *extra = NULL;  /**< extra structure specific to this plugin */
+	window_prop_t *stat_prop = NULL; /**< window properties */
 
 	plugin->state             = PLUGIN_STATE_INITIALIZING;
 	plugin->xml = NULL;
@@ -97,7 +105,9 @@ heraia_plugin_t *heraia_plugin_init(heraia_plugin_t *plugin)
 
 
 /**
- *  The real init function of the plugin
+ * @fn init(heraia_window_t *main_struct)
+ *  The real init function of the plugin (called at init time)
+ * @param main_struct : main structure
  */
 void init(heraia_window_t *main_struct)
 {
@@ -138,6 +148,7 @@ void init(heraia_window_t *main_struct)
 
 
 /**  
+ * @fn void quit(void)
  *  Normaly this is called when the plugin is unloaded
  *  One may wait it's entire life for this to be called !! ;)
  */ 
@@ -148,7 +159,11 @@ void quit(void)
 
 
 /**
+ * @fn run(GtkWidget *widget, gpointer data)
  *  This function is called via a signal handler when the menu entry is toggled
+ * @param widget : widget which called the function (unused)
+ * @param data : user data for the plugin, here MUST be heraia_window_t * main 
+ *        structure
  */
 void run(GtkWidget *widget, gpointer data)
 {
@@ -175,9 +190,13 @@ void run(GtkWidget *widget, gpointer data)
 
 
 /**
+ * @fn void refresh(heraia_window_t *main_struct, void *data)
  *  The refresh function Called when a new file is loaded or when the cursor is moved
  *  Here we want to refresh the plugin only if a new file is loaded AND if the plugin
- *  is allready displayed (running)
+ *  is already displayed (running)
+ * @param main_struct : main structure
+ * @param data : user data (the plugin itself) MUST be heraia_plugin_t *plugin
+ *        structure
  */
 void refresh(heraia_window_t *main_struct, void *data)
 {
@@ -199,17 +218,29 @@ void refresh(heraia_window_t *main_struct, void *data)
  *  those may be included in an another .c source file ?!
  */
 
-/** 
- *  Signals handlers
+/**
+ * @fn gboolean delete_stat_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
+ *  Closes stat window
+ * @param widget : the widget which called this function
+ * @param event : the event that issued the signal (unused here)
+ * @param data : user data, MUST be heraia_plugin_t *plugin
+ * @return resturns always FALSE (does not propagate the signal)
  */
-static gboolean delete_stat_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data )
+static gboolean delete_stat_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {
 	statw_close_clicked(widget, data);
 
-	return TRUE;
+	return FALSE;
 }
 
 
+/**
+ * @fn void destroy_stat_window(GtkWidget *widget, GdkEvent  *event, gpointer data)
+ *  Closes stat window
+ * @param widget : the widget which called this function
+ * @param event : the event that issued the signal (unused here)
+ * @param data : user data, MUST be heraia_plugin_t *plugin
+ */
 static void destroy_stat_window(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {
 	statw_close_clicked(widget, data);
@@ -217,7 +248,10 @@ static void destroy_stat_window(GtkWidget *widget, GdkEvent  *event, gpointer da
 
 
 /**
- *  What to do when the window is closed 
+ * @fn void statw_close_clicked(GtkWidget *widget, gpointer data)
+ *  What to do when the window is closed
+ * @param widget : the widget which called this function (unused here)
+ * @param data : user data, MUST be heraia_plugin_t *plugin
  */
 static void statw_close_clicked(GtkWidget *widget, gpointer data)
 {
@@ -232,7 +266,10 @@ static void statw_close_clicked(GtkWidget *widget, gpointer data)
 
 
 /**
- *  What to do when the save as button is clicked 
+ * @fn void statw_save_as_clicked(GtkWidget *widget, gpointer data)
+ *  What to do when the save as button is clicked
+ * @param widget : the widget which called this function (unused here)
+ * @param data : user data, MUST be heraia_plugin_t *plugin
  */
 static void statw_save_as_clicked(GtkWidget *widget, gpointer data)
 {
@@ -253,7 +290,11 @@ static void statw_save_as_clicked(GtkWidget *widget, gpointer data)
 		}
 }
 
-
+/**
+ * @fn gchar *stat_select_file_to_save(void)
+ *  Selecting the file filename where to save the file
+ * @return returns the new filename where to save a file
+ */
 static gchar *stat_select_file_to_save(void)
 {
 	GtkFileSelection *file_selector = NULL;
@@ -284,7 +325,12 @@ static gchar *stat_select_file_to_save(void)
 }
 
 
-/* What to do when the user chooses a 1D or 2D histo */
+/**
+ * @fn void histo_radiobutton_toggled(GtkWidget *widget, gpointer data)
+ *  What to do when the user chooses a 1D or 2D histo 
+ * @param widget : the widget which called this function (unused here)
+ * @param data : user data, MUST be heraia_plugin_t *plugin
+ */
 static void histo_radiobutton_toggled(GtkWidget *widget, gpointer data)
 {
 	heraia_plugin_t *plugin = (heraia_plugin_t *) data;
@@ -306,7 +352,9 @@ static void histo_radiobutton_toggled(GtkWidget *widget, gpointer data)
 
 
 /**
+ * @fn void stat_window_connect_signals(heraia_plugin_t *plugin)
  *  Connects all the signals to the correct functions
+ * @param plugin : main plugin structure
  */
 static void stat_window_connect_signals(heraia_plugin_t *plugin)
 {
@@ -338,7 +386,10 @@ static void stat_window_connect_signals(heraia_plugin_t *plugin)
 
 
 /**
+ * @fn void realize_some_numerical_stat(heraia_window_t *main_struct, heraia_plugin_t *plugin)
  *  Do some stats on the selected file (entire file is used)
+ * @param main_struct : main structure from heraia
+ * @param plugin : main plugin structure (the plugin itself in fact)
  */
 static void realize_some_numerical_stat(heraia_window_t *main_struct, heraia_plugin_t *plugin)
 {
