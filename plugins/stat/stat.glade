@@ -5,7 +5,6 @@
   <widget class="GtkWindow" id="stat_window">
     <property name="width_request">425</property>
     <property name="height_request">380</property>
-    <property name="visible">True</property>
     <property name="title" translatable="yes">Stats</property>
     <property name="destroy_with_parent">True</property>
     <child>

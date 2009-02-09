@@ -230,7 +230,7 @@ static gboolean delete_stat_window_event(GtkWidget *widget, GdkEvent  *event, gp
 {
 	statw_close_clicked(widget, data);
 
-	return FALSE;
+	return TRUE;
 }
 
 

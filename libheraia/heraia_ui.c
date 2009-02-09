@@ -1362,6 +1362,14 @@ void init_window_states(heraia_window_t *main_window)
 	{
 		if (main_window->win_prop)
 		{
+			/* Main window (always the first one) */
+			dialog_box = heraia_get_widget(main_window->xmls->main, "main_window");
+			if (main_window->win_prop->main_dialog->displayed == TRUE)
+			{
+				gtk_window_move(GTK_WINDOW(dialog_box), main_window->win_prop->main_dialog->x, main_window->win_prop->main_dialog->y);
+				gtk_widget_show(dialog_box);
+			}
+			
 			/* Log Window Interface */
 			cmi = heraia_get_widget(main_window->xmls->main, "mw_cmi_show_logw");
 			dialog_box = heraia_get_widget(main_window->xmls->main, "log_window");
@@ -1403,17 +1411,6 @@ void init_window_states(heraia_window_t *main_window)
 				gtk_window_move(GTK_WINDOW(dialog_box), main_window->win_prop->about_box->x, main_window->win_prop->about_box->y); 
 				set_a_propos_properties(dialog_box);
 				gtk_widget_show_all(dialog_box);
-			}
-			
-			/* Main window (always the last one) */
-			dialog_box = heraia_get_widget(main_window->xmls->main, "main_window");
-			if (main_window->win_prop->main_dialog->displayed == TRUE)
-			{
-				gtk_window_move(GTK_WINDOW(dialog_box), main_window->win_prop->main_dialog->x, main_window->win_prop->main_dialog->y);
-				/** @todo found where the main_window is displayed at first to comment that and then uncomment here
-				 *        in order to have a smoother window apparition
-				 * gtk_widget_show(dialog_box); may not be necessary as the window is already displayed 
-			     */
 			}
 		}
 	}
