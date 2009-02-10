@@ -1,3 +1,9 @@
+10.02.2009
+	- Olivier Delhomme <heraia@delhomme.org>
+      * Added a new roadmap goal : modify the way types are added to data 
+        interpretor's window -> add flexibility
+	  * Documenting libheraia.c
+
 09.02.2009
 	- Olivier Delhomme <heraia@delhomme.org>
       * Changed visible property for stat_window and main_window (avoid 

@@ -45,6 +45,12 @@
 #include "plugin.h"
 #include "user_prefs.h"
 
+/**
+ * @fn int libheraia_test(void)
+ * A simple test function
+ * @return Always returns 0
+ */
+
 int libheraia_test(void)
 {
 	fprintf(stdout, "Libheraia library test OK\n");
