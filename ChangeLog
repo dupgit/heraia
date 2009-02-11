@@ -1,3 +1,11 @@
+11.02.2009
+	- Olivier Delhomme <heraia@delhomme.org>
+	  * Documenting log.c and adding some basic tests to avoid possible
+        segfaults
+      * Typos in ChangeLog itself
+	* Documenting main_pref_window.c, plugin.c
+    * Adding ideas to the Roadmap
+
 10.02.2009
 	- Olivier Delhomme <heraia@delhomme.org>
       * Added a new roadmap goal : modify the way types are added to data 
@@ -624,7 +632,7 @@
 	* Modified 'README' a bit
 	* removed the gboolean loaded of the plugin structure and replace with
 	  a PluginState state one.
-	* plugins/stat/stat.c modified to reflect the abov change
+	* plugins/stat/stat.c modified to reflect the above change
 
 07.01.2007
 	- Olivier Delhomme <heraia@delhomme.org>
@@ -691,7 +699,7 @@
 	  types.h now as all the necessary types.
 
 07.02.2006
-         - Olivier Delhomme <heraia@delhomme.org>
+	- Olivier Delhomme <heraia@delhomme.org>
 	 * Now resizing the window also resises the HexWidget in it !
 
 12.11.2005

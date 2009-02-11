@@ -21,21 +21,24 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
 */
-
+/**
+ * @file log.c
+ * Includes everything that deals with the logging system
+ */
 #include <libheraia.h>
 
-/**
- *  A function that allow me to printy things on stdout and in th log window
- */
-static void my_log(heraia_window_t *main_window, gchar *log_domain, GLogLevelFlags log_level, const char *format, ...);
 
+static void my_log(heraia_window_t *main_window, gchar *log_domain, GLogLevelFlags log_level, const char *format, ...);
 static void log_window_connect_signals(heraia_window_t *main_window);
 static gboolean delete_log_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data );
 static void destroy_log_window(GtkWidget *widget, GdkEvent  *event, gpointer data);
 static void logw_close_clicked(GtkWidget *widget, gpointer data);
 
 /**
+ * @fn print_message(const char *format, ...)
  * Prints a	 message to stdout
+ * @param format : a printf style format
+ * @param ... : va_list to fill the format. 
  */
 void print_message(const char *format, ...)
 {
@@ -69,7 +72,16 @@ void print_message(const char *format, ...)
 
 
 /**
- *  The log function 
+ * @fn my_log(heraia_window_t *main_window, gchar *log_domain, GLogLevelFlags log_level, const char *format, ...);
+ *  A function that allow me to printy things on stdout and in th log window
+ * @param main_window : main structure
+ * @param log_domain : should be the program's name
+ * @param log_level : A string that may be either G_LOG_FLAG_RECURSION,
+ *        G_LOG_FLAG_FATAL, G_LOG_LEVEL_ERROR, G_LOG_LEVEL_CRITICAL,
+ *        G_LOG_LEVEL_WARNING, G_LOG_LEVEL_MESSAGE, G_LOG_LEVEL_INFO,
+ *        G_LOG_LEVEL_DEBUG
+ * @param format : a printf style format
+ * @param ... : va_list to fill the format.
  */
 static void my_log(heraia_window_t *main_window, gchar *log_domain, GLogLevelFlags log_level, const char *format, ...)
 {
@@ -139,7 +151,17 @@ static void my_log(heraia_window_t *main_window, gchar *log_domain, GLogLevelFla
 
 
 /**
- *  A function that helps logging a message a the specified level 
+ * @fn log_message(heraia_window_t *main_window, GLogLevelFlags log_level, const char *format, ...)
+ *  A function that helps logging a message a the specified level. A wrapper to
+ *  my_log function log_domain is defined by HERAIA_LOG_DOMAIN
+ * @param main_window : main structure
+ * @param log_level : A string that may be either G_LOG_FLAG_RECURSION,
+ *        G_LOG_FLAG_FATAL, G_LOG_LEVEL_ERROR, G_LOG_LEVEL_CRITICAL,
+ *        G_LOG_LEVEL_WARNING, G_LOG_LEVEL_MESSAGE, G_LOG_LEVEL_INFO,
+ *        G_LOG_LEVEL_DEBUG
+ * @param format : a printf style format
+ * @param ... : va_list to fill the format.
+ * @todo may be include the hability to choose a different log domain ?
  */
 void log_message(heraia_window_t *main_window, GLogLevelFlags log_level, const char *format, ...)
 {
@@ -198,7 +220,12 @@ void log_message(heraia_window_t *main_window, GLogLevelFlags log_level, const c
 }
 
 /**
+ * @fn void show_hide_log_window(heraia_window_t *main_window, gboolean show, GtkCheckMenuItem *cmi)
  *  Shows and hides the log window
+ * @param main_window : main structure
+ * @param show : a boolean to say whether we want to show (TRUE) or hide (FALSE)
+ *               the window
+ * @param cmi : the associated check menu item in the menu
  */
 
 void show_hide_log_window(heraia_window_t *main_window, gboolean show, GtkCheckMenuItem *cmi)
@@ -223,7 +250,11 @@ void show_hide_log_window(heraia_window_t *main_window, gboolean show, GtkCheckM
 }
 
 /**
+ * @fn mw_cmi_show_logw_toggle(GtkWidget *widget, gpointer data)
  *  The Check menu item for the Log window 
+ * @param widget : the widget that issued the signal (here the log check menu 
+ *                 item
+ * @param data : user data, MUST be main_window main structure
  */
 void mw_cmi_show_logw_toggle(GtkWidget *widget, gpointer data)
 {
@@ -238,7 +269,12 @@ void mw_cmi_show_logw_toggle(GtkWidget *widget, gpointer data)
 /**** The Signals ****/
 
 /** 
+ * @fn gboolean delete_log_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data )
  *  Closing the window 
+ * @param widget : calling widget 
+ * @param event : event associated (may be NULL as we don't use this here)
+ * @param data : MUST be heraia_window_t *main_window main structure and not NULL
+ * @return Always returns TRUE in order to propagate the signal 
  */
 static gboolean delete_log_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data )
 {
@@ -247,52 +283,72 @@ static gboolean delete_log_window_event(GtkWidget *widget, GdkEvent  *event, gpo
 	return TRUE;
 }
 
+/**
+ * @fn void destroy_log_window(GtkWidget *widget, GdkEvent  *event, gpointer data)
+ * When the window is destroyed (Gtk's doc says that we may never get there)
+ * @param widget : calling widget 
+ * @param event : event associated (may be NULL as we don't use this here)
+ * @param data : MUST be heraia_window_t *main_window main structure and not NULL
+*/
 static void destroy_log_window(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {
 	logw_close_clicked(widget, data);
 }
 
 /**
+ * @fn  void logw_close_clicked(GtkWidget *widget, gpointer data)
  *  Close button is clicked
+ * @param widget : calling widget 
+ * @param data : MUST be heraia_window_t *main_window main structure and not NULL
  */
 static void logw_close_clicked(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	GtkWidget *cmi = NULL;
 	
-	cmi = heraia_get_widget(main_window->xmls->main, "mw_cmi_show_logw");
-
-	show_hide_log_window(main_window, FALSE, GTK_CHECK_MENU_ITEM(cmi));
+	if (main_window != NULL && main_window->xmls != NULL && main_window->xmls->main != NULL)
+	{
+		cmi = heraia_get_widget(main_window->xmls->main, "mw_cmi_show_logw");
+		show_hide_log_window(main_window, FALSE, GTK_CHECK_MENU_ITEM(cmi));
+	}
 }
 
 
 /**
- *  Connecting the window signals to the right functions  
+ * @fn void log_window_connect_signals(heraia_window_t *main_window)
+ *  Connecting the window signals to the right functions
+ * @param main_window : main structure
  */
 static void log_window_connect_signals(heraia_window_t *main_window)
 {
 
-	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "log_window")), "delete_event", 
-					 G_CALLBACK(delete_log_window_event), main_window);
-
-	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "log_window")), "destroy", 
-					 G_CALLBACK(destroy_log_window), main_window);
+	if (main_window != NULL && main_window->xmls != NULL && main_window->xmls->main != NULL)
+	{
 	
-	/* Close Button */
-	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "logw_close_b")), "clicked", 
-					 G_CALLBACK(logw_close_clicked), main_window);
+		g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "log_window")), "delete_event", 
+						 G_CALLBACK(delete_log_window_event), main_window);
 
-	/* the toogle button */
-	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "mw_cmi_show_logw")), "toggled",
-					 G_CALLBACK(mw_cmi_show_logw_toggle), main_window);
+		g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "log_window")), "destroy", 
+						 G_CALLBACK(destroy_log_window), main_window);
+	
+		/* Close Button */
+		g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "logw_close_b")), "clicked", 
+						 G_CALLBACK(logw_close_clicked), main_window);
+
+		/* the toogle button */
+		g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "mw_cmi_show_logw")), "toggled",
+						 G_CALLBACK(mw_cmi_show_logw_toggle), main_window);
+	}
 
 }
 
 /**** End Signals ****/
 
 /**
+ * @fn log_window_init_interface(heraia_window_t *main_window)
  *  Inits the log window interface 
  *  Called once at init time
+ * @param main_window : main structure 
  */
 void log_window_init_interface(heraia_window_t *main_window)
 {

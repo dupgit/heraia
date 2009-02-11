@@ -32,8 +32,6 @@
            understandable
 08.07.2008 Add a swig hability and begin doing thing in ruby <-- is this really 
            a thing that I want ?
-12.11.2008 Add options to separate thousands when displaying numbers (in the
-           main program and another in the data interpretor window).
 17.01.2009 Add the height and weight to the windows properties
 28.01.2009 generate a key in order to be able sign debian packages
 
@@ -50,5 +48,7 @@
 06.01.2007 suppress the graph_analysis structure and .c, .h source files. (Done 20.01.2007)
 06.01.2007 get rid of the DataInterpretor structure and replace the
            DataInterpretor window by a plugin with notebooks (Done 24.10.2007)
+12.11.2008 Add options to separate thousands when displaying numbers (in the
+           main program and another in the data interpretor window) (Done 18.01.2009)
 
 

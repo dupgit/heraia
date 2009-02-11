@@ -3,7 +3,7 @@
  *  plugin.c
  *  heraia - an hexadecimal file editor and analyser based on ghex
  * 
- *  (C) Copyright 2007 Olivier Delhomme
+ *  (C) Copyright 2007 - 2009 Olivier Delhomme
  *  e-mail : heraia@delhomme.org
  *  URL    : http://heraia.tuxfamily.org
  * 
@@ -21,7 +21,11 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
  */
-
+/**
+ * @file plugin.c
+ * This file contains all the stuff that is dedicated to plugins (loading,
+ * instanciating, initializing and so on)
+ */
 #include <libheraia.h>
 
 static heraia_plugin_t *get_plugin_handle(heraia_window_t *main_window, heraia_plugin_t *plugin, 
@@ -31,7 +35,9 @@ static void init_plugin(heraia_window_t *main_window, heraia_plugin_t *plugin, c
 static void load_one_plugin(heraia_window_t *main_window, const gchar *filename, guint plugins_nb);
 
 /**
+ * @fn gboolean plugin_capable(void)
  * Says whether the system can handle plugins (or not)
+ * @return Returns TRUE if the system is able to handle plugins, FALSE otherwise
  */
 gboolean plugin_capable(void)
 {
@@ -39,9 +45,11 @@ gboolean plugin_capable(void)
 }
 
 /**  
+ * @fn new_plugin(void)
  *  Creates a new empty plugin 
  *  it may be initialised by
  *  the plugin itself !
+ * @return Returns a newly created heraia_plugin_t plugin structure
  */
 heraia_plugin_t *new_plugin(void)
 {
@@ -50,8 +58,8 @@ heraia_plugin_t *new_plugin(void)
 	new = (heraia_plugin_t *) g_malloc0(sizeof(heraia_plugin_t));
 
 	new->state = PLUGIN_STATE_NEW; /* The plugin state         */
-	new->handle = NULL;      /* The module handle        */
-	new->path = NULL;        /* The path to the plugin   */
+	new->handle = NULL;            /* The module handle        */
+	new->path = NULL;              /* The path to the plugin   */
 	new->filename = NULL;
 	new->info = (plugin_info_t *) g_malloc0(sizeof(plugin_info_t));       /* The plugin information   */
 	new->filter = (plugin_filter_t *) g_malloc0(sizeof(plugin_filter_t)); /* The plugin filter        */
@@ -70,7 +78,9 @@ heraia_plugin_t *new_plugin(void)
 }
 
 /**
- *  free an unused plugin
+ * @fn free_plugin(heraia_plugin_t *plugin)
+ *  free an unused plugin use with caution
+ * @param plugin : A created a malloc'ed plugin 
  */
 void free_plugin(heraia_plugin_t *plugin)
 {
@@ -103,7 +113,15 @@ void free_plugin(heraia_plugin_t *plugin)
 }
 
 /**
+ * @fn heraia_plugin_t *get_plugin_handle(heraia_window_t *main_window, heraia_plugin_t *plugin, const gchar *full_filename, const gchar *filename)
  *  Here we try to get a handle for the Gmodule referenced by full_filename
+ * @param main_window : main structure
+ * @param plugin : the plugin we try to get a handle for
+ * @param full_filename : the full filename (includes path) to the compiled 
+ *	                      plugin
+ * @param filename : the filename (without the path -> used for fancy log 
+ *								   reporting) 
+ * @return Returns the modified plugin structure eventually with a handle !
  */
 static heraia_plugin_t *get_plugin_handle(heraia_window_t *main_window, heraia_plugin_t *plugin, 
 										  const gchar *full_filename, const gchar *filename)
@@ -123,8 +141,11 @@ static heraia_plugin_t *get_plugin_handle(heraia_window_t *main_window, heraia_p
 }
 
 /**
+ * @fn heraia_plugin_t *get_plugin_init_symbol(heraia_window_t *main_window, heraia_plugin_t *plugin)
  *  If the handle is ok, we want to have the heraia_plugin_init function (to call it)
  *  in order to init the plugin (by itself)
+ * @param main_window : main structure
+ * @param plugin : the plugin to look for its init function
  */ 
 static heraia_plugin_t *get_plugin_init_symbol(heraia_window_t *main_window, heraia_plugin_t *plugin)
 {
@@ -156,8 +177,13 @@ static heraia_plugin_t *get_plugin_init_symbol(heraia_window_t *main_window, her
 }
 
 /**
+ * @fn void init_plugin(heraia_window_t *main_window, heraia_plugin_t *plugin, const gchar *filename, guint plugins_nb)
  *  finalising initialisation : if everything went fine, the plugin is added to the 
  *  plugin list and a menu entry is created in the Plugins menu
+ * @param main_window : main structure
+ * @param plugin : the plugin that was initialized
+ * @param filename : filename of the plugin itself
+ * @param plugins_nb : a number that will become the id of that plugin
  */
 static void init_plugin(heraia_window_t *main_window, heraia_plugin_t *plugin, const gchar *filename, guint plugins_nb)
 {	
@@ -176,7 +202,11 @@ static void init_plugin(heraia_window_t *main_window, heraia_plugin_t *plugin, c
  }
 
 /**
+ * @fn void load_one_plugin(heraia_window_t *main_window, const gchar *filename, guint plugins_nb)
  *  Here we manage to load one plugin at a time (and this is really enough !)
+ * @param main_window : main structure 
+ * @param filename : filename of the plugin that we want to load
+ * @param plugins_nb : a number that will be the id of that plugin
  */
 static void load_one_plugin(heraia_window_t *main_window, const gchar *filename, guint plugins_nb)
 {
@@ -204,8 +234,10 @@ static void load_one_plugin(heraia_window_t *main_window, const gchar *filename,
 
 
 /**
+ * @fn load_plugins(heraia_window_t *main_window)
  *  looks at the plugins dir(s) and loads
  *  the needed plugins (all ;-) (one at a time !!)
+ * @param main_window : main structure
  */
 void load_plugins(heraia_window_t *main_window)
 {
@@ -234,26 +266,37 @@ void load_plugins(heraia_window_t *main_window)
 }
 
 /**
+ * @fn add_entry_to_plugins_menu(heraia_window_t *main_window, heraia_plugin_t *plugin)
  *  adds a menu entry to the plugin menu
  *  adds a signal handler when the menu is toggled
+ * @param main_window : main structure
+ * @param plugin : a plugin to add to the plugin's menu 
  */
 void add_entry_to_plugins_menu(heraia_window_t *main_window, heraia_plugin_t *plugin)
 {
-	/* Creates the menu entry (a GtkCheckMenuItem) */
-	plugin->cmi_entry = GTK_CHECK_MENU_ITEM(gtk_check_menu_item_new_with_label(plugin->info->name));
+	if (plugin != NULL && plugin->info != NULL && plugin->info->name != NULL)
+	{
+		/* Creates the menu entry (a GtkCheckMenuItem) */
+		plugin->cmi_entry = GTK_CHECK_MENU_ITEM(gtk_check_menu_item_new_with_label(plugin->info->name));
 
-	/* Append this menu entry to the menu */
-	gtk_menu_shell_append(GTK_MENU_SHELL(heraia_get_widget(main_window->xmls->main, "plugins_menu")), GTK_WIDGET(plugin->cmi_entry));
+		/* Append this menu entry to the menu */
+		gtk_menu_shell_append(GTK_MENU_SHELL(heraia_get_widget(main_window->xmls->main, "plugins_menu")), GTK_WIDGET(plugin->cmi_entry));
 
-	/* Connect the menu entry toggled signal to the run_proc function of the plugin */
-	g_signal_connect(G_OBJECT(plugin->cmi_entry), "toggled", G_CALLBACK(plugin->run_proc), main_window);
+		/* Connect the menu entry toggled signal to the run_proc function of the plugin */
+		g_signal_connect(G_OBJECT(plugin->cmi_entry), "toggled", G_CALLBACK(plugin->run_proc), main_window);
 
-	/* Shows the menu entry (so we may toggle it!) */
-	gtk_widget_show(GTK_WIDGET(plugin->cmi_entry));
+		/* Shows the menu entry (so we may toggle it!) */
+		gtk_widget_show(GTK_WIDGET(plugin->cmi_entry));
+	}
 }
 
 /**
+ * @fn heraia_plugin_t *find_plugin_by_name(GList *plugins_list, gchar *name)
  *  Finds the desired plugin by its name and return the plugin structure or NULL
+ * @param plugins_list : list of all available plugins
+ * @param name : plugin's name we're looking for
+ * @return Returns a heraia_plugin_t that correspond to the plugin or NULL if
+ *         no plugin was found with that name
  */
 heraia_plugin_t *find_plugin_by_name(GList *plugins_list, gchar *name)
 {
@@ -271,6 +314,7 @@ heraia_plugin_t *find_plugin_by_name(GList *plugins_list, gchar *name)
 				}
 			list = list->next;
  		}
+	
 	if (stop == TRUE)
 		return plugin;
 	else
@@ -279,8 +323,13 @@ heraia_plugin_t *find_plugin_by_name(GList *plugins_list, gchar *name)
 
 
 /** 
+ * @fn load_plugin_glade_xml(heraia_window_t *main_window, heraia_plugin_t *plugin)
  *  Loads the glade xml file that describes the plugin (.glade suffix)
  *  tries the paths found in the location_list
+ * @param main_window : main structure
+ * @param plugin : plugin for whom we want to load it's glade XML definition 
+ *        file
+ * @return Returns TRUE if everything went ok, FALSE otherwise
  */
 gboolean load_plugin_glade_xml(heraia_window_t *main_window, heraia_plugin_t *plugin)
 {	
@@ -299,7 +348,12 @@ gboolean load_plugin_glade_xml(heraia_window_t *main_window, heraia_plugin_t *pl
 }
 
 /**
+ * @fn show_hide_widget(GtkWidget *widget, gboolean show, window_prop_t *win_prop)
  *  To help plugins to deal with widgets, shows or hide a specific widget
+ * @param widget : the widget to show or hide
+ * @param show : what to do : TRUE to show the widget, FALSE to hide it
+ * @param win_prop : window properties.
+ * @todo should this function go to heraia_ui.c instead of here ?
  */
 void show_hide_widget(GtkWidget *widget, gboolean show, window_prop_t *win_prop)
 {
@@ -329,7 +383,9 @@ void show_hide_widget(GtkWidget *widget, gboolean show, window_prop_t *win_prop)
 
 
 /**
+ * @fn refresh_all_plugins(heraia_window_t *main_window)
  *  To help the main program to send events to the plugins
+ * @param main_window : main structure
  */
 void refresh_all_plugins(heraia_window_t *main_window)
 {
