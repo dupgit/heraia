@@ -28,7 +28,7 @@ I let you imagine what I expect before I do a major release !!!
    * translate all french function names in the code into english ones
    * add a preference window
 
-. 0.0.7
+. 0.0.7 
    * add a preference option to display thousands or not in the main window
    * begin code documentation effort
 
@@ -44,7 +44,7 @@ I let you imagine what I expect before I do a major release !!!
 . 0.0.9
    * get rid of the filename structure in the heraia_window_t (it does 
      duplicates the one contained in the hexdocument structure)
-   * clicking on a plugin in plugin list window opens it
+   * double clicking on a plugin in plugin list window opens it
    * save plugins display preferences
      
 - 0.1.0

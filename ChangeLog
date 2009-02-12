@@ -1,6 +1,7 @@
 12.02.2009
 	- Olivier Delhomme <heraia@delhomme.org>
 	  * Documenting plugin_list.c, user_prefs.c and *.h
+      * Glade XML minor modifications
 
 11.02.2009
 	- Olivier Delhomme <heraia@delhomme.org>
