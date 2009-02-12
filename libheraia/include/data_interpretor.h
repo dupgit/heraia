@@ -20,17 +20,33 @@
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */ 
-
+/**
+ * @file data_interpretor.h
+ * Header file for the data interpretor
+ */
 
 #ifndef _DATA_INTERPRETOR_H_
 #define _DATA_INTERPRETOR_H_
 
-/** 
+/**
+ * @note
  *  Naming : 
  *   H stands for Heraia
  *   DI stands for Data_Interpretor
+ *
+ * @def H_DI_DISPLAYED
+ *  Says whether data_interpretor is displayed or not
+ *  @todo verify if this is still used somewhere !
+ *
+ * @def H_DI_BIG_ENDIAN
+ *  Stands for big endian representation
+ *
+ * @def H_DI_MIDDLE_ENDIAN
+ *  Stands for middle endian representation (http://en.wikipedia.org/wiki/Endianness#Middle-endian)
+ *
+ * @def H_DI_LITTLE_ENDIAN
+ *  Stands for little endian representation (this is the default)
  */
-
 #define H_DI_DISPLAYED FALSE  /* By default the Data Interpretor Window is not displayed */
 
 /* Little Endian, Middle Endian and Big Endian in a reverse order ;) */

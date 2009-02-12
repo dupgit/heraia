@@ -21,7 +21,10 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-
+/**
+ * @file user_prefs.c
+ * Users preference may be somewhere around here
+ */
 #include <libheraia.h>
 
 static void verify_preference_file_path_presence(gchar *pathname);
@@ -39,6 +42,7 @@ static void load_mp_display_preferences_options(heraia_window_t *main_window);
 
 
 /**
+ * @fn void verify_preference_file_path_presence(gchar *pathname)
  *  verify preference file path presence and creates it if it does
  *  not already exists
  *  @param pathname is a path to look presence for
@@ -58,6 +62,7 @@ static void verify_preference_file_path_presence(gchar *pathname)
 }
 
 /**
+ * @fn void verify_preference_file_name_presence(gchar *filename)
  *  Verify preference file's presence and creates it if it does 
  *  not exists already
  *  @param filename is a name of a file to look presence for
@@ -88,6 +93,7 @@ static void verify_preference_file_name_presence(gchar *filename)
 }
 
 /**
+ * @fn verify_preference_file(gchar *pathname, gchar *filename)
  *  Verify preference file presence and creates it if it does not
  *  already exists
  * @param pathname is the full pathname
@@ -102,6 +108,7 @@ void verify_preference_file(gchar *pathname, gchar *filename)
 }
 
 /**
+ * @fn void save_window_preferences(GKeyFile *file, gchar *name, window_prop_t *window_prop)
  *  Window preferences
  *  @param file a GKeyFile where values are stored
  *  @param name a keyname (basically a window name)
@@ -125,6 +132,7 @@ static void save_window_preferences(GKeyFile *file, gchar *name, window_prop_t *
 }
 
 /**
+ * @fn void save_mp_file_preferences_options(heraia_window_t *main_window)
  *  Save only file preferences related options
  *  @param main_window the main structure
  */
@@ -164,6 +172,7 @@ static void save_mp_file_preferences_options(heraia_window_t *main_window)
 }
 
 /**
+ * @fn void save_mp_display_preferences_options(heraia_window_t *main_window)
  *  Save only display related preferences
  *  @param main_window the main structure
  */
@@ -193,6 +202,7 @@ static void save_mp_display_preferences_options(heraia_window_t *main_window)
 
 
 /**
+ * @fn void save_main_preferences(heraia_window_t *main_window)
  * Save all preferences to the user preference file
  * @param main_window the main structure
  */
@@ -216,6 +226,7 @@ void save_main_preferences(heraia_window_t *main_window)
 
 
 /**
+ * @fn void load_window_preferences(GKeyFile *file, gchar *name, window_prop_t *window_prop)
  *  window preferences
  *  @param file a GKeyFile where values are stored
  *  @param name a keyname (basically a window name)
@@ -240,6 +251,7 @@ static void load_window_preferences(GKeyFile *file, gchar *name, window_prop_t *
 
 
 /**
+ * @fn void load_mp_file_preferences_options(heraia_window_t *main_window)
  *  Load only main preferences related options
  * @param main_window the main structure
  */
@@ -277,6 +289,7 @@ static void load_mp_file_preferences_options(heraia_window_t *main_window)
 
 
 /**
+ * @fn void load_mp_display_preferences_options(heraia_window_t *main_window)
  *  Load display related preferences
  * @param main_window the main structure
  */
@@ -302,6 +315,7 @@ static void load_mp_display_preferences_options(heraia_window_t *main_window)
 
 
 /**
+ * @fn setup_preferences(heraia_window_t *main_window)
  *  Sets up the preferences as loaded in the preference file
  * @param main_window the main structure
  */

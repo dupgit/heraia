@@ -3,7 +3,7 @@
  *  plugin_list.c
  *  manage the plugin_list_window window
  * 
- *  (C) Copyright 2007 Olivier Delhomme
+ *  (C) Copyright 2007 - 2009 Olivier Delhomme
  *  e-mail : heraia@delhomme.org
  *  URL    : http://heraia.tuxfamily.org
  * 
@@ -21,7 +21,10 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
  */
-
+/**
+ * @file plugin_list.c
+ * This file manage plugin list window's behavior
+ */
 #include <libheraia.h>
 
 static gboolean delete_plw_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data);
@@ -44,7 +47,12 @@ static void print_plugin_state(GtkTextView *textview, heraia_plugin_t *plugin);
 
 /*** call back function for the plugins_window ***/
 /**
+ * @fn gboolean delete_plw_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
  *  Signal handler called when the user closes the window 
+ * @param widget : calling widget 
+ * @param event : event associated (may be NULL as we don't use this here)
+ * @param data : MUST be heraia_window_t *main_window main structure and not NULL
+ * @return Always returns TRUE in order to propagate the signal 
  */
 static gboolean delete_plw_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {
@@ -53,13 +61,23 @@ static gboolean delete_plw_window_event(GtkWidget *widget, GdkEvent  *event, gpo
 	return TRUE;
 }
 
+/**
+ * @fn void destroy_plw_window(GtkWidget *widget, GdkEvent  *event, gpointer data)
+ * When the window is destroyed (Gtk's doc says that we may never get there)
+ * @param widget : calling widget 
+ * @param event : event associated (may be NULL as we don't use this here)
+ * @param data : MUST be heraia_window_t *main_window main structure and not NULL
+ */
 static void destroy_plw_window(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {
 	plw_close_clicked(widget, data);
 }
 
 /**
+ * @fn void plw_close_clicked(GtkWidget *widget, gpointer data)
  *  Closing the window effectively
+ * @param widget : calling widget 
+ * @param data : MUST be heraia_window_t *main_window main structure and not NULL
  */
 static void plw_close_clicked(GtkWidget *widget, gpointer data)
 {
@@ -72,7 +90,10 @@ static void plw_close_clicked(GtkWidget *widget, gpointer data)
 
 
 /**
+ * @fn void plw_refresh_clicked(GtkWidget *widget, gpointer data)
  *  Refreshing the window effectively
+ * @param widget : calling widget 
+ * @param data : MUST be heraia_window_t *main_window main structure and not NULL 
  */
 static void plw_refresh_clicked(GtkWidget *widget, gpointer data)
 {
@@ -85,7 +106,10 @@ static void plw_refresh_clicked(GtkWidget *widget, gpointer data)
 
 
 /**
+ * @fn void mw_cmi_plw_toggle(GtkWidget *widget, gpointer data)
  *  When the toggle button 'Liste des plugins' is toggled !
+ * @param widget : calling widget (may be NULL as we do not even bother here)
+ * @param data : MUST be heraia_window_t *main_window main structure and not NULL 
  */
 static void mw_cmi_plw_toggle(GtkWidget *widget, gpointer data)
 {
@@ -108,14 +132,14 @@ static void mw_cmi_plw_toggle(GtkWidget *widget, gpointer data)
 	    {
 			record_and_hide_dialog_box(GTK_WIDGET(heraia_get_widget(main_window->xmls->main, "plugin_list_window")), main_window->win_prop->plugin_list);
 	    }
-
-	/* show_hide_widget(GTK_WIDGET(heraia_get_widget(main_window->xmls->main, "plugin_list_window")), 
-					 gtk_check_menu_item_get_active(cmi));*/
 }
 
 
 /**
+ * @fn void print_plugin_info_structure(GtkTextView *textview, heraia_plugin_t *plugin)
  *  adds to the textview the relevant informations about the plugin info structure !
+ * @param textview : the specified textview (the one in the window)
+ * @param plugin : the plugin we want to print information on
  */
 static void print_plugin_info_structure(GtkTextView *textview, heraia_plugin_t *plugin)
 {
@@ -179,7 +203,10 @@ static void print_plugin_info_structure(GtkTextView *textview, heraia_plugin_t *
 }
 
 /**
+ * @fn void print_plugin_functions(GtkTextView *textview, heraia_plugin_t *plugin)
  *  adds to the textview the relevant informations about the plugin functions !
+ * @param textview : the specified textview (the one in the window)
+ * @param plugin : the plugin we want to print information on
  */
 static void print_plugin_functions(GtkTextView *textview, heraia_plugin_t *plugin)
 {
@@ -218,7 +245,10 @@ static void print_plugin_functions(GtkTextView *textview, heraia_plugin_t *plugi
 }
 
 /**
+ * @fn void print_plugin_filter_structure(GtkTextView *textview, heraia_plugin_t *plugin)
  *  adds to the textview the relevant informations about the plugin filter structure !
+ * @param textview : the specified textview (the one in the window)
+ * @param plugin : the plugin we want to print information on
  */
 static void print_plugin_filter_structure(GtkTextView *textview, heraia_plugin_t *plugin)
 {
@@ -251,7 +281,10 @@ static void print_plugin_filter_structure(GtkTextView *textview, heraia_plugin_t
 }
 
 /**
+ * @fn void print_plugin_interface(GtkTextView *textview, heraia_plugin_t *plugin)
  *  adds to the textview the relevant informations about the plugin interface (xml) !
+ * @param textview : the specified textview (the one in the window)
+ * @param plugin : the plugin we want to print information on
  */
 static void print_plugin_interface(GtkTextView *textview, heraia_plugin_t *plugin)
 {
@@ -277,7 +310,10 @@ static void print_plugin_interface(GtkTextView *textview, heraia_plugin_t *plugi
 }
 
 /**
+ * @fn void print_plugin_basics(GtkTextView *textview, heraia_plugin_t *plugin)
  *  adds to the textview the relevant informations about the plugin basics !
+ * @param textview : the specified textview (the one in the window)
+ * @param plugin : the plugin we want to print information on
  */
 static void print_plugin_basics(GtkTextView *textview, heraia_plugin_t *plugin)
 {
@@ -307,7 +343,10 @@ static void print_plugin_basics(GtkTextView *textview, heraia_plugin_t *plugin)
 }
 
 /**
+ * @fn void print_plugin_extra_structure(GtkTextView *textview, heraia_plugin_t *plugin)
  *  adds to the textview the relevant informations about the plugin extra structure !
+ * @param textview : the specified textview (the one in the window)
+ * @param plugin : the plugin we want to print information on
  */
 static void print_plugin_extra_structure(GtkTextView *textview, heraia_plugin_t *plugin)
 {
@@ -325,7 +364,10 @@ static void print_plugin_extra_structure(GtkTextView *textview, heraia_plugin_t 
 }
 
 /**
+ * @fn void print_plugin_state(GtkTextView *textview, heraia_plugin_t *plugin)
  *  adds to the textview the relevant informations about the plugin state !
+ * @param textview : the specified textview (the one in the window)
+ * @param plugin : the plugin we want to print information on
  */
 static void print_plugin_state(GtkTextView *textview, heraia_plugin_t *plugin)
 {
@@ -362,8 +404,11 @@ static void print_plugin_state(GtkTextView *textview, heraia_plugin_t *plugin)
 }
 
 /**
+ * @fn void pn_treeview_selection_changed_cb(GtkTreeSelection *selection, gpointer data)
  *  Function called when the selection changes in the treeview
  *  Displays informations about the selected plugin
+ * @param selection : user selection in the treeview
+ * @param data : MUST be heraia_window_t *main_window main structure (must not be NULL)
  */
 static void pn_treeview_selection_changed_cb(GtkTreeSelection *selection, gpointer data)
 {
@@ -401,7 +446,11 @@ static void pn_treeview_selection_changed_cb(GtkTreeSelection *selection, gpoint
 }
 /*** End of callback functions that handle the plugins window ***/
 
-
+/**
+ * @fn void plugin_list_window_connect_signals(heraia_window_t *main_window)
+ *  Connecting all signals to the right functions
+ * @param main_window : main structure
+ */
 static void plugin_list_window_connect_signals(heraia_window_t *main_window)
 {
 	GtkTreeSelection *select = NULL;
@@ -435,18 +484,20 @@ static void plugin_list_window_connect_signals(heraia_window_t *main_window)
 }
 
 /**
- *  the function to init the first treeview (plugin names) 
+ * @fn void init_plugin_name_tv(heraia_window_t *main_window)
+ *  Function to init the first treeview (plugin names)
+ * @param main_window : main structure
  */
 static void init_plugin_name_tv(heraia_window_t *main_window)
 {
-	GtkListStore *list_store = NULL;  /* Treeview Stuff for rendering */
-	GtkTreeIter iter;                 /* the text in it.              */
+	GtkListStore *list_store = NULL;  /**< Treeview Stuff for rendering */
+	GtkTreeIter iter;                 /**< the text in it.              */
 	GtkCellRenderer *renderer = NULL; 
 
 	GtkTreeViewColumn *column = NULL;  
-	heraia_plugin_t *plugin = NULL;   /* plugin interface structure   */
-	GList *p_list = NULL;             /* plugin list                  */
-	GtkTreeView *treeview = NULL;     /* Treeview where plugin names are to be displayed */
+	heraia_plugin_t *plugin = NULL;   /**< plugin interface structure   */
+	GList *p_list = NULL;             /**< plugin list                  */
+	GtkTreeView *treeview = NULL;     /**< Treeview where plugin names are to be displayed */
 
 	if (main_window != NULL)
 		{
@@ -484,7 +535,9 @@ static void init_plugin_name_tv(heraia_window_t *main_window)
 
 
 /**
+ * @fn plugin_list_window_init_interface(heraia_window_t *main_window)
  *  the function to init the plugin_list_window interface 
+ * @param main_window : main structure
  */
 void plugin_list_window_init_interface(heraia_window_t *main_window)
 {

@@ -133,7 +133,7 @@ static void on_mp_tb_display_bt_clicked(GtkToolButton *toolbutton, gpointer data
 /**
  * @fn void on_mp_thousand_bt_toggled(GtkToggleButton *togglebutton, gpointer data)
  * Refreshes the file labels as an option has been sat
- * @param togglelbutton : button that was toggled
+ * @param togglebutton : button that was toggled
  * @param data : user data : MUST be heraia_window_t *main_window main structure
  */
 static void on_mp_thousand_bt_toggled(GtkToggleButton *togglebutton, gpointer data)

@@ -1,9 +1,9 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
-  io.h
-  io.h - input and output functions for heraia
+  heraia_io.h
+  heraia_io.h - input and output functions for heraia
  
-  (C) Copyright 2005 - 2007 Olivier Delhomme
+  (C) Copyright 2005 - 2009 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -20,6 +20,10 @@
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
+/**
+ * @file heraia_io.h
+ *  Header file for file operations
+ */
 #ifndef _HERAIA_IO_H_
 #define _HERAIA_IO_H_
 

@@ -3,7 +3,7 @@
  *  plugin_list.h
  *  manage the plugin_list_window window
  * 
- *  (C) Copyright 2007 Olivier Delhomme
+ *  (C) Copyright 2007 - 2009 Olivier Delhomme
  *  e-mail : heraia@delhomme.org
  *  URL    : http://heraia.tuxfamily.org
  * 
@@ -21,9 +21,16 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
+/**
+ * @file plugin_list.h
+ *  Header file for the plugin list window
+ */
 #ifndef _HERAIA_PLUGIN_LIST_H_
 #define _HERAIA_PLUGIN_LIST_H_
 
+/**
+ * Columns definition for the treeview
+ */
 enum {
   PNTV_COLUMN_NAME,
   PNTV_N_COLUMNS

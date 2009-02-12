@@ -3,7 +3,7 @@
   data_type.h
   Window allowing the user to create or edit a new data type
  
-  (C) Copyright 2005 - 2008 Olivier Delhomme
+  (C) Copyright 2005 - 2009 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -21,7 +21,6 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
 */ 
-
 #ifndef _DATA_TYPE_H_
 #define _DATA_TYPE_H_
 

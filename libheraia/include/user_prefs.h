@@ -20,14 +20,18 @@
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
-
+/**
+ * @file user_prefs.h
+ * Header file for user preferences
+ */
 #ifndef _LIBHERAIA_USER_PREFS_H_
 #define _LIBHERAIA_USER_PREFS_H_
 
 /**
+ * @note
  *  GN == Group Name
  *  KN == Key Name
- *  Thoses variables are the one to use in the main preference file
+ *  Thoses variables are the ones to use in the main preference file
  */
 #define GN_GLOBAL_PREFS "Global Preferences"
 #define GN_DISPLAY_PREFS "Display Preferences"

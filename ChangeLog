@@ -1,3 +1,7 @@
+12.02.2009
+	- Olivier Delhomme <heraia@delhomme.org>
+	  * Documenting plugin_list.c, user_prefs.c and *.h
+
 11.02.2009
 	- Olivier Delhomme <heraia@delhomme.org>
 	  * Documenting log.c and adding some basic tests to avoid possible

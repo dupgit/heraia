@@ -3,7 +3,7 @@
   main_pref_window.h
   heraia - an hexadecimal file editor and analyser based on ghex
  
-  (C) Copyright 2008 - 2008 Olivier Delhomme
+  (C) Copyright 2008 - 2009 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -20,6 +20,10 @@
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
+/**
+ * @file main_pref_window.h
+ * Header file that handles preference window
+ */
 #ifndef _LIBHERAIA_MAIN_PREF_WINDOW_H_
 #define _LIBHERAIA_MAIN_PREF_WINDOW_H_
 

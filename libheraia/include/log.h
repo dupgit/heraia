@@ -3,7 +3,7 @@
   log.h
   log functions for heraia
  
-  (C) Copyright 2006 - 2008 Olivier Delhomme
+  (C) Copyright 2006 - 2009 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -20,9 +20,17 @@
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
+/**
+ * @file log.h 
+ *  Header file for the logging subsystem
+ */
 #ifndef _HERAIA_LOG_H_
 #define _HERAIA_LOG_H_
 
+/**
+ * @def HERAIA_LOG_DOMAIN
+ *  Defines heraia log domain (the one printed out on the logging window)
+ */
 #define HERAIA_LOG_DOMAIN "Heraia"
 
 /* Messages */

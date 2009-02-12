@@ -3,8 +3,8 @@
   decode.h
   Heraia's library decode.c
 
-  (C) Copyright 2008 Sébastien Tricaud, Olivier Delhomme
-  e-mail : heraia@delhomme.org
+  (C) Copyright 2008 Sébastien Tricaud        e-mail : toady@gscore.org
+  (C) Copyright 2008 - 2009 Olivier Delhomme  e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
   This program is free software; you can redistribute it and/or modify
@@ -20,11 +20,18 @@
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
-
+/**
+ * @file decode.h
+ * Header for decoding things (numbers, dates, binary, ...)
+ */
 #ifndef _LIBHERAIA_DECODE_H_
 #define _LIBHERAIA_DECODE_H_
 
-/* A human struct to store a date with a time. TODO : add an UTC info */
+/** 
+ * @struct date_and_time_t
+ *  A human struct to store a date with a time. 
+ * @todo add an UTC info field
+ */
 typedef struct
 {
 	guint32 year;
