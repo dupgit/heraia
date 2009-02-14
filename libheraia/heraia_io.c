@@ -79,6 +79,8 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 			set_notebook_tab_name(main_window);
 			
 			/* Showing all the widgets */
+			gtk_widget_set_sensitive(heraia_get_widget(main_window->xmls->main, "save"), TRUE);
+			gtk_widget_set_sensitive(heraia_get_widget(main_window->xmls->main, "save_as"), TRUE);
 			notebook = heraia_get_widget(main_window->xmls->main, "file_notebook");
 			gtk_widget_show(notebook);
 			

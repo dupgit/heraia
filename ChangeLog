@@ -1,3 +1,14 @@
+14.02.2009
+    - Olivier Delhomme <heraia@delhomme.org>
+	  * "greyed" menu when no file is loaded
+      * "mp_thousand_bt" in glade file does not develop any more
+	  * Spacing in vbox and hbox set to 2
+      * cosmetic work
+
+13.02.2009
+    - Olivier Delhomme <heraia@delhomme.org>
+	  * Glade modifications for Main preference window (closes bug #12980)
+
 12.02.2009
 	- Olivier Delhomme <heraia@delhomme.org>
 	  * Documenting plugin_list.c, user_prefs.c and *.h
@@ -22,6 +33,7 @@
       * Changed visible property for stat_window and main_window (avoid 
         flicking when running the program)
       * Corrected a bug that was crashing heraia when closing the stat window
+		(this may be bug #12942)
 
 04.02.2009
 	- Olivier Delhomme <heraia@delhomme.org>

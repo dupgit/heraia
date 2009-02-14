@@ -28,17 +28,15 @@
 
 #include <libheraia.h>
 
-static void pref_window_close(GtkWidget *widget, gpointer data);
 static gboolean pref_window_delete(GtkWidget *widget, GdkEvent  *event, gpointer data);
 static void main_pref_window_connect_signals(heraia_window_t *main_window);
 
 /* ToolBar buttons */
-static void on_mp_tb_fp_bt_clicked(GtkToolButton *toolbutton, gpointer data);
-static void on_mp_tb_display_bt_clicked(GtkToolButton *toolbutton, gpointer data);
+static void on_mp_tb_fp_bt_toggled(GtkToggleToolButton *toolbutton, gpointer data);
+static void on_mp_tb_display_bt_toggled(GtkToggleToolButton *toolbutton, gpointer data);
 
 /* Toogle Buttons */
 static void on_mp_thousand_bt_toggled(GtkToggleButton *togglebutton, gpointer data);
-
 
 
 /**** The Signals ****/
@@ -78,13 +76,14 @@ static void main_pref_window_connect_signals(heraia_window_t *main_window)
 					 G_CALLBACK(pref_window_delete), main_window);
 
 	/* Clicking on the file preference button of the toolbar */
-	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "mp_tb_fp_bt")), "clicked",
-					 G_CALLBACK(on_mp_tb_fp_bt_clicked), main_window);
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "mp_tb_fp_bt")), "toggled",
+					 G_CALLBACK(on_mp_tb_fp_bt_toggled), main_window);
 	
-	/* Clicking on the file preference button of the toolbar */
-	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "mp_tb_display_bt")), "clicked",
-					 G_CALLBACK(on_mp_tb_display_bt_clicked), main_window);
+	/* Clicking on the display button of the toolbar */
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "mp_tb_display_bt")), "toggled",
+					 G_CALLBACK(on_mp_tb_display_bt_toggled), main_window);
 	
+	/* Toggling the button to choose to display with separated thousand or not */ 
 	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "mp_thousand_bt")), "toggled",
 					 G_CALLBACK(on_mp_thousand_bt_toggled), main_window);
 }
@@ -94,13 +93,14 @@ static void main_pref_window_connect_signals(heraia_window_t *main_window)
  * Tool buttons
  */
 
+
 /**
  * @fn void on_mp_tb_fp_bt_clicked(GtkToolButton *toolbutton, gpointer data)
  *  Main Preferences, ToolBar, File Preference Button
  * @param toolbutton : button that was clicked
  * @param data : user data : MUST be heraia_window_t *main_window main structure
  */
-static void on_mp_tb_fp_bt_clicked(GtkToolButton *toolbutton, gpointer data)
+static void on_mp_tb_fp_bt_toggled(GtkToggleToolButton *toolbutton, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	GtkWidget *notebook = NULL;  /* Main Preference Window's Notebook */
@@ -112,19 +112,21 @@ static void on_mp_tb_fp_bt_clicked(GtkToolButton *toolbutton, gpointer data)
 	}
 }
 
+
 /**
  * @fn void on_mp_tb_display_bt_clicked(GtkToolButton *toolbutton, gpointer data)
  * Main Preferences, ToolBar, Display Button
  * @param toolbutton : button that was clicked
  * @param data : user data : MUST be heraia_window_t *main_window main structure
  */
-static void on_mp_tb_display_bt_clicked(GtkToolButton *toolbutton, gpointer data)
+static void on_mp_tb_display_bt_toggled(GtkToggleToolButton *toolbutton, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	GtkWidget *notebook = NULL;  /* Main Preference Window's Notebook */
 	
 	if (main_window != NULL && main_window->xmls != NULL && main_window->xmls->main != NULL)
 	{
+	
 		notebook = heraia_get_widget(main_window->xmls->main, "mp_first_notebook");
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 1);
 	}

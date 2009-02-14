@@ -889,6 +889,9 @@ void init_heraia_interface(heraia_window_t *main_window)
 		}
 		else
 		{
+			/** Hide notebook and menus @todo put these lines in a specific function */
+			gtk_widget_set_sensitive(heraia_get_widget(main_window->xmls->main, "save"), FALSE);
+			gtk_widget_set_sensitive(heraia_get_widget(main_window->xmls->main, "save_as"), FALSE);				 
 			gtk_widget_hide(notebook); 
 		}
 		

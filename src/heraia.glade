@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Thu Feb 12 20:31:27 2009 -->
+<!--Generated with glade3 3.4.5 on Sat Feb 14 01:00:51 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="main_window">
     <property name="title" translatable="yes">Heraia</property>
@@ -8,6 +8,7 @@
     <child>
       <widget class="GtkVBox" id="vbox8">
         <property name="visible">True</property>
+        <property name="spacing">2</property>
         <child>
           <widget class="GtkMenuBar" id="menubar1">
             <property name="visible">True</property>
@@ -229,6 +230,7 @@
             <child>
               <widget class="GtkVBox" id="vbox9">
                 <property name="visible">True</property>
+                <property name="spacing">2</property>
                 <child>
                   <widget class="GtkTable" id="table1">
                     <property name="visible">True</property>
@@ -238,35 +240,48 @@
                     <property name="column_spacing">2</property>
                     <property name="row_spacing">2</property>
                     <child>
-                      <widget class="GtkLabel" id="file_selection_size_label">
+                      <widget class="GtkLabel" id="label36">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
                         <property name="ypad">2</property>
+                        <property name="label" translatable="yes">&lt;small&gt;Position :&lt;/small&gt;</property>
                         <property name="use_markup">True</property>
                       </widget>
                       <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">2</property>
-                        <property name="bottom_attach">3</property>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options">GTK_FILL</property>
+                        <property name="y_options"></property>
                         <property name="x_padding">2</property>
                         <property name="y_padding">2</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label37">
+                      <widget class="GtkLabel" id="label35">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
                         <property name="ypad">2</property>
-                        <property name="label" translatable="yes">&lt;small&gt;Selection size :&lt;/small&gt;</property>
+                        <property name="label" translatable="yes">&lt;small&gt;Selection :&lt;/small&gt;</property>
                         <property name="use_markup">True</property>
                       </widget>
                       <packing>
-                        <property name="top_attach">2</property>
-                        <property name="bottom_attach">3</property>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
                         <property name="x_options">GTK_FILL</property>
+                        <property name="y_options"></property>
+                        <property name="x_padding">2</property>
+                        <property name="y_padding">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="file_position_label">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="ypad">2</property>
+                        <property name="use_markup">True</property>
+                        <property name="selectable">True</property>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
                         <property name="y_options"></property>
                         <property name="x_padding">2</property>
                         <property name="y_padding">2</property>
@@ -291,49 +306,36 @@
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="file_position_label">
+                      <widget class="GtkLabel" id="label37">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="ypad">2</property>
+                        <property name="label" translatable="yes">&lt;small&gt;Selection size :&lt;/small&gt;</property>
+                        <property name="use_markup">True</property>
+                      </widget>
+                      <packing>
+                        <property name="top_attach">2</property>
+                        <property name="bottom_attach">3</property>
+                        <property name="x_options">GTK_FILL</property>
+                        <property name="y_options"></property>
+                        <property name="x_padding">2</property>
+                        <property name="y_padding">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="file_selection_size_label">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
                         <property name="ypad">2</property>
                         <property name="use_markup">True</property>
-                        <property name="selectable">True</property>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="right_attach">2</property>
-                        <property name="y_options"></property>
-                        <property name="x_padding">2</property>
-                        <property name="y_padding">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label35">
-                        <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="ypad">2</property>
-                        <property name="label" translatable="yes">&lt;small&gt;Selection :&lt;/small&gt;</property>
-                        <property name="use_markup">True</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
+                        <property name="top_attach">2</property>
+                        <property name="bottom_attach">3</property>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
-                        <property name="x_padding">2</property>
-                        <property name="y_padding">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label36">
-                        <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="ypad">2</property>
-                        <property name="label" translatable="yes">&lt;small&gt;Position :&lt;/small&gt;</property>
-                        <property name="use_markup">True</property>
-                      </widget>
-                      <packing>
-                        <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options">GTK_FILL</property>
                         <property name="x_padding">2</property>
                         <property name="y_padding">2</property>
                       </packing>
@@ -360,6 +362,7 @@
                   <widget class="GtkVBox" id="vbox1">
                     <property name="visible">True</property>
                     <property name="border_width">2</property>
+                    <property name="spacing">2</property>
                     <child>
                       <placeholder/>
                     </child>
@@ -411,7 +414,7 @@
             </child>
           </widget>
           <packing>
-            <property name="padding">1</property>
+            <property name="padding">2</property>
             <property name="position">1</property>
           </packing>
         </child>
@@ -425,6 +428,7 @@
     <child>
       <widget class="GtkVBox" id="vbox3">
         <property name="visible">True</property>
+        <property name="spacing">2</property>
         <child>
           <widget class="GtkScrolledWindow" id="scrolledwindow1">
             <property name="visible">True</property>
@@ -435,12 +439,22 @@
               <widget class="GtkTextView" id="logw_textview">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="border_width">2</property>
                 <property name="editable">False</property>
               </widget>
             </child>
           </widget>
           <packing>
             <property name="padding">2</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkHSeparator" id="hseparator2">
+            <property name="visible">True</property>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">1</property>
           </packing>
         </child>
         <child>
@@ -462,7 +476,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="padding">2</property>
-            <property name="position">1</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </widget>
@@ -727,7 +741,7 @@ POSSIBILITY OF SUCH DAMAGES.
   </widget>
   <widget class="GtkWindow" id="plugin_list_window">
     <property name="title" translatable="yes">Plugins list</property>
-    <property name="icon">new_logo_petit.png</property>
+    <property name="icon">logo_petit.png</property>
     <child>
       <widget class="GtkVBox" id="vbox4">
         <property name="visible">True</property>
@@ -805,6 +819,7 @@ POSSIBILITY OF SUCH DAMAGES.
         <child>
           <widget class="GtkHBox" id="hbox1">
             <property name="visible">True</property>
+            <property name="spacing">2</property>
             <child>
               <widget class="GtkHButtonBox" id="hbuttonbox3">
                 <property name="visible">True</property>
@@ -860,9 +875,9 @@ POSSIBILITY OF SUCH DAMAGES.
       <widget class="GtkVBox" id="vbox2">
         <property name="visible">True</property>
         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+        <property name="spacing">2</property>
         <child>
           <widget class="GtkMenuBar" id="menubar2">
-            <property name="visible">True</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
             <property name="border_width">1</property>
             <child>
@@ -915,10 +930,12 @@ POSSIBILITY OF SUCH DAMAGES.
           <widget class="GtkHBox" id="hbox2">
             <property name="visible">True</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+            <property name="spacing">2</property>
             <child>
               <widget class="GtkVBox" id="vbox12">
                 <property name="visible">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                <property name="spacing">2</property>
                 <child>
                   <widget class="GtkFrame" id="frame1">
                     <property name="visible">True</property>
@@ -933,19 +950,20 @@ POSSIBILITY OF SUCH DAMAGES.
                           <widget class="GtkVBox" id="vbox13">
                             <property name="visible">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                            <property name="border_width">2</property>
+                            <property name="spacing">2</property>
                             <child>
                               <widget class="GtkRadioButton" id="diw_rb_little_endian">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                <property name="label" translatable="yes">Little endian</property>
+                                <property name="label" translatable="yes">Little endian </property>
                                 <property name="response_id">0</property>
                                 <property name="active">True</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
                                 <property name="expand">False</property>
-                                <property name="padding">1</property>
                               </packing>
                             </child>
                             <child>
@@ -961,7 +979,6 @@ POSSIBILITY OF SUCH DAMAGES.
                               </widget>
                               <packing>
                                 <property name="expand">False</property>
-                                <property name="padding">1</property>
                                 <property name="position">1</property>
                               </packing>
                             </child>
@@ -978,7 +995,6 @@ POSSIBILITY OF SUCH DAMAGES.
                               </widget>
                               <packing>
                                 <property name="expand">False</property>
-                                <property name="padding">1</property>
                                 <property name="position">2</property>
                               </packing>
                             </child>
@@ -990,7 +1006,7 @@ POSSIBILITY OF SUCH DAMAGES.
                       <widget class="GtkLabel" id="label18">
                         <property name="visible">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                        <property name="xpad">4</property>
+                        <property name="xpad">8</property>
                         <property name="ypad">2</property>
                         <property name="label" translatable="yes">Endianness</property>
                         <property name="use_markup">True</property>
@@ -1305,6 +1321,7 @@ POSSIBILITY OF SUCH DAMAGES.
                   <widget class="GtkLabel" id="label8">
                     <property name="visible">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                    <property name="xpad">2</property>
                     <property name="label" translatable="yes">Numbers</property>
                   </widget>
                   <packing>
@@ -1484,6 +1501,7 @@ POSSIBILITY OF SUCH DAMAGES.
                   <widget class="GtkLabel" id="label14">
                     <property name="visible">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                    <property name="xpad">2</property>
                     <property name="label" translatable="yes">Dates and times</property>
                   </widget>
                   <packing>
@@ -1610,6 +1628,7 @@ POSSIBILITY OF SUCH DAMAGES.
                   <widget class="GtkLabel" id="label19">
                     <property name="visible">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                    <property name="xpad">2</property>
                     <property name="label" translatable="yes">Binary based</property>
                   </widget>
                   <packing>
@@ -1710,6 +1729,7 @@ POSSIBILITY OF SUCH DAMAGES.
                   <widget class="GtkLabel" id="label26">
                     <property name="visible">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                    <property name="xpad">2</property>
                     <property name="label" translatable="yes">User defined</property>
                   </widget>
                   <packing>
@@ -2088,28 +2108,36 @@ POSSIBILITY OF SUCH DAMAGES.
     <child>
       <widget class="GtkVBox" id="vbox7">
         <property name="visible">True</property>
+        <property name="spacing">2</property>
         <child>
           <widget class="GtkToolbar" id="mp_toolbar">
             <property name="visible">True</property>
+            <property name="can_focus">True</property>
             <property name="border_width">2</property>
             <property name="icon_size_set">True</property>
             <child>
-              <widget class="GtkToolButton" id="mp_tb_fp_bt">
+              <widget class="GtkRadioToolButton" id="mp_tb_fp_bt">
                 <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="has_focus">True</property>
                 <property name="border_width">2</property>
                 <property name="label" translatable="yes">Global Preferences</property>
                 <property name="stock_id">gtk-preferences</property>
+                <property name="active">True</property>
+                <property name="group">mp_tb_display_bt</property>
               </widget>
               <packing>
                 <property name="expand">False</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkToolButton" id="mp_tb_display_bt">
+              <widget class="GtkRadioToolButton" id="mp_tb_display_bt">
                 <property name="visible">True</property>
+                <property name="can_focus">True</property>
                 <property name="border_width">2</property>
                 <property name="label" translatable="yes">Display</property>
                 <property name="stock_id">gtk-index</property>
+                <property name="group">mp_tb_fp_bt</property>
               </widget>
               <packing>
                 <property name="expand">False</property>
@@ -2129,9 +2157,11 @@ POSSIBILITY OF SUCH DAMAGES.
             <child>
               <widget class="GtkHBox" id="hbox7">
                 <property name="visible">True</property>
+                <property name="spacing">2</property>
                 <child>
                   <widget class="GtkVBox" id="vbox10">
                     <property name="visible">True</property>
+                    <property name="spacing">2</property>
                     <child>
                       <widget class="GtkCheckButton" id="save_window_position_bt">
                         <property name="visible">True</property>
@@ -2173,11 +2203,11 @@ POSSIBILITY OF SUCH DAMAGES.
             <child>
               <widget class="GtkHBox" id="hbox8">
                 <property name="visible">True</property>
+                <property name="spacing">2</property>
                 <child>
                   <widget class="GtkFrame" id="frame4">
                     <property name="visible">True</property>
                     <property name="label_xalign">0</property>
-                    <property name="shadow_type">GTK_SHADOW_NONE</property>
                     <child>
                       <widget class="GtkAlignment" id="alignment4">
                         <property name="visible">True</property>
@@ -2185,6 +2215,7 @@ POSSIBILITY OF SUCH DAMAGES.
                         <child>
                           <widget class="GtkVBox" id="vbox11">
                             <property name="visible">True</property>
+                            <property name="spacing">2</property>
                             <child>
                               <widget class="GtkCheckButton" id="mp_thousand_bt">
                                 <property name="visible">True</property>
@@ -2193,6 +2224,9 @@ POSSIBILITY OF SUCH DAMAGES.
                                 <property name="response_id">0</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
+                              <packing>
+                                <property name="expand">False</property>
+                              </packing>
                             </child>
                             <child>
                               <placeholder/>
@@ -2207,7 +2241,8 @@ POSSIBILITY OF SUCH DAMAGES.
                     <child>
                       <widget class="GtkLabel" id="label38">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">left info pane</property>
+                        <property name="xpad">2</property>
+                        <property name="label" translatable="yes">Left info pane</property>
                         <property name="use_markup">True</property>
                       </widget>
                       <packing>
