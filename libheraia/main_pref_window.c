@@ -95,7 +95,7 @@ static void main_pref_window_connect_signals(heraia_window_t *main_window)
 
 
 /**
- * @fn void on_mp_tb_fp_bt_clicked(GtkToolButton *toolbutton, gpointer data)
+ * @fn void on_mp_tb_fp_bt_toggled(GtkToolButton *toolbutton, gpointer data)
  *  Main Preferences, ToolBar, File Preference Button
  * @param toolbutton : button that was clicked
  * @param data : user data : MUST be heraia_window_t *main_window main structure
@@ -114,7 +114,7 @@ static void on_mp_tb_fp_bt_toggled(GtkToggleToolButton *toolbutton, gpointer dat
 
 
 /**
- * @fn void on_mp_tb_display_bt_clicked(GtkToolButton *toolbutton, gpointer data)
+ * @fn void on_mp_tb_display_bt_toggled(GtkToolButton *toolbutton, gpointer data)
  * Main Preferences, ToolBar, Display Button
  * @param toolbutton : button that was clicked
  * @param data : user data : MUST be heraia_window_t *main_window main structure
