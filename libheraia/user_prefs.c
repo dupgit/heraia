@@ -129,6 +129,14 @@ static void save_window_preferences(GKeyFile *file, gchar *name, window_prop_t *
 	keyname = g_strconcat(name, " Y_pos", NULL);
 	g_key_file_set_integer(file, GN_GLOBAL_PREFS, keyname, window_prop->y);
 	g_free(keyname);
+	
+	keyname = g_strconcat(name, " Height", NULL);
+	g_key_file_set_integer(file, GN_GLOBAL_PREFS, keyname, window_prop->height);
+	g_free(keyname);
+
+	keyname = g_strconcat(name, " Width", NULL);
+	g_key_file_set_integer(file, GN_GLOBAL_PREFS, keyname, window_prop->width);
+	g_free(keyname);
 }
 
 /**
@@ -247,6 +255,15 @@ static void load_window_preferences(GKeyFile *file, gchar *name, window_prop_t *
 	keyname = g_strconcat(name, " Y_pos", NULL);
 	window_prop->y = g_key_file_get_integer(file, GN_GLOBAL_PREFS, keyname, NULL);
 	g_free(keyname);
+	
+	keyname = g_strconcat(name, " Height", NULL);
+	window_prop->height = g_key_file_get_integer(file, GN_GLOBAL_PREFS, keyname, NULL);
+	g_free(keyname);
+
+	keyname = g_strconcat(name, " Width", NULL);
+	window_prop->width = g_key_file_get_integer(file, GN_GLOBAL_PREFS, keyname, NULL);
+	g_free(keyname);
+	
 }
 
 

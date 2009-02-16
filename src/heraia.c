@@ -37,7 +37,7 @@
 
 static gboolean version(void);
 static gboolean usage(int status);
-static window_prop_t *init_window_properties(gint x, gint y, gboolean displayed);
+static window_prop_t *init_window_properties(gint x, gint y, guint height, guint width, gboolean displayed);
 static heraia_window_t *init_window_property_struct(heraia_window_t *main_window);
 static heraia_window_t *heraia_init_main_struct(void);
 static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window);
@@ -106,10 +106,13 @@ static gboolean usage(int status)
 /**
  *  Inits the properties of a window with defined values
  *  @param  x,y are x,y coordinates on the screen
+ *  @param  height represents the height of the window
+ *  @param  width represents the width of the window. x+height,y+width is 
+ *          window's right bottom corner
  *  @param  displayed says wether the window is displayed or not
  *  @return a new allocated window_prop_t * structure.
  */
-static window_prop_t *init_window_properties(gint x, gint y, gboolean displayed)
+static window_prop_t *init_window_properties(gint x, gint y, guint height, guint width, gboolean displayed)
 {
 	window_prop_t *window_p;
 
@@ -119,6 +122,8 @@ static window_prop_t *init_window_properties(gint x, gint y, gboolean displayed)
 	/* Sets the default values */
 	window_p->x = x;
 	window_p->y = y;
+	window_p->height = height;
+	window_p->width = width;
 	window_p->displayed = displayed;
 
 	return window_p;
@@ -145,13 +150,13 @@ static heraia_window_t *init_window_property_struct(heraia_window_t *main_window
 	win_prop = (all_window_prop_t *) g_malloc0(sizeof(all_window_prop_t));
 
 	/* Initial states for the dialog boxes (default values) */
-	about_box = init_window_properties(0, 0, FALSE);
-	data_interpretor = init_window_properties(0, 0, H_DI_DISPLAYED);
-	log_box = init_window_properties(0, 0, FALSE);
-    main_dialog = init_window_properties(0, 0, TRUE);
-	plugin_list = init_window_properties(0, 0, FALSE);
-	ldt = init_window_properties(0, 0, FALSE);
-	main_pref_window = init_window_properties(0, 0, FALSE);
+	about_box = init_window_properties(0, 0, WPT_DEFAULT_HEIGHT, WPT_DEFAULT_WIDTH, FALSE);
+	data_interpretor = init_window_properties(0, 0, WPT_DEFAULT_HEIGHT, WPT_DEFAULT_WIDTH, H_DI_DISPLAYED);
+	log_box = init_window_properties(0, 0, WPT_DEFAULT_HEIGHT, WPT_DEFAULT_WIDTH, FALSE);
+    main_dialog = init_window_properties(0, 0, WPT_DEFAULT_HEIGHT, WPT_DEFAULT_WIDTH, TRUE);
+	plugin_list = init_window_properties(0, 0, WPT_DEFAULT_HEIGHT, WPT_DEFAULT_WIDTH, FALSE);
+	ldt = init_window_properties(0, 0, WPT_DEFAULT_HEIGHT, WPT_DEFAULT_WIDTH, FALSE);
+	main_pref_window = init_window_properties(0, 0, WPT_DEFAULT_HEIGHT, WPT_DEFAULT_WIDTH, FALSE);
 
 	/* Attach to the struct */
 	win_prop->about_box = about_box;

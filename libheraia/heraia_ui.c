@@ -138,7 +138,7 @@ void move_and_show_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_prop)
 	if (dialog_prop->displayed == FALSE)
 	{
 		gtk_window_move(GTK_WINDOW(dialog_box), dialog_prop->x, dialog_prop->y);
-		
+		gtk_window_resize(GTK_WINDOW(dialog_box), dialog_prop->width, dialog_prop->height);
 		gtk_widget_show_all(dialog_box);
 		dialog_prop->displayed = TRUE;
 	}
@@ -154,14 +154,19 @@ void record_dialog_box_position(GtkWidget *dialog_box, window_prop_t *dialog_pro
 {
 	gint x = 0;
 	gint y = 0;
+	gint width = WPT_DEFAULT_WIDTH;
+	gint height = WPT_DEFAULT_HEIGHT;
 	
 	if (dialog_prop != NULL && dialog_prop->displayed == TRUE)
 	{
 		if (dialog_box != NULL)
 		{
 			gtk_window_get_position(GTK_WINDOW(dialog_box), &x, &y);
+			gtk_window_get_size(GTK_WINDOW(dialog_box), &width, &height);
 			dialog_prop->x = x;
 			dialog_prop->y = y;
+			dialog_prop->width = width;
+			dialog_prop->height = height;
 		}
 	}
 }
@@ -1343,8 +1348,8 @@ static void init_one_cmi_window_state(GtkWidget *dialog_box, GtkWidget *cmi, win
 		gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(cmi), activated);
 		if (activated == TRUE)
 		{
-			/* fprintf(stdout, "x: %d\t y: %d\n", dialog_prop->x, dialog_prop->y); */
 			gtk_window_move(GTK_WINDOW(dialog_box), dialog_prop->x, dialog_prop->y);
+			gtk_window_resize(GTK_WINDOW(dialog_box), dialog_prop->width, dialog_prop->height);
 			gtk_widget_show_all(dialog_box);
 		}
 	}
@@ -1370,6 +1375,7 @@ void init_window_states(heraia_window_t *main_window)
 			if (main_window->win_prop->main_dialog->displayed == TRUE)
 			{
 				gtk_window_move(GTK_WINDOW(dialog_box), main_window->win_prop->main_dialog->x, main_window->win_prop->main_dialog->y);
+				gtk_window_resize(GTK_WINDOW(dialog_box), main_window->win_prop->main_dialog->width, main_window->win_prop->main_dialog->height);
 				gtk_widget_show(dialog_box);
 			}
 			
@@ -1403,6 +1409,7 @@ void init_window_states(heraia_window_t *main_window)
 			{
 				/* main_window->win_prop->main_pref_window->displayed = FALSE; dirty trick */
 				gtk_window_move(GTK_WINDOW(dialog_box), main_window->win_prop->main_pref_window->x, main_window->win_prop->main_pref_window->y);
+				gtk_window_resize(GTK_WINDOW(dialog_box), main_window->win_prop->main_pref_window->width, main_window->win_prop->main_pref_window->height);
 				gtk_widget_show_all(dialog_box);
 			}
 			
@@ -1412,6 +1419,7 @@ void init_window_states(heraia_window_t *main_window)
 			{
 				/* main_window->win_prop->main_pref_window->displayed = FALSE; dirty trick */
 				gtk_window_move(GTK_WINDOW(dialog_box), main_window->win_prop->about_box->x, main_window->win_prop->about_box->y); 
+				gtk_window_resize(GTK_WINDOW(dialog_box), main_window->win_prop->about_box->width, main_window->win_prop->about_box->height);
 				set_a_propos_properties(dialog_box);
 				gtk_widget_show_all(dialog_box);
 			}

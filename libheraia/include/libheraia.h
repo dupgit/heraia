@@ -175,6 +175,17 @@ typedef struct
 	GladeXML *main;      /**< the main interface xml description */
 } xml_t;
 
+
+/**
+ * @def WPT_DEFAULT_HEIGHT
+ *  Defines the default height for a window (set in window_prop_t)
+ *
+ * @def WPT_DEFAULT_WIDTH
+ *  Defines the default width for a window (set in window_prop_t)
+ */
+#define WPT_DEFAULT_HEIGHT 200
+#define WPT_DEFAULT_WIDTH 200
+
 /**
  * @struct window_prop_t
  * Window properties
@@ -184,7 +195,9 @@ typedef struct
 typedef struct
 {
 	gint x;              /**< x position (upper left corner)     */
-	gint y;              /**< y position (upper left croner)     */
+	gint y;              /**< y position (upper left corner)     */
+	guint height;        /**< y+height (bottom right corner)     */ 
+	guint width;         /**< x+width (bottom right corner)     */
 	gboolean displayed;  /**< TRUE if displayed, FALSE otherwise */
 } window_prop_t;
 
