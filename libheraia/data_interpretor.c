@@ -279,7 +279,7 @@ void data_interpretor_init_interface(heraia_window_t *main_window)
 			if (dw != NULL)
 				{
 					dw->diw = heraia_get_widget(main_window->xmls->main, "data_interpretor_window");
-					dw->tab_displayed = 0; /* the first tab (Numbers) */
+					/* dw->tab_displayed = 0;  the first tab (Numbers) */
 				}
 		}
 }

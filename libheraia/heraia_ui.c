@@ -1074,7 +1074,7 @@ int load_heraia_ui(heraia_window_t *main_window)
 		{
 			fprintf(stdout, " [Done]\n");
 			fprintf(stdout, "Setting up preferences           ");
-			setup_preferences(main_window);
+			load_preferences(main_window);
 			fprintf(stdout, " [Done]\n");
 		}
 		
@@ -1328,7 +1328,7 @@ static void close_heraia(heraia_window_t *main_window)
 	record_all_dialog_box_positions(main_window);
 	
 	/* . Saving preferences */
-	save_main_preferences(main_window);
+	save_preferences(main_window);
 }
 
 /**

@@ -46,7 +46,8 @@ open index.html generated file with your favorite web browser, and you're done.
 For a release do not forget to :
 
  - change configure.ac version number
- - heraia.h version number and date
+ - heraia.h version number and date,
+ - heraia.c doxygen comment version number
  - generate the doxygen documentation in the docs directory. Edit 
    heraia.doxygen file to reflect version number and directories (basicaly
    lines PROJECT_NUMBER and OUTPUT_DIRECTORY).

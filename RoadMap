@@ -36,7 +36,7 @@ I let you imagine what I expect before I do a major release !!!
    * add height and weight to window properties (including saving and loading
      to/from preference file
    * save the displayed tab of the data interpretor in the preference file
-   * Have a new way to add types to the data_interpretor tabs (which should be
+   * Have a new way to add types to the data_interpretor tabs (whom should be
      explicitly named)
    * Save and Save As buttons should be greyed when no file is loaded (same 
      thing applies to stat plugin)

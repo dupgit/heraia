@@ -57,7 +57,7 @@ static gboolean pref_window_delete(GtkWidget *widget, GdkEvent *event, gpointer 
 	if (main_window != NULL && main_window->win_prop != NULL && main_window->win_prop->main_pref_window != NULL)
 	{
 		pref_window = heraia_get_widget(main_window->xmls->main, "main_preferences_window");
-		save_main_preferences(main_window);
+		save_preferences(main_window);
 		record_and_hide_dialog_box(pref_window, main_window->win_prop->main_pref_window);
 	}
 	

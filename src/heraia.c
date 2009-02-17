@@ -29,7 +29,7 @@
  * @author Olivier DELHOMME,
  *         Sébastien TRICAUD,
  *         Grégory AUDET
- * @version 0.0.7
+ * @version 0.0.8
  * @date 2005-2009
  */
 
@@ -194,10 +194,8 @@ static heraia_window_t *heraia_init_main_struct(void)
 		}
 
 	/* preference file name initialisation */
-	herwin->prefs = (prefs_t *) g_malloc0(sizeof(prefs_t));
-	herwin->prefs->file = g_key_file_new();
-	herwin->prefs->pathname = g_strdup_printf("%s%c.%s", g_get_home_dir(), G_DIR_SEPARATOR, "heraia");
-	herwin->prefs->filename = g_strdup_printf("%s%c%s", herwin->prefs->pathname, G_DIR_SEPARATOR, "main_preferences");
+	herwin->prefs = NULL;
+	init_preference_struct(herwin);
 	verify_preference_file(herwin->prefs->pathname, herwin->prefs->filename);
 	
 	/**

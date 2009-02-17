@@ -35,6 +35,7 @@
  */
 #define GN_GLOBAL_PREFS "Global Preferences"
 #define GN_DISPLAY_PREFS "Display Preferences"
+#define GN_DI_PREFS "Data Interpretor Preferences"
 
 #define KN_SAVE_WINDOW_PREFS "Save Window Preferences"
 #define KN_ABOUT_BOX "About Box"
@@ -47,9 +48,15 @@
 
 #define KN_DISP_THOUSAND "Thousand"
 
+#define KN_DI_SELECTED_TAB "Selected Tab"
+
 
 extern void verify_preference_file(gchar *pathname, gchar *filename);
-extern void save_main_preferences(heraia_window_t *main_window);
-extern void setup_preferences(heraia_window_t *main_window);
+extern void init_preference_struct(heraia_window_t *main_window);
+
+extern void save_preferences(heraia_window_t *main_window);
+extern void load_preferences(heraia_window_t *main_window);
+
+
 
 #endif /* _LIBHERAIA_USER_PREFS_H_ */
