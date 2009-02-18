@@ -451,11 +451,11 @@ void on_open_activate(GtkWidget *widget, gpointer data)
 	if (select_file_to_load(main_window) == TRUE)
 	{
 		load_file_to_analyse(main_window, main_window->filename);
-	}
 	
-	/* Not thread safe here ? */
-	main_window->event = HERAIA_REFRESH_NEW_FILE;
-	refresh_event_handler(main_window->current_DW->current_hexwidget, main_window);
+	    /* Not thread safe here ? */
+	    main_window->event = HERAIA_REFRESH_NEW_FILE;
+	    refresh_event_handler(main_window->current_DW->current_hexwidget, main_window);
+	}
 }
 
 

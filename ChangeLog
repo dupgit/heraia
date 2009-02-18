@@ -1,3 +1,9 @@
+18.02.2009
+    - Olivier Delhomme <heraia@delhomme.org>
+      * Corrected a bug that allowed refreshing event to show up even if no file
+        were selected (cancel button)
+      * "greyed" stat plugin save as button if no file is loaded 
+
 17.02.2009
     - Olivier Delhomme <heraia@delhomme.org>
 	  * Version number changes
@@ -30,8 +36,8 @@
 	  * Documenting log.c and adding some basic tests to avoid possible
         segfaults
       * Typos in ChangeLog itself
-	* Documenting main_pref_window.c, plugin.c
-    * Adding ideas to the Roadmap
+	  * Documenting main_pref_window.c, plugin.c
+      * Adding ideas to the Roadmap
 
 10.02.2009
 	- Olivier Delhomme <heraia@delhomme.org>

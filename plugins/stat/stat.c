@@ -130,6 +130,10 @@ void init(heraia_window_t *main_struct)
 				log_message(main_struct, G_LOG_LEVEL_WARNING, "Unable to load %s xml interface.", plugin->info->name);
 			}
 			
+			/* greyed save as button */
+			gtk_widget_set_sensitive(glade_xml_get_widget(plugin->xml, "statw_save_as"), FALSE);
+			
+			
 			/* shows or hide the interface (hides it at first as all windows shows up) */
 			if (plugin->win_prop->displayed == FALSE)
 			{
@@ -191,7 +195,7 @@ void run(GtkWidget *widget, gpointer data)
 
 /**
  * @fn void refresh(heraia_window_t *main_struct, void *data)
- *  The refresh function Called when a new file is loaded or when the cursor is moved
+ *  The refresh function is called when a new file is loaded or when the cursor is moved
  *  Here we want to refresh the plugin only if a new file is loaded AND if the plugin
  *  is already displayed (running)
  * @param main_struct : main structure
@@ -206,6 +210,7 @@ void refresh(heraia_window_t *main_struct, void *data)
 		{
 			if (main_struct->event == HERAIA_REFRESH_NEW_FILE && plugin->state == PLUGIN_STATE_RUNNING)
 				{
+					gtk_widget_set_sensitive(glade_xml_get_widget(plugin->xml, "statw_save_as"), TRUE);
 					plugin->run_proc(NULL, (gpointer) main_struct);
 				}
 		}
