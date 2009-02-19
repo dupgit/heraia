@@ -27,6 +27,53 @@
 #ifndef _LIBHERAIA_DECODE_H_
 #define _LIBHERAIA_DECODE_H_
 
+/* templates */
+typedef gchar *(* DecodeFunc) (guchar *);                              /**< Decode function template for numbers*/
+typedef gchar *(* DecodeDateFunc) (guchar *, date_and_time_t *mydate); /**< Decode function template for dates */
+
+
+/**
+ * @struct decode_t
+ * Basic way to associate a decode function and an entry that will receive the
+ * result
+ * @warning this structure is subject to changes
+ */
+ typedef struct
+ {
+	DecodeFunc func;  /**< a function to decode into something     */
+    GtkWidget *entry; /**< the widget that will receive the result */
+ } decode_t;
+
+
+/**
+ * @struct decode_generic_t
+ * Basic way to have one decoding function for date
+ * @warning this structure is subject to changes
+ */
+ typedef struct
+ {
+    GList decode_list; /**< List of decode_t functions and corresponding entries */
+    guint how_much;    /**< says how much decoding function there is in the list */
+    GtkWidget *label;  /**< label for these decoding functions                   */
+    guint data_size;   /**< size of what we may decode                           */
+ } decode_generic_t;
+
+
+/**
+ * @struct decode_date_t
+ * Basic way to have one decoding function for date
+ * @warning this structure is subject to changes
+ */
+ typedef struct
+ {
+	DecodeDateFunc date_func; /**< a function to decode into a date        */
+	GtkWidget *entry;         /**< the widget that will receive the result */
+	
+    guint data_size;          /**< size of what we may decode              */
+ } decode_date_t;
+
+
+
 /** 
  * @struct date_and_time_t
  *  A human struct to store a date with a time. 
@@ -43,9 +90,6 @@ typedef struct
 	guint32 seconds;
 } date_and_time_t;
 
-/* templates */
-typedef gchar *(* DecodeFunc) (guchar *); /* Decode function template for numbers*/
-typedef gchar *(* DecodeDateFunc) (guchar *, date_and_time_t *mydate); /* Decode function template for dates */
 
 /* Numbers */
 extern gchar *decode_8bits_unsigned(guchar *data);

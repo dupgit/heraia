@@ -1,3 +1,10 @@
+19.02.2009
+    - Olivier Delhomme <heraia@delhomme.org>
+      * Begun work on data_interpretor stuff that will ease, in the future,
+        writing of new data types. I hope this to be usefull when I'll add
+        a scripting language in herai or something similar to "create" new 
+        data types.
+
 18.02.2009
     - Olivier Delhomme <heraia@delhomme.org>
       * Corrected a bug that allowed refreshing event to show up even if no file

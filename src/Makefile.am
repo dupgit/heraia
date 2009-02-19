@@ -10,8 +10,10 @@ DEFS = -I$(SRCDIR)  -I$(SRCDIR)/include	 		\
 
 bin_PROGRAMS = heraia
 heraia_LDFLAGS = $(LDFLAGS)
-heraia_LDADD = $(GTKHEX_LIBS) $(LIBGLADE_LIBS) $(GMODULES_LIBS) $(GLIB2_LIBS) \
-			   $(GTK2_LIBS) -L$(top_builddir)/libheraia/ -lheraia
+heraia_LDADD = $(GTKHEX_LIBS) $(LIBGLADE_LIBS) $(GMODULES_LIBS) \
+			   $(GLIB2_LIBS) $(GTK2_LIBS) \
+			   -L$(top_builddir)/libheraia/ -lheraia \
+			   $(GMODULE_LIBS) $(GKT2_LIBS)
 
 heraia_SOURCES = 					\
 	heraia.c						\
@@ -23,4 +25,11 @@ gladefiles = heraia.glade
 gladedir = $(datadir)/@PACKAGE@
 glade_DATA = $(gladefiles)
 EXTRA_DIST = $(gladefiles)
+
+AM_CPPFLAGS = \
+	$(LIBGLADE_CFLAGS) \
+	$(GMODULE_CFLAGS) \
+	$(GTKHEX_CFLAGS) \
+	$(GLIB2_CFLAGS) \
+	$(GKT2_CFLAGS)
 

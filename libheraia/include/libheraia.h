@@ -93,8 +93,6 @@ typedef struct
 	/** Current Hexwidget that we want data to be interpreted */
 	GtkWidget *current_hexwidget;  /** @todo we may want to move this from here to heraia_window_t structure */
 	GtkWidget *diw;                /**< data interpretor window                                              */
-
-	/* gboolean window_displayed;     says whether the window is displayed or not                     */
 	gint tab_displayed;            /**< keeps the last displayed tab's number before closing            */
 
 } data_window_t;
