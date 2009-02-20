@@ -27,6 +27,24 @@
 #ifndef _LIBHERAIA_DECODE_H_
 #define _LIBHERAIA_DECODE_H_
 
+
+/** 
+ * @struct date_and_time_t
+ *  A human struct to store a date with a time. 
+ * @todo add an UTC info field
+ */
+typedef struct
+{
+	guint32 year;
+	guint32 month;
+	guint32 day;
+
+	guint32 hour;
+	guint32 minutes;
+	guint32 seconds;
+} date_and_time_t;
+
+
 /* templates */
 typedef gchar *(* DecodeFunc) (guchar *);                              /**< Decode function template for numbers*/
 typedef gchar *(* DecodeDateFunc) (guchar *, date_and_time_t *mydate); /**< Decode function template for dates */
@@ -47,13 +65,13 @@ typedef gchar *(* DecodeDateFunc) (guchar *, date_and_time_t *mydate); /**< Deco
 
 /**
  * @struct decode_generic_t
- * Basic way to have one decoding function for date
+ * Basic way to have as many as we want decoding functions
  * @warning this structure is subject to changes
  */
  typedef struct
  {
     GList decode_list; /**< List of decode_t functions and corresponding entries */
-    guint how_much;    /**< says how much decoding function there is in the list */
+    guint how_many;    /**< says how many decoding function there is in the list */
     GtkWidget *label;  /**< label for these decoding functions                   */
     guint data_size;   /**< size of what we may decode                           */
  } decode_generic_t;
@@ -71,26 +89,8 @@ typedef gchar *(* DecodeDateFunc) (guchar *, date_and_time_t *mydate); /**< Deco
 	
     guint data_size;          /**< size of what we may decode              */
  } decode_date_t;
-
-
-
-/** 
- * @struct date_and_time_t
- *  A human struct to store a date with a time. 
- * @todo add an UTC info field
- */
-typedef struct
-{
-	guint32 year;
-	guint32 month;
-	guint32 day;
-
-	guint32 hour;
-	guint32 minutes;
-	guint32 seconds;
-} date_and_time_t;
-
-
+ 
+ 
 /* Numbers */
 extern gchar *decode_8bits_unsigned(guchar *data);
 extern gchar *decode_8bits_signed(guchar *data);
