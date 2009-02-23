@@ -64,7 +64,8 @@ typedef gchar *(* DecodeFunc) (guchar *);     /**< Decode function template */
 
 /**
  * @struct decode_generic_t
- * Basic way to have as many as we want decoding functions
+ * Basic way to have as many as we want decoding functions corresponding to one
+ * label
  * @warning this structure is subject to changes
  */
  typedef struct
@@ -75,6 +76,9 @@ typedef gchar *(* DecodeFunc) (guchar *);     /**< Decode function template */
     guint data_size;   /**< size of what we may decode                           */
  } decode_generic_t;
 
+
+extern decode_t * new_decode_t(DecodeFunc decode_func, GtkWidget *entry); 
+ 
  
 /* Numbers */
 extern gchar *decode_8bits_unsigned(guchar *data);

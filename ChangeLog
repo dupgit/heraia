@@ -5,6 +5,8 @@
         Removing thing that we do not need any more -> simpler is better
         Removing unnecessary doxygen structures (because we do comment functions
         above the functions themselves)
+      * Deleted the menu in data_interpretor window as this is more confusing 
+        than anything else.
 
 21.02.2009
     - Olivier Delhomme <heraia@delhomme.org>

@@ -777,3 +777,33 @@ void reverse_byte_order(guchar *to_reverse)
 
 	to_reverse[0] = (guchar) aux;
 }
+
+
+/**
+ * Make a new decode_t structure
+ * @param decode_func : pointer to a function that may decode a stream 
+ *                      this function must follow DecodeFunc prototype
+ * @param entry : A GtkWidget entry that will receive the result of the
+ *                decoding function
+ * @return returns a newly allocated decode_t structure filled with the two
+ *         parameters.
+ */
+decode_t * new_decode_t(DecodeFunc decode_func, GtkWidget *entry)
+{
+	decode_t *decode_struct = NULL;
+	
+	if (decode_func != NULL && entry != NULL)
+	{
+		decode_struct = (decode_t *) g_malloc0(sizeof(decode_t));
+		decode_struct->func = decode_func;
+		decode_struct->entry = entry;
+		
+		return decode_struct;
+	}
+	else
+	{
+		return NULL;
+	}
+}
+
+
