@@ -46,8 +46,7 @@ typedef struct
 
 
 /* templates */
-typedef gchar *(* DecodeFunc) (guchar *);                              /**< Decode function template for numbers*/
-typedef gchar *(* DecodeDateFunc) (guchar *, date_and_time_t *mydate); /**< Decode function template for dates */
+typedef gchar *(* DecodeFunc) (guchar *);     /**< Decode function template */
 
 
 /**
@@ -76,20 +75,6 @@ typedef gchar *(* DecodeDateFunc) (guchar *, date_and_time_t *mydate); /**< Deco
     guint data_size;   /**< size of what we may decode                           */
  } decode_generic_t;
 
-
-/**
- * @struct decode_date_t
- * Basic way to have one decoding function for date
- * @warning this structure is subject to changes
- */
- typedef struct
- {
-	DecodeDateFunc date_func; /**< a function to decode into a date        */
-	GtkWidget *entry;         /**< the widget that will receive the result */
-	
-    guint data_size;          /**< size of what we may decode              */
- } decode_date_t;
- 
  
 /* Numbers */
 extern gchar *decode_8bits_unsigned(guchar *data);
@@ -105,10 +90,10 @@ extern gchar *decode_64bits_unsigned(guchar *data);
 extern gchar *decode_to_bits(guchar *data);
 
 /* dates */
-extern gchar *decode_dos_date(guchar *data, date_and_time_t *mydate);
-extern gchar *decode_filetime_date(guchar *data, date_and_time_t *mydate);
-extern gchar *decode_C_date(guchar *data, date_and_time_t *mydate);
-extern gchar *decode_HFS_date(guchar *data, date_and_time_t *mydate);
+extern gchar *decode_dos_date(guchar *data);
+extern gchar *decode_filetime_date(guchar *data);
+extern gchar *decode_C_date(guchar *data);
+extern gchar *decode_HFS_date(guchar *data);
 
 /* bcd */
 extern gchar *decode_packed_BCD(guchar *data);

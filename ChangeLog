@@ -1,3 +1,15 @@
+23.02.2009
+    - Olivier Delhomme <heraia@delhomme.org>
+      * Modifing structures in decode.c and decode.h to have a unified way to
+        call decoding functions in order to ease new structures to be added
+        Removing thing that we do not need any more -> simpler is better
+        Removing unnecessary doxygen structures (because we do comment functions
+        above the functions themselves)
+
+21.02.2009
+    - Olivier Delhomme <heraia@delhomme.org>
+      * Changed description of heraia by adding a note on the license
+
 19.02.2009
     - Olivier Delhomme <heraia@delhomme.org>
       * Begun work on data_interpretor stuff that will ease, in the future,

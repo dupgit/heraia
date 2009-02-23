@@ -27,8 +27,7 @@
 #include <libheraia.h>
 
 static guint which_endianness(heraia_window_t *main_window);
-static void interpret_as_date(heraia_window_t *main_window, DecodeDateFunc decode_it, gchar *widget_name, guint length, guint endianness);
-static void interpret_as_number(heraia_window_t *main_window, DecodeFunc decode_it, gchar *widget_name, guint length, guint endianness);
+static void interpret(heraia_window_t *main_window, DecodeFunc decode_it, gchar *widget_name, guint length, guint endianness);
 static void close_data_interpretor_window(GtkWidget *widget, gpointer data);
 static void connect_data_interpretor_signals(heraia_window_t *main_window);
 
@@ -67,12 +66,10 @@ static guint which_endianness(heraia_window_t *main_window)
 		return H_DI_LITTLE_ENDIAN;  /* default interpretation case */
 }
 
-
 /**
- * @fn void interpret_as_date(heraia_window_t *main_window, DecodeDateFunc decode_it, gchar *widget_name, guint length, guint endianness)
- *   Here we do interpret a date according to the decode_it function and we 
+ *   Here we do interpret a number according to the decode_it function and we 
  *   write down the result in a widget name named "widget_name".
- * @warning We are assuming that main_window != NULL and main_window->xml != NULL
+ *  @warning We are assuming that main_window != NULL and main_window->xml != NULL
  *
  *    @param main_window : main structure
  *    @param decode_it : a DecodeDateFunc which is a function to be called to 
@@ -83,61 +80,7 @@ static guint which_endianness(heraia_window_t *main_window)
  *    @param endianness : the endianness to be applied to the datas (as 
  * 			 returned by function which_endianness)
  */
-static void interpret_as_date(heraia_window_t *main_window, DecodeDateFunc decode_it, gchar *widget_name, guint length, guint endianness)
-{
-	gint result = 0;       /**< used to test different results of function calls */
-	guchar *c = NULL;      /**< the character under the cursor                   */
-	gchar *text = NULL;
-	data_window_t *data_window = main_window->current_DW;
-	GtkWidget *entry = heraia_get_widget(main_window->xmls->main, widget_name);
-	date_and_time_t *mydate = NULL; /**< date resulting of interpretation        */
-
-	c = (guchar *) g_malloc0 (sizeof(guchar) * length);
-	mydate = (date_and_time_t *) g_malloc0 (sizeof(date_and_time_t));
-
-	result = ghex_get_data(data_window, length, endianness, c);
-
-	if (result == TRUE)
-		{
-			text = decode_it(c, mydate);
-
-			if (text != NULL)
-				{
-					gtk_entry_set_text(GTK_ENTRY(entry), text);
-				}
-			else
-				{
-					text = g_strdup_printf("Something's wrong!");
-					gtk_entry_set_text(GTK_ENTRY(entry), text);
-				}
-		}
-	else
-		{
-			text = g_strdup_printf("Cannot interpret as a %d byte(s) date", length);
-			gtk_entry_set_text(GTK_ENTRY(entry), text);
-		}
-
-	g_free(c);
-  	g_free(text);
-}
-
-
-/**
- * @fn void interpret_as_number(heraia_window_t *main_window, DecodeFunc decode_it, gchar *widget_name, guint length, guint endianness)
- *   Here we do interpret a number according to the decode_it function and we 
- *   write down the result in a widget name named "widget_name".
- * @warning We are assuming that main_window != NULL and main_window->xml != NULL
-*
- *    @param main_window : main structure
- *    @param decode_it : a DecodeDateFunc which is a function to be called to 
- *				 decode the stream
- *    @param widget_name : a gchar * containing the name of the widget where 
- *				 the result may go
- *    @param length : the length of the data to be decoded (guint)
- *    @param endianness : the endianness to be applied to the datas (as 
- * 			 returned by function which_endianness)
- */
-static void interpret_as_number(heraia_window_t *main_window, DecodeFunc decode_it, gchar *widget_name, guint length, guint endianness)
+static void interpret(heraia_window_t *main_window, DecodeFunc decode_it, gchar *widget_name, guint length, guint endianness)
 {
 	gint result = 0;       /**< used to test different results of function calls */
 	guchar *c = NULL;      /**< the character under the cursor                   */
@@ -207,21 +150,22 @@ void refresh_data_interpretor_window(GtkWidget *widget, gpointer data)
 	if (main_window != NULL && main_window->current_DW != NULL && main_window->win_prop->main_dialog->displayed == TRUE)
 		{
 			endianness = which_endianness(main_window);  /**< Endianness is computed only once here */
-			interpret_as_number(main_window, decode_8bits_unsigned, "diw_8bits_us", 1, endianness);
-			interpret_as_number(main_window, decode_8bits_signed, "diw_8bits_s", 1, endianness);
-			interpret_as_number(main_window, decode_16bits_unsigned, "diw_16bits_us", 2, endianness);
-			interpret_as_number(main_window, decode_16bits_signed, "diw_16bits_s", 2, endianness);
-			interpret_as_number(main_window, decode_32bits_unsigned, "diw_32bits_us", 4, endianness);
-			interpret_as_number(main_window, decode_32bits_signed, "diw_32bits_s", 4, endianness);
-			interpret_as_number(main_window, decode_64bits_unsigned, "diw_64bits_us", 8, endianness);
-			interpret_as_number(main_window, decode_64bits_signed, "diw_64bits_s", 8, endianness);
-			interpret_as_number(main_window, decode_to_bits, "diw_base_bits", 1, endianness);
-			interpret_as_number(main_window, decode_packed_BCD, "diw_base_bcd", 1, endianness);
-
-			interpret_as_date(main_window, decode_C_date, "diw_C_date", 4, endianness);
-			interpret_as_date(main_window, decode_dos_date, "diw_msdos_date", 4, endianness);
-			interpret_as_date(main_window, decode_filetime_date, "diw_filetime_date", 8, endianness);
-			interpret_as_date(main_window, decode_HFS_date, "diw_HFS_date", 4, endianness);
+			interpret(main_window, decode_8bits_unsigned, "diw_8bits_us", 1, endianness);
+			interpret(main_window, decode_8bits_signed, "diw_8bits_s", 1, endianness);
+			interpret(main_window, decode_16bits_unsigned, "diw_16bits_us", 2, endianness);
+			interpret(main_window, decode_16bits_signed, "diw_16bits_s", 2, endianness);
+			interpret(main_window, decode_32bits_unsigned, "diw_32bits_us", 4, endianness);
+			interpret(main_window, decode_32bits_signed, "diw_32bits_s", 4, endianness);
+			interpret(main_window, decode_64bits_unsigned, "diw_64bits_us", 8, endianness);
+			interpret(main_window, decode_64bits_signed, "diw_64bits_s", 8, endianness);
+			
+			interpret(main_window, decode_C_date, "diw_C_date", 4, endianness);
+			interpret(main_window, decode_dos_date, "diw_msdos_date", 4, endianness);
+			interpret(main_window, decode_filetime_date, "diw_filetime_date", 8, endianness);
+			interpret(main_window, decode_HFS_date, "diw_HFS_date", 4, endianness);
+			
+			interpret(main_window, decode_to_bits, "diw_base_bits", 1, endianness);
+			interpret(main_window, decode_packed_BCD, "diw_base_bcd", 1, endianness);
 
 			refresh_all_ud_data_interpretor(main_window, endianness);
 		}
