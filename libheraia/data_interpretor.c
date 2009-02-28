@@ -253,6 +253,8 @@ tab_t *add_new_tab_in_data_interpretor(GtkNotebook *notebook, guint index, gchar
 	{
 		col_label = (gchar *) va_arg(args, int);
 		vbox_label = gtk_label_new(col_label);
+		gtk_misc_set_padding(GTK_MISC(vbox_label), 4, 4);
+		gtk_misc_set_alignment(GTK_MISC(vbox_label), 0.5, 0.5);
 		g_ptr_array_add(col_labels, (gpointer) vbox_label);
 	}
 	va_end(args);
@@ -355,11 +357,11 @@ void add_default_tabs(heraia_window_t *main_window)
 		main_window->current_DW->tab = tab;
 		row = new_decode_generic_t("8 bits", 1, FALSE, 2, decode_8bits_signed, decode_8bits_unsigned);
 		add_new_row_to_tab(tab, row);
-		row = new_decode_generic_t("16 bits", 1, FALSE, 2, decode_16bits_signed, decode_16bits_unsigned);
+		row = new_decode_generic_t("16 bits", 2, FALSE, 2, decode_16bits_signed, decode_16bits_unsigned);
 		add_new_row_to_tab(tab, row);
-		row = new_decode_generic_t("32 bits", 1, FALSE, 2, decode_32bits_signed, decode_32bits_unsigned);
+		row = new_decode_generic_t("32 bits", 4, FALSE, 2, decode_32bits_signed, decode_32bits_unsigned);
 		add_new_row_to_tab(tab, row);
-		row = new_decode_generic_t("64 bits", 1, FALSE, 2, decode_64bits_signed, decode_64bits_unsigned);
+		row = new_decode_generic_t("64 bits", 8, FALSE, 2, decode_64bits_signed, decode_64bits_unsigned);
 		add_new_row_to_tab(tab, row);
 	}
 
