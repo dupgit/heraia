@@ -1,3 +1,11 @@
+28.02.2009
+    - Olivier Delhomme <heraia@delhomme.org>
+      * I simplified too much the decoding part and this would have be a problem
+	when we will had external data types, advanced search capabilities and
+	such.
+      * Trying to add more flexibility to data interpretor window (this work is
+        in ultra bleeding edge stage - do not rely on any strcuture for now)
+
 23.02.2009
     - Olivier Delhomme <heraia@delhomme.org>
       * Modifing structures in decode.c and decode.h to have a unified way to
@@ -16,7 +24,7 @@
     - Olivier Delhomme <heraia@delhomme.org>
       * Begun work on data_interpretor stuff that will ease, in the future,
         writing of new data types. I hope this to be usefull when I'll add
-        a scripting language in herai or something similar to "create" new 
+        a scripting language in heraia or something similar to "create" new 
         data types.
 
 18.02.2009

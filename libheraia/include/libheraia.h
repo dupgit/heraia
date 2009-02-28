@@ -84,17 +84,80 @@ typedef gint RefreshType;
 #define HERAIA_REFRESH_NEW_FILE 1
 #define HERAIA_REFRESH_CURSOR_MOVE 2
 
+/** 
+ * @struct date_and_time_t
+ *  A human struct to store a date with a time. 
+ * @todo add an UTC info field
+ */
+typedef struct
+{
+	guint32 year;
+	guint32 month;
+	guint32 day;
+
+	guint32 hour;
+	guint32 minutes;
+	guint32 seconds;
+} date_and_time_t;
+
+
+/** Templates for the decoding functions */
+typedef gchar *(* DecodeFunc) (guchar *, gpointer);     /**< Decode function template */
+
+/**
+ * @struct decode_t
+ * Basic way to associate a decode function and an entry that will receive the
+ * result
+ * @warning this structure is subject to changes
+ */
+ typedef struct
+ {
+    DecodeFunc func;  /**< a function to decode into something     */
+    GtkWidget *entry; /**< the widget that will receive the result */
+ } decode_t;
+
+
+/**
+ * @struct decode_generic_t
+ * Basic way to have as many as we want decoding functions corresponding to one
+ * label. This Structure is basicaly one row in the data intrepretor window
+ * @warning this structure is subject to changes
+ */
+ typedef struct
+ {
+    GPtrArray *decode_array; /**< Pointer Array of decode_t functions and corresponding entries */
+    GtkWidget *label;        /**< label for these decoding functions                            */
+    guint data_size;         /**< size of what we may decode                                    */
+    gboolean fixed_size;     /**< says whether we can modify data_size or not                   */ 
+ } decode_generic_t;
+
+
+/**
+ * @struct tab_t
+ * Tabulation structure to be used in the GtkNoteBook of 
+ * data_interpretor's window
+ */
+typedef struct
+{ 
+	guint index;           /**< number for this tab                                            */
+	guint nb_cols;         /**< number of columns in this tab (this MUST NOT change in any way */
+	GtkWidget *label;      /**< label for this tab                                             */
+	GPtrArray *col_labels; /**< array of GtkWidgets of columns labels                          */
+	GPtrArray *vboxes;     /**< array of vboxes where we will pack label and entry widgets     */
+	GPtrArray *rows;       /**< array of pointers to decode_generic_t variables.               */
+} tab_t;
+
 /**
  * @struct data_window_t
  *  Data interpretor window structure
  */
 typedef struct
 {
-	/** Current Hexwidget that we want data to be interpreted */
-	GtkWidget *current_hexwidget;  /** @todo we may want to move this from here to heraia_window_t structure */
-	GtkWidget *diw;                /**< data interpretor window                                              */
-	gint tab_displayed;            /**< keeps the last displayed tab's number before closing            */
-
+    /** Current Hexwidget that we want data to be interpreted */
+    GtkWidget *current_hexwidget;  /** @todo we may want to move this from here to heraia_window_t structure */
+    GtkWidget *diw;                /**< data interpretor window                                              */
+    gint tab_displayed;            /**< keeps the last displayed tab's number before closing                 */
+    tab_t *tab;                    /**< only here for testing puposes @todo make this a GPtrArray            */
 } data_window_t;
 
 /* Treatment Stuff (if one wants to add new data types) */

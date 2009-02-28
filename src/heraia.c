@@ -418,7 +418,6 @@ int main (int argc, char ** argv)
 							load_file_to_analyse(main_window, opt->filename);
 						}
 
-
 					log_message(main_window, G_LOG_LEVEL_DEBUG, "Main_window : %p", main_window);
 
 					init_heraia_interface(main_window);

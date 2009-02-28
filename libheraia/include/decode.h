@@ -27,84 +27,35 @@
 #ifndef _LIBHERAIA_DECODE_H_
 #define _LIBHERAIA_DECODE_H_
 
-
-/** 
- * @struct date_and_time_t
- *  A human struct to store a date with a time. 
- * @todo add an UTC info field
- */
-typedef struct
-{
-	guint32 year;
-	guint32 month;
-	guint32 day;
-
-	guint32 hour;
-	guint32 minutes;
-	guint32 seconds;
-} date_and_time_t;
-
-
-/* templates */
-typedef gchar *(* DecodeFunc) (guchar *);     /**< Decode function template */
-
-
-/**
- * @struct decode_t
- * Basic way to associate a decode function and an entry that will receive the
- * result
- * @warning this structure is subject to changes
- */
- typedef struct
- {
-	DecodeFunc func;  /**< a function to decode into something     */
-    GtkWidget *entry; /**< the widget that will receive the result */
- } decode_t;
-
-
-/**
- * @struct decode_generic_t
- * Basic way to have as many as we want decoding functions corresponding to one
- * label
- * @warning this structure is subject to changes
- */
- typedef struct
- {
-    GList decode_list; /**< List of decode_t functions and corresponding entries */
-    guint how_many;    /**< says how many decoding function there is in the list */
-    GtkWidget *label;  /**< label for these decoding functions                   */
-    guint data_size;   /**< size of what we may decode                           */
- } decode_generic_t;
-
-
-extern decode_t * new_decode_t(DecodeFunc decode_func, GtkWidget *entry); 
- 
- 
+/*-- Decoding function --*/
 /* Numbers */
-extern gchar *decode_8bits_unsigned(guchar *data);
-extern gchar *decode_8bits_signed(guchar *data);
-extern gchar *decode_16bits_signed(guchar *data);
-extern gchar *decode_16bits_unsigned(guchar *data);
-extern gchar *decode_32bits_signed(guchar *data);
-extern gchar *decode_32bits_unsigned(guchar *data);
-extern gchar *decode_64bits_signed(guchar *data);
-extern gchar *decode_64bits_unsigned(guchar *data);
+extern gchar *decode_8bits_unsigned(guchar *data, gpointer data_struct);
+extern gchar *decode_8bits_signed(guchar *data, gpointer data_struct);
+extern gchar *decode_16bits_signed(guchar *data, gpointer data_struct);
+extern gchar *decode_16bits_unsigned(guchar *data, gpointer data_struct);
+extern gchar *decode_32bits_signed(guchar *data, gpointer data_struct);
+extern gchar *decode_32bits_unsigned(guchar *data, gpointer data_struct);
+extern gchar *decode_64bits_signed(guchar *data, gpointer data_struct);
+extern gchar *decode_64bits_unsigned(guchar *data, gpointer data_struct);
 
 /* bits */
-extern gchar *decode_to_bits(guchar *data);
+extern gchar *decode_to_bits(guchar *data, gpointer data_struct);
 
 /* dates */
-extern gchar *decode_dos_date(guchar *data);
-extern gchar *decode_filetime_date(guchar *data);
-extern gchar *decode_C_date(guchar *data);
-extern gchar *decode_HFS_date(guchar *data);
+extern gchar *decode_dos_date(guchar *data, gpointer data_struct);
+extern gchar *decode_filetime_date(guchar *data, gpointer data_struct);
+extern gchar *decode_C_date(guchar *data, gpointer data_struct);
+extern gchar *decode_HFS_date(guchar *data, gpointer data_struct);
 
 /* bcd */
-extern gchar *decode_packed_BCD(guchar *data);
+extern gchar *decode_packed_BCD(guchar *data, gpointer data_struct);
  
+/*-- Non decoding functions --*/ 
 /* Utils */
 extern gboolean swap_bytes(guchar *to_swap, guint first, guint last);
 extern void reverse_byte_order(guchar *to_reverse);
+extern decode_t * new_decode_t(DecodeFunc decode_func, GtkWidget *entry); 
+extern decode_generic_t *new_decode_generic_t(gchar *label, guint data_size, gboolean fixed_size, guint nb_cols, ...);
 
 #endif /* _LIBHERAIA_DECODE_H_ */
 

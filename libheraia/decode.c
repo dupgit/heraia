@@ -42,9 +42,10 @@ static void transform_bcd_to_human(gchar *bcd, guint8 part, guint8 part_number);
  *  General purpose of this function is to take a 1 byte data stream
  *  and convert it as if it is an 8 bits signed number
  *  @param data : 1 guchar
+ *  @param data_struct a pointer to a user defined data structure
  *  @return returns a gchar * that may be freed when no longer needed
  */
-gchar *decode_8bits_signed(guchar *data)
+gchar *decode_8bits_signed(guchar *data, gpointer data_struct)
 {
 	gint8 total = 0;
 
@@ -64,9 +65,10 @@ gchar *decode_8bits_signed(guchar *data)
  *  general purpose of this function is to take a 1 byte data stream
  *  and convert it as if it is an 8 bits unsigned number
  *  @param data : 1 guchar
+ *  @param data_struct a pointer to a user defined data structure
  *  @return returns a gchar * that may be freed when no longer needed
 */
-gchar *decode_8bits_unsigned(guchar *data)
+gchar *decode_8bits_unsigned(guchar *data, gpointer data_struct)
 {
 	guint8 total = 0;
 
@@ -87,9 +89,10 @@ gchar *decode_8bits_unsigned(guchar *data)
  *  general purpose of this function is to take a 2 byte data stream
  *  and convert it as if it is a 16 bits signed number
  *  @param data : 2 guchars
+ *  @param data_struct a pointer to a user defined data structure
  *  @return returns a gchar * that may be freed when no longer needed
  */
-gchar *decode_16bits_signed(guchar *data)
+gchar *decode_16bits_signed(guchar *data, gpointer data_struct)
 {
 	gint16 total = 0;
 
@@ -109,9 +112,10 @@ gchar *decode_16bits_signed(guchar *data)
  *  general purpose of this function is to take a 2 byte data stream
  *  and convert it as if it is a 16 bits unsigned number
  *  @param data : 2 guchars
+ *  @param data_struct a pointer to a user defined data structure
  *  @return returns a gchar * that may be freed when no longer needed
  */
-gchar *decode_16bits_unsigned(guchar *data)
+gchar *decode_16bits_unsigned(guchar *data, gpointer data_struct)
 {
 	guint16 total = 0;
 
@@ -131,9 +135,10 @@ gchar *decode_16bits_unsigned(guchar *data)
  *  general purpose of this function is to take a 4 byte data stream
  *  and convert it as if it is a 32 bits signed number
  *  @param data : 4 guchars
+ *  @param data_struct a pointer to a user defined data structure
  *  @return returns a gchar * that may be freed when no longer needed
 */
-gchar *decode_32bits_signed(guchar *data)
+gchar *decode_32bits_signed(guchar *data, gpointer data_struct)
 {
 	gint32 total = 0;
 
@@ -153,9 +158,10 @@ gchar *decode_32bits_signed(guchar *data)
  *  general purpose of this function is to take a 4 byte data stream
  *  and convert it as if it is a 32 bits unsigned number
  *  @param data : 4 guchars
+ *  @param data_struct a pointer to a user defined data structure
  *  @return returns a gchar * that may be freed when no longer needed
 */
-gchar *decode_32bits_unsigned(guchar *data)
+gchar *decode_32bits_unsigned(guchar *data, gpointer data_struct)
 {
 	guint32 total = 0;
 
@@ -174,9 +180,10 @@ gchar *decode_32bits_unsigned(guchar *data)
  *  general purpose of this function is to take a 8 byte data stream
  *  and convert it as if it is a 64 bits signed number
  *  @param data : 8 guchars
+ *  @param data_struct a pointer to a user defined data structure
  *  @return returns a gchar * that may be freed when no longer needed
 */
-gchar *decode_64bits_signed(guchar *data)
+gchar *decode_64bits_signed(guchar *data, gpointer data_struct)
 {
 	gint64 total = 0;
 
@@ -196,9 +203,10 @@ gchar *decode_64bits_signed(guchar *data)
  *  general purpose of this function is to take a 8 byte data stream
  *  and convert it as if it is a 64 bits unsigned number
  *  @param data : 8 guchars
+ *  @param data_struct a pointer to a user defined data structure
  *  @return returns a gchar * that may be freed when no longer needed
 */
-gchar *decode_64bits_unsigned(guchar *data)
+gchar *decode_64bits_unsigned(guchar *data, gpointer data_struct)
 {
 	guint64 total = 0;
 
@@ -287,8 +295,7 @@ static void which_month_day(date_and_time_t *mydate, guint32 day, gboolean bi)
 		{
 			if (day <= 366)
 				{
-					guint tab_ns_months[12] = { 31, 60, 91, 121, 152, 182,
-														 213, 244, 274, 305, 335, 366 } ;
+					guint tab_ns_months[12] = { 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366 } ;
 					calc_which_month_day(mydate, day, tab_ns_months);
 				}
 			else
@@ -301,8 +308,7 @@ static void which_month_day(date_and_time_t *mydate, guint32 day, gboolean bi)
 		{
 			if (day <= 365)
 				{
-					guint tab_ns_months[12] = { 31, 59, 90, 120, 151, 181,
-														 212, 243, 273, 304, 334, 365 };
+					guint tab_ns_months[12] = { 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
 					calc_which_month_day(mydate, day, tab_ns_months);
 				}
 			else
@@ -457,9 +463,10 @@ static gchar *date_printf(date_and_time_t *mydate)
  *  and convert it as if it is a dos date. If it is not, the result
  *  may be funny !
  *  @param data : 4 guchars
+ *  @param data_struct a pointer to a user defined data structure
  *  @return returns a gchar * that may be freed when no longer needed
 */
-gchar *decode_dos_date(guchar *data)
+gchar *decode_dos_date(guchar *data, gpointer data_struct)
 {
     date_and_time_t *mydate = NULL;  /**< date resulting of interpretation               */
     gchar *interpreted_date =  NULL; /**< text that is the result of date interpretation */
@@ -521,9 +528,10 @@ static void make_date_and_time(date_and_time_t *mydate, guchar *data, guint8 len
  *  and convert it as if it is a filetime date. If it is not, the result
  *  may be funny ! Counting 100th of nanoseconds from 01/01/1601
  *  @param data : 8 guchars
+ *  @param data_struct a pointer to a user defined data structure
  *  @return returns a gchar * that may be freed when no longer needed
 */
-gchar *decode_filetime_date(guchar *data)
+gchar *decode_filetime_date(guchar *data, gpointer data_struct)
 {
 	date_and_time_t *mydate = NULL;  /**< date resulting of interpretation               */
     gchar *interpreted_date =  NULL; /**< text that is the result of date interpretation */
@@ -551,9 +559,10 @@ gchar *decode_filetime_date(guchar *data)
  *  and convert it as if it is a C date. If it is not, the result may
  *  be funny ! Counting seconds from 01/01/1970
  *  @param data : 4 guchars
+ *  @param data_struct a pointer to a user defined data structure
  *  @return returns a gchar * that may be freed when no longer needed
 */
-gchar *decode_C_date(guchar *data)
+gchar *decode_C_date(guchar *data, gpointer data_struct)
 {
 	date_and_time_t *mydate = NULL;  /**< date resulting of interpretation               */
     gchar *interpreted_date =  NULL; /**< text that is the result of date interpretation */
@@ -580,9 +589,10 @@ gchar *decode_C_date(guchar *data)
  *  and convert it as if it is a HFS date. If it is not, the result may
  *  be funny ! Counting seconds 01/01/1904
  *  @param data : 4 guchars
+ *  @param data_struct a pointer to a user defined data structure
  *  @return returns a gchar* that may be freed when no longer needed
 */
-gchar *decode_HFS_date(guchar *data)
+gchar *decode_HFS_date(guchar *data, gpointer data_struct)
 {
 	date_and_time_t *mydate = NULL;  /**< date resulting of interpretation               */
     gchar *interpreted_date =  NULL; /**< text that is the result of date interpretation */
@@ -610,10 +620,11 @@ gchar *decode_HFS_date(guchar *data)
  *  decodes the stream represented by *data (one byte) to a
  *  string containing eight 0 or 1 (Little Endian style)
  *  @param data : 1 guchar
+ *  @param data_struct a pointer to a user defined data structure
  *  @return 8 gchars that are either "1" or "0", the string may be freed when
  *          no longer needed
  */
-gchar *decode_to_bits(guchar *data)
+gchar *decode_to_bits(guchar *data, gpointer data_struct)
 {
 
 	if (data == NULL)
@@ -707,9 +718,10 @@ static void transform_bcd_to_human(gchar *bcd, guint8 part, guint8 part_number)
  *  and return a gchar* that may be freed when no longer
  *  needed
  *  @param data : stream to decode as 1 guchar
+ *  @param data_struct a pointer to a user defined data structure
  *  @return returns a gchar * that contain the packed BCD interpretation
  */
-gchar *decode_packed_BCD(guchar *data)
+gchar *decode_packed_BCD(guchar *data, gpointer data_struct)
 {
 	guint8 total = 0;
 	gchar *bcd = NULL;
@@ -788,7 +800,7 @@ void reverse_byte_order(guchar *to_reverse)
  * @return returns a newly allocated decode_t structure filled with the two
  *         parameters.
  */
-decode_t * new_decode_t(DecodeFunc decode_func, GtkWidget *entry)
+decode_t *new_decode_t(DecodeFunc decode_func, GtkWidget *entry)
 {
 	decode_t *decode_struct = NULL;
 	
@@ -806,4 +818,46 @@ decode_t * new_decode_t(DecodeFunc decode_func, GtkWidget *entry)
 	}
 }
 
-
+/**
+ * Make a new decode_generic_t structure
+ * @param decode_func : pointer to a function that may decode a stream 
+ *                      this function must follow DecodeFunc prototype
+ * @param entry : A GtkWidget entry that will receive the result of the
+ *                decoding function
+ * @return returns a newly allocated decode_t structure filled with the two
+ *         parameters.
+ */
+decode_generic_t *new_decode_generic_t(gchar *label, guint data_size, gboolean fixed_size, guint nb_cols, ...)
+{
+    va_list args;                       /**< va_list arguments : decoding function names */ 
+	decode_generic_t *my_struct = NULL; /** structure to be initialized and returned     */
+	decode_t *couple;                   /** Entry and associated function                */
+	guint i = 0;
+	DecodeFunc decode_it;               /**< one decoding function                       */
+	GtkWidget *entry = NULL;            /**< entry associated to the decoding function   */
+	GPtrArray *decode_array;            /**< To keep track of those couples              */
+	
+	decode_array = g_ptr_array_new();
+	
+	my_struct = (decode_generic_t *) g_malloc0(sizeof(decode_generic_t));
+					
+	va_start(args, nb_cols);
+	for (i = 0 ; i < nb_cols ; i++)
+	{
+		decode_it = (DecodeFunc) va_arg(args, DecodeFunc);
+		entry = gtk_entry_new();
+		gtk_entry_set_editable(GTK_ENTRY(entry), FALSE);
+		couple = new_decode_t(decode_it, entry);
+		g_ptr_array_add(decode_array, (gpointer) couple);	
+	}
+	va_end(args);
+	
+	my_struct->decode_array = decode_array;
+	my_struct->label = gtk_label_new(label);
+	gtk_misc_set_padding(GTK_MISC(my_struct->label), 4, 4);
+	gtk_misc_set_alignment(GTK_MISC(my_struct->label), 0.5, 0.5);
+	my_struct->data_size = data_size;
+	my_struct->fixed_size = fixed_size; 
+			
+	return my_struct;
+}
