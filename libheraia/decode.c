@@ -854,7 +854,7 @@ decode_generic_t *new_decode_generic_t(gchar *label, guint data_size, gboolean f
 	
 	my_struct->decode_array = decode_array;
 	my_struct->label = gtk_label_new(label);
-	gtk_misc_set_padding(GTK_MISC(my_struct->label), 4, 4);
+	gtk_misc_set_padding(GTK_MISC(my_struct->label), 3, 3);
 	gtk_misc_set_alignment(GTK_MISC(my_struct->label), 0.5, 0.5);
 	my_struct->data_size = data_size;
 	my_struct->fixed_size = fixed_size; 

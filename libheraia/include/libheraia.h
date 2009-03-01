@@ -139,12 +139,13 @@ typedef gchar *(* DecodeFunc) (guchar *, gpointer);     /**< Decode function tem
  */
 typedef struct
 { 
-	guint index;           /**< number for this tab                                            */
-	guint nb_cols;         /**< number of columns in this tab (this MUST NOT change in any way */
-	GtkWidget *label;      /**< label for this tab                                             */
-	GPtrArray *col_labels; /**< array of GtkWidgets of columns labels                          */
-	GPtrArray *vboxes;     /**< array of vboxes where we will pack label and entry widgets     */
-	GPtrArray *rows;       /**< array of pointers to decode_generic_t variables.               */
+	guint index;           /**< number for this tab                                             */
+	guint nb_cols;         /**< number of columns in this tab - this MUST NOT change in any way */
+	guint nb_rows;         /**< number of rows in this tab - this is automatically updated      */
+	GtkWidget *label;      /**< label for this tab                                              */
+	GPtrArray *col_labels; /**< array of GtkWidgets of columns labels                           */
+	GPtrArray *vboxes;     /**< array of vboxes where we will pack label and entry widgets      */
+	GPtrArray *rows;       /**< array of pointers to decode_generic_t variables.                */
 } tab_t;
 
 /**
@@ -157,7 +158,8 @@ typedef struct
     GtkWidget *current_hexwidget;  /** @todo we may want to move this from here to heraia_window_t structure */
     GtkWidget *diw;                /**< data interpretor window                                              */
     gint tab_displayed;            /**< keeps the last displayed tab's number before closing                 */
-    tab_t *tab;                    /**< only here for testing puposes @todo make this a GPtrArray            */
+    guint nb_tabs;                 /**< keeps Number of tabs in the GPtrArray                                */
+    GPtrArray *tabs;               /**< an array of tabs displayed in data interpretor's notebook            */
 } data_window_t;
 
 /* Treatment Stuff (if one wants to add new data types) */

@@ -1,3 +1,8 @@
+01.03.2009
+    - Olivier Delhomme <heraia@delhomme.org>
+      * Validated the new way to manage data interpretor's tab system.
+      * Removed unecessary old code in data_interpretor.[ch]
+
 28.02.2009
     - Olivier Delhomme <heraia@delhomme.org>
       * I simplified too much the decoding part and this would have be a problem

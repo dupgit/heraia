@@ -60,7 +60,6 @@ extern void refresh_data_interpretor_window(GtkWidget *hexwidget, gpointer data)
 /**
  * Testing things
  */
-extern void add_default_tabs(heraia_window_t *main_window);
 extern void add_tab_in_data_interpretor(GtkNotebook *notebook, tab_t *tab);
 extern tab_t *add_new_tab_in_data_interpretor(GtkNotebook *notebook, guint index, gchar *label, guint num_cols, ...);
 extern void add_new_row_to_tab(tab_t *tab, decode_generic_t *row);
