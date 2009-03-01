@@ -2,6 +2,8 @@
     - Olivier Delhomme <heraia@delhomme.org>
       * Validated the new way to manage data interpretor's tab system.
       * Removed unecessary old code in data_interpretor.[ch]
+      * Added New types : Float and double
+      * loading preference file may happen when everything has been initialized.
 
 28.02.2009
     - Olivier Delhomme <heraia@delhomme.org>

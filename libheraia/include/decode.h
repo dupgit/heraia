@@ -38,6 +38,12 @@ extern gchar *decode_32bits_unsigned(guchar *data, gpointer data_struct);
 extern gchar *decode_64bits_signed(guchar *data, gpointer data_struct);
 extern gchar *decode_64bits_unsigned(guchar *data, gpointer data_struct);
 
+/* Floats */
+extern gchar *decode_float_normal(guchar *data, gpointer data_struct);
+extern gchar *decode_float_scientific(guchar *data, gpointer data_struct);
+extern gchar *decode_double_normal(guchar *data, gpointer data_struct);
+extern gchar *decode_double_scientific(guchar *data, gpointer data_struct);
+
 /* bits */
 extern gchar *decode_to_bits(guchar *data, gpointer data_struct);
 

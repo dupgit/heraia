@@ -1063,20 +1063,6 @@ int load_heraia_ui(heraia_window_t *main_window)
 		{
 			fprintf(stdout, " [Done]\n");
 		}
-	
-		fprintf(stdout, "Loading heraia preference file   ");
-		
-		if (load_preference_file(main_window) != TRUE)
-		{
-			fprintf(stdout, " [FAILED]\n");
-		}
-		else /* Setting up preferences */
-		{
-			fprintf(stdout, " [Done]\n");
-			fprintf(stdout, "Setting up preferences           ");
-			load_preferences(main_window);
-			fprintf(stdout, " [Done]\n");
-		}
 		
 		/* The Log window */
 		if (main_window->debug == TRUE)
@@ -1145,6 +1131,21 @@ int load_heraia_ui(heraia_window_t *main_window)
 		{
 			fprintf(stdout, " [Done]\n");
 		}
+		
+		fprintf(stdout, "Loading heraia preference file   ");
+		
+		if (load_preference_file(main_window) != TRUE)
+		{
+			fprintf(stdout, " [FAILED]\n");
+		}
+		else /* Setting up preferences */
+		{
+			fprintf(stdout, " [Done]\n");
+			fprintf(stdout, "Setting up preferences           ");
+			load_preferences(main_window);
+			fprintf(stdout, " [Done]\n");
+		}
+		
 	}
 	
 	return success;

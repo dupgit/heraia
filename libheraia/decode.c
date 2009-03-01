@@ -223,6 +223,96 @@ gchar *decode_64bits_unsigned(guchar *data, gpointer data_struct)
 
 
 /**
+ *  general purpose of this function is to take a 4 byte data stream
+ *  and convert it as if it is a float number normal notation
+ *  @param data : 4 guchars
+ *  @param data_struct a pointer to a user defined data structure
+ *  @return returns a gchar * that may be freed when no longer needed
+*/
+gchar *decode_float_normal(guchar *data, gpointer data_struct)
+{
+	gfloat total = 0.0;
+
+	if (data == NULL)
+		{
+			return NULL;
+		}
+	else
+		{
+			memcpy(&total, data, 4 * sizeof (guchar));
+			return g_strdup_printf("%f", total);
+		}
+}
+
+/**
+ *  general purpose of this function is to take a 4 byte data stream
+ *  and convert it as if it is a float number normal notation
+ *  @param data : 4 guchars
+ *  @param data_struct a pointer to a user defined data structure
+ *  @return returns a gchar * that may be freed when no longer needed
+*/
+gchar *decode_float_scientific(guchar *data, gpointer data_struct)
+{
+	gfloat total = 0.0;
+
+	if (data == NULL)
+		{
+			return NULL;
+		}
+	else
+		{
+			memcpy(&total, data, 4 * sizeof (guchar));
+			return g_strdup_printf("%g", total);
+		}
+}
+
+/**
+ *  general purpose of this function is to take a 8 byte data stream
+ *  and convert it as if it is a float number normal notation
+ *  @param data : 4 guchars
+ *  @param data_struct a pointer to a user defined data structure
+ *  @return returns a gchar * that may be freed when no longer needed
+*/
+gchar *decode_double_normal(guchar *data, gpointer data_struct)
+{
+	gdouble total = 0.0;
+
+	if (data == NULL)
+		{
+			return NULL;
+		}
+	else
+		{
+			memcpy(&total, data, 8 * sizeof (guchar));
+			return g_strdup_printf("%f", total);
+		}
+}
+
+/**
+ *  general purpose of this function is to take a 8 byte data stream
+ *  and convert it as if it is a float number normal notation
+ *  @param data : 4 guchars
+ *  @param data_struct a pointer to a user defined data structure
+ *  @return returns a gchar * that may be freed when no longer needed
+*/
+gchar *decode_double_scientific(guchar *data, gpointer data_struct)
+{
+	gdouble total = 0.0;
+
+	if (data == NULL)
+		{
+			return NULL;
+		}
+	else
+		{
+			memcpy(&total, data, 8 * sizeof (guchar));
+			return g_strdup_printf("%g", total);
+		}
+}
+
+
+
+/**
  *  Says whether a year is a leap one or not
  * @param year : a guint32 representing a year such as 2009
  * @return TRUE if it's a leap year FALSE instead.

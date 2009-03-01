@@ -448,6 +448,19 @@ static void add_default_tabs(heraia_window_t *main_window)
 		add_new_row_to_tab(tab, row);
 	}
 	
+	/** Adding a tab for floting numbers */
+	tab = add_new_tab_in_data_interpretor(GTK_NOTEBOOK(notebook), 0, "Floats", 3, "Lenght", "Normal Notation", "Exponential notation");
+
+	if (tab != NULL)
+	{
+		g_ptr_array_add(dw->tabs, (gpointer) tab);
+		dw->nb_tabs++;
+		row = new_decode_generic_t("Float (32 bits)", 4, FALSE, 2, decode_float_normal, decode_float_scientific);
+		add_new_row_to_tab(tab, row);
+		row = new_decode_generic_t("Double (64 bits)", 8, FALSE, 2, decode_double_normal, decode_double_scientific);
+		add_new_row_to_tab(tab, row);
+	}
+	
 	/** Adding a tab for date and time */
 	tab = add_new_tab_in_data_interpretor(GTK_NOTEBOOK(notebook), 2, "Dates and Times", 2, "Type", "Value");
 	
@@ -465,7 +478,7 @@ static void add_default_tabs(heraia_window_t *main_window)
 		add_new_row_to_tab(tab, row);
 	}
 	
-	/** Adding a tab for date and time */
+	/** Adding a tab for binary based conversions */
 	tab = add_new_tab_in_data_interpretor(GTK_NOTEBOOK(notebook), 3, "Binary based", 2, "Type", "Value");
 	
 	if (tab != NULL)
@@ -474,7 +487,7 @@ static void add_default_tabs(heraia_window_t *main_window)
 		dw->nb_tabs++;
 		row = new_decode_generic_t("Bits", 1, TRUE, 1, decode_to_bits);
 		add_new_row_to_tab(tab, row);
-		row = new_decode_generic_t("Packed BCD", 1, FALSE, 1, decode_packed_BCD);
+		row = new_decode_generic_t("Packed BCD", 1, TRUE, 1, decode_packed_BCD);
 		add_new_row_to_tab(tab, row);
 	}
 }	
