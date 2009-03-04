@@ -410,6 +410,7 @@ int main (int argc, char ** argv)
 
 					log_message(main_window, G_LOG_LEVEL_INFO, "Main interface loaded (%s)", main_window->xmls->main->filename);
                     log_message(main_window, G_LOG_LEVEL_DEBUG, "Preference file is %s", main_window->prefs->filename);
+					log_message(main_window, G_LOG_LEVEL_DEBUG, "data interpretor's tab is %d", main_window->current_DW->tab_displayed);
 					
 					init_heraia_plugin_system(main_window);
 

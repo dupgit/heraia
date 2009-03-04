@@ -1145,9 +1145,7 @@ int load_heraia_ui(heraia_window_t *main_window)
 			load_preferences(main_window);
 			fprintf(stdout, " [Done]\n");
 		}
-		
 	}
-	
 	return success;
 }
 

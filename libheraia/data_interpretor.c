@@ -367,6 +367,7 @@ tab_t *add_new_tab_in_data_interpretor(GtkNotebook *notebook, guint index, gchar
 	tab->vboxes = vboxes;
 	tab->rows = NULL;
 	
+	gtk_widget_show_all(child);
 	gtk_notebook_append_page(notebook, child, tab->label);
 	
 	return tab;
