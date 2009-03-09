@@ -1,8 +1,17 @@
+09.03.2009
+    - Olivier Delhomme <heraia@delhomme.org>
+	  * Worked on a new way to pass parameters to the decoding functions and 
+		used decode_packed_BCD as an example
+	  
+05.03.2009
+    - Olivier Delhomme <heraia@delhomme.org>
+	  * Roadmap minor change
+
 04.03.2009
     - Olivier Delhomme <heraia@delhomme.org>
-    * one may remember that "due to historical reasons, GtkNotebook refuses to 
-      switch to a page unless the child widget is visible. Therefore, it is 
-      recommended to show child widgets before adding them to a notebook." !!
+      * one may remember that "due to historical reasons, GtkNotebook refuses to 
+		switch to a page unless the child widget is visible. Therefore, it is 
+        recommended to show child widgets before adding them to a notebook." !!
 
 01.03.2009
     - Olivier Delhomme <heraia@delhomme.org>
@@ -14,8 +23,8 @@
 28.02.2009
     - Olivier Delhomme <heraia@delhomme.org>
       * I simplified too much the decoding part and this would have be a problem
-	when we will had external data types, advanced search capabilities and
-	such.
+	    when we will had external data types, advanced search capabilities and
+	    such.
       * Trying to add more flexibility to data interpretor window (this work is
         in ultra bleeding edge stage - do not rely on any strcuture for now)
 

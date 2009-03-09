@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sun Mar  1 16:41:14 2009 -->
+<!--Generated with glade3 3.4.5 on Mon Mar  9 22:14:50 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="main_window">
     <property name="title" translatable="yes">Heraia</property>
@@ -240,48 +240,35 @@
                     <property name="column_spacing">2</property>
                     <property name="row_spacing">2</property>
                     <child>
-                      <widget class="GtkLabel" id="label36">
-                        <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="ypad">2</property>
-                        <property name="label" translatable="yes">&lt;small&gt;Position :&lt;/small&gt;</property>
-                        <property name="use_markup">True</property>
-                      </widget>
-                      <packing>
-                        <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
-                        <property name="x_padding">2</property>
-                        <property name="y_padding">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label35">
-                        <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="ypad">2</property>
-                        <property name="label" translatable="yes">&lt;small&gt;Selection :&lt;/small&gt;</property>
-                        <property name="use_markup">True</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
-                        <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
-                        <property name="x_padding">2</property>
-                        <property name="y_padding">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="file_position_label">
+                      <widget class="GtkLabel" id="file_selection_size_label">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
                         <property name="ypad">2</property>
                         <property name="use_markup">True</property>
-                        <property name="selectable">True</property>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="right_attach">2</property>
+                        <property name="top_attach">2</property>
+                        <property name="bottom_attach">3</property>
+                        <property name="x_options">GTK_FILL</property>
+                        <property name="y_options">GTK_FILL</property>
+                        <property name="x_padding">2</property>
+                        <property name="y_padding">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="label37">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="ypad">2</property>
+                        <property name="label" translatable="yes">&lt;small&gt;Selection size :&lt;/small&gt;</property>
+                        <property name="use_markup">True</property>
+                      </widget>
+                      <packing>
+                        <property name="top_attach">2</property>
+                        <property name="bottom_attach">3</property>
+                        <property name="x_options">GTK_FILL</property>
                         <property name="y_options"></property>
                         <property name="x_padding">2</property>
                         <property name="y_padding">2</property>
@@ -306,16 +293,32 @@
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label37">
+                      <widget class="GtkLabel" id="file_position_label">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
                         <property name="ypad">2</property>
-                        <property name="label" translatable="yes">&lt;small&gt;Selection size :&lt;/small&gt;</property>
+                        <property name="use_markup">True</property>
+                        <property name="selectable">True</property>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="y_options"></property>
+                        <property name="x_padding">2</property>
+                        <property name="y_padding">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="label35">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="ypad">2</property>
+                        <property name="label" translatable="yes">&lt;small&gt;Selection :&lt;/small&gt;</property>
                         <property name="use_markup">True</property>
                       </widget>
                       <packing>
-                        <property name="top_attach">2</property>
-                        <property name="bottom_attach">3</property>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
                         <property name="x_options">GTK_FILL</property>
                         <property name="y_options"></property>
                         <property name="x_padding">2</property>
@@ -323,19 +326,16 @@
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="file_selection_size_label">
+                      <widget class="GtkLabel" id="label36">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
                         <property name="ypad">2</property>
+                        <property name="label" translatable="yes">&lt;small&gt;Position :&lt;/small&gt;</property>
                         <property name="use_markup">True</property>
                       </widget>
                       <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">2</property>
-                        <property name="bottom_attach">3</property>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options">GTK_FILL</property>
+                        <property name="y_options"></property>
                         <property name="x_padding">2</property>
                         <property name="y_padding">2</property>
                       </packing>
@@ -976,6 +976,38 @@ POSSIBILITY OF SUCH DAMAGES.
                     <property name="expand">False</property>
                     <property name="fill">False</property>
                     <property name="padding">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkHBox" id="hbox4">
+                    <property name="visible">True</property>
+                    <child>
+                      <widget class="GtkLabel" id="label1">
+                        <property name="visible">True</property>
+                        <property name="xpad">2</property>
+                        <property name="ypad">2</property>
+                        <property name="label" translatable="yes">stream size :</property>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkSpinButton" id="stream_size_spin_button">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="activates_default">True</property>
+                        <property name="xalign">0.5</property>
+                        <property name="adjustment">1 1 1024 1 16 16</property>
+                        <property name="climb_rate">1.5</property>
+                        <property name="snap_to_ticks">True</property>
+                        <property name="numeric">True</property>
+                        <property name="wrap">True</property>
+                      </widget>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </widget>
+                  <packing>
+                    <property name="position">1</property>
                   </packing>
                 </child>
                 <child>

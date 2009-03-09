@@ -27,12 +27,13 @@
 #include <libheraia.h>
 
 static guint which_endianness(heraia_window_t *main_window);
-static void interpret(data_window_t *dw, DecodeFunc decode_it, gpointer data_struct, GtkWidget *entry, guint length, guint endianness);
+static guint which_stream_size(heraia_window_t *main_window);
+static void interpret(data_window_t *dw, DecodeFunc decode_it, decode_parameters_t *decode_parameters, GtkWidget *entry, guint length);
 static void close_data_interpretor_window(GtkWidget *widget, gpointer data);
 static void connect_data_interpretor_signals(heraia_window_t *main_window);
-static void refresh_one_row(data_window_t *dw, decode_generic_t *row,  guint nb_cols, guint endianness);
-static void refresh_one_tab(data_window_t *dw, tab_t *tab, guint endianness);
-static void refresh_all_tabs(data_window_t *dw, guint endianness);
+static void refresh_one_row(data_window_t *dw, decode_generic_t *row,  guint nb_cols, decode_parameters_t *decode_parameters);
+static void refresh_one_tab(data_window_t *dw, tab_t *tab, decode_parameters_t *decode_parameters);
+static void refresh_all_tabs(data_window_t *dw, decode_parameters_t *decode_parameters);
 static void add_default_tabs(heraia_window_t *main_window);
 
 /**
@@ -70,6 +71,39 @@ static guint which_endianness(heraia_window_t *main_window)
 		return H_DI_LITTLE_ENDIAN;  /* default interpretation case */
 }
 
+
+/**
+ * returns stream size as selected in the spin button
+ * @param main_window : main structure
+ * @return returns the value of the spin button or 1 if this value is not valid
+ */
+static guint which_stream_size(heraia_window_t *main_window)
+{
+   GtkWidget *spin_button = NULL;
+   guint stream_size = 1;
+
+   if (main_window != NULL && main_window->xmls != NULL && main_window->xmls->main != NULL)
+   {
+	   spin_button = heraia_get_widget(main_window->xmls->main, "stream_size_spin_button");
+	   
+	   stream_size = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spin_button));
+	   
+	   if (stream_size >= 1)
+	   {
+		   return stream_size;
+	   }
+	   else
+	   {
+		   return 1;
+	   }
+   }
+   else
+   {
+	   return 1;
+   }
+}
+
+
 /**
  *   Here we do interpret a something according to the decode_it function and we 
  *   write down the result in a widget designated "entry"
@@ -78,19 +112,15 @@ static guint which_endianness(heraia_window_t *main_window)
  *    @param main_window : main structure
  *    @param decode_it : a DecodeDateFunc which is a function to be called to 
  *				         decode the stream
- *    @param data_struct : a structure that may be usefull in the future (not 
- *                         used by now)
+ *     @param decode_parameters : structure that passes some arguments to the 
+ *            decoding functions
  *    @param entry : a GtkWidget * entry widget where we will put the result
  *                   of the computation of decode_it function
  *    @param length : the length of the data to be decoded (guint)
- *    @param endianness : the endianness to be applied to the datas (as 
- * 			 returned by function which_endianness)
  * @todo Add text to the decode_generic_t struct to describe what to tell if
  *       something's wrong or if we can not decode anything
- * @todo Imagine a new structure to pass more than just endianness from the
- *       data interpretor's window (Eg decoding size for example)
  */
-static void interpret(data_window_t *dw, DecodeFunc decode_it, gpointer data_struct, GtkWidget *entry, guint length, guint endianness)
+static void interpret(data_window_t *dw, DecodeFunc decode_it, decode_parameters_t *decode_parameters, GtkWidget *entry, guint length)
 {
 	gint result = 0;    /**< used to test different results of function calls */
 	guchar *c = NULL;   /**< the character under the cursor                   */
@@ -98,11 +128,11 @@ static void interpret(data_window_t *dw, DecodeFunc decode_it, gpointer data_str
 
 	c = (guchar *) g_malloc0(sizeof(guchar) * length);
 
-	result = ghex_get_data(dw, length, endianness, c);
+	result = ghex_get_data(dw, length, decode_parameters->endianness, c);
 
 	if (result == TRUE)
 		{
-			text = decode_it(c, data_struct);
+			text = decode_it(c, (gpointer) decode_parameters);
 
 			if (text != NULL)
 				{
@@ -150,9 +180,10 @@ static void close_data_interpretor_window(GtkWidget *widget, gpointer data)
  * @param row : the row that we want to refresh
  * @param nb_cols : number of columns in this particular row (this IS the same
  *                  for all rows in that tab
- * @param endianness : endianness as selected on the data interpretor window
+ * @param decode_parameters : structure that passes some arguments to the 
+ *        decoding functions
  */
-static void refresh_one_row(data_window_t *dw, decode_generic_t *row,  guint nb_cols, guint endianness)
+static void refresh_one_row(data_window_t *dw, decode_generic_t *row,  guint nb_cols, decode_parameters_t *decode_parameters)
 {
 	decode_t *couple = NULL;   /**< the couple entry / function */
 	guint i = 0 ;
@@ -160,7 +191,13 @@ static void refresh_one_row(data_window_t *dw, decode_generic_t *row,  guint nb_
 	while ( i < nb_cols)
 	{
 		couple = g_ptr_array_index(row->decode_array, i);
-		interpret(dw, couple->func, NULL, couple->entry, row->data_size, endianness);
+				
+		if (row->fixed_size == FALSE)
+		{
+			row->data_size = decode_parameters->stream_size;
+		}
+				
+		interpret(dw, couple->func, decode_parameters, couple->entry, row->data_size);
 		i++;
 	}
 }
@@ -169,9 +206,10 @@ static void refresh_one_row(data_window_t *dw, decode_generic_t *row,  guint nb_
  * This function refreshes one entire tab (row by row)
  * @param dw : current data window
  * @param tab : the tab to refresh
- * @param endianness : endianness as selected on the data interpretor window
+ * @param decode_parameters : structure that passes some arguments to the 
+ *        decoding functions
  */
-static void refresh_one_tab(data_window_t *dw, tab_t *tab, guint endianness)
+static void refresh_one_tab(data_window_t *dw, tab_t *tab, decode_parameters_t *decode_parameters)
 {
 	decode_generic_t *row = NULL; /**< the row we want to refresh */
 	guint i = 0;
@@ -179,7 +217,7 @@ static void refresh_one_tab(data_window_t *dw, tab_t *tab, guint endianness)
 	while (i < tab->nb_rows)
 	{
 		row = g_ptr_array_index(tab->rows, i);
-		refresh_one_row(dw, row, tab->nb_cols-1, endianness);
+		refresh_one_row(dw, row, tab->nb_cols-1, decode_parameters);
 		i++;
 	}
 }
@@ -187,11 +225,10 @@ static void refresh_one_tab(data_window_t *dw, tab_t *tab, guint endianness)
 /**
  * Refreshes all tabs
  * @param dw : current data window
- * @param endianness : endianness selected on the data interpretor window
- * @todo imagine a new structure to pass more than endianness to the decoding
- *       functions
+ * @param decode_parameters : structure that passes some arguments to the 
+ *        decoding functions
  */
-static void refresh_all_tabs(data_window_t *dw, guint endianness)
+static void refresh_all_tabs(data_window_t *dw, decode_parameters_t *decode_parameters)
 {
 	tab_t *tab = NULL;
 	guint i = 0;
@@ -199,7 +236,7 @@ static void refresh_all_tabs(data_window_t *dw, guint endianness)
 	while (i < dw->nb_tabs)
 	{
 		tab = g_ptr_array_index(dw->tabs, i);
-		refresh_one_tab(dw, tab, endianness);
+		refresh_one_tab(dw, tab, decode_parameters);
 		i++;
 	}
 	
@@ -211,17 +248,26 @@ static void refresh_all_tabs(data_window_t *dw, guint endianness)
  * @param widget : the widget caller (may be NULL here)
  * @param data : a gpointer to the main structure : main_window, this must NOT
  *        be NULL !
+ * @todo if speed is a matter, think about taking off this decode_parameters 
+ *       structure from here.
  */
 void refresh_data_interpretor_window(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;  /**< data interpretor window structure */
+	decode_parameters_t *decode_parameters = NULL;
 	guint endianness = 0;
+	guint stream_size = 0;
 
 	if (main_window != NULL && main_window->current_DW != NULL && main_window->win_prop->main_dialog->displayed == TRUE)
 		{
 			endianness = which_endianness(main_window);  /**< Endianness is computed only once here */
-		
-			refresh_all_tabs(main_window->current_DW, endianness);
+			stream_size =  which_stream_size(main_window); /**< stream size is computed only once here */
+			
+			decode_parameters = new_decode_parameters_t(endianness, stream_size);
+	
+			refresh_all_tabs(main_window->current_DW, decode_parameters);
+			
+			g_free(decode_parameters);
 		}
 }
 
@@ -236,26 +282,31 @@ static void connect_data_interpretor_signals(heraia_window_t *main_window)
 {
 	/* When data interpretor's window is killed or destroyed */
 	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "data_interpretor_window")), "delete_event",
-						  G_CALLBACK(delete_dt_window_event), main_window);
+					 G_CALLBACK(delete_dt_window_event), main_window);
 
 	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "data_interpretor_window")), "destroy",
-						  G_CALLBACK(destroy_dt_window), main_window);
+				     G_CALLBACK(destroy_dt_window), main_window);
 
 	/* Menu "close" */
 	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "diw_close_menu")), "activate",
-						  G_CALLBACK(close_data_interpretor_window), main_window);
+					 G_CALLBACK(close_data_interpretor_window), main_window);
 
 	/* Radio Button "Little Endian" */
 	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "diw_rb_little_endian")), "toggled",
-						  G_CALLBACK(refresh_data_interpretor_window), main_window);
+					 G_CALLBACK(refresh_data_interpretor_window), main_window);
 
 	/* Radio Button "Big Endian" */
 	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "diw_rb_big_endian")), "toggled",
-						  G_CALLBACK(refresh_data_interpretor_window), main_window);
+					 G_CALLBACK(refresh_data_interpretor_window), main_window);
 
 	/* Radio Button "Middle Endian" */
 	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "diw_rb_middle_endian")), "toggled",
-						  G_CALLBACK(refresh_data_interpretor_window), main_window);
+					 G_CALLBACK(refresh_data_interpretor_window), main_window);
+	
+	/* Spin button */					  
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "stream_size_spin_button")), "value-changed",
+					 G_CALLBACK(refresh_data_interpretor_window), main_window);			  
+						  
 }
 
 /**
@@ -433,32 +484,32 @@ static void add_default_tabs(heraia_window_t *main_window)
 	dw->tabs = g_ptr_array_new();
 
 	/** Adding a tab for numbers */ 
-	tab = add_new_tab_in_data_interpretor(GTK_NOTEBOOK(notebook), 0, "Numbers", 3, "Lenght", "Value unsigned", "Value signed");
+	tab = add_new_tab_in_data_interpretor(GTK_NOTEBOOK(notebook), 0, "Numbers", 3, "Length", "Value unsigned", "Value signed");
 
 	if (tab != NULL)
 	{
 		g_ptr_array_add(dw->tabs, (gpointer) tab);
 		dw->nb_tabs++;
-		row = new_decode_generic_t("8 bits", 1, FALSE, 2, decode_8bits_unsigned, decode_8bits_signed);
+		row = new_decode_generic_t("8 bits", 1, TRUE, 2, decode_8bits_unsigned, decode_8bits_signed);
 		add_new_row_to_tab(tab, row);
-		row = new_decode_generic_t("16 bits", 2, FALSE, 2, decode_16bits_unsigned, decode_16bits_signed);
+		row = new_decode_generic_t("16 bits", 2, TRUE, 2, decode_16bits_unsigned, decode_16bits_signed);
 		add_new_row_to_tab(tab, row);
-		row = new_decode_generic_t("32 bits", 4, FALSE, 2, decode_32bits_unsigned, decode_32bits_signed);
+		row = new_decode_generic_t("32 bits", 4, TRUE, 2, decode_32bits_unsigned, decode_32bits_signed);
 		add_new_row_to_tab(tab, row);
-		row = new_decode_generic_t("64 bits", 8, FALSE, 2, decode_64bits_unsigned, decode_64bits_signed);
+		row = new_decode_generic_t("64 bits", 8, TRUE, 2, decode_64bits_unsigned, decode_64bits_signed);
 		add_new_row_to_tab(tab, row);
 	}
 	
 	/** Adding a tab for floting numbers */
-	tab = add_new_tab_in_data_interpretor(GTK_NOTEBOOK(notebook), 0, "Floats", 3, "Lenght", "Normal Notation", "Exponential notation");
+	tab = add_new_tab_in_data_interpretor(GTK_NOTEBOOK(notebook), 0, "Floats", 3, "Length", "Normal Notation", "Exponential notation");
 
 	if (tab != NULL)
 	{
 		g_ptr_array_add(dw->tabs, (gpointer) tab);
 		dw->nb_tabs++;
-		row = new_decode_generic_t("Float (32 bits)", 4, FALSE, 2, decode_float_normal, decode_float_scientific);
+		row = new_decode_generic_t("Float (32 bits)", 4, TRUE, 2, decode_float_normal, decode_float_scientific);
 		add_new_row_to_tab(tab, row);
-		row = new_decode_generic_t("Double (64 bits)", 8, FALSE, 2, decode_double_normal, decode_double_scientific);
+		row = new_decode_generic_t("Double (64 bits)", 8, TRUE, 2, decode_double_normal, decode_double_scientific);
 		add_new_row_to_tab(tab, row);
 	}
 	
@@ -469,13 +520,13 @@ static void add_default_tabs(heraia_window_t *main_window)
 	{
 		g_ptr_array_add(dw->tabs, (gpointer) tab);
 		dw->nb_tabs++;
-		row = new_decode_generic_t("MS-DOS", 4, FALSE, 1, decode_dos_date);
+		row = new_decode_generic_t("MS-DOS", 4, TRUE, 1, decode_dos_date);
 		add_new_row_to_tab(tab, row);
-		row = new_decode_generic_t("Filetime", 8, FALSE, 1, decode_filetime_date);
+		row = new_decode_generic_t("Filetime", 8, TRUE, 1, decode_filetime_date);
 		add_new_row_to_tab(tab, row);
-		row = new_decode_generic_t("C", 4, FALSE, 1, decode_C_date);
+		row = new_decode_generic_t("C", 4, TRUE, 1, decode_C_date);
 		add_new_row_to_tab(tab, row);
-		row = new_decode_generic_t("HFS", 4, FALSE, 1, decode_HFS_date);
+		row = new_decode_generic_t("HFS", 4, TRUE, 1, decode_HFS_date);
 		add_new_row_to_tab(tab, row);
 	}
 	
@@ -486,9 +537,9 @@ static void add_default_tabs(heraia_window_t *main_window)
 	{
 		g_ptr_array_add(dw->tabs, (gpointer) tab);
 		dw->nb_tabs++;
-		row = new_decode_generic_t("Bits", 1, TRUE, 1, decode_to_bits);
+		row = new_decode_generic_t("Bits", 1, FALSE, 1, decode_to_bits);
 		add_new_row_to_tab(tab, row);
-		row = new_decode_generic_t("Packed BCD", 1, TRUE, 1, decode_packed_BCD);
+		row = new_decode_generic_t("Packed BCD", 1, FALSE, 1, decode_packed_BCD);
 		add_new_row_to_tab(tab, row);
 	}
 }	

@@ -45,7 +45,6 @@ I let you imagine what I expect before I do a major release !!!
    * get rid of the filename structure in the heraia_window_t (it does 
      duplicates the one contained in the hexdocument structure)
    * double clicking on a plugin in plugin list window opens it
-   * save plugins display preferences
      
 - 0.1.0
    * save and save as functions
@@ -54,6 +53,7 @@ I let you imagine what I expect before I do a major release !!!
 
 	Delayed features : I may do this if someone wants it :
      . save plugins preferences to the config file
+     . save plugins display preferences
 	 . add plugins preferences files
      . load plugins preferences from the config file (when initialiazing plugins)
      . add a preference option where the user may be able to reset window 

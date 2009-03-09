@@ -723,7 +723,7 @@ gchar *decode_to_bits(guchar *data, gpointer data_struct)
 		}
 	else
 		{
-			return g_strdup_printf("%1u%1u%1u%1u%1u%1u%1u%1u",
+			return g_strdup_printf("%1u%1u%1u%1u %1u%1u%1u%1u",
 										  (data[0] & 0x80) > 0 ? 1 : 0,
 										  (data[0] & 0x40) > 0 ? 1 : 0,
 										  (data[0] & 0x20) > 0 ? 1 : 0,
@@ -814,7 +814,10 @@ static void transform_bcd_to_human(gchar *bcd, guint8 part, guint8 part_number)
 gchar *decode_packed_BCD(guchar *data, gpointer data_struct)
 {
 	guint8 total = 0;
+	guint i = 0;
+	guint j = 0;
 	gchar *bcd = NULL;
+	decode_parameters_t *decode_parameters = (decode_parameters_t *) data_struct;
 
 	if (data == NULL)
 		{
@@ -822,11 +825,18 @@ gchar *decode_packed_BCD(guchar *data, gpointer data_struct)
 		}
 	else
 		{
-			memcpy(&total, data, sizeof(guchar));
-			bcd = (gchar *) g_malloc0(3 * sizeof(gchar));
-			transform_bcd_to_human(bcd, (total & 0x0F), 0);
-			transform_bcd_to_human(bcd, ((total & 0xF0)>>4), 1);
-			bcd[2] = '\0';
+			i = 0;
+			j = 0;
+			bcd = (gchar *) g_malloc0((2*decode_parameters->stream_size+1) * sizeof(gchar));
+			while (i < decode_parameters->stream_size)
+			{
+				memcpy(&total, data + i, sizeof(guchar));
+				transform_bcd_to_human(bcd + j, (total & 0x0F), 0);
+				transform_bcd_to_human(bcd + j, ((total & 0xF0)>>4), 1);
+				i++;
+				j = j + 2;
+			}
+			bcd[j+1] = '\0';
 
 			return bcd;
 		}
@@ -882,6 +892,26 @@ void reverse_byte_order(guchar *to_reverse)
 
 
 /**
+ * Make an new decode_parameters_t in order to pass to the functions
+ * @param endianness : endianness as setup in data interpertor's window
+ * @param stream_size : stream size as setup with the spin button
+ * @return returns a newly allocated decode_parameters_t structure which may be 
+ *         freed when no longer needed
+ */
+decode_parameters_t *new_decode_parameters_t(guint endianness, guint stream_size)
+{
+	decode_parameters_t *decode_parameters = NULL;
+	
+	decode_parameters = (decode_parameters_t *) g_malloc0(sizeof(decode_parameters_t));
+	
+	decode_parameters->endianness = endianness;
+	decode_parameters->stream_size = stream_size;
+	
+	return decode_parameters;
+}
+
+
+/**
  * Make a new decode_t structure
  * @param decode_func : pointer to a function that may decode a stream 
  *                      this function must follow DecodeFunc prototype
@@ -909,13 +939,17 @@ decode_t *new_decode_t(DecodeFunc decode_func, GtkWidget *entry)
 }
 
 /**
- * Make a new decode_generic_t structure
- * @param decode_func : pointer to a function that may decode a stream 
- *                      this function must follow DecodeFunc prototype
- * @param entry : A GtkWidget entry that will receive the result of the
- *                decoding function
- * @return returns a newly allocated decode_t structure filled with the two
- *         parameters.
+ * Make a new decode_generic_t structure and creates the associated widgets
+ * @param label : the label for this row
+ * @param data_size : a default data_size
+ * @param fixed_size : TRUE if the size is fixed and should not be updated,
+ *                     FALSE otherwise
+ * @param nb_cols : number of decoding columns we want
+ * @param ... : va_list of functions to fill in the columns (you MUST have the
+ *              same number of columns and functions you passes here as 
+ *              arguments)
+ * @return returns a newly allocated decode_generic_t structure filled with the 
+ *         right parameters
  */
 decode_generic_t *new_decode_generic_t(gchar *label, guint data_size, gboolean fixed_size, guint nb_cols, ...)
 {

@@ -105,6 +105,17 @@ typedef struct
 typedef gchar *(* DecodeFunc) (guchar *, gpointer);     /**< Decode function template */
 
 /**
+ * @struct decode_parameters_t
+ * Used to pass decoding options to the functions. Those options are evaluated
+ * from data_interpretor's window
+ */
+typedef struct
+{
+		guint endianness;  /**< endianness  */
+		guint stream_size; /**< stream_size    */
+} decode_parameters_t;
+
+/**
  * @struct decode_t
  * Basic way to associate a decode function and an entry that will receive the
  * result
