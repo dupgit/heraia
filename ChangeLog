@@ -1,3 +1,7 @@
+11.03.2009
+    - Olivier Delhomme <heraia@delhomme.org>
+	  * stream added to decode to bits (stream count is in bytes)
+
 09.03.2009
     - Olivier Delhomme <heraia@delhomme.org>
 	  * Worked on a new way to pass parameters to the decoding functions and 

@@ -711,11 +711,15 @@ gchar *decode_HFS_date(guchar *data, gpointer data_struct)
  *  string containing eight 0 or 1 (Little Endian style)
  *  @param data : 1 guchar
  *  @param data_struct a pointer to a user defined data structure
- *  @return 8 gchars that are either "1" or "0", the string may be freed when
- *          no longer needed
+ *  @return n*9 gchars that are either '1' or '0' or ' ' (as a separator), the 
+ *          string may be freed when no longer needed
  */
 gchar *decode_to_bits(guchar *data, gpointer data_struct)
 {
+	gchar *bits = NULL;
+	guint i = 0;
+	guint j = 0;
+	decode_parameters_t *decode_parameters = (decode_parameters_t *) data_struct;
 
 	if (data == NULL)
 		{
@@ -723,15 +727,105 @@ gchar *decode_to_bits(guchar *data, gpointer data_struct)
 		}
 	else
 		{
-			return g_strdup_printf("%1u%1u%1u%1u %1u%1u%1u%1u",
-										  (data[0] & 0x80) > 0 ? 1 : 0,
-										  (data[0] & 0x40) > 0 ? 1 : 0,
-										  (data[0] & 0x20) > 0 ? 1 : 0,
-										  (data[0] & 0x10) > 0 ? 1 : 0,
-										  (data[0] & 0x08) > 0 ? 1 : 0,
-										  (data[0] & 0x04) > 0 ? 1 : 0,
-										  (data[0] & 0x02) > 0 ? 1 : 0,
-										  (data[0] & 0x01));
+			bits = (gchar *) g_malloc0 (decode_parameters->stream_size*10*(sizeof(gchar))+1);
+			
+			j = 0;
+			for (i = 0 ; i <  decode_parameters->stream_size ; i++)
+			{
+				if ((data[i] & 0x80) > 0)
+				{
+					bits[j] = '1';
+				}
+				else
+				{
+					bits[j] = '0';
+				}
+				j++;
+				
+				if ((data[i] & 0x40) > 0)
+				{
+					bits[j] = '1';
+				}
+				else
+				{
+					bits[j] = '0';
+				}
+				j++;
+				
+				if ((data[i] & 0x20) > 0)
+				{
+					bits[j] = '1';
+				}
+				else
+				{
+					bits[j] = '0';
+				}
+				j++;
+				
+				if ((data[i] & 0x10) > 0)
+				{
+					bits[j] = '1';
+				}
+				else
+				{
+					bits[j] = '0';
+				}
+				j++;
+				
+				
+				bits[j] = ' ';
+				j++;
+				
+				if ((data[i] & 0x08) > 0)
+				{
+					bits[j] = '1';
+				}
+				else
+				{
+					bits[j] = '0';
+				}
+				j++;
+				
+				if ((data[i] & 0x04) > 0)
+				{
+					bits[j] = '1';
+				}
+				else
+				{
+					bits[j] = '0';
+				}
+				j++;
+				
+				if ((data[i] & 0x02) > 0)
+				{
+					bits[j] = '1';
+				}
+				else
+				{
+					bits[j] = '0';
+				}
+				j++;
+				
+				if ((data[i] & 0x01) > 0)
+				{
+					bits[j] = '1';
+				}
+				else
+				{
+					bits[j] = '0';
+				}
+				j++;
+				
+				bits[j] = ' ';
+				j++;
+				
+			}
+			
+			j--;
+			bits[j] = (gchar) 0;
+			
+			return bits;
+			
 		}
 }
 
