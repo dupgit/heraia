@@ -1,3 +1,8 @@
+13.03.2009
+    - Olivier Delhomme <heraia@delhomme.org>
+	  * corrected a bug that was crashing heraia while trying to open a file
+	    that you couldn't read (wrong right permissions)
+
 11.03.2009
     - Olivier Delhomme <heraia@delhomme.org>
 	  * stream added to decode to bits (stream count is in bytes)

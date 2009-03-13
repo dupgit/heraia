@@ -48,11 +48,16 @@ HERAIA_ERROR heraia_hex_document_new(heraia_window_t *main_window, char *filenam
 		}
 	
 	main_window->current_doc = hex_document_new_from_file(filename);
-	main_window->current_DW->current_hexwidget = hex_document_add_view(main_window->current_doc);
-	
-	connect_cursor_moved_signal(main_window);
-
-	return HERAIA_NOERR;
+	if (main_window->current_doc != NULL)
+	 {
+		main_window->current_DW->current_hexwidget = hex_document_add_view(main_window->current_doc);
+		connect_cursor_moved_signal(main_window);
+		return HERAIA_NOERR;
+	 }
+	 else
+	 {
+		 return HERAIA_FILE_ERROR;
+	 }
 }
 
 

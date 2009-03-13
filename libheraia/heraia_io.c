@@ -42,6 +42,7 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 	struct stat *stat_buf = NULL;
 	gboolean success = FALSE;
 	GtkWidget *notebook = NULL;
+	HERAIA_ERROR status = HERAIA_NOERR;
 
 	g_return_val_if_fail(filename != NULL, FALSE);
 	g_return_val_if_fail(main_window != NULL, FALSE);
@@ -54,38 +55,45 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 	if (S_ISREG(stat_buf->st_mode) && stat_buf->st_size>0)
 		{
 
-			heraia_hex_document_new(main_window, filename); /* removes the old hexdocument and adds a new one */
+			status = heraia_hex_document_new(main_window, filename); /* removes the old hexdocument and adds a new one */
 
-			gtk_box_pack_start(GTK_BOX(heraia_get_widget(main_window->xmls->main, "vbox1")), 
-							   main_window->current_DW->current_hexwidget, TRUE, TRUE, 0);
+			if (status == HERAIA_NOERR)
+			{
+				gtk_box_pack_start(GTK_BOX(heraia_get_widget(main_window->xmls->main, "vbox1")), 
+								   main_window->current_DW->current_hexwidget, TRUE, TRUE, 0);
 			
-			gtk_widget_show(main_window->current_DW->current_hexwidget);
+				gtk_widget_show(main_window->current_DW->current_hexwidget);
 
-			log_message(main_window, G_LOG_LEVEL_DEBUG, "Hexwidget : %p", main_window->current_DW->current_hexwidget);
+				log_message(main_window, G_LOG_LEVEL_DEBUG, "Hexwidget : %p", main_window->current_DW->current_hexwidget);
 			
-			success = TRUE;
+				success = TRUE;
 
-			if (main_window->filename != filename)
-				{
-					if (main_window->filename != NULL)
+				if (main_window->filename != filename)
+					{
+						if (main_window->filename != NULL)
 						{
 							g_free(main_window->filename);
 						}
-					main_window->filename = g_strdup_printf("%s", filename);
-				}
+						main_window->filename = g_strdup_printf("%s", filename);
+					}
 		
-			/* updating the window name and tab's name */
-		    update_main_window_name(main_window);
-			set_notebook_tab_name(main_window);
+				/* updating the window name and tab's name */
+				update_main_window_name(main_window);
+				set_notebook_tab_name(main_window);
 			
-			/* Showing all the widgets */
-			gtk_widget_set_sensitive(heraia_get_widget(main_window->xmls->main, "save"), TRUE);
-			gtk_widget_set_sensitive(heraia_get_widget(main_window->xmls->main, "save_as"), TRUE);
-			notebook = heraia_get_widget(main_window->xmls->main, "file_notebook");
-			gtk_widget_show(notebook);
+				/* Showing all the widgets */
+				gtk_widget_set_sensitive(heraia_get_widget(main_window->xmls->main, "save"), TRUE);
+				gtk_widget_set_sensitive(heraia_get_widget(main_window->xmls->main, "save_as"), TRUE);
+				notebook = heraia_get_widget(main_window->xmls->main, "file_notebook");
+				gtk_widget_show(notebook);
 			
-			log_message(main_window, G_LOG_LEVEL_DEBUG, "file %s loaded !", main_window->filename);
-			
+				log_message(main_window, G_LOG_LEVEL_DEBUG, "file %s loaded !", main_window->filename);
+			}
+			else
+			{
+				log_message(main_window, G_LOG_LEVEL_ERROR, "Error while trying to load file %s", main_window->filename);
+				success = FALSE;
+			}
 			
 		} 
 	else
