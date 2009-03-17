@@ -1,3 +1,12 @@
+17.03.2009
+	- Olivier Delhomme <heraia@delhomme.org>
+	  * release dates
+	  * version numbers -> 0.0.9
+
+14.03.2009 [release 0.0.8]
+	- Olivier Delhomme <heraia@delhomme.org>
+	  * Added something to do for release 0.1.0 in the roadmap !!
+
 13.03.2009
     - Olivier Delhomme <heraia@delhomme.org>
 	  * corrected a bug that was crashing heraia while trying to open a file

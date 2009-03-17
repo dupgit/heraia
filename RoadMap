@@ -32,9 +32,9 @@ I let you imagine what I expect before I do a major release !!!
    * add a preference option to display thousands or not in the main window
    * begin code documentation effort
 
-. 0.0.8
+. 0.0.8 [14.03.2009]
    * add height and weight to window properties (including saving and loading
-     to/from preference file
+     to/from preference file)
    * save the displayed tab of the data interpretor in the preference file
    * Have a new way to add types to the data_interpretor tabs (whom should be
      explicitly named)
@@ -50,6 +50,7 @@ I let you imagine what I expect before I do a major release !!!
    * save and save as functions
    * record window positions (save them to a user preference file)
    * add somewhere, the cursor's position and file length
+   * do some of the most important todos found in the code
 
 	Delayed features : I may do this if someone wants it :
      . save plugins preferences to the config file
