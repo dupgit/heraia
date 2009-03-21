@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Mon Mar  9 22:14:50 2009 -->
+<?xml version="1.0"?>
 <glade-interface>
+  <!-- interface-requires gtk+ 2.16 -->
+  <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="main_window">
     <property name="title" translatable="yes">Heraia</property>
     <property name="icon">logo_petit.png</property>
@@ -21,8 +21,8 @@
                   <widget class="GtkMenu" id="menuitem4_menu">
                     <child>
                       <widget class="GtkImageMenuItem" id="new">
-                        <property name="visible">True</property>
                         <property name="label">gtk-new</property>
+                        <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_new_activate"/>
@@ -30,8 +30,8 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="open">
-                        <property name="visible">True</property>
                         <property name="label">gtk-open</property>
+                        <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_open_activate"/>
@@ -39,8 +39,8 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="save">
-                        <property name="visible">True</property>
                         <property name="label">gtk-save</property>
+                        <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_save_activate"/>
@@ -48,8 +48,8 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="save_as">
-                        <property name="visible">True</property>
                         <property name="label">gtk-save-as</property>
+                        <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_save_as_activate"/>
@@ -62,8 +62,8 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="preferences">
-                        <property name="visible">True</property>
                         <property name="label">gtk-preferences</property>
+                        <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_preferences_activate"/>
@@ -76,8 +76,8 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="quit">
-                        <property name="visible">True</property>
                         <property name="label">gtk-quit</property>
+                        <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_quit_activate"/>
@@ -95,8 +95,8 @@
                   <widget class="GtkMenu" id="menuitem5_menu">
                     <child>
                       <widget class="GtkImageMenuItem" id="cut">
-                        <property name="visible">True</property>
                         <property name="label">gtk-cut</property>
+                        <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_cut_activate"/>
@@ -104,8 +104,8 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="copy">
-                        <property name="visible">True</property>
                         <property name="label">gtk-copy</property>
+                        <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_copy_activate"/>
@@ -113,8 +113,8 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="paste">
-                        <property name="visible">True</property>
                         <property name="label">gtk-paste</property>
+                        <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_paste_activate"/>
@@ -122,8 +122,8 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="delete">
-                        <property name="visible">True</property>
                         <property name="label">gtk-delete</property>
+                        <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_delete_activate"/>
@@ -145,8 +145,8 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Data _Interpretor</property>
                         <property name="use_underline">True</property>
+                        <accelerator key="I" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_DIMenu_activate"/>
-                        <accelerator key="I" modifiers="GDK_CONTROL_MASK" signal="activate"/>
                       </widget>
                     </child>
                     <child>
@@ -163,7 +163,7 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">_Log</property>
                         <property name="use_underline">True</property>
-                        <accelerator key="L" modifiers="GDK_CONTROL_MASK" signal="activate"/>
+                        <accelerator key="L" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </widget>
                     </child>
                   </widget>
@@ -186,7 +186,7 @@
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkSeparatorMenuItem" id="séparateur1">
+                      <widget class="GtkSeparatorMenuItem" id="s&#xE9;parateur1">
                         <property name="visible">True</property>
                       </widget>
                     </child>
@@ -203,8 +203,8 @@
                   <widget class="GtkMenu" id="menuitem7_menu">
                     <child>
                       <widget class="GtkImageMenuItem" id="a_propos">
+                        <property name="label">gtk-about</property>
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">gtk-about</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_a_propos1_activate"/>
@@ -218,6 +218,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
@@ -341,6 +342,9 @@
                       </packing>
                     </child>
                   </widget>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
                 </child>
                 <child>
                   <placeholder/>
@@ -374,8 +378,8 @@
                     <property name="label" translatable="yes">page 1</property>
                   </widget>
                   <packing>
-                    <property name="type">tab</property>
                     <property name="tab_fill">False</property>
+                    <property name="type">tab</property>
                   </packing>
                 </child>
                 <child>
@@ -387,9 +391,9 @@
                     <property name="label" translatable="yes">page 2</property>
                   </widget>
                   <packing>
-                    <property name="type">tab</property>
                     <property name="position">1</property>
                     <property name="tab_fill">False</property>
+                    <property name="type">tab</property>
                   </packing>
                 </child>
                 <child>
@@ -401,9 +405,9 @@
                     <property name="label" translatable="yes">page 3</property>
                   </widget>
                   <packing>
-                    <property name="type">tab</property>
                     <property name="position">2</property>
                     <property name="tab_fill">False</property>
+                    <property name="type">tab</property>
                   </packing>
                 </child>
               </widget>
@@ -433,9 +437,9 @@
           <widget class="GtkScrolledWindow" id="scrolledwindow1">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-            <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-            <property name="shadow_type">GTK_SHADOW_ETCHED_IN</property>
+            <property name="hscrollbar_policy">automatic</property>
+            <property name="vscrollbar_policy">automatic</property>
+            <property name="shadow_type">etched-in</property>
             <child>
               <widget class="GtkTextView" id="logw_textview">
                 <property name="visible">True</property>
@@ -449,6 +453,7 @@
           </widget>
           <packing>
             <property name="padding">2</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
@@ -464,16 +469,19 @@
           <widget class="GtkHButtonBox" id="hbuttonbox1">
             <property name="visible">True</property>
             <property name="border_width">2</property>
-            <property name="layout_style">GTK_BUTTONBOX_END</property>
+            <property name="layout_style">end</property>
             <child>
               <widget class="GtkButton" id="logw_close_b">
+                <property name="label">gtk-close</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
-                <property name="label">gtk-close</property>
+                <property name="receives_default">False</property>
                 <property name="use_stock">True</property>
-                <property name="response_id">0</property>
               </widget>
+              <packing>
+                <property name="position">0</property>
+              </packing>
             </child>
           </widget>
           <packing>
@@ -487,7 +495,7 @@
   </widget>
   <widget class="GtkAboutDialog" id="about_dialog">
     <property name="title" translatable="yes">About Heraia</property>
-    <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
+    <property name="type_hint">normal</property>
     <property name="copyright">(C) 2005 - 2009 Two or more autors (see Credits)</property>
     <property name="comments" translatable="yes">An hexadecimal analyser and editor</property>
     <property name="website">http://heraia.tuxfamily.org/</property>
@@ -724,7 +732,7 @@ POSSIBILITY OF SUCH DAMAGES.
 
 		     END OF TERMS AND CONDITIONS</property>
     <property name="authors">(C) 2005 - 2009 Olivier Delhomme 
-(C) 2005 - 2008 Sébastien Tricaud</property>
+(C) 2005 - 2008 S&#xE9;bastien Tricaud</property>
     <property name="documenters"></property>
     <property name="translator_credits" translatable="yes" comments="TRANSLATORS: Replace this string with your names, one name per line.">translator-credits</property>
     <property name="artists">(C) 2005 - 2007 Gregory Audet</property>
@@ -732,11 +740,11 @@ POSSIBILITY OF SUCH DAMAGES.
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox1">
         <child internal-child="action_area">
-          <widget class="GtkHButtonBox" id="dialog-action_area1">
-          </widget>
+          <widget class="GtkHButtonBox" id="dialog-action_area1"/>
           <packing>
             <property name="expand">False</property>
-            <property name="pack_type">GTK_PACK_END</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
           </packing>
         </child>
       </widget>
@@ -759,9 +767,9 @@ POSSIBILITY OF SUCH DAMAGES.
               <widget class="GtkScrolledWindow" id="scrolledwindow3">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                <property name="shadow_type">GTK_SHADOW_IN</property>
+                <property name="hscrollbar_policy">automatic</property>
+                <property name="vscrollbar_policy">automatic</property>
+                <property name="shadow_type">in</property>
                 <child>
                   <widget class="GtkTreeView" id="pn_treeview">
                     <property name="width_request">150</property>
@@ -780,9 +788,9 @@ POSSIBILITY OF SUCH DAMAGES.
               <widget class="GtkScrolledWindow" id="scrolledwindow4">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                <property name="shadow_type">GTK_SHADOW_IN</property>
+                <property name="hscrollbar_policy">automatic</property>
+                <property name="vscrollbar_policy">automatic</property>
+                <property name="shadow_type">in</property>
                 <child>
                   <widget class="GtkViewport" id="viewport1">
                     <property name="visible">True</property>
@@ -790,8 +798,8 @@ POSSIBILITY OF SUCH DAMAGES.
                       <widget class="GtkScrolledWindow" id="scrolledwindow5">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                        <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                        <property name="hscrollbar_policy">automatic</property>
+                        <property name="vscrollbar_policy">automatic</property>
                         <child>
                           <widget class="GtkTextView" id="plugin_info_textview">
                             <property name="visible">True</property>
@@ -811,6 +819,9 @@ POSSIBILITY OF SUCH DAMAGES.
               </packing>
             </child>
           </widget>
+          <packing>
+            <property name="position">0</property>
+          </packing>
         </child>
         <child>
           <widget class="GtkHSeparator" id="hseparator1">
@@ -828,33 +839,42 @@ POSSIBILITY OF SUCH DAMAGES.
             <child>
               <widget class="GtkHButtonBox" id="hbuttonbox3">
                 <property name="visible">True</property>
-                <property name="layout_style">GTK_BUTTONBOX_START</property>
+                <property name="layout_style">start</property>
                 <child>
                   <widget class="GtkButton" id="plw_refresh_b">
+                    <property name="label">gtk-refresh</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="can_default">True</property>
-                    <property name="label">gtk-refresh</property>
+                    <property name="receives_default">False</property>
                     <property name="use_stock">True</property>
-                    <property name="response_id">0</property>
                   </widget>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
                 </child>
               </widget>
+              <packing>
+                <property name="position">0</property>
+              </packing>
             </child>
             <child>
               <widget class="GtkHButtonBox" id="hbuttonbox2">
                 <property name="visible">True</property>
                 <property name="spacing">2</property>
-                <property name="layout_style">GTK_BUTTONBOX_END</property>
+                <property name="layout_style">end</property>
                 <child>
                   <widget class="GtkButton" id="plw_close_b">
+                    <property name="label">gtk-close</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="can_default">True</property>
-                    <property name="label">gtk-close</property>
+                    <property name="receives_default">False</property>
                     <property name="use_stock">True</property>
-                    <property name="response_id">0</property>
                   </widget>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
                 </child>
               </widget>
               <packing>
@@ -910,25 +930,26 @@ POSSIBILITY OF SUCH DAMAGES.
                             <property name="spacing">2</property>
                             <child>
                               <widget class="GtkRadioButton" id="diw_rb_little_endian">
+                                <property name="label" translatable="yes">Little endian </property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                <property name="label" translatable="yes">Little endian </property>
-                                <property name="response_id">0</property>
                                 <property name="active">True</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
                                 <property name="expand">False</property>
+                                <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
                               <widget class="GtkRadioButton" id="diw_rb_middle_endian">
+                                <property name="label" translatable="yes">Middle endian</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                <property name="label" translatable="yes">Middle endian</property>
-                                <property name="response_id">0</property>
                                 <property name="active">True</property>
                                 <property name="draw_indicator">True</property>
                                 <property name="group">diw_rb_little_endian</property>
@@ -940,11 +961,11 @@ POSSIBILITY OF SUCH DAMAGES.
                             </child>
                             <child>
                               <widget class="GtkRadioButton" id="diw_rb_big_endian">
+                                <property name="label" translatable="yes">Big endian</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                <property name="label" translatable="yes">Big endian</property>
-                                <property name="response_id">0</property>
                                 <property name="active">True</property>
                                 <property name="draw_indicator">True</property>
                                 <property name="group">diw_rb_little_endian</property>
@@ -976,6 +997,7 @@ POSSIBILITY OF SUCH DAMAGES.
                     <property name="expand">False</property>
                     <property name="fill">False</property>
                     <property name="padding">4</property>
+                    <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
@@ -988,6 +1010,9 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="ypad">2</property>
                         <property name="label" translatable="yes">stream size :</property>
                       </widget>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
                     </child>
                     <child>
                       <widget class="GtkSpinButton" id="stream_size_spin_button">
@@ -995,7 +1020,7 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="can_focus">True</property>
                         <property name="activates_default">True</property>
                         <property name="xalign">0.5</property>
-                        <property name="adjustment">1 1 1024 1 16 16</property>
+                        <property name="adjustment">1 1 1024 1 0 0</property>
                         <property name="climb_rate">1.5</property>
                         <property name="snap_to_ticks">True</property>
                         <property name="numeric">True</property>
@@ -1031,11 +1056,14 @@ POSSIBILITY OF SUCH DAMAGES.
                 <property name="homogeneous">True</property>
               </widget>
               <packing>
-                <property name="pack_type">GTK_PACK_END</property>
+                <property name="pack_type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
           </widget>
+          <packing>
+            <property name="position">0</property>
+          </packing>
         </child>
         <child>
           <placeholder/>
@@ -1078,8 +1106,10 @@ POSSIBILITY OF SUCH DAMAGES.
             <property name="can_focus">True</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
             <property name="border_width">4</property>
-            <property name="headers_clickable">True</property>
           </widget>
+          <packing>
+            <property name="position">0</property>
+          </packing>
         </child>
         <child>
           <widget class="GtkVBox" id="vbox6">
@@ -1103,27 +1133,28 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="border_width">4</property>
                         <property name="spacing">4</property>
-                        <property name="layout_style">GTK_BUTTONBOX_SPREAD</property>
+                        <property name="layout_style">spread</property>
                         <child>
                           <widget class="GtkButton" id="ldt_add_button">
+                            <property name="label" translatable="yes">gtk-add</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                            <property name="label" translatable="yes">gtk-add</property>
                             <property name="use_stock">True</property>
-                            <property name="response_id">0</property>
                           </widget>
+                          <packing>
+                            <property name="position">0</property>
+                          </packing>
                         </child>
                         <child>
                           <widget class="GtkButton" id="ldt_remove_button">
+                            <property name="label" translatable="yes">gtk-remove</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                            <property name="label" translatable="yes">gtk-remove</property>
                             <property name="use_stock">True</property>
-                            <property name="response_id">0</property>
                           </widget>
                           <packing>
                             <property name="position">1</property>
@@ -1131,13 +1162,12 @@ POSSIBILITY OF SUCH DAMAGES.
                         </child>
                         <child>
                           <widget class="GtkButton" id="ldt_edit_button">
+                            <property name="label" translatable="yes">gtk-edit</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                            <property name="label" translatable="yes">gtk-edit</property>
                             <property name="use_stock">True</property>
-                            <property name="response_id">0</property>
                           </widget>
                           <packing>
                             <property name="position">2</property>
@@ -1159,6 +1189,9 @@ POSSIBILITY OF SUCH DAMAGES.
                   </packing>
                 </child>
               </widget>
+              <packing>
+                <property name="position">0</property>
+              </packing>
             </child>
             <child>
               <widget class="GtkFrame" id="frame3">
@@ -1177,27 +1210,28 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="border_width">4</property>
                         <property name="spacing">4</property>
-                        <property name="layout_style">GTK_BUTTONBOX_SPREAD</property>
+                        <property name="layout_style">spread</property>
                         <child>
                           <widget class="GtkButton" id="ldt_open_button">
+                            <property name="label" translatable="yes">gtk-open</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                            <property name="label" translatable="yes">gtk-open</property>
                             <property name="use_stock">True</property>
-                            <property name="response_id">0</property>
                           </widget>
+                          <packing>
+                            <property name="position">0</property>
+                          </packing>
                         </child>
                         <child>
                           <widget class="GtkButton" id="ldt_save_button">
+                            <property name="label" translatable="yes">gtk-save</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                            <property name="label" translatable="yes">gtk-save</property>
                             <property name="use_stock">True</property>
-                            <property name="response_id">0</property>
                           </widget>
                           <packing>
                             <property name="position">1</property>
@@ -1260,6 +1294,7 @@ POSSIBILITY OF SUCH DAMAGES.
               </widget>
               <packing>
                 <property name="expand">False</property>
+                <property name="position">0</property>
               </packing>
             </child>
             <child>
@@ -1281,6 +1316,7 @@ POSSIBILITY OF SUCH DAMAGES.
           </widget>
           <packing>
             <property name="expand">False</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
@@ -1296,6 +1332,7 @@ POSSIBILITY OF SUCH DAMAGES.
               </widget>
               <packing>
                 <property name="expand">False</property>
+                <property name="position">0</property>
               </packing>
             </child>
             <child>
@@ -1360,29 +1397,30 @@ POSSIBILITY OF SUCH DAMAGES.
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
             <property name="border_width">2</property>
             <property name="spacing">4</property>
-            <property name="layout_style">GTK_BUTTONBOX_END</property>
+            <property name="layout_style">end</property>
             <child>
               <widget class="GtkButton" id="dt_ok_button">
+                <property name="label" translatable="yes">gtk-ok</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="has_default">True</property>
                 <property name="receives_default">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                <property name="label" translatable="yes">gtk-ok</property>
                 <property name="use_stock">True</property>
-                <property name="response_id">0</property>
               </widget>
+              <packing>
+                <property name="position">0</property>
+              </packing>
             </child>
             <child>
               <widget class="GtkButton" id="dt_cancel_button">
+                <property name="label" translatable="yes">gtk-cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                <property name="label" translatable="yes">gtk-cancel</property>
                 <property name="use_stock">True</property>
-                <property name="response_id">0</property>
               </widget>
               <packing>
                 <property name="position">1</property>
@@ -1422,6 +1460,7 @@ POSSIBILITY OF SUCH DAMAGES.
               </widget>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">True</property>
               </packing>
             </child>
             <child>
@@ -1435,12 +1474,14 @@ POSSIBILITY OF SUCH DAMAGES.
               </widget>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">True</property>
               </packing>
             </child>
           </widget>
           <packing>
             <property name="expand">False</property>
             <property name="padding">3</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
@@ -1458,14 +1499,15 @@ POSSIBILITY OF SUCH DAMAGES.
                     <property name="spacing">2</property>
                     <child>
                       <widget class="GtkCheckButton" id="save_window_position_bt">
+                        <property name="label" translatable="yes">Save windows's position</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="label" translatable="yes">Save windows's position</property>
-                        <property name="response_id">0</property>
+                        <property name="receives_default">False</property>
                         <property name="draw_indicator">True</property>
                       </widget>
                       <packing>
                         <property name="expand">False</property>
+                        <property name="position">0</property>
                       </packing>
                     </child>
                     <child>
@@ -1475,6 +1517,9 @@ POSSIBILITY OF SUCH DAMAGES.
                       <placeholder/>
                     </child>
                   </widget>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
                 </child>
                 <child>
                   <placeholder/>
@@ -1490,8 +1535,8 @@ POSSIBILITY OF SUCH DAMAGES.
                 <property name="label" translatable="yes">page 1</property>
               </widget>
               <packing>
-                <property name="type">tab</property>
                 <property name="tab_fill">False</property>
+                <property name="type">tab</property>
               </packing>
             </child>
             <child>
@@ -1512,14 +1557,15 @@ POSSIBILITY OF SUCH DAMAGES.
                             <property name="spacing">2</property>
                             <child>
                               <widget class="GtkCheckButton" id="mp_thousand_bt">
+                                <property name="label" translatable="yes">use a blank separator for thousands</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="label" translatable="yes">use a blank separator for thousands</property>
-                                <property name="response_id">0</property>
+                                <property name="receives_default">False</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
                                 <property name="expand">False</property>
+                                <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
@@ -1544,6 +1590,9 @@ POSSIBILITY OF SUCH DAMAGES.
                       </packing>
                     </child>
                   </widget>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
                 </child>
                 <child>
                   <placeholder/>
@@ -1562,9 +1611,9 @@ POSSIBILITY OF SUCH DAMAGES.
                 <property name="label" translatable="yes">page 2</property>
               </widget>
               <packing>
-                <property name="type">tab</property>
                 <property name="position">1</property>
                 <property name="tab_fill">False</property>
+                <property name="type">tab</property>
               </packing>
             </child>
             <child>
@@ -1576,9 +1625,9 @@ POSSIBILITY OF SUCH DAMAGES.
                 <property name="label" translatable="yes">page 3</property>
               </widget>
               <packing>
-                <property name="type">tab</property>
                 <property name="position">2</property>
                 <property name="tab_fill">False</property>
+                <property name="type">tab</property>
               </packing>
             </child>
           </widget>

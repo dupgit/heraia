@@ -1,3 +1,14 @@
+21.03.2009
+	- Olivier Delhomme <heraia@delhomme.org>
+	  * working on stat plugin : 
+	    - translations (some sentences were still in french !) 
+		- cleaning doxygen documentation
+		- correcting code to avoid possible bugs
+		- code coherency at some places
+		- added new functions that enables one to export raw datas to CSV and 
+		  gnuplot usable file formats.
+	  * HISTORY corrected a typo
+		  
 17.03.2009
 	- Olivier Delhomme <heraia@delhomme.org>
 	  * release dates

@@ -4,7 +4,7 @@
   an heraia plugin to calculate some stats on the opened file
   done as an example
  
-  (C) Copyright 2007 - 2008 Olivier Delhomme
+  (C) Copyright 2007 - 2009 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
  
@@ -32,7 +32,7 @@
 #define PLUGIN_TYPE HERAIA_PLUGIN_ACTION
 
 #define PLUGIN_NAME "stat"
-#define PLUGIN_VERSION "1"
+#define PLUGIN_VERSION "1.1"
 #define PLUGIN_SUMMARY "stat"
 #define PLUGIN_DESCRIPTION "Does some stats on the opened file"
 #define PLUGIN_AUTHOR "Olivier Delhomme <heraia@delhomme.org>"

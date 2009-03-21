@@ -33,7 +33,9 @@ static void stat_window_connect_signals(heraia_plugin_t *plugin);
 static void statw_close_clicked(GtkWidget *widget, gpointer data);
 static void destroy_stat_window(GtkWidget *widget, GdkEvent  *event, gpointer data);
 static void statw_save_as_clicked(GtkWidget *widget, gpointer data);
-static gchar *stat_select_file_to_save(void);
+static void statw_export_to_csv_clicked(GtkWidget *widget, gpointer data);
+static void statw_export_to_gnuplot_clicked(GtkWidget *widget, gpointer data);
+static gchar *stat_select_file_to_save(gchar *window_text);
 static void histo_radiobutton_toggled(GtkWidget *widget, gpointer data);
 static gboolean delete_stat_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data );
 static void realize_some_numerical_stat(heraia_window_t *main_struct, heraia_plugin_t *plugin);
@@ -49,7 +51,6 @@ static void do_pixbuf_2D_from_histo2D(stat_t *extra, guint max_2D);
 
 
 /**
- *  @fn heraia_plugin_t *heraia_plugin_init(heraia_plugin_t *plugin)
  *  Initialisation plugin function called when the plugin is loaded
  *  (some sort of pre-init)
  *  @param[in,out] plugin : plugin's structure
@@ -105,7 +106,6 @@ heraia_plugin_t *heraia_plugin_init(heraia_plugin_t *plugin)
 
 
 /**
- * @fn init(heraia_window_t *main_struct)
  *  The real init function of the plugin (called at init time)
  * @param main_struct : main structure
  */
@@ -152,7 +152,6 @@ void init(heraia_window_t *main_struct)
 
 
 /**  
- * @fn void quit(void)
  *  Normaly this is called when the plugin is unloaded
  *  One may wait it's entire life for this to be called !! ;)
  */ 
@@ -163,7 +162,6 @@ void quit(void)
 
 
 /**
- * @fn run(GtkWidget *widget, gpointer data)
  *  This function is called via a signal handler when the menu entry is toggled
  * @param widget : widget which called the function (unused)
  * @param data : user data for the plugin, here MUST be heraia_window_t * main 
@@ -187,14 +185,15 @@ void run(GtkWidget *widget, gpointer data)
 					realize_some_numerical_stat(main_struct, plugin);
 				}
 			else
-				plugin->state = PLUGIN_STATE_NONE;
+				{
+					plugin->state = PLUGIN_STATE_NONE;
+				}
 		}
 
 }
 
 
 /**
- * @fn void refresh(heraia_window_t *main_struct, void *data)
  *  The refresh function is called when a new file is loaded or when the cursor is moved
  *  Here we want to refresh the plugin only if a new file is loaded AND if the plugin
  *  is already displayed (running)
@@ -224,8 +223,7 @@ void refresh(heraia_window_t *main_struct, void *data)
  */
 
 /**
- * @fn gboolean delete_stat_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
- *  Closes stat window
+ * Closes stat window
  * @param widget : the widget which called this function
  * @param event : the event that issued the signal (unused here)
  * @param data : user data, MUST be heraia_plugin_t *plugin
@@ -240,8 +238,8 @@ static gboolean delete_stat_window_event(GtkWidget *widget, GdkEvent  *event, gp
 
 
 /**
- * @fn void destroy_stat_window(GtkWidget *widget, GdkEvent  *event, gpointer data)
- *  Closes stat window
+
+ * Closes stat window
  * @param widget : the widget which called this function
  * @param event : the event that issued the signal (unused here)
  * @param data : user data, MUST be heraia_plugin_t *plugin
@@ -253,7 +251,6 @@ static void destroy_stat_window(GtkWidget *widget, GdkEvent  *event, gpointer da
 
 
 /**
- * @fn void statw_close_clicked(GtkWidget *widget, gpointer data)
  *  What to do when the window is closed
  * @param widget : the widget which called this function (unused here)
  * @param data : user data, MUST be heraia_plugin_t *plugin
@@ -271,7 +268,6 @@ static void statw_close_clicked(GtkWidget *widget, gpointer data)
 
 
 /**
- * @fn void statw_save_as_clicked(GtkWidget *widget, gpointer data)
  *  What to do when the save as button is clicked
  * @param widget : the widget which called this function (unused here)
  * @param data : user data, MUST be heraia_plugin_t *plugin
@@ -279,34 +275,37 @@ static void statw_close_clicked(GtkWidget *widget, gpointer data)
 static void statw_save_as_clicked(GtkWidget *widget, gpointer data)
 {
 	heraia_plugin_t *plugin = (heraia_plugin_t *) data;
+	GtkImage *image = NULL;
+	GdkPixbuf *pixbuf = NULL;
+	gchar *filename = NULL;
+	GError **error = NULL;
 
 	if (plugin != NULL)
 		{
-			GtkImage *image = GTK_IMAGE(glade_xml_get_widget(plugin->xml, "histo_image"));
-			GdkPixbuf *pixbuf = gtk_image_get_pixbuf(image);
-			gchar *filename = NULL;
-			GError **error = NULL;
-
-			filename = stat_select_file_to_save();
-			gdk_pixbuf_save(pixbuf, filename, "png", error, "compression", "9", NULL);
+			image = GTK_IMAGE(glade_xml_get_widget(plugin->xml, "histo_image"));
+			pixbuf = gtk_image_get_pixbuf(image);
 			
+			filename = stat_select_file_to_save("Enter filename's to save the image to");
 			if (filename != NULL)
+			{
+				gdk_pixbuf_save(pixbuf, filename, "png", error, "compression", "9", NULL);
 				g_free(filename);
+			}
 		}
 }
 
 /**
- * @fn gchar *stat_select_file_to_save(void)
  *  Selecting the file filename where to save the file
+ * @param window_text : text to be displayed in the selection window
  * @return returns the new filename where to save a file
  */
-static gchar *stat_select_file_to_save(void)
+static gchar *stat_select_file_to_save(gchar *window_text)
 {
 	GtkFileSelection *file_selector = NULL;
 	gint response_id = 0;
 	gchar *filename;
 
-	file_selector = GTK_FILE_SELECTION (gtk_file_selection_new ("Entrez le nom du fichier image"));
+	file_selector = GTK_FILE_SELECTION (gtk_file_selection_new (window_text));
 
 	/* for the moment we do not want to retrieve multiples selections */
 	gtk_file_selection_set_select_multiple(file_selector, FALSE);
@@ -329,9 +328,136 @@ static gchar *stat_select_file_to_save(void)
 	return filename;
 }
 
+/**
+ * What to do when "export to csv" button is clicked
+ * @param widget : the widget which called this function
+ * @param data : user data, MUST be heraia_plugin_t *plugin
+ */
+static void statw_export_to_csv_clicked(GtkWidget *widget, gpointer data)
+{
+	heraia_plugin_t *plugin = (heraia_plugin_t *) data;
+	stat_t *extra = NULL;
+	gchar *filename = NULL;
+	FILE *fp = NULL;
+	guint i = 0;
+	guint j = 0;
+	
+	if (plugin != NULL)
+		{
+			extra = (stat_t *) plugin->extra;
+			
+			filename = stat_select_file_to_save("Enter filename to export data as CSV to");
+			fp = g_fopen(filename, "w+");
+			
+			if (fp != NULL && extra != NULL)
+			{
+				if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(glade_xml_get_widget(plugin->xml, "rb_1D"))) == TRUE)
+				{ 
+					/* 1D display */
+					fprintf(fp, "\"Byte\";\"Count\"\n");
+					
+					for (i=0; i<=255; i++)
+					{
+						fprintf(fp, "%d;%Ld\n", i, extra->histo1D[i]);
+					}
+					
+				}
+				else
+				{ 
+					/* 2D display */
+					fprintf(fp, "\"Byte/Byte\";");
+					for (j=0; j<255; j++)
+					{
+						fprintf(fp, "\"%d\";", j);
+					}
+					fprintf(fp, "\"%d\"\n", 255);
+			
+					for (i=0; i<=255; i++)
+					{
+						fprintf(fp, "\"%d\";", i);
+						for (j=0 ; j<255; j++)
+						{
+							fprintf(fp, "\"%Ld\";", extra->histo2D[i][j]);
+						}
+						fprintf(fp, "\"%Ld\"\n", extra->histo2D[i][255]);
+					}
+				}
+				fclose(fp);
+			}
+		}
+}
 
 /**
- * @fn void histo_radiobutton_toggled(GtkWidget *widget, gpointer data)
+ * What to do when "export to gnuplot" button is clicked
+ * @param widget : the widget which called this function
+ * @param data : user data, MUST be heraia_plugin_t *plugin
+ */
+static void statw_export_to_gnuplot_clicked(GtkWidget *widget, gpointer data)
+{
+	heraia_plugin_t *plugin = (heraia_plugin_t *) data;
+	stat_t *extra = NULL;
+	gchar *filename = NULL;
+	FILE *fp = NULL;
+	guint i = 0;
+	guint j = 0;
+
+	if (plugin != NULL)
+		{
+			extra = (stat_t *) plugin->extra;
+			
+			filename = stat_select_file_to_save("Enter filename to export data as gnuplot to");
+			fp = g_fopen(filename, "w+");
+			
+			if (fp != NULL && extra != NULL)
+			{
+				/* common settings */
+				fprintf(fp, "set terminal png transparent nocrop enhanced small size 1280,960\n");
+				fprintf(fp, "set output '%s.png'\n", filename);
+				fprintf(fp, "set xrange [-10:265]\n");
+				
+				if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(glade_xml_get_widget(plugin->xml, "rb_1D"))) == TRUE)
+				{ 
+					/* 1D display */
+					fprintf(fp, "set title 'Classical histogram'\n");  /**< @todo we might add here the name of the file being edited */
+					fprintf(fp, "plot '-' title 'Byte count' with impulses\n");
+					
+					for (i=0; i<=255; i++)
+					{
+						fprintf(fp, "%Ld\n", extra->histo1D[i]);
+					}
+					fprintf(fp, "e\n");
+				}
+				else
+				{ 
+					/* 2D display */
+					fprintf(fp, "set title 'Heatmap histogram'\n");  /**< @todo we might add here the name of the file being edited */
+					fprintf(fp, "set bar 1.000000\n");
+					fprintf(fp, "set style rectangle back fc lt -3 fillstyle solid 1.00 border -1\n");
+					fprintf(fp, "unset key\n");
+					fprintf(fp, "set view map\n");
+					fprintf(fp, "set yrange [-10:265]\n");
+					fprintf(fp, "set palette rgbformulae 36, 13, 15\n");
+					fprintf(fp, "splot '-' matrix with image\n");
+					
+					for (i=0; i<=255; i++)
+					{
+						for (j=0; j<=255; j++)
+						{
+							fprintf(fp, "%Ld ", extra->histo2D[i][j]);
+						}
+						fprintf(fp, "\n");
+					}
+
+					fprintf(fp, "e\n");
+					fprintf(fp, "e\n");	
+				}
+				fclose(fp);
+			}
+		}
+}
+
+
+/**
  *  What to do when the user chooses a 1D or 2D histo 
  * @param widget : the widget which called this function (unused here)
  * @param data : user data, MUST be heraia_plugin_t *plugin
@@ -357,7 +483,6 @@ static void histo_radiobutton_toggled(GtkWidget *widget, gpointer data)
 
 
 /**
- * @fn void stat_window_connect_signals(heraia_plugin_t *plugin)
  *  Connects all the signals to the correct functions
  * @param plugin : main plugin structure
  */
@@ -385,13 +510,19 @@ static void stat_window_connect_signals(heraia_plugin_t *plugin)
 	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "statw_save_as")), "clicked", 
 					 G_CALLBACK(statw_save_as_clicked), plugin);
 
+	/* CVS button */
+	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "statw_export_to_csv")), "clicked", 
+					 G_CALLBACK(statw_export_to_csv_clicked), plugin);
+	
+	/* Gnuplot button */
+	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "statw_export_to_gnuplot")), "clicked", 
+					 G_CALLBACK(statw_export_to_gnuplot_clicked), plugin);
 
 	/* the toogle button is already connected to the run_proc function ! */
 }
 
 
 /**
- * @fn void realize_some_numerical_stat(heraia_window_t *main_struct, heraia_plugin_t *plugin)
  *  Do some stats on the selected file (entire file is used)
  * @param main_struct : main structure from heraia
  * @param plugin : main plugin structure (the plugin itself in fact)
