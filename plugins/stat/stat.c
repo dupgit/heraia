@@ -297,25 +297,37 @@ static void statw_save_as_clicked(GtkWidget *widget, gpointer data)
 /**
  *  Selecting the file filename where to save the file
  * @param window_text : text to be displayed in the selection window
+ * @todo remember the last directory where we saved stuff
  * @return returns the new filename where to save a file
  */
 static gchar *stat_select_file_to_save(gchar *window_text)
 {
 	GtkFileSelection *file_selector = NULL;
+	GtkFileChooser *file_chooser = NULL;
 	gint response_id = 0;
 	gchar *filename;
 
-	file_selector = GTK_FILE_SELECTION (gtk_file_selection_new (window_text));
+	file_chooser = GTK_FILE_CHOOSER(gtk_file_chooser_dialog_new(window_text, NULL,
+																GTK_FILE_CHOOSER_ACTION_SAVE, 
+																GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+																GTK_STOCK_OPEN, GTK_RESPONSE_OK, 
+																NULL));
+																
+	/* file_selector = GTK_FILE_SELECTION (gtk_file_selection_new(window_text)); */
 
 	/* for the moment we do not want to retrieve multiples selections */
-	gtk_file_selection_set_select_multiple(file_selector, FALSE);
+	/* gtk_file_selection_set_select_multiple(file_selector, FALSE); */
+	gtk_window_set_modal(GTK_WINDOW(file_chooser), TRUE);
+	gtk_file_chooser_set_select_multiple(file_chooser, FALSE);
 
-	response_id = gtk_dialog_run(GTK_DIALOG (file_selector));
-
+	/* response_id = gtk_dialog_run(GTK_DIALOG (file_selector)); */
+	response_id = gtk_dialog_run(GTK_DIALOG(file_chooser));
+	
 	switch (response_id) 
 		{
 		case GTK_RESPONSE_OK:
-			filename = g_strdup(gtk_file_selection_get_filename (GTK_FILE_SELECTION (file_selector)));
+			filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(file_chooser));
+			/* filename = g_strdup(gtk_file_selection_get_filename (GTK_FILE_SELECTION (file_selector))); */
 			break;
 		case GTK_RESPONSE_CANCEL:
 		default:
@@ -323,8 +335,9 @@ static gchar *stat_select_file_to_save(gchar *window_text)
 			break;
 		}
 
-	gtk_widget_destroy (GTK_WIDGET(file_selector));
-
+	/* gtk_widget_destroy (GTK_WIDGET(file_selector)); */
+	
+	gtk_widget_destroy(GTK_WIDGET(file_chooser));
 	return filename;
 }
 
@@ -347,7 +360,11 @@ static void statw_export_to_csv_clicked(GtkWidget *widget, gpointer data)
 			extra = (stat_t *) plugin->extra;
 			
 			filename = stat_select_file_to_save("Enter filename to export data as CSV to");
-			fp = g_fopen(filename, "w+");
+			
+			if (filename != NULL)
+			{
+				fp = g_fopen(filename, "w+");
+			}
 			
 			if (fp != NULL && extra != NULL)
 			{
@@ -384,6 +401,10 @@ static void statw_export_to_csv_clicked(GtkWidget *widget, gpointer data)
 				}
 				fclose(fp);
 			}
+			if (filename != NULL)
+			{
+				g_free(filename);
+			}
 		}
 }
 
@@ -406,19 +427,25 @@ static void statw_export_to_gnuplot_clicked(GtkWidget *widget, gpointer data)
 			extra = (stat_t *) plugin->extra;
 			
 			filename = stat_select_file_to_save("Enter filename to export data as gnuplot to");
-			fp = g_fopen(filename, "w+");
+			
+			if (filename != NULL)
+			{
+				fp = g_fopen(filename, "w+");
+			}
 			
 			if (fp != NULL && extra != NULL)
 			{
 				/* common settings */
 				fprintf(fp, "set terminal png transparent nocrop enhanced small size 1280,960\n");
-				fprintf(fp, "set output '%s.png'\n", filename);
+				fprintf(fp, "set output '%s.png'\n", g_path_get_basename(filename));
 				fprintf(fp, "set xrange [-10:265]\n");
+				fprintf(fp, "set xlabel 'Bytes'\n");
 				
 				if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(glade_xml_get_widget(plugin->xml, "rb_1D"))) == TRUE)
 				{ 
 					/* 1D display */
 					fprintf(fp, "set title 'Classical histogram'\n");  /**< @todo we might add here the name of the file being edited */
+					fprintf(fp, "set ylabel 'Count'\n");
 					fprintf(fp, "plot '-' title 'Byte count' with impulses\n");
 					
 					for (i=0; i<=255; i++)
@@ -436,6 +463,7 @@ static void statw_export_to_gnuplot_clicked(GtkWidget *widget, gpointer data)
 					fprintf(fp, "unset key\n");
 					fprintf(fp, "set view map\n");
 					fprintf(fp, "set yrange [-10:265]\n");
+					fprintf(fp, "set ylabel 'Bytes'\n");
 					fprintf(fp, "set palette rgbformulae 36, 13, 15\n");
 					fprintf(fp, "splot '-' matrix with image\n");
 					
@@ -452,6 +480,10 @@ static void statw_export_to_gnuplot_clicked(GtkWidget *widget, gpointer data)
 					fprintf(fp, "e\n");	
 				}
 				fclose(fp);
+			}
+			if (filename != NULL)
+			{
+				g_free(filename);
 			}
 		}
 }

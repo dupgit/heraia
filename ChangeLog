@@ -1,3 +1,9 @@
+22.03.2009
+	- Olivier Delhomme <heraia@delhomme.org>
+	  * changed tht old file selector to the newest file chooser in stat plugin
+	  * corrected some mistakes and adde a few things to the gnuplot's exported
+	    file.
+
 21.03.2009
 	- Olivier Delhomme <heraia@delhomme.org>
 	  * working on stat plugin : 
