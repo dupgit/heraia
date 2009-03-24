@@ -40,6 +40,7 @@ static void histo_radiobutton_toggled(GtkWidget *widget, gpointer data);
 static gboolean delete_stat_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data );
 static void realize_some_numerical_stat(heraia_window_t *main_struct, heraia_plugin_t *plugin);
 static void init_stats_histos(heraia_plugin_t *plugin);
+static void set_statw_button_state(GladeXML *xml, gboolean sensitive);
 static void populate_stats_histos(heraia_window_t *main_struct, heraia_plugin_t *plugin);
 static void calc_infos_histo_1D(stat_t *extra);
 static void calc_infos_histo_2D(stat_t *extra);
@@ -130,9 +131,8 @@ void init(heraia_window_t *main_struct)
 				log_message(main_struct, G_LOG_LEVEL_WARNING, "Unable to load %s xml interface.", plugin->info->name);
 			}
 			
-			/* greyed save as button */
-			gtk_widget_set_sensitive(glade_xml_get_widget(plugin->xml, "statw_save_as"), FALSE);
-			
+			/* greyed save as button and others */
+			set_statw_button_state(plugin->xml, FALSE);
 			
 			/* shows or hide the interface (hides it at first as all windows shows up) */
 			if (plugin->win_prop->displayed == FALSE)
@@ -189,9 +189,23 @@ void run(GtkWidget *widget, gpointer data)
 					plugin->state = PLUGIN_STATE_NONE;
 				}
 		}
-
 }
 
+
+/**
+ * Sets stat window's button's sensitive property 
+ * @param xml : The plugin's xml description
+ * @param sensitive : whether the buttons are greyed (FALSE) or not (TRUE)
+ */
+static void set_statw_button_state(GladeXML *xml, gboolean sensitive)
+{
+	if (xml != NULL)
+	{
+		gtk_widget_set_sensitive(glade_xml_get_widget(xml, "statw_save_as"), sensitive);
+		gtk_widget_set_sensitive(glade_xml_get_widget(xml, "statw_export_to_csv"), sensitive);
+		gtk_widget_set_sensitive(glade_xml_get_widget(xml, "statw_export_to_gnuplot"), sensitive);
+	}
+}
 
 /**
  *  The refresh function is called when a new file is loaded or when the cursor is moved
@@ -207,9 +221,9 @@ void refresh(heraia_window_t *main_struct, void *data)
 
 	if (main_struct != NULL && plugin != NULL)
 		{
-			if (main_struct->event == HERAIA_REFRESH_NEW_FILE && plugin->state == PLUGIN_STATE_RUNNING)
+			if (main_struct->event == HERAIA_REFRESH_NEW_FILE) /* && plugin->state == PLUGIN_STATE_RUNNING) */
 				{
-					gtk_widget_set_sensitive(glade_xml_get_widget(plugin->xml, "statw_save_as"), TRUE);
+					set_statw_button_state(plugin->xml, TRUE);
 					plugin->run_proc(NULL, (gpointer) main_struct);
 				}
 		}

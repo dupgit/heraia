@@ -1,3 +1,8 @@
+24.03.2009
+	- Olivier Delhomme <heraia@delhomme.org>
+	  * Corrected a regression on stat's window
+	  * Added thing for a better user experience (greyed buttons if necessary)
+
 22.03.2009
 	- Olivier Delhomme <heraia@delhomme.org>
 	  * changed tht old file selector to the newest file chooser in stat plugin

@@ -396,6 +396,7 @@ void refresh_all_plugins(heraia_window_t *main_window)
 	while (list != NULL)
 		{
 			plugin = (heraia_plugin_t *) list->data;
+			
 			if (plugin != NULL && plugin->refresh_proc != NULL)
 			{ /* Beware : here a tricky thing that works ! */
 				plugin->refresh_proc(main_window, list->data);  
