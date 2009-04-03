@@ -217,5 +217,21 @@ gboolean save_preferences_to_file(prefs_t *prefs)
 	return result;
 }
 
-
-
+/**
+ * Inits a doc_t structure
+ * @param doc : hex_document but encapsulated in Heraia_Document 
+ *              structure
+ * @param hexwidget : Widget to display an hexadecimal view of the file
+ * @return returns a newly allocated doc_t structure
+ */
+doc_t *new_doc_t(Heraia_Document *doc, GtkWidget *hexwidget)
+{
+	doc_t *new_doc;
+	
+	new_doc = (doc_t *) g_malloc0(sizeof(doc_t));
+	
+	new_doc->doc = doc;
+	new_doc->hexwidget = hexwidget;
+	
+	return new_doc;
+}

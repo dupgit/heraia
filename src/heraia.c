@@ -174,7 +174,6 @@ static heraia_window_t *init_window_property_struct(heraia_window_t *main_window
 }
 
 
-
 /**
  * Initialize the main structure (main_window)
  * @return a pointer to a newly initialized main structure 
@@ -227,6 +226,9 @@ static heraia_window_t *heraia_init_main_struct(void)
 
 	/* init window property structure */
 	herwin = init_window_property_struct(herwin);
+
+	/* documents */
+	herwin->documents = g_array_new(FALSE, TRUE, sizeof(doc_t));
 
 	/* init global variable for the library */
 	libheraia_main_struct = herwin;

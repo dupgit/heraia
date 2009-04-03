@@ -301,6 +301,19 @@ typedef struct
    GKeyFile *file;     /**< preference file contents         */
 } prefs_t;
 
+
+/**
+ * @struct doc_t
+ * Proposal for a structure that will group all informations about
+ * a single document
+ */
+typedef struct
+{
+	Heraia_Document *doc;  /**< Document definition related to libgtkhex */
+	GtkWidget *hexwidget;  /**< hexwidget corresponding to the document  */
+} doc_t;
+
+
 /**
  * @struct heraia_window_t
  *  This is the main structure (mainly named main_window due to historycal reasons)
@@ -311,6 +324,7 @@ typedef struct
 	gboolean  debug;                /**< Used to tell the program wether we want to display debug messages or not  */
 	gchar *filename;                /**< this could (should) be a list of filenames !!!                            */
 	Heraia_Document *current_doc;   /**< We may want to group this with current_hexwidget in a specific struct     */
+	GArray *documents;				/**< An array of doc_t in order to be able to open more than one doc           */
 	xml_t *xmls;                    /**< All the xmls used in the program, loaded at running time                  */
    	data_window_t *current_DW;      /**< data_interpretor pointer                                                  */
 	GList *location_list;           /**< this is the location list where we store some paths                       */

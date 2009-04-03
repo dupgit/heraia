@@ -1,3 +1,8 @@
+02.04.2009
+	- Olivier Delhomme <heraia@delhomme.org>
+	  * added double-clicking effect to the plugin_list window
+	  * Proposal for a new structure to manage the document
+	
 24.03.2009
 	- Olivier Delhomme <heraia@delhomme.org>
 	  * Corrected a regression on stat's window

@@ -33,6 +33,7 @@ static void plw_close_clicked(GtkWidget *widget, gpointer data);
 static void plw_refresh_clicked(GtkWidget *widget, gpointer data);
 static void mw_cmi_plw_toggle(GtkWidget *widget, gpointer data);
 static void pn_treeview_selection_changed_cb(GtkTreeSelection *selection, gpointer data);
+static void pn_treeview_double_click(GtkTreeView *treeview, GtkTreePath *path, GtkTreeViewColumn *col, gpointer data);
 
 static void plugin_list_window_connect_signals(heraia_window_t *main_window);
 
@@ -444,6 +445,46 @@ static void pn_treeview_selection_changed_cb(GtkTreeSelection *selection, gpoint
 				}
 		}
 }
+
+/**
+ * In case of a double click on a plugin name in the treeview
+ * @param treeview : concerned treeview's widget
+ * @param path : Something related to a GtkTreePath ! (not used here)
+ * @param col : concerned column (not used here)
+ * @param data : user data MUST be a pointer to the heraia_window_t * structure
+ */
+static void pn_treeview_double_click(GtkTreeView *treeview, GtkTreePath *path, GtkTreeViewColumn *col, gpointer data)
+{
+	GtkTreeModel *model;
+    GtkTreeIter iter;
+	gchar *plugin_name;
+	heraia_window_t *main_window = (heraia_window_t *) data;
+	heraia_plugin_t *plugin = NULL;
+	gboolean active = FALSE;
+
+
+	model = gtk_tree_view_get_model(treeview);
+
+    if (gtk_tree_model_get_iter(model, &iter, path))
+    {
+		gtk_tree_model_get(model, &iter, PNTV_COLUMN_NAME, &plugin_name, -1);
+		plugin = find_plugin_by_name(main_window->plugins_list, plugin_name);
+
+		if (plugin != NULL)
+		{
+			active = gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(plugin->cmi_entry));
+			
+			if (active == FALSE)
+				{
+					gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(plugin->cmi_entry), TRUE);
+					plugin->run_proc(GTK_WIDGET(treeview), main_window);
+				}
+		}
+	}
+}
+
+
+
 /*** End of callback functions that handle the plugins window ***/
 
 /**
@@ -476,6 +517,10 @@ static void plugin_list_window_connect_signals(heraia_window_t *main_window)
 			select = gtk_tree_view_get_selection(GTK_TREE_VIEW(heraia_get_widget(main_window->xmls->main, "pn_treeview")));
 			gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
 			g_signal_connect(G_OBJECT(select), "changed", G_CALLBACK (pn_treeview_selection_changed_cb), main_window);
+
+			/* Double Click */
+			g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "pn_treeview")), "row-activated",
+							 G_CALLBACK(pn_treeview_double_click), main_window);
 
 			/* Refresh button */
 			g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "plw_refresh_b")), "clicked", 
