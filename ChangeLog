@@ -1,3 +1,7 @@
+10.04.2009
+	- Olivier Delhomme <heraia@delhomme.org>
+	  * new export in stat plugin : Export to PCV (a specific format for picviz)
+
 02.04.2009
 	- Olivier Delhomme <heraia@delhomme.org>
 	  * added double-clicking effect to the plugin_list window

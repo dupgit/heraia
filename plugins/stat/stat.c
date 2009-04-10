@@ -30,11 +30,15 @@
 
 /* The functions for the plugin's usage */
 static void stat_window_connect_signals(heraia_plugin_t *plugin);
+
 static void statw_close_clicked(GtkWidget *widget, gpointer data);
 static void destroy_stat_window(GtkWidget *widget, GdkEvent  *event, gpointer data);
+
 static void statw_save_as_clicked(GtkWidget *widget, gpointer data);
 static void statw_export_to_csv_clicked(GtkWidget *widget, gpointer data);
 static void statw_export_to_gnuplot_clicked(GtkWidget *widget, gpointer data);
+static void statw_export_to_pcv_clicked(GtkWidget *widget, gpointer data);
+
 static gchar *stat_select_file_to_save(gchar *window_text);
 static void histo_radiobutton_toggled(GtkWidget *widget, gpointer data);
 static gboolean delete_stat_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data );
@@ -316,7 +320,7 @@ static void statw_save_as_clicked(GtkWidget *widget, gpointer data)
  */
 static gchar *stat_select_file_to_save(gchar *window_text)
 {
-	GtkFileSelection *file_selector = NULL;
+	/* GtkFileSelection *file_selector = NULL; */
 	GtkFileChooser *file_chooser = NULL;
 	gint response_id = 0;
 	gchar *filename;
@@ -502,6 +506,87 @@ static void statw_export_to_gnuplot_clicked(GtkWidget *widget, gpointer data)
 		}
 }
 
+/**
+ * What to do when "export to pcv" button is clicked
+ * @param widget : the widget which called this function
+ * @param data : user data, MUST be heraia_plugin_t *plugin
+ */
+static void statw_export_to_pcv_clicked(GtkWidget *widget, gpointer data)
+{
+	heraia_plugin_t *plugin = (heraia_plugin_t *) data;
+	stat_t *extra = NULL;
+	gchar *filename = NULL;
+	FILE *fp = NULL;
+	guint i = 0;
+	guint j = 0;
+
+	if (plugin != NULL)
+		{
+			extra = (stat_t *) plugin->extra;
+			
+			filename = stat_select_file_to_save("Enter filename to export data as PCV to");
+			
+			if (filename != NULL)
+			{
+				fp = g_fopen(filename, "w+");
+			}
+			
+			if (fp != NULL && extra != NULL)
+			{			
+				if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(glade_xml_get_widget(plugin->xml, "rb_1D"))) == TRUE)
+				{ 
+					/* 1D display */
+					fprintf(fp, "header {\n");
+					fprintf(fp, "\theight = \"960\";\n");
+					fprintf(fp, "\twidth = \"1280\";\n");
+					fprintf(fp, "\ttitle = \"Classical histogram\";\n");
+					fprintf(fp, "}\n");
+					fprintf(fp, "axes {\n");
+					fprintf(fp, "\tinteger b [label=\"Bytes\"];\n");
+					fprintf(fp, "\tinteger c [label=\"Byte count\"];\n");
+					fprintf(fp, "}\n");
+					fprintf(fp, "data {\n");
+					
+					for (i=0; i<=255; i++)
+					{
+						fprintf(fp, "\tb=\"%d\", c=\"%Ld\";\n", i, extra->histo1D[i]);
+					}
+					fprintf(fp, "}\n");
+				}
+				else
+				{ 
+					/* 2D display */
+					fprintf(fp, "header {\n");
+					fprintf(fp, "\theight = \"960\";\n");
+					fprintf(fp, "\twidth = \"1280\";\n");
+					fprintf(fp, "\ttitle = \"Classical histogram\";\n");
+					fprintf(fp, "}\n");
+					fprintf(fp, "axes {\n");
+					fprintf(fp, "\tinteger a [label=\"Bytes\"];\n");
+					fprintf(fp, "\tinteger b [label=\"Bytes\"];\n");
+					fprintf(fp, "\tinteger c [label=\"Byte count\"];\n");
+					fprintf(fp, "}\n");
+					fprintf(fp, "data {\n");
+					
+					for (i=0; i<=255; i++)
+					{
+						for (j=0; j<=255; j++)
+						{
+							fprintf(fp, "\ta=\"%d\", b=\"%d\", c=\"%Ld\";\n", i, j, extra->histo2D[i][j]);
+						}
+					}
+					fprintf(fp, "}\n");
+				}
+				fclose(fp);
+			}
+			if (filename != NULL)
+			{
+				g_free(filename);
+			}
+		}
+}
+
+
 
 /**
  *  What to do when the user chooses a 1D or 2D histo 
@@ -563,6 +648,10 @@ static void stat_window_connect_signals(heraia_plugin_t *plugin)
 	/* Gnuplot button */
 	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "statw_export_to_gnuplot")), "clicked", 
 					 G_CALLBACK(statw_export_to_gnuplot_clicked), plugin);
+
+	/* Gnuplot button */
+	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "statw_export_to_pcv")), "clicked", 
+					 G_CALLBACK(statw_export_to_pcv_clicked), plugin);
 
 	/* the toogle button is already connected to the run_proc function ! */
 }
