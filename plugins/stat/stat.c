@@ -562,9 +562,9 @@ static void statw_export_to_pcv_clicked(GtkWidget *widget, gpointer data)
 					fprintf(fp, "\ttitle = \"Classical histogram\";\n");
 					fprintf(fp, "}\n");
 					fprintf(fp, "axes {\n");
-					fprintf(fp, "\tinteger a [label=\"Bytes\"];\n");
-					fprintf(fp, "\tinteger b [label=\"Bytes\"];\n");
-					fprintf(fp, "\tinteger c [label=\"Byte count\"];\n");
+					fprintf(fp, "\tchar a [label=\"Bytes\"];\n");
+					fprintf(fp, "\tport c [label=\"Byte count\"];\n");
+					fprintf(fp, "\tchar b [label=\"Bytes\"];\n");
 					fprintf(fp, "}\n");
 					fprintf(fp, "data {\n");
 					
@@ -572,7 +572,21 @@ static void statw_export_to_pcv_clicked(GtkWidget *widget, gpointer data)
 					{
 						for (j=0; j<=255; j++)
 						{
-							fprintf(fp, "\ta=\"%d\", b=\"%d\", c=\"%Ld\";\n", i, j, extra->histo2D[i][j]);
+							if (extra->histo2D[i][j] == extra->infos_2D->max)
+								{
+									fprintf(fp, "\ta=\"%d\", c=\"%Ld\", b=\"%d\" [color=\"red\"];\n", i, extra->histo2D[i][j], j);
+								}
+								else
+								{
+									if (extra->histo2D[i][j] == extra->infos_2D->min)
+										{
+											fprintf(fp, "\ta=\"%d\", c=\"%Ld\", b=\"%d\" [color=\"green\"];\n", i, extra->histo2D[i][j], j);
+										}
+										else
+										{
+											fprintf(fp, "\ta=\"%d\", c=\"%Ld\", b=\"%d\";\n", i, extra->histo2D[i][j], j);
+										}
+								}
 						}
 					}
 					fprintf(fp, "}\n");
