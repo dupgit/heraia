@@ -305,7 +305,7 @@ typedef struct
 /**
  * @struct doc_t
  * Proposal for a structure that will group all informations about
- * a single document
+ * a single document. This structure is managed in heraia_io.c
  */
 typedef struct
 {

@@ -450,7 +450,7 @@ void on_open_activate(GtkWidget *widget, gpointer data)
 	
 	if (select_file_to_load(main_window) == TRUE)
 	{
-		load_file_to_analyse(main_window, main_window->filename);
+		load_file_to_analyse(main_window, heraia_hex_document_get_filename(main_window->current_doc));
 	
 	    /* Not thread safe here ? */
 	    main_window->event = HERAIA_REFRESH_NEW_FILE;
@@ -733,9 +733,9 @@ gboolean select_file_to_load(heraia_window_t *main_window)
 	 *  We want the file selection path to be the one of the previous
 	 *  openned file if any !
 	 */
-	if (main_window->filename != NULL)
+	if ( heraia_hex_document_get_filename(main_window->current_doc) != NULL)
 	   {
-			set_the_working_directory(file_chooser, main_window->filename);
+			set_the_working_directory(file_chooser, heraia_hex_document_get_filename(main_window->current_doc));
 	   }
 	
 	switch (gtk_dialog_run(GTK_DIALOG(file_chooser))) 
@@ -794,9 +794,9 @@ gchar *select_a_file_to_save(heraia_window_t *main_window)
 	gtk_file_chooser_set_do_overwrite_confirmation(fcd, TRUE);
 
 	/* we do want to have the file's directory where to save the new file */
-	if (main_window->filename != NULL)
+	if (heraia_hex_document_get_filename(main_window->current_doc) != NULL)
 	   {
-			set_the_working_directory(fcd, main_window->filename);
+			set_the_working_directory(fcd,  heraia_hex_document_get_filename(main_window->current_doc));
 	   }
 	
 	switch(gtk_dialog_run(GTK_DIALOG(fcd)))

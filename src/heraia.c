@@ -202,7 +202,7 @@ static heraia_window_t *heraia_init_main_struct(void)
 	 *  mode ON which is enabled by default in the configure.ac file !
 	 */
 	herwin->debug = ENABLE_DEBUG;
-	herwin->filename = NULL;
+	/* herwin->filename = NULL; */
 
 	herwin->current_doc = NULL;
 	herwin->plugins_list = NULL;

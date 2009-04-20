@@ -68,6 +68,7 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 			
 				success = TRUE;
 
+			    /* No more needed
 				if (main_window->filename != filename)
 					{
 						if (main_window->filename != NULL)
@@ -76,7 +77,8 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 						}
 						main_window->filename = g_strdup_printf("%s", filename);
 					}
-		
+				*/
+				
 				/* updating the window name and tab's name */
 				update_main_window_name(main_window);
 				set_notebook_tab_name(main_window);
@@ -87,11 +89,11 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 				notebook = heraia_get_widget(main_window->xmls->main, "file_notebook");
 				gtk_widget_show(notebook);
 			
-				log_message(main_window, G_LOG_LEVEL_DEBUG, "file %s loaded !", main_window->filename);
+				log_message(main_window, G_LOG_LEVEL_DEBUG, "file %s loaded !", filename);
 			}
 			else
 			{
-				log_message(main_window, G_LOG_LEVEL_ERROR, "Error while trying to load file %s", main_window->filename);
+				log_message(main_window, G_LOG_LEVEL_ERROR, "Error while trying to load file %s", filename);
 				success = FALSE;
 			}
 			

@@ -62,7 +62,6 @@ HERAIA_ERROR heraia_hex_document_new(heraia_window_t *main_window, char *filenam
 
 
 /**
- * @fn gchar *heraia_hex_document_get_filename(Heraia_Document *doc)
  * Retrieves the filename of a document which ever it is !
  * @param doc : an existing Heraia_Document @todo : do something if
  *        the document does not exist.
@@ -128,11 +127,12 @@ HERAIA_ERROR heraia_hex_document_save_as(heraia_window_t *main_window, gchar *fi
 				main_window->current_doc->file_name = filename;
 				
 				/* This may disappear as it duplicates structures */
-				if (main_window->filename != NULL)
-				{
+				/* if (main_window->filename != NULL)
+				 {
 					 g_free(main_window->filename);
-				}
-				main_window->filename = g_strdup_printf("%s", main_window->current_doc->file_name);
+				 } 
+				 main_window->filename = g_strdup_printf("%s", main_window->current_doc->file_name);
+				*/
 				
 				/* path_end stuff from ghex-window.c from ghex project !!! */
 				for(i = strlen(main_window->current_doc->file_name);

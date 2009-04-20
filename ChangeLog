@@ -1,3 +1,8 @@
+20.04.2009
+    - Olivier Delhomme <heraia@delhomme.org>
+	  * begining work to get rid of the filename's name in heraia_window_t 
+	    structure  
+	  
 11.04.2009
 	- Olivier Delhomme <heraia@delhomme.org>
 	  * Changing output format for 2D PCV exports (now fancier)

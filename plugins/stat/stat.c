@@ -685,10 +685,10 @@ static void realize_some_numerical_stat(heraia_window_t *main_struct, heraia_plu
 
 	if (main_struct->filename != NULL)
 		{
-			log_message(main_struct, G_LOG_LEVEL_INFO, "Calculating stats on %s", main_struct->filename);
+			log_message(main_struct, G_LOG_LEVEL_INFO, "Calculating stats on %s",  heraia_hex_document_get_filename(main_struct->current_doc));
 
 			stat_buf = (struct stat *) g_malloc0 (sizeof(struct stat));
-			lstat(main_struct->filename, stat_buf);
+			g_lstat(heraia_hex_document_get_filename(main_struct->current_doc), stat_buf);
 			if (S_ISREG(stat_buf->st_mode))
 				{
 					kill_text_from_textview(textview);
