@@ -447,8 +447,10 @@ void refresh_event_handler(GtkWidget *widget, gpointer data)
 void on_open_activate(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
+	gchar *filename = NULL;
 	
-	if (select_file_to_load(main_window) == TRUE)
+	filename = select_file_to_load(main_window);
+	if ( filename != NULL)
 	{
 		load_file_to_analyse(main_window, heraia_hex_document_get_filename(main_window->current_doc));
 	
@@ -706,7 +708,7 @@ static void set_the_working_directory(GtkFileChooser *file_chooser, gchar *filen
  * @param main_window : main structure
  * @return returns TRUE if everything went ok, FALSE otherwise
  */
-gboolean select_file_to_load(heraia_window_t *main_window)
+gchar *select_file_to_load(heraia_window_t *main_window)
 {
 	GtkWidget *parent = NULL; /* A parent window (we use main_window)      */
 	GtkFileChooser *file_chooser = NULL;
@@ -744,25 +746,23 @@ gboolean select_file_to_load(heraia_window_t *main_window)
 			filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(file_chooser));
 			log_message(main_window, G_LOG_LEVEL_DEBUG, "filename selected : %s", filename);
 			
-			/* this should be managed with lists and not here !! */		
+			/* this should be managed with lists and not here !! 	
 			if (main_window->filename != NULL)
 		       {
 					g_free(main_window->filename);
 		       }
+			*/	
 			
-			main_window->filename = g_strdup_printf("%s", filename);
-			success = TRUE;
+			gtk_widget_destroy(GTK_WIDGET(file_chooser));
+			return filename;
 		 break;
+		 
 		case GTK_RESPONSE_CANCEL:
 		default:
-			success = FALSE;
+			gtk_widget_destroy(GTK_WIDGET(file_chooser));	
+			return NULL;
 		 break;
 	   }
-	
-	g_free(filename);
-	gtk_widget_destroy(GTK_WIDGET(file_chooser));
-	
-	return success;
 }
 
 /**

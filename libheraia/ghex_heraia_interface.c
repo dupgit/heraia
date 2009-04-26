@@ -69,7 +69,14 @@ HERAIA_ERROR heraia_hex_document_new(heraia_window_t *main_window, char *filenam
  */
 gchar *heraia_hex_document_get_filename(Heraia_Document *doc)
 {
-	return doc->file_name;
+	if (doc != NULL)
+	{
+		return doc->file_name;
+	}
+	else
+	{
+		return NULL;
+	}
 }
 
 

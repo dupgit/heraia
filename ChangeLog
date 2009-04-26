@@ -1,3 +1,8 @@
+26.04.2009
+    - Olivier Delhomme <heraia@delhomme.org>
+	  * Trying to figure out what may cause this whole mess and added coherence
+	    between function select_file_to_load and select_a_file_to_save
+
 20.04.2009
     - Olivier Delhomme <heraia@delhomme.org>
 	  * begining work to get rid of the filename's name in heraia_window_t 
