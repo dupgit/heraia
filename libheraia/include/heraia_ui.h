@@ -58,8 +58,7 @@ extern void init_window_states(heraia_window_t *main_window);
 /* refreshing things */
 extern void refresh_event_handler(GtkWidget *widget, gpointer data);
 extern void refresh_file_labels(heraia_window_t *main_window);
-extern void connect_cursor_moved_signal(heraia_window_t *main_window);
-
+extern void connect_cursor_moved_signal(heraia_window_t *main_window, GtkWidget *hex_widget);
 
 /* window positionning system */
 extern void record_dialog_box_position(GtkWidget *dialog_box, window_prop_t *dialog_prop);
@@ -90,6 +89,6 @@ extern void update_main_window_name(heraia_window_t *main_window);
 
 /* NoteBook */
 extern void set_notebook_tab_name(heraia_window_t *main_window);
-
+extern void add_new_tab_in_main_window(heraia_window_t *main_window, doc_t *doc);
 
 #endif /* _LIBHERAIA_HERAIA_UI_H_ */

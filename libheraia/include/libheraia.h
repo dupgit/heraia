@@ -166,7 +166,7 @@ typedef struct
 typedef struct
 {
     /** Current Hexwidget that we want data to be interpreted */
-    GtkWidget *current_hexwidget;  /** @todo we may want to move this from here to heraia_window_t structure */
+    GtkWidget *current_hexwidget;  /** @todo we may want to move this from here to heraia_window_t structure. This should not be used anymore */
     GtkWidget *diw;                /**< data interpretor window                                              */
     gint tab_displayed;            /**< keeps the last displayed tab's number before closing                 */
     guint nb_tabs;                 /**< keeps Number of tabs in the GPtrArray                                */
@@ -309,8 +309,8 @@ typedef struct
  */
 typedef struct
 {
-	Heraia_Document *doc;  /**< Document definition related to libgtkhex */
-	GtkWidget *hexwidget;  /**< hexwidget corresponding to the document  */
+	Heraia_Document *hex_doc;  /**< Document definition related to libgtkhex */
+	GtkWidget *hex_widget;     /**< hexwidget corresponding to the document  */
 } doc_t;
 
 
@@ -323,8 +323,8 @@ typedef struct
 {
 	gboolean  debug;                /**< Used to tell the program wether we want to display debug messages or not  */
 	gchar *filename;                /**< this could (should) be a list of filenames !!!                            */
-	Heraia_Document *current_doc;   /**< We may want to group this with current_hexwidget in a specific struct     */
-	GArray *documents;				/**< An array of doc_t in order to be able to open more than one doc           */
+	doc_t *current_doc;             /**< This should be a pointer to the current edited document                   */
+	GPtrArray *documents;		    /**< An array of doc_t in order to be able to open more than one doc           */
 	xml_t *xmls;                    /**< All the xmls used in the program, loaded at running time                  */
    	data_window_t *current_DW;      /**< data_interpretor pointer                                                  */
 	GList *location_list;           /**< this is the location list where we store some paths                       */

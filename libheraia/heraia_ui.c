@@ -448,15 +448,18 @@ void on_open_activate(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	gchar *filename = NULL;
+	gboolean success = FALSE;
 	
 	filename = select_file_to_load(main_window);
 	if ( filename != NULL)
 	{
-		load_file_to_analyse(main_window, heraia_hex_document_get_filename(main_window->current_doc));
-	
-	    /* Not thread safe here ? */
-	    main_window->event = HERAIA_REFRESH_NEW_FILE;
-	    refresh_event_handler(main_window->current_DW->current_hexwidget, main_window);
+		success = load_file_to_analyse(main_window, filename);
+		if (success == TRUE)
+		 {
+			/* Not thread safe here ? */
+			main_window->event = HERAIA_REFRESH_NEW_FILE;
+			refresh_event_handler(main_window->current_DW->current_hexwidget, main_window);
+		 }
 	}
 }
 
@@ -481,7 +484,7 @@ void on_save_activate(GtkWidget *widget, gpointer data)
 
 		if (erreur != HERAIA_NOERR)
 		{
-			filename = heraia_hex_document_get_filename(main_window->current_doc);
+			filename = doc_t_document_get_filename(main_window->current_doc);
 			log_message(main_window, G_LOG_LEVEL_ERROR, "Error while saving file %s !", filename);
 		}
 	}
@@ -520,7 +523,7 @@ void on_save_as_activate(GtkWidget *widget, gpointer data)
 			}
 			else
 			{
-				log_message(main_window, G_LOG_LEVEL_ERROR, "Error while saving file as %s", main_window->current_doc->file_name);
+				log_message(main_window, G_LOG_LEVEL_ERROR, "Error while saving file as %s", doc_t_document_get_filename(main_window->current_doc));
 			}
 		}
 		else
@@ -528,7 +531,7 @@ void on_save_as_activate(GtkWidget *widget, gpointer data)
 			/* updating the window name and tab's name */
 			update_main_window_name(main_window);
 			set_notebook_tab_name(main_window);
-			log_message(main_window, G_LOG_LEVEL_DEBUG, "File %s saved and now edited.", main_window->current_doc->file_name);
+			log_message(main_window, G_LOG_LEVEL_DEBUG, "File %s saved and now edited.", doc_t_document_get_filename(main_window->current_doc));
 		}
 	}
 }
@@ -712,7 +715,6 @@ gchar *select_file_to_load(heraia_window_t *main_window)
 {
 	GtkWidget *parent = NULL; /* A parent window (we use main_window)      */
 	GtkFileChooser *file_chooser = NULL;
-	gboolean success = FALSE;
 	gchar *filename = NULL;   /* filename selected (if any) to be openned  */
 	
 	parent = heraia_get_widget(main_window->xmls->main, "main_window");
@@ -735,9 +737,9 @@ gchar *select_file_to_load(heraia_window_t *main_window)
 	 *  We want the file selection path to be the one of the previous
 	 *  openned file if any !
 	 */
-	if ( heraia_hex_document_get_filename(main_window->current_doc) != NULL)
+	if (doc_t_document_get_filename(main_window->current_doc) != NULL)
 	   {
-			set_the_working_directory(file_chooser, heraia_hex_document_get_filename(main_window->current_doc));
+			set_the_working_directory(file_chooser, doc_t_document_get_filename(main_window->current_doc));
 	   }
 	
 	switch (gtk_dialog_run(GTK_DIALOG(file_chooser))) 
@@ -794,9 +796,9 @@ gchar *select_a_file_to_save(heraia_window_t *main_window)
 	gtk_file_chooser_set_do_overwrite_confirmation(fcd, TRUE);
 
 	/* we do want to have the file's directory where to save the new file */
-	if (heraia_hex_document_get_filename(main_window->current_doc) != NULL)
+	if (doc_t_document_get_filename(main_window->current_doc) != NULL)
 	   {
-			set_the_working_directory(fcd,  heraia_hex_document_get_filename(main_window->current_doc));
+			set_the_working_directory(fcd, doc_t_document_get_filename(main_window->current_doc));
 	   }
 	
 	switch(gtk_dialog_run(GTK_DIALOG(fcd)))
@@ -825,11 +827,15 @@ void update_main_window_name(heraia_window_t *main_window)
 {
 	GtkWidget *widget = NULL;
 	gchar *filename = NULL;
+	gchar *whole_filename = NULL;
 	
 	if (main_window != NULL && main_window->current_doc != NULL)
 	   {
 			widget = heraia_get_widget(main_window->xmls->main, "main_window");
-		    filename = g_filename_display_basename(main_window->current_doc->file_name);
+			
+			whole_filename = doc_t_document_get_filename(main_window->current_doc);
+			
+		    filename = g_filename_display_basename(whole_filename);
 		   
 			gtk_window_set_title(GTK_WINDOW(widget), filename);
 	   }
@@ -846,7 +852,9 @@ void set_notebook_tab_name(heraia_window_t *main_window)
 	GtkWidget *notebook = NULL; /* file notebook in main window       */
 	GtkWidget *page = NULL;     /* Current page for the file notebook */
 	GtkWidget *label = NULL;    /* tab's label                        */
+	doc_t *doc = NULL;			/* corresponding tab's document       */
 	gchar *filename = NULL;
+	gchar *whole_filename;
 	gint current = 0;
 	
 	if (main_window != NULL && main_window->current_doc != NULL)
@@ -855,14 +863,21 @@ void set_notebook_tab_name(heraia_window_t *main_window)
 		   current = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
 		   page = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), current);
 		   label = gtk_notebook_get_tab_label(GTK_NOTEBOOK(notebook), page);
-		   filename = g_filename_display_basename(main_window->current_doc->file_name);
-		   gtk_label_set_text(GTK_LABEL(label), filename);
 		   
-		   /* gtk_widget_set_tooltip_text is available since gtk 2.12 */
-		   if (GTK_MINOR_VERSION >= 12) 
-			{ 
-				gtk_widget_set_tooltip_text(label, g_filename_display_name(main_window->current_doc->file_name));
-			}
+		   doc = g_ptr_array_index(main_window->documents, current);
+		   whole_filename = doc_t_document_get_filename(doc);
+		   
+		   if (whole_filename != NULL)
+		   {
+				filename = g_filename_display_basename(whole_filename);
+				gtk_label_set_text(GTK_LABEL(label), filename);
+				
+				/* gtk_widget_set_tooltip_text is available since gtk 2.12 */
+				if (GTK_MINOR_VERSION >= 12) 
+				{ 
+					gtk_widget_set_tooltip_text(label, g_filename_display_name(whole_filename));
+				}
+		   }
 	   }
 }
 
@@ -946,9 +961,9 @@ static gboolean load_heraia_glade_xml(heraia_window_t *main_window)
  *  the refreshing function
  * @param main_window : main structure 
  */
-void connect_cursor_moved_signal(heraia_window_t *main_window)
+void connect_cursor_moved_signal(heraia_window_t *main_window, GtkWidget *hex_widget)
 {
-	g_signal_connect(G_OBJECT(main_window->current_DW->current_hexwidget), "cursor_moved",   
+	g_signal_connect(G_OBJECT(hex_widget), "cursor_moved", 
 					 G_CALLBACK(refresh_event_handler), main_window);
 }
 
@@ -1424,4 +1439,25 @@ void init_window_states(heraia_window_t *main_window)
 			}
 		}
 	}
+}
+
+
+void add_new_tab_in_main_window(heraia_window_t *main_window, doc_t *doc)
+{
+	GtkWidget *vbox = NULL;       /**< used for vbox creation          */
+	GtkNotebook *notebook = NULL; /**< file_notebook from heraia.glade */
+	GtkWidget *tab_label = NULL;  /**< tab's label                     */
+	
+	notebook = GTK_NOTEBOOK(heraia_get_widget(main_window->xmls->main, "file_notebook"));
+	vbox = gtk_vbox_new(FALSE, 2);
+	gtk_box_pack_start(GTK_BOX(vbox), doc->hex_widget, TRUE, TRUE, 3);
+
+	tab_label = gtk_label_new(NULL);
+
+	gtk_widget_show_all(vbox);
+	gtk_notebook_append_page(notebook, vbox, tab_label);
+	
+	/* This may not be necessary here has it is done later
+		set_notebook_tab_name(main_window);
+	*/
 }

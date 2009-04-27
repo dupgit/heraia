@@ -228,7 +228,7 @@ static heraia_window_t *heraia_init_main_struct(void)
 	herwin = init_window_property_struct(herwin);
 
 	/* documents */
-	herwin->documents = g_array_new(FALSE, TRUE, sizeof(doc_t));
+	herwin->documents = g_ptr_array_new();
 
 	/* init global variable for the library */
 	libheraia_main_struct = herwin;

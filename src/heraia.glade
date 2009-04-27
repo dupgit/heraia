@@ -145,8 +145,8 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Data _Interpretor</property>
                         <property name="use_underline">True</property>
-                        <accelerator key="I" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_DIMenu_activate"/>
+                        <accelerator key="I" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </widget>
                     </child>
                     <child>
@@ -362,54 +362,7 @@
               <widget class="GtkNotebook" id="file_notebook">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <child>
-                  <widget class="GtkVBox" id="vbox1">
-                    <property name="visible">True</property>
-                    <property name="border_width">2</property>
-                    <property name="spacing">2</property>
-                    <child>
-                      <placeholder/>
-                    </child>
-                  </widget>
-                </child>
-                <child>
-                  <widget class="GtkLabel" id="label32">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">page 1</property>
-                  </widget>
-                  <packing>
-                    <property name="tab_fill">False</property>
-                    <property name="type">tab</property>
-                  </packing>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <widget class="GtkLabel" id="label33">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">page 2</property>
-                  </widget>
-                  <packing>
-                    <property name="position">1</property>
-                    <property name="tab_fill">False</property>
-                    <property name="type">tab</property>
-                  </packing>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <widget class="GtkLabel" id="label34">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">page 3</property>
-                  </widget>
-                  <packing>
-                    <property name="position">2</property>
-                    <property name="tab_fill">False</property>
-                    <property name="type">tab</property>
-                  </packing>
-                </child>
+                <property name="scrollable">True</property>
               </widget>
               <packing>
                 <property name="resize">True</property>

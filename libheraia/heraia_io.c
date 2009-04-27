@@ -42,7 +42,7 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 	struct stat *stat_buf = NULL;
 	gboolean success = FALSE;
 	GtkWidget *notebook = NULL;
-	HERAIA_ERROR status = HERAIA_NOERR;
+	doc_t* doc = NULL;
 
 	g_return_val_if_fail(filename != NULL, FALSE);
 	g_return_val_if_fail(main_window != NULL, FALSE);
@@ -55,16 +55,20 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 	if (S_ISREG(stat_buf->st_mode) && stat_buf->st_size>0)
 		{
 
-			status = heraia_hex_document_new(main_window, filename); /* removes the old hexdocument and adds a new one */
+			doc = heraia_hex_document_new(main_window, filename); /* removes the old hexdocument and adds a new one */
 
-			if (status == HERAIA_NOERR)
+			if (doc != NULL)
 			{
+				add_new_tab_in_main_window(main_window, doc);
+				
+				/*
 				gtk_box_pack_start(GTK_BOX(heraia_get_widget(main_window->xmls->main, "vbox1")), 
 								   main_window->current_DW->current_hexwidget, TRUE, TRUE, 0);
 			
 				gtk_widget_show(main_window->current_DW->current_hexwidget);
+				*/
 
-				log_message(main_window, G_LOG_LEVEL_DEBUG, "Hexwidget : %p", main_window->current_DW->current_hexwidget);
+				log_message(main_window, G_LOG_LEVEL_DEBUG, "Hexwidget : %p", doc->hex_widget);
 			
 				success = TRUE;
 
@@ -217,23 +221,4 @@ gboolean save_preferences_to_file(prefs_t *prefs)
 	}
 	
 	return result;
-}
-
-/**
- * Inits a doc_t structure
- * @param doc : hex_document but encapsulated in Heraia_Document 
- *              structure
- * @param hexwidget : Widget to display an hexadecimal view of the file
- * @return returns a newly allocated doc_t structure
- */
-doc_t *new_doc_t(Heraia_Document *doc, GtkWidget *hexwidget)
-{
-	doc_t *new_doc;
-	
-	new_doc = (doc_t *) g_malloc0(sizeof(doc_t));
-	
-	new_doc->doc = doc;
-	new_doc->hexwidget = hexwidget;
-	
-	return new_doc;
 }

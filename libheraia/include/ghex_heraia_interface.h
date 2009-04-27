@@ -30,11 +30,14 @@
 extern gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, guint endianness, guchar *result);
 extern gboolean ghex_get_data(data_window_t *data_window, guint length, guint endianness, guchar *c);
 
-extern HERAIA_ERROR heraia_hex_document_new(heraia_window_t *main_window, char *filename);
+extern doc_t *heraia_hex_document_new(heraia_window_t *main_window, char *filename);
 extern HERAIA_ERROR heraia_hex_document_save(heraia_window_t *main_window);
 extern HERAIA_ERROR heraia_hex_document_save_as(heraia_window_t *main_window, gchar *filename);
-extern gchar *heraia_hex_document_get_filename(Heraia_Document *doc);
+extern gchar *heraia_hex_document_get_filename(Heraia_Document *hex_doc);
+extern gchar *doc_t_document_get_filename(doc_t *doc);
 extern guint64 ghex_file_size(GtkHex *gh);
 extern guint64 ghex_get_cursor_position(data_window_t *data_window);
+
+extern doc_t *new_doc_t(Heraia_Document *hex_doc, GtkWidget *hex_widget);
 
 #endif /* _GHEX_HERAIA_INTERFACE_H_ */

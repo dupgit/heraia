@@ -1,3 +1,11 @@
+27.04.2009
+    - Olivier Delhomme <heraia@delhomme.org>
+	  * Trying to get rid of those old structures, merging Heraia_Document and
+	    HexWidget in one (doc_t *). All documents are managed in the array of 
+		pointer named "documents" in the main structure.
+		current_doc has changed it's type to reflect a pointer to the current 
+		document structure in the array.
+
 26.04.2009
     - Olivier Delhomme <heraia@delhomme.org>
 	  * Trying to figure out what may cause this whole mess and added coherence

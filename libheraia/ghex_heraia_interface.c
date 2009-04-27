@@ -35,9 +35,14 @@
  * @return Always returns HERAIA_NOERR; @todo : do something to take errors into
  *         account
  */
-HERAIA_ERROR heraia_hex_document_new(heraia_window_t *main_window, char *filename) 
+doc_t *heraia_hex_document_new(heraia_window_t *main_window, char *filename) 
 {
-	if (main_window->current_doc != NULL)
+	Heraia_Document *hex_doc = NULL;
+	GtkWidget *hex_widget = NULL;
+	doc_t *doc = NULL;
+
+	/* There is no more reasons that we destroy any documents here */
+	/* if (main_window->current_doc != NULL)
 		{
 			hex_document_remove_view(main_window->current_doc, main_window->current_DW->current_hexwidget);
 		}
@@ -46,38 +51,68 @@ HERAIA_ERROR heraia_hex_document_new(heraia_window_t *main_window, char *filenam
 		{
 			gtk_widget_destroy(main_window->current_DW->current_hexwidget);
 		}
+	*/
 	
-	main_window->current_doc = hex_document_new_from_file(filename);
-	if (main_window->current_doc != NULL)
+	/* Creating a new hex document */
+	hex_doc = hex_document_new_from_file(filename);
+	
+	if (hex_doc != NULL)
 	 {
-		main_window->current_DW->current_hexwidget = hex_document_add_view(main_window->current_doc);
-		connect_cursor_moved_signal(main_window);
-		return HERAIA_NOERR;
+		/* creating a new view to this new document */
+		hex_widget = hex_document_add_view(hex_doc);
+		
+		/* joining those two new structures in one */
+		doc = new_doc_t(hex_doc, hex_widget);
+		
+		/* Adding this new doc to the list of docs (here a GPtrArray) */
+		g_ptr_array_add(main_window->documents, doc);
+		
+		/* signal connection on cursor moves */
+		connect_cursor_moved_signal(main_window, hex_widget);
+		
+		return doc;
 	 }
 	 else
 	 {
-		 return HERAIA_FILE_ERROR;
+		 return NULL;
 	 }
 }
 
 
 /**
  * Retrieves the filename of a document which ever it is !
- * @param doc : an existing Heraia_Document @todo : do something if
- *        the document does not exist.
+ * @param doc : an Heraia_Document 
  * @return returns the filename of that document.
  */
-gchar *heraia_hex_document_get_filename(Heraia_Document *doc)
+gchar *heraia_hex_document_get_filename(Heraia_Document *hex_doc)
 {
-	if (doc != NULL)
+	if (hex_doc != NULL)
 	{
-		return doc->file_name;
+		return hex_doc->file_name;
 	}
 	else
 	{
 		return NULL;
 	}
 }
+
+/**
+ * Retrieves from a doc_t * document it's filename, which ever it is 
+ * @param doc : an existing doc_t 
+ * @return returns the filename of that document.
+ */
+gchar *doc_t_document_get_filename(doc_t *doc)
+{
+	if (doc != NULL)
+	{
+		return heraia_hex_document_get_filename(doc->hex_doc);
+	}
+	else
+	{
+		return NULL;
+	}
+}
+
 
 
 /**
@@ -91,22 +126,24 @@ HERAIA_ERROR heraia_hex_document_save(heraia_window_t *main_window)
 	gint return_value = FALSE;
 	
 	if (main_window->current_doc != NULL)
-	   {
-				return_value = hex_document_write(main_window->current_doc);
+	{
+		if (main_window->current_doc->hex_doc != NULL)
+		{
+			return_value = hex_document_write(main_window->current_doc->hex_doc);
 		}
+	}
 	
 	if (return_value != FALSE)
-	   {
-				return HERAIA_NOERR;
-		}
-	 else
-	   {	
-				return HERAIA_FILE_ERROR;
-	   }
+	{
+		return HERAIA_NOERR;
+	}
+	else
+	{	
+		return HERAIA_FILE_ERROR;
+	}
 }
 
 /**
- * @fn HERAIA_ERROR heraia_hex_document_save_as(heraia_window_t *main_window, gchar *filename)
  * Saves an opened and edited document to a new file
  * @param main_window : main structure
  * @param filename : the new filename where to save the file
@@ -119,19 +156,21 @@ HERAIA_ERROR heraia_hex_document_save_as(heraia_window_t *main_window, gchar *fi
 	gint i = 0;
 	gchar *path_end = NULL; /**< to make libghex happy ! */
 	
-	if (main_window->current_doc != NULL && filename != NULL)
+	if (main_window->current_doc != NULL && main_window->current_doc->hex_doc != NULL && filename != NULL)
 	   {
 			fp = fopen(filename, "w");
 			if (fp != NULL)
 			{
-				return_value = hex_document_write_to_file(main_window->current_doc, fp);
+				return_value = hex_document_write_to_file(main_window->current_doc->hex_doc, fp);
 				fclose(fp);
 				
-				if (main_window->current_doc->file_name)
+				/* This may not be necessary any more as we have separated docs 
+				 if (main_window->current_doc->file_name)
 				 {
 					 g_free(main_window->current_doc->file_name);
 				 }
 				main_window->current_doc->file_name = filename;
+				*/
 				
 				/* This may disappear as it duplicates structures */
 				/* if (main_window->filename != NULL)
@@ -142,30 +181,29 @@ HERAIA_ERROR heraia_hex_document_save_as(heraia_window_t *main_window, gchar *fi
 				*/
 				
 				/* path_end stuff from ghex-window.c from ghex project !!! */
-				for(i = strlen(main_window->current_doc->file_name);
-                        (i >= 0) && (main_window->current_doc->file_name[i] != '/');
+				for(i = strlen(main_window->current_doc->hex_doc->file_name);
+                        (i >= 0) && (main_window->current_doc->hex_doc->file_name[i] != '/');
                         i--);
-				if (main_window->current_doc->file_name[i] == '/')
-                path_end = &main_window->current_doc->file_name[i+1];
+				if (main_window->current_doc->hex_doc->file_name[i] == '/')
+					path_end = &main_window->current_doc->hex_doc->file_name[i+1];
 				else
-               path_end = main_window->current_doc->file_name;
+					path_end = main_window->current_doc->hex_doc->file_name;
             
-				main_window->current_doc->path_end = g_filename_to_utf8(path_end, -1, NULL, NULL, NULL);
+				main_window->current_doc->hex_doc->path_end = g_filename_to_utf8(path_end, -1, NULL, NULL, NULL);
 			}
 		}
 	
 	if (return_value != FALSE)
-	   {
-				return HERAIA_NOERR;
-		}
-	 else
-	   {	
-				return HERAIA_FILE_ERROR;
-	   }
+	{
+		return HERAIA_NOERR;
+	}
+	else
+	{	
+		return HERAIA_FILE_ERROR;
+	}
 }
 
 /**
- * @fn void change_endianness(guint len, guint endianness, guchar *result)
  *  Deals with the endianness of 'len' bytes located in 'result'
  *  for BIG_ENDIAN we only swap bytes if we have two or more of them
  *  if we have only one byte, we reverse its order
@@ -204,7 +242,6 @@ static void change_endianness(guint len, guint endianness, guchar *result)
 
 
 /**
- * @fn gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, guint endianness, guchar *result) 
  *  Returns 'len' number of bytes located at 'pos' in the GtkHex 
  *  document and puts it in the result variable
  *
@@ -250,7 +287,6 @@ gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, guint endianness, guchar 
 
 
 /**
- * @fn ghex_get_data(data_window_t *data_window, guint length, guint endianness, guchar *c)
  *  Gets the data from the hexwidget, a wrapper to the ghex_memcpy
  *  function. 
  *  @warning guchar *c MUST have been pre allocated BEFORE the call.
@@ -283,7 +319,6 @@ gboolean ghex_get_data(data_window_t *data_window, guint length, guint endiannes
 
 
 /**
- * @fn guint64 ghex_file_size(GtkHex *gh)
  *  Returns the file size of an opened GtkHex document.
  * @param gh : an opened GtkHex document
  * @return resturns the file size of that document
@@ -301,7 +336,6 @@ guint64 ghex_file_size(GtkHex *gh)
 }
 
 /**
- * @fn guint64 ghex_get_cursor_position(data_window_t *data_window)
  *  Retrieves the cursor's position from the current hexwidget
  * @param data_window : data interpretor window structure
  * @return returns the cursor's position
@@ -320,4 +354,24 @@ guint64 ghex_get_cursor_position(data_window_t *data_window)
 	{
 		  return 0;
 	}
+}
+
+
+/**
+ * Inits a doc_t structure
+ * @param doc : hex_document but encapsulated in Heraia_Document 
+ *              structure
+ * @param hexwidget : Widget to display an hexadecimal view of the file
+ * @return returns a newly allocated doc_t structure
+ */
+doc_t *new_doc_t(Heraia_Document *hex_doc, GtkWidget *hex_widget)
+{
+	doc_t *new_doc;
+	
+	new_doc = (doc_t *) g_malloc0(sizeof(doc_t));
+	
+	new_doc->hex_doc = hex_doc;
+	new_doc->hex_widget = hex_widget;
+	
+	return new_doc;
 }

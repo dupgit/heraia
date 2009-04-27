@@ -683,12 +683,12 @@ static void realize_some_numerical_stat(heraia_window_t *main_struct, heraia_plu
 	stat_t *extra = NULL;
 	GtkTextView *textview = GTK_TEXT_VIEW(glade_xml_get_widget(plugin->xml, "statw_textview"));
 
-	if (main_struct->filename != NULL)
+	if (main_struct->filename != NULL && main_struct->current_doc != NULL)
 		{
-			log_message(main_struct, G_LOG_LEVEL_INFO, "Calculating stats on %s",  heraia_hex_document_get_filename(main_struct->current_doc));
+			log_message(main_struct, G_LOG_LEVEL_INFO, "Calculating stats on %s",  doc_t_document_get_filename(main_struct->current_doc));
 
 			stat_buf = (struct stat *) g_malloc0 (sizeof(struct stat));
-			g_lstat(heraia_hex_document_get_filename(main_struct->current_doc), stat_buf);
+			g_lstat(doc_t_document_get_filename(main_struct->current_doc), stat_buf);
 			if (S_ISREG(stat_buf->st_mode))
 				{
 					kill_text_from_textview(textview);
