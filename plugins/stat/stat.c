@@ -2,24 +2,24 @@
 /*
   stat.c
   an heraia plugin to calculate some stats on the opened file
- 
+
   (C) Copyright 2007 - 2009 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
- 
+
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
-  the Free Software Foundation; either version 2, or  (at your option) 
+  the Free Software Foundation; either version 2, or  (at your option)
   any later version.
- 
+
   This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY;  without even the implied warranty of
   MERCHANTABILITY  or  FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
+  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 /**
  * @file stat.c
@@ -98,11 +98,11 @@ heraia_plugin_t *heraia_plugin_init(heraia_plugin_t *plugin)
 	stat_prop->displayed = FALSE; /* by default, it might be anything else */
 	stat_prop->x = 0;
 	stat_prop->y = 0;
-	
+
 	plugin->win_prop = stat_prop;
-	
+
 	plugin->extra = extra;
-	
+
 
 	return plugin;
 }
@@ -121,7 +121,7 @@ void init(heraia_window_t *main_struct)
 	log_message(main_struct, G_LOG_LEVEL_INFO, "Initializing plugin %s", PLUGIN_NAME);
 	/* first, know who we are ! */
 	plugin = find_plugin_by_name(main_struct->plugins_list, PLUGIN_NAME);
-	
+
 	if (plugin != NULL)
 		{
 			/* load the xml interface */
@@ -134,10 +134,10 @@ void init(heraia_window_t *main_struct)
 			{
 				log_message(main_struct, G_LOG_LEVEL_WARNING, "Unable to load %s xml interface.", plugin->info->name);
 			}
-			
+
 			/* greyed save as button and others */
 			set_statw_button_state(plugin->xml, FALSE);
-			
+
 			/* shows or hide the interface (hides it at first as all windows shows up) */
 			if (plugin->win_prop->displayed == FALSE)
 			{
@@ -155,10 +155,10 @@ void init(heraia_window_t *main_struct)
 }
 
 
-/**  
+/**
  *  Normaly this is called when the plugin is unloaded
  *  One may wait it's entire life for this to be called !! ;)
- */ 
+ */
 void quit(void)
 {
 	g_print("Quitting %s\n", PLUGIN_NAME);
@@ -168,7 +168,7 @@ void quit(void)
 /**
  *  This function is called via a signal handler when the menu entry is toggled
  * @param widget : widget which called the function (unused)
- * @param data : user data for the plugin, here MUST be heraia_window_t * main 
+ * @param data : user data for the plugin, here MUST be heraia_window_t * main
  *        structure
  */
 void run(GtkWidget *widget, gpointer data)
@@ -178,7 +178,7 @@ void run(GtkWidget *widget, gpointer data)
 
 	/* first, know who we are ! */
 	plugin = find_plugin_by_name(main_struct->plugins_list, PLUGIN_NAME);
-	
+
 	if (plugin != NULL)
 		{
 			show_hide_widget(GTK_WIDGET(glade_xml_get_widget(plugin->xml, "stat_window")),
@@ -197,7 +197,7 @@ void run(GtkWidget *widget, gpointer data)
 
 
 /**
- * Sets stat window's button's sensitive property 
+ * Sets stat window's button's sensitive property
  * @param xml : The plugin's xml description
  * @param sensitive : whether the buttons are greyed (FALSE) or not (TRUE)
  */
@@ -208,6 +208,7 @@ static void set_statw_button_state(GladeXML *xml, gboolean sensitive)
 		gtk_widget_set_sensitive(glade_xml_get_widget(xml, "statw_save_as"), sensitive);
 		gtk_widget_set_sensitive(glade_xml_get_widget(xml, "statw_export_to_csv"), sensitive);
 		gtk_widget_set_sensitive(glade_xml_get_widget(xml, "statw_export_to_gnuplot"), sensitive);
+		gtk_widget_set_sensitive(glade_xml_get_widget(xml, "statw_export_to_pcv"), sensitive);
 	}
 }
 
@@ -225,7 +226,7 @@ void refresh(heraia_window_t *main_struct, void *data)
 
 	if (main_struct != NULL && plugin != NULL)
 		{
-			if (main_struct->event == HERAIA_REFRESH_NEW_FILE) /* && plugin->state == PLUGIN_STATE_RUNNING) */
+			if (main_struct->event == HERAIA_REFRESH_NEW_FILE || main_struct->event == HERAIA_REFRESH_TAB_CHANGED) /* && plugin->state == PLUGIN_STATE_RUNNING) */
 				{
 					set_statw_button_state(plugin->xml, TRUE);
 					plugin->run_proc(NULL, (gpointer) main_struct);
@@ -302,7 +303,7 @@ static void statw_save_as_clicked(GtkWidget *widget, gpointer data)
 		{
 			image = GTK_IMAGE(glade_xml_get_widget(plugin->xml, "histo_image"));
 			pixbuf = gtk_image_get_pixbuf(image);
-			
+
 			filename = stat_select_file_to_save("Enter filename's to save the image to");
 			if (filename != NULL)
 			{
@@ -326,11 +327,11 @@ static gchar *stat_select_file_to_save(gchar *window_text)
 	gchar *filename;
 
 	file_chooser = GTK_FILE_CHOOSER(gtk_file_chooser_dialog_new(window_text, NULL,
-																GTK_FILE_CHOOSER_ACTION_SAVE, 
+																GTK_FILE_CHOOSER_ACTION_SAVE,
 																GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-																GTK_STOCK_OPEN, GTK_RESPONSE_OK, 
+																GTK_STOCK_OPEN, GTK_RESPONSE_OK,
 																NULL));
-																
+
 	/* file_selector = GTK_FILE_SELECTION (gtk_file_selection_new(window_text)); */
 
 	/* for the moment we do not want to retrieve multiples selections */
@@ -340,8 +341,8 @@ static gchar *stat_select_file_to_save(gchar *window_text)
 
 	/* response_id = gtk_dialog_run(GTK_DIALOG (file_selector)); */
 	response_id = gtk_dialog_run(GTK_DIALOG(file_chooser));
-	
-	switch (response_id) 
+
+	switch (response_id)
 		{
 		case GTK_RESPONSE_OK:
 			filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(file_chooser));
@@ -354,7 +355,7 @@ static gchar *stat_select_file_to_save(gchar *window_text)
 		}
 
 	/* gtk_widget_destroy (GTK_WIDGET(file_selector)); */
-	
+
 	gtk_widget_destroy(GTK_WIDGET(file_chooser));
 	return filename;
 }
@@ -372,33 +373,33 @@ static void statw_export_to_csv_clicked(GtkWidget *widget, gpointer data)
 	FILE *fp = NULL;
 	guint i = 0;
 	guint j = 0;
-	
+
 	if (plugin != NULL)
 		{
 			extra = (stat_t *) plugin->extra;
-			
+
 			filename = stat_select_file_to_save("Enter filename to export data as CSV to");
-			
+
 			if (filename != NULL)
 			{
 				fp = g_fopen(filename, "w+");
 			}
-			
+
 			if (fp != NULL && extra != NULL)
 			{
 				if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(glade_xml_get_widget(plugin->xml, "rb_1D"))) == TRUE)
-				{ 
+				{
 					/* 1D display */
 					fprintf(fp, "\"Byte\";\"Count\"\n");
-					
+
 					for (i=0; i<=255; i++)
 					{
 						fprintf(fp, "%d;%Ld\n", i, extra->histo1D[i]);
 					}
-					
+
 				}
 				else
-				{ 
+				{
 					/* 2D display */
 					fprintf(fp, "\"Byte/Byte\";");
 					for (j=0; j<255; j++)
@@ -406,7 +407,7 @@ static void statw_export_to_csv_clicked(GtkWidget *widget, gpointer data)
 						fprintf(fp, "\"%d\";", j);
 					}
 					fprintf(fp, "\"%d\"\n", 255);
-			
+
 					for (i=0; i<=255; i++)
 					{
 						fprintf(fp, "\"%d\";", i);
@@ -443,14 +444,14 @@ static void statw_export_to_gnuplot_clicked(GtkWidget *widget, gpointer data)
 	if (plugin != NULL)
 		{
 			extra = (stat_t *) plugin->extra;
-			
+
 			filename = stat_select_file_to_save("Enter filename to export data as gnuplot to");
-			
+
 			if (filename != NULL)
 			{
 				fp = g_fopen(filename, "w+");
 			}
-			
+
 			if (fp != NULL && extra != NULL)
 			{
 				/* common settings */
@@ -458,14 +459,14 @@ static void statw_export_to_gnuplot_clicked(GtkWidget *widget, gpointer data)
 				fprintf(fp, "set output '%s.png'\n", g_path_get_basename(filename));
 				fprintf(fp, "set xrange [-10:265]\n");
 				fprintf(fp, "set xlabel 'Bytes'\n");
-				
+
 				if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(glade_xml_get_widget(plugin->xml, "rb_1D"))) == TRUE)
-				{ 
+				{
 					/* 1D display */
 					fprintf(fp, "set title 'Classical histogram'\n");  /**< @todo we might add here the name of the file being edited */
 					fprintf(fp, "set ylabel 'Count'\n");
 					fprintf(fp, "plot '-' title 'Byte count' with impulses\n");
-					
+
 					for (i=0; i<=255; i++)
 					{
 						fprintf(fp, "%Ld\n", extra->histo1D[i]);
@@ -473,7 +474,7 @@ static void statw_export_to_gnuplot_clicked(GtkWidget *widget, gpointer data)
 					fprintf(fp, "e\n");
 				}
 				else
-				{ 
+				{
 					/* 2D display */
 					fprintf(fp, "set title 'Heatmap histogram'\n");  /**< @todo we might add here the name of the file being edited */
 					fprintf(fp, "set bar 1.000000\n");
@@ -484,7 +485,7 @@ static void statw_export_to_gnuplot_clicked(GtkWidget *widget, gpointer data)
 					fprintf(fp, "set ylabel 'Bytes'\n");
 					fprintf(fp, "set palette rgbformulae 36, 13, 15\n");
 					fprintf(fp, "splot '-' matrix with image\n");
-					
+
 					for (i=0; i<=255; i++)
 					{
 						for (j=0; j<=255; j++)
@@ -495,7 +496,7 @@ static void statw_export_to_gnuplot_clicked(GtkWidget *widget, gpointer data)
 					}
 
 					fprintf(fp, "e\n");
-					fprintf(fp, "e\n");	
+					fprintf(fp, "e\n");
 				}
 				fclose(fp);
 			}
@@ -523,18 +524,18 @@ static void statw_export_to_pcv_clicked(GtkWidget *widget, gpointer data)
 	if (plugin != NULL)
 		{
 			extra = (stat_t *) plugin->extra;
-			
+
 			filename = stat_select_file_to_save("Enter filename to export data as PCV to");
-			
+
 			if (filename != NULL)
 			{
 				fp = g_fopen(filename, "w+");
 			}
-			
+
 			if (fp != NULL && extra != NULL)
-			{			
+			{
 				if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(glade_xml_get_widget(plugin->xml, "rb_1D"))) == TRUE)
-				{ 
+				{
 					/* 1D display */
 					fprintf(fp, "header {\n");
 					fprintf(fp, "\theight = \"960\";\n");
@@ -546,7 +547,7 @@ static void statw_export_to_pcv_clicked(GtkWidget *widget, gpointer data)
 					fprintf(fp, "\tinteger c [label=\"Byte count\"];\n");
 					fprintf(fp, "}\n");
 					fprintf(fp, "data {\n");
-					
+
 					for (i=0; i<=255; i++)
 					{
 						fprintf(fp, "\tb=\"%d\", c=\"%Ld\";\n", i, extra->histo1D[i]);
@@ -554,7 +555,7 @@ static void statw_export_to_pcv_clicked(GtkWidget *widget, gpointer data)
 					fprintf(fp, "}\n");
 				}
 				else
-				{ 
+				{
 					/* 2D display */
 					fprintf(fp, "header {\n");
 					fprintf(fp, "\theight = \"960\";\n");
@@ -567,7 +568,7 @@ static void statw_export_to_pcv_clicked(GtkWidget *widget, gpointer data)
 					fprintf(fp, "\tchar b [label=\"Bytes\"];\n");
 					fprintf(fp, "}\n");
 					fprintf(fp, "data {\n");
-					
+
 					for (i=0; i<=255; i++)
 					{
 						for (j=0; j<=255; j++)
@@ -603,14 +604,14 @@ static void statw_export_to_pcv_clicked(GtkWidget *widget, gpointer data)
 
 
 /**
- *  What to do when the user chooses a 1D or 2D histo 
+ *  What to do when the user chooses a 1D or 2D histo
  * @param widget : the widget which called this function (unused here)
  * @param data : user data, MUST be heraia_plugin_t *plugin
  */
 static void histo_radiobutton_toggled(GtkWidget *widget, gpointer data)
 {
 	heraia_plugin_t *plugin = (heraia_plugin_t *) data;
-	
+
 	if (plugin != NULL)
 		{
 			GtkImage *image = GTK_IMAGE(glade_xml_get_widget(plugin->xml, "histo_image"));
@@ -634,37 +635,37 @@ static void histo_radiobutton_toggled(GtkWidget *widget, gpointer data)
 static void stat_window_connect_signals(heraia_plugin_t *plugin)
 {
 
-	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "stat_window")), "delete_event", 
+	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "stat_window")), "delete_event",
 					 G_CALLBACK(delete_stat_window_event), plugin);
 
-	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "stat_window")), "destroy", 
+	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "stat_window")), "destroy",
 					 G_CALLBACK(destroy_stat_window), plugin);
-	
+
 	/* Close Button */
-	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "statw_close_b")), "clicked", 
+	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "statw_close_b")), "clicked",
 					 G_CALLBACK(statw_close_clicked), plugin);
-	
+
 	/* RadioButton */
-	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "rb_1D")), "toggled", 
+	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "rb_1D")), "toggled",
 					 G_CALLBACK(histo_radiobutton_toggled), plugin);
 
-	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "rb_2D")), "toggled", 
+	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "rb_2D")), "toggled",
 					 G_CALLBACK(histo_radiobutton_toggled), plugin);
 
 	/* Save As Button */
-	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "statw_save_as")), "clicked", 
+	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "statw_save_as")), "clicked",
 					 G_CALLBACK(statw_save_as_clicked), plugin);
 
 	/* CVS button */
-	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "statw_export_to_csv")), "clicked", 
+	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "statw_export_to_csv")), "clicked",
 					 G_CALLBACK(statw_export_to_csv_clicked), plugin);
-	
+
 	/* Gnuplot button */
-	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "statw_export_to_gnuplot")), "clicked", 
+	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "statw_export_to_gnuplot")), "clicked",
 					 G_CALLBACK(statw_export_to_gnuplot_clicked), plugin);
 
 	/* Gnuplot button */
-	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "statw_export_to_pcv")), "clicked", 
+	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "statw_export_to_pcv")), "clicked",
 					 G_CALLBACK(statw_export_to_pcv_clicked), plugin);
 
 	/* the toogle button is already connected to the run_proc function ! */
@@ -672,23 +673,29 @@ static void stat_window_connect_signals(heraia_plugin_t *plugin)
 
 
 /**
- *  Do some stats on the selected file (entire file is used)
+ * Do some stats on the selected file (entire file is used)
  * @param main_struct : main structure from heraia
  * @param plugin : main plugin structure (the plugin itself in fact)
  */
 static void realize_some_numerical_stat(heraia_window_t *main_struct, heraia_plugin_t *plugin)
 {
 	struct stat *stat_buf;
-	gchar buf[42];
+	gchar buf[42];           /**< used for date printing */
+	gchar *filename = NULL;
 	stat_t *extra = NULL;
 	GtkTextView *textview = GTK_TEXT_VIEW(glade_xml_get_widget(plugin->xml, "statw_textview"));
 
-	if (main_struct->filename != NULL && main_struct->current_doc != NULL)
+	if (main_struct != NULL && main_struct->current_doc != NULL)
+	{
+		filename = doc_t_document_get_filename(main_struct->current_doc);
+	}
+
+	if (filename != NULL)
 		{
-			log_message(main_struct, G_LOG_LEVEL_INFO, "Calculating stats on %s",  doc_t_document_get_filename(main_struct->current_doc));
+			log_message(main_struct, G_LOG_LEVEL_INFO, "Calculating stats on %s",  filename);
 
 			stat_buf = (struct stat *) g_malloc0 (sizeof(struct stat));
-			g_lstat(doc_t_document_get_filename(main_struct->current_doc), stat_buf);
+			g_lstat(filename, stat_buf);
 			if (S_ISREG(stat_buf->st_mode))
 				{
 					kill_text_from_textview(textview);
@@ -699,11 +706,11 @@ static void realize_some_numerical_stat(heraia_window_t *main_struct, heraia_plu
 					add_text_to_textview(textview, "Last acces to the file   : %s", buf);
 					ctime_r(&(stat_buf->st_ctime), buf);
 					add_text_to_textview(textview, "Last extern modification : %s", buf);
-					
+
 					populate_stats_histos(main_struct, plugin);
 
 					extra = (stat_t *) plugin->extra;
-					
+
 					add_text_to_textview(textview, "\n1D histogram statistics :\n");
 					add_text_to_textview(textview, "     . minimum          : %lld\n", extra->infos_1D->min);
 					add_text_to_textview(textview, "     . maximum          : %lld\n", extra->infos_1D->max);
@@ -715,7 +722,7 @@ static void realize_some_numerical_stat(heraia_window_t *main_struct, heraia_plu
 					add_text_to_textview(textview, "     . mean             : %lld\n", extra->infos_2D->mean);
 					add_text_to_textview(textview, "     . number of values : %lld\n", extra->infos_2D->nb_val);
 					log_message(main_struct, G_LOG_LEVEL_INFO, "Histos calculated !");
-				}		
+				}
 		}
 }
 
@@ -745,7 +752,7 @@ static void init_stats_histos(heraia_plugin_t *plugin)
  */
 static void populate_stats_histos(heraia_window_t *main_struct, heraia_plugin_t *plugin)
 {
-	GtkHex *gh = GTK_HEX(main_struct->current_DW->current_hexwidget);
+	GtkHex *gh = GTK_HEX(main_struct->current_doc->hex_widget);
 	guint64 i = 0;
 	guint64 taille = ghex_file_size(gh);
 	guchar c1, c2;
@@ -781,7 +788,7 @@ static void populate_stats_histos(heraia_window_t *main_struct, heraia_plugin_t 
 
 
 /**
- *  Seeks the histo1D struct to find the maximum value 
+ *  Seeks the histo1D struct to find the maximum value
  */
 static void calc_infos_histo_1D(stat_t *extra)
 {
@@ -803,7 +810,7 @@ static void calc_infos_histo_1D(stat_t *extra)
 			/* minimum value */
 			if (extra->histo1D[i] < min)
 				min = extra->histo1D[i];
-			
+
 			/* number of different values */
 			if (extra->histo1D[i] > 0)
 				extra->infos_1D->nb_val++;
@@ -857,7 +864,7 @@ static void calc_infos_histo_2D(stat_t *extra)
 					n++;
 				}
 		}
-	
+
 	extra->infos_2D->min = min;
 	extra->infos_2D->max = max;
 	extra->infos_2D->mean = (guint64) mean;
@@ -869,7 +876,7 @@ static void calc_infos_histo_2D(stat_t *extra)
  */
 static void init_stats_pixbufs(stat_t *extra)
 {
- 
+
 	extra->pixbuf_1D = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8, 255, 255);
 	gdk_pixbuf_fill(extra->pixbuf_1D, 0xFFFFFF00);
 	gdk_pixbuf_add_alpha(extra->pixbuf_1D, TRUE, (guchar) 255, (guchar) 255, (guchar) 255);
@@ -930,9 +937,9 @@ static void line_in_pixbuf(GdkPixbuf *pixbuf, gint64 x, gint64 y)
 
 			gint rowstride = gdk_pixbuf_get_rowstride(pixbuf);
 			gint n_channels = gdk_pixbuf_get_n_channels(pixbuf);
-			
+
 			pixels = gdk_pixbuf_get_pixels(pixbuf);
-	
+
 			while (y<255)
 				{
 					p = pixels + y * rowstride + x * n_channels;
@@ -958,11 +965,11 @@ static void do_pixbuf_1D_from_histo1D(stat_t *extra)
 	gdouble y_norm = 0;
 
 	for (i=0; i<=255; i++)
-		{	
+		{
 			/* normalisation (here we know that max != 0 (cf make_pixbufs_from_histos) */
 			y_norm = (gdouble) extra->infos_1D->max - (gdouble) extra->histo1D[i];
 			inter = (gdouble) (y_norm*255) / (gdouble)(extra->infos_1D->max);
-			y = (gint64) inter;	
+			y = (gint64) inter;
 			line_in_pixbuf(extra->pixbuf_1D, i, y);
 		}
 }
@@ -994,22 +1001,22 @@ static void do_pixbuf_2D_from_histo2D(stat_t *extra, guint max_2D)
 	max = extra->infos_2D->max;
 	min = extra->infos_2D->min;
 	mean = extra->infos_2D->mean;
-	
+
 	threshold1 = min + (mean - min) / 2;
 	threshold2 = mean + (max - mean) / 2;
-	
+
 	floor = (guchar) 50;
 	ceill = (guchar) 200;
-	
+
 	for (i=0; i<=255; i++)
 	{
 			for (j=0; j<=255; j++)
 			{
 					height = extra->histo2D[i][j];  /* min .. max */
-					
+
 				if (height > 0)
 				{
-					
+
 					if (height >= min && height <= threshold1)
 					{
 						red = floor;

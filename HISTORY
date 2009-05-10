@@ -1,12 +1,12 @@
 16 August 2008
-    I forgot ot write here for a while !
+    I forgot to write here for a while !
     I recently added a roadmap file in order to know where to go. This is
-    because Isabelle Hurbain (a friend of mine) told me that I have to 
-    release early and often. Before that I was considering each svn version 
+    because Isabelle Hurbain (a friend of mine) told me that I have to
+    release early and often. Before that I was considering each svn version
     as a "release" itself.
     Now one can contribute freely for the next release.
 
-    Thanks to Sebastien Tricaud there is also a new branche that creates 
+    Thanks to Sebastien Tricaud there is also a new branche that creates
     python bindings and a libheraia library which anyone could use in their
     projects (I don't know who will use this, no one is even using the main
     program !!). Anyway this is long term interest. I hope Sebastien will
@@ -23,7 +23,7 @@
 		- a safe multithreaded interface (there is many things that
                   renders plugin multithreading unusable or unsafe at least)
 		- add command lines options to disable some plugins
-	
+
 	Since one year there is few changes in the main interface :
 		- added a log window
 		- added a plugin system
@@ -31,7 +31,7 @@
 	But there has been a lot of changes in the code itself in order to
 	bring back coherence (if there was any before !!).
 
-	There is many still many things to do and the most important one is 
+	There is many still many things to do and the most important one is
 	probably the GtkHexWidget replacement as it contains too many
 	limitations :
 		- Size of files that may be openned : < 2Go
@@ -47,7 +47,7 @@
 		- add a search tool (that may search for templates)
 		- add a template creator
 		- multi - system compilation (windows, mac os, hp-ux, ...)
-		- ... 
+		- ...
 
 	This is only the beginning guys ... come on, help the heraia project
 	by :
@@ -66,9 +66,9 @@
 
 29 January 2005
 	Project creation
-	Name of the project comes from 
+	Name of the project comes from
 	http://www.educnet.education.fr/musagora/manuel/sequence4/tradHeraia.htm
 	(french)
 	This is my first project in gtk+ so there might be surprising things for
-    one used to it. Please report anything that seems strange to you. 
-        
+    one used to it. Please report anything that seems strange to you.
+

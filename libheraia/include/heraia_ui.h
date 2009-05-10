@@ -2,21 +2,21 @@
 /*
   heraia_ui.h
   main menus, callback and utility functions
- 
+
   (C) Copyright 2005 - 2009 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
- 
+
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
-  the Free Software Foundation; either version 2, or  (at your option) 
+  the Free Software Foundation; either version 2, or  (at your option)
   any later version.
- 
+
   This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY;  without even the implied warranty of
   MERCHANTABILITY  or  FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
@@ -45,6 +45,9 @@ extern gboolean delete_main_window_event(GtkWidget *widget, GdkEvent *event, gpo
 
 extern gboolean delete_dt_window_event(GtkWidget *widget, GdkEvent *event, gpointer data);
 extern void destroy_dt_window(GtkWidget *widget, GdkEvent  *event, gpointer data);
+
+extern gboolean file_notebook_tab_changed(GtkNotebook *notebook, GtkNotebookPage *page, gint tab_num, gpointer data);
+
 
 /* file selection */
 extern gchar *select_file_to_load(heraia_window_t *main_window);

@@ -20,8 +20,8 @@
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
-/** 
- * @file libheraia.h 
+/**
+ * @file libheraia.h
  *
  *  This file contains all the definitions and includes all other .h
  *  file. This is not very friendly, but ease compilation on exotic
@@ -48,11 +48,11 @@
 
 /**
  * @typedef HexDocument Heraia_Document
- *  Abstract layer this may be usefull if we decide to leave GtkHex 
+ *  Abstract layer this may be usefull if we decide to leave GtkHex
  *  and use something else !
  *
  * @typedef GtkHex Heraia_Hex
- *  Abstract layer this may be usefull if we decide to leave GtkHex 
+ *  Abstract layer this may be usefull if we decide to leave GtkHex
  *  and use something else !
  */
 /**
@@ -63,7 +63,7 @@ typedef HexDocument Heraia_Document;
 typedef GtkHex Heraia_Hex;
 typedef gint HERAIA_ERROR;
 
-/** 
+/**
  *  @typedef gint RefreshType
  *   Refresh type (may be used to decide what to do
  *   in a particular case)
@@ -78,15 +78,19 @@ typedef gint HERAIA_ERROR;
  *
  *  @def HERAIA_REFRESH_CURSOR_MOVE
  *   When the cursor is moving
+ *
+ *  @def HERAIA_REFRESH_TAB_CHANGED
+ *   When user selects another tab in main notebook
  */
 typedef gint RefreshType;
 #define HERAIA_REFRESH_NOTHING 0
 #define HERAIA_REFRESH_NEW_FILE 1
 #define HERAIA_REFRESH_CURSOR_MOVE 2
+#define HERAIA_REFRESH_TAB_CHANGED 3
 
-/** 
+/**
  * @struct date_and_time_t
- *  A human struct to store a date with a time. 
+ *  A human struct to store a date with a time.
  * @todo add an UTC info field
  */
 typedef struct
@@ -139,17 +143,17 @@ typedef struct
     GPtrArray *decode_array; /**< Pointer Array of decode_t functions and corresponding entries */
     GtkWidget *label;        /**< label for these decoding functions                            */
     guint data_size;         /**< size of what we may decode                                    */
-    gboolean fixed_size;     /**< says whether we can modify data_size or not                   */ 
+    gboolean fixed_size;     /**< says whether we can modify data_size or not                   */
  } decode_generic_t;
 
 
 /**
  * @struct tab_t
- * Tabulation structure to be used in the GtkNoteBook of 
+ * Tabulation structure to be used in the GtkNoteBook of
  * data_interpretor's window
  */
 typedef struct
-{ 
+{
 	guint index;           /**< number for this tab                                             */
 	guint nb_cols;         /**< number of columns in this tab - this MUST NOT change in any way */
 	guint nb_rows;         /**< number of rows in this tab - this is automatically updated      */
@@ -270,12 +274,12 @@ typedef struct
 {
 	gint x;              /**< x position (upper left corner)     */
 	gint y;              /**< y position (upper left corner)     */
-	guint height;        /**< y+height (bottom right corner)     */ 
+	guint height;        /**< y+height (bottom right corner)     */
 	guint width;         /**< x+width (bottom right corner)     */
 	gboolean displayed;  /**< TRUE if displayed, FALSE otherwise */
 } window_prop_t;
 
-/** 
+/**
  * @struct all_window_prop_t
  *  Structure to keep window properties for each window
  */
@@ -297,7 +301,7 @@ typedef struct
 typedef struct
 {
    gchar *filename;    /**< user preference file file name   */
-   gchar *pathname;    /**< user preference file path name   */	
+   gchar *pathname;    /**< user preference file path name   */
    GKeyFile *file;     /**< preference file contents         */
 } prefs_t;
 
@@ -322,8 +326,7 @@ typedef struct
 typedef struct
 {
 	gboolean  debug;                /**< Used to tell the program wether we want to display debug messages or not  */
-	gchar *filename;                /**< this could (should) be a list of filenames !!!                            */
-	doc_t *current_doc;             /**< This should be a pointer to the current edited document                   */
+	doc_t *current_doc;             /**< This is a pointer to the current edited document                          */
 	GPtrArray *documents;		    /**< An array of doc_t in order to be able to open more than one doc           */
 	xml_t *xmls;                    /**< All the xmls used in the program, loaded at running time                  */
    	data_window_t *current_DW;      /**< data_interpretor pointer                                                  */
@@ -355,8 +358,8 @@ typedef struct
 
 extern int libheraia_test(void);
 
-/** 
- * Python specific 
+/**
+ * Python specific
  */
 extern void libheraia_initialize(void);
 extern void libheraia_finalize(void);

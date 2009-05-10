@@ -28,12 +28,12 @@
 
 static guint which_endianness(heraia_window_t *main_window);
 static guint which_stream_size(heraia_window_t *main_window);
-static void interpret(data_window_t *dw, DecodeFunc decode_it, decode_parameters_t *decode_parameters, GtkWidget *entry, guint length);
+static void interpret(doc_t *doc, DecodeFunc decode_it, decode_parameters_t *decode_parameters, GtkWidget *entry, guint length);
 static void close_data_interpretor_window(GtkWidget *widget, gpointer data);
 static void connect_data_interpretor_signals(heraia_window_t *main_window);
-static void refresh_one_row(data_window_t *dw, decode_generic_t *row,  guint nb_cols, decode_parameters_t *decode_parameters);
-static void refresh_one_tab(data_window_t *dw, tab_t *tab, decode_parameters_t *decode_parameters);
-static void refresh_all_tabs(data_window_t *dw, decode_parameters_t *decode_parameters);
+static void refresh_one_row(doc_t *doc, decode_generic_t *row,  guint nb_cols, decode_parameters_t *decode_parameters);
+static void refresh_one_tab(doc_t *doc, data_window_t *dw, tab_t *tab, decode_parameters_t *decode_parameters);
+static void refresh_all_tabs(doc_t *doc, data_window_t *dw, decode_parameters_t *decode_parameters);
 static void add_default_tabs(heraia_window_t *main_window);
 
 /**
@@ -85,9 +85,9 @@ static guint which_stream_size(heraia_window_t *main_window)
    if (main_window != NULL && main_window->xmls != NULL && main_window->xmls->main != NULL)
    {
 	   spin_button = heraia_get_widget(main_window->xmls->main, "stream_size_spin_button");
-	   
+
 	   stream_size = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spin_button));
-	   
+
 	   if (stream_size >= 1)
 	   {
 		   return stream_size;
@@ -105,14 +105,14 @@ static guint which_stream_size(heraia_window_t *main_window)
 
 
 /**
- *   Here we do interpret a something according to the decode_it function and we 
+ *   Here we do interpret a something according to the decode_it function and we
  *   write down the result in a widget designated "entry"
  *  @warning We are assuming that main_window != NULL and main_window->xml != NULL
  *
  *    @param main_window : main structure
- *    @param decode_it : a DecodeDateFunc which is a function to be called to 
+ *    @param decode_it : a DecodeDateFunc which is a function to be called to
  *				         decode the stream
- *     @param decode_parameters : structure that passes some arguments to the 
+ *     @param decode_parameters : structure that passes some arguments to the
  *            decoding functions
  *    @param entry : a GtkWidget * entry widget where we will put the result
  *                   of the computation of decode_it function
@@ -120,7 +120,7 @@ static guint which_stream_size(heraia_window_t *main_window)
  * @todo Add text to the decode_generic_t struct to describe what to tell if
  *       something's wrong or if we can not decode anything
  */
-static void interpret(data_window_t *dw, DecodeFunc decode_it, decode_parameters_t *decode_parameters, GtkWidget *entry, guint length)
+static void interpret(doc_t *doc, DecodeFunc decode_it, decode_parameters_t *decode_parameters, GtkWidget *entry, guint length)
 {
 	gint result = 0;    /**< used to test different results of function calls */
 	guchar *c = NULL;   /**< the character under the cursor                   */
@@ -128,7 +128,7 @@ static void interpret(data_window_t *dw, DecodeFunc decode_it, decode_parameters
 
 	c = (guchar *) g_malloc0(sizeof(guchar) * length);
 
-	result = ghex_get_data(dw, length, decode_parameters->endianness, c);
+	result = ghex_get_data(doc->hex_widget, length, decode_parameters->endianness, c);
 
 	if (result == TRUE)
 		{
@@ -180,10 +180,10 @@ static void close_data_interpretor_window(GtkWidget *widget, gpointer data)
  * @param row : the row that we want to refresh
  * @param nb_cols : number of columns in this particular row (this IS the same
  *                  for all rows in that tab
- * @param decode_parameters : structure that passes some arguments to the 
+ * @param decode_parameters : structure that passes some arguments to the
  *        decoding functions
  */
-static void refresh_one_row(data_window_t *dw, decode_generic_t *row,  guint nb_cols, decode_parameters_t *decode_parameters)
+static void refresh_one_row(doc_t *doc, decode_generic_t *row,  guint nb_cols, decode_parameters_t *decode_parameters)
 {
 	decode_t *couple = NULL;   /**< the couple entry / function */
 	guint i = 0 ;
@@ -191,13 +191,13 @@ static void refresh_one_row(data_window_t *dw, decode_generic_t *row,  guint nb_
 	while ( i < nb_cols)
 	{
 		couple = g_ptr_array_index(row->decode_array, i);
-				
+
 		if (row->fixed_size == FALSE)
 		{
 			row->data_size = decode_parameters->stream_size;
 		}
-				
-		interpret(dw, couple->func, decode_parameters, couple->entry, row->data_size);
+
+		interpret(doc, couple->func, decode_parameters, couple->entry, row->data_size);
 		i++;
 	}
 }
@@ -206,10 +206,10 @@ static void refresh_one_row(data_window_t *dw, decode_generic_t *row,  guint nb_
  * This function refreshes one entire tab (row by row)
  * @param dw : current data window
  * @param tab : the tab to refresh
- * @param decode_parameters : structure that passes some arguments to the 
+ * @param decode_parameters : structure that passes some arguments to the
  *        decoding functions
  */
-static void refresh_one_tab(data_window_t *dw, tab_t *tab, decode_parameters_t *decode_parameters)
+static void refresh_one_tab(doc_t *doc, data_window_t *dw, tab_t *tab, decode_parameters_t *decode_parameters)
 {
 	decode_generic_t *row = NULL; /**< the row we want to refresh */
 	guint i = 0;
@@ -217,7 +217,7 @@ static void refresh_one_tab(data_window_t *dw, tab_t *tab, decode_parameters_t *
 	while (i < tab->nb_rows)
 	{
 		row = g_ptr_array_index(tab->rows, i);
-		refresh_one_row(dw, row, tab->nb_cols-1, decode_parameters);
+		refresh_one_row(doc, row, tab->nb_cols-1, decode_parameters);
 		i++;
 	}
 }
@@ -225,21 +225,21 @@ static void refresh_one_tab(data_window_t *dw, tab_t *tab, decode_parameters_t *
 /**
  * Refreshes all tabs
  * @param dw : current data window
- * @param decode_parameters : structure that passes some arguments to the 
+ * @param decode_parameters : structure that passes some arguments to the
  *        decoding functions
  */
-static void refresh_all_tabs(data_window_t *dw, decode_parameters_t *decode_parameters)
+static void refresh_all_tabs(doc_t *doc, data_window_t *dw, decode_parameters_t *decode_parameters)
 {
 	tab_t *tab = NULL;
 	guint i = 0;
-	
+
 	while (i < dw->nb_tabs)
 	{
 		tab = g_ptr_array_index(dw->tabs, i);
-		refresh_one_tab(dw, tab, decode_parameters);
+		refresh_one_tab(doc, dw, tab, decode_parameters);
 		i++;
 	}
-	
+
 }
 
 /**
@@ -248,7 +248,7 @@ static void refresh_all_tabs(data_window_t *dw, decode_parameters_t *decode_para
  * @param widget : the widget caller (may be NULL here)
  * @param data : a gpointer to the main structure : main_window, this must NOT
  *        be NULL !
- * @todo if speed is a matter, think about taking off this decode_parameters 
+ * @todo if speed is a matter, think about taking off this decode_parameters
  *       structure from here.
  */
 void refresh_data_interpretor_window(GtkWidget *widget, gpointer data)
@@ -258,15 +258,18 @@ void refresh_data_interpretor_window(GtkWidget *widget, gpointer data)
 	guint endianness = 0;
 	guint stream_size = 0;
 
-	if (main_window != NULL && main_window->current_DW != NULL && main_window->win_prop->main_dialog->displayed == TRUE)
+	if (main_window != NULL &&
+		main_window->current_doc != NULL &&
+		main_window->current_DW != NULL &&
+		main_window->win_prop->main_dialog->displayed == TRUE)
 		{
 			endianness = which_endianness(main_window);  /**< Endianness is computed only once here */
 			stream_size =  which_stream_size(main_window); /**< stream size is computed only once here */
-			
+
 			decode_parameters = new_decode_parameters_t(endianness, stream_size);
-	
-			refresh_all_tabs(main_window->current_DW, decode_parameters);
-			
+
+			refresh_all_tabs(main_window->current_doc, main_window->current_DW, decode_parameters);
+
 			g_free(decode_parameters);
 		}
 }
@@ -302,11 +305,11 @@ static void connect_data_interpretor_signals(heraia_window_t *main_window)
 	/* Radio Button "Middle Endian" */
 	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "diw_rb_middle_endian")), "toggled",
 					 G_CALLBACK(refresh_data_interpretor_window), main_window);
-	
-	/* Spin button */					  
+
+	/* Spin button */
 	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "stream_size_spin_button")), "value-changed",
-					 G_CALLBACK(refresh_data_interpretor_window), main_window);			  
-						  
+					 G_CALLBACK(refresh_data_interpretor_window), main_window);
+
 }
 
 /**
@@ -328,7 +331,7 @@ void data_interpretor_init_interface(heraia_window_t *main_window)
 			if (dw != NULL)
 				{
 					dw->diw = heraia_get_widget(main_window->xmls->main, "data_interpretor_window");
-					
+
 					/* Here init all defaults tabs */
 					add_default_tabs(main_window);
 				}
@@ -371,7 +374,7 @@ tab_t *add_new_tab_in_data_interpretor(GtkNotebook *notebook, guint index, gchar
 		g_ptr_array_add(col_labels, (gpointer) vbox_label);
 	}
 	va_end(args);
-	
+
 	tab = (tab_t *) g_malloc0(sizeof(tab_t));
 
     i = 0;
@@ -384,7 +387,7 @@ tab_t *add_new_tab_in_data_interpretor(GtkNotebook *notebook, guint index, gchar
 	gtk_paned_add1(GTK_PANED(hpaned), (gpointer) vbox);
 	vbox_label = g_ptr_array_index(col_labels, i);
 	gtk_box_pack_start(GTK_BOX(vbox), vbox_label, FALSE, FALSE, 3);
-	
+
 	i++;
 	while (i < nb_cols-1)
 	{
@@ -400,7 +403,7 @@ tab_t *add_new_tab_in_data_interpretor(GtkNotebook *notebook, guint index, gchar
 		gtk_box_pack_start(GTK_BOX(vbox), vbox_label, FALSE, FALSE, 3);
 		i++;
 	}
-	
+
 	vbox = gtk_vbox_new(FALSE, 2);
 	g_ptr_array_add(vboxes, (gpointer) vbox);
 	gtk_paned_add2(GTK_PANED(hpaned), vbox);
@@ -412,15 +415,15 @@ tab_t *add_new_tab_in_data_interpretor(GtkNotebook *notebook, guint index, gchar
 	tab->nb_cols = nb_cols;
 	tab->nb_rows = 0;
 	tab->label = gtk_label_new(label);   /* tab's label */
-	gtk_misc_set_padding(GTK_MISC(tab->label), 2, 2);   
-	gtk_misc_set_alignment(GTK_MISC(tab->label), 0.5, 0.5);	
+	gtk_misc_set_padding(GTK_MISC(tab->label), 2, 2);
+	gtk_misc_set_alignment(GTK_MISC(tab->label), 0.5, 0.5);
 	tab->col_labels = col_labels;
 	tab->vboxes = vboxes;
 	tab->rows = NULL;
-	
+
 	gtk_widget_show_all(child);
 	gtk_notebook_append_page(notebook, child, tab->label);
-	
+
 	return tab;
 }
 
@@ -435,25 +438,25 @@ void add_new_row_to_tab(tab_t *tab, decode_generic_t *row)
 	decode_t *couple = NULL; /**< couple from which we want to pack the entry */
 	guint i = 0;
 	guint j = 0;
-	
+
 	if (tab != NULL && row != NULL)
 	{
-	
+
 		if (tab->rows == NULL)
 		{
 			tab->rows = g_ptr_array_new();
 		}
-	
+
 		g_ptr_array_add(tab->rows, (gpointer) row);
 		tab->nb_rows++;
-		
+
 		/* label packing */
 		vbox = g_ptr_array_index(tab->vboxes, 0);
 		gtk_box_pack_start(GTK_BOX(vbox), row->label, FALSE, FALSE, 3);
 
 		j = 0;
 		i = 1;
-	
+
 		while (i <  tab->nb_cols)
 		{
 			vbox = g_ptr_array_index(tab->vboxes, i);
@@ -477,13 +480,13 @@ static void add_default_tabs(heraia_window_t *main_window)
 	tab_t *tab = NULL;
 	decode_generic_t *row = NULL;
 	data_window_t *dw = NULL;
-		
+
 	dw = main_window->current_DW;
-	notebook = heraia_get_widget(main_window->xmls->main, "diw_notebook");	
+	notebook = heraia_get_widget(main_window->xmls->main, "diw_notebook");
 
 	dw->tabs = g_ptr_array_new();
 
-	/** Adding a tab for numbers */ 
+	/** Adding a tab for numbers */
 	tab = add_new_tab_in_data_interpretor(GTK_NOTEBOOK(notebook), 0, "Numbers", 3, "Length", "Value unsigned", "Value signed");
 
 	if (tab != NULL)
@@ -499,7 +502,7 @@ static void add_default_tabs(heraia_window_t *main_window)
 		row = new_decode_generic_t("64 bits", 8, TRUE, 2, decode_64bits_unsigned, decode_64bits_signed);
 		add_new_row_to_tab(tab, row);
 	}
-	
+
 	/** Adding a tab for floting numbers */
 	tab = add_new_tab_in_data_interpretor(GTK_NOTEBOOK(notebook), 0, "Floats", 3, "Length", "Normal Notation", "Exponential notation");
 
@@ -512,10 +515,10 @@ static void add_default_tabs(heraia_window_t *main_window)
 		row = new_decode_generic_t("Double (64 bits)", 8, TRUE, 2, decode_double_normal, decode_double_scientific);
 		add_new_row_to_tab(tab, row);
 	}
-	
+
 	/** Adding a tab for date and time */
 	tab = add_new_tab_in_data_interpretor(GTK_NOTEBOOK(notebook), 2, "Dates and Times", 2, "Type", "Value");
-	
+
 	if (tab != NULL)
 	{
 		g_ptr_array_add(dw->tabs, (gpointer) tab);
@@ -529,10 +532,10 @@ static void add_default_tabs(heraia_window_t *main_window)
 		row = new_decode_generic_t("HFS", 4, TRUE, 1, decode_HFS_date);
 		add_new_row_to_tab(tab, row);
 	}
-	
+
 	/** Adding a tab for binary based conversions */
 	tab = add_new_tab_in_data_interpretor(GTK_NOTEBOOK(notebook), 3, "Binary based", 2, "Type", "Value");
-	
+
 	if (tab != NULL)
 	{
 		g_ptr_array_add(dw->tabs, (gpointer) tab);
@@ -542,22 +545,22 @@ static void add_default_tabs(heraia_window_t *main_window)
 		row = new_decode_generic_t("Packed BCD", 1, FALSE, 1, decode_packed_BCD);
 		add_new_row_to_tab(tab, row);
 	}
-}	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

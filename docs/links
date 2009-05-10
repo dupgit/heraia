@@ -18,14 +18,35 @@ OLETIME is a 64-bit double representing the number of days since 12/30/1899 12:0
 
 See also :
  - http://blogs.msdn.com/oldnewthing/archive/2003/09/05/54806.aspx
-   Beware this link has some funny examples ... 
+   Beware this link has some funny examples ...
  - http://www.decimaltime.hynes.net/computers.html
  - http://en.wikipedia.org/wiki/Epoch_%28reference_date%29#Computing
  - http://tools.ietf.org/html/rfc1305 (NTP)
 
-Endianness : 
+Leap years
+ - http://en.wikipedia.org/wiki/Leap_year
+
+Endianness :
 (french)  http://www.debian.org/intl/french/dico/data/littlebig_endian
 (english) http://en.wikipedia.org/wiki/Endianness
+
+
+Thinks to see :
+
+ - ROT13 et ROT47
+	. http://www.miranda.org/~jkominek/rot13/
+	. http://en.wikipedia.org/wiki/ROT13
+
+ - Base64
+	. http://fr.wikipedia.org/wiki/Base64
+	. http://en.wikipedia.org/wiki/Base64
+	. http://makcoder.sourceforge.net/demo/base64.php
+
+ - UU
+	. http://fr.wikipedia.org/wiki/Uuencode
+	. http://en.wikipedia.org/wiki/Uuencoding
+
+ - http://en.wikipedia.org/wiki/YEnc
 
 Others :
  - http://hachoir.org/
@@ -37,9 +58,6 @@ McCabe Complexity :
 
 Code coverage and code testing
  - http://gcc.gnu.org/onlinedocs/gcc/Gcov.html
-
-Leap years
- - http://en.wikipedia.org/wiki/Leap_year
 
 Debugger :
  - http://projects.gnome.org/nemiver/

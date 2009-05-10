@@ -2,21 +2,21 @@
 /*
   heraia_io.c
   heraia_io.c - input and output functions for heraia
- 
+
   (C) Copyright 2005 - 2008 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
- 
+
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
-  the Free Software Foundation; either version 2, or  (at your option) 
+  the Free Software Foundation; either version 2, or  (at your option)
   any later version.
- 
+
   This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY;  without even the implied warranty of
   MERCHANTABILITY  or  FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
@@ -29,7 +29,6 @@
 static GladeXML *load_glade_xml_if_it_exists(char *file_to_load);
 
 /**
- * @fn gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
  *  Loads the file 'filename' to analyse and populates the
  *  corresponfing structure 'main_window' as needed thus
  *  main_window and filename must NOT be NULL pointers
@@ -51,7 +50,7 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 	stat(filename, stat_buf);
 
 	log_message(main_window, G_LOG_LEVEL_DEBUG, "filename to load : %s", filename);
-	
+
 	if (S_ISREG(stat_buf->st_mode) && stat_buf->st_size>0)
 		{
 
@@ -60,16 +59,16 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 			if (doc != NULL)
 			{
 				add_new_tab_in_main_window(main_window, doc);
-				
+
 				/*
-				gtk_box_pack_start(GTK_BOX(heraia_get_widget(main_window->xmls->main, "vbox1")), 
+				gtk_box_pack_start(GTK_BOX(heraia_get_widget(main_window->xmls->main, "vbox1")),
 								   main_window->current_DW->current_hexwidget, TRUE, TRUE, 0);
-			
+
 				gtk_widget_show(main_window->current_DW->current_hexwidget);
 				*/
 
 				log_message(main_window, G_LOG_LEVEL_DEBUG, "Hexwidget : %p", doc->hex_widget);
-			
+
 				success = TRUE;
 
 			    /* No more needed
@@ -82,17 +81,17 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 						main_window->filename = g_strdup_printf("%s", filename);
 					}
 				*/
-				
+
 				/* updating the window name and tab's name */
 				update_main_window_name(main_window);
 				set_notebook_tab_name(main_window);
-			
+
 				/* Showing all the widgets */
 				gtk_widget_set_sensitive(heraia_get_widget(main_window->xmls->main, "save"), TRUE);
 				gtk_widget_set_sensitive(heraia_get_widget(main_window->xmls->main, "save_as"), TRUE);
 				notebook = heraia_get_widget(main_window->xmls->main, "file_notebook");
 				gtk_widget_show(notebook);
-			
+
 				log_message(main_window, G_LOG_LEVEL_DEBUG, "file %s loaded !", filename);
 			}
 			else
@@ -100,8 +99,8 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 				log_message(main_window, G_LOG_LEVEL_ERROR, "Error while trying to load file %s", filename);
 				success = FALSE;
 			}
-			
-		} 
+
+		}
 	else
 		{
 			if (S_ISREG(stat_buf->st_mode))
@@ -114,14 +113,14 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 				}
 			success = FALSE;
 		}
-	
+
 	g_free(stat_buf);
 
 	return success;
 }
 
 
-/** 
+/**
  * @fn GladeXML *load_glade_xml_if_it_exists(gchar *file_to_load)
  *  Checks if file_to_load exists and is valid and if possible, loads it
  *  in the xml structure
@@ -160,7 +159,7 @@ static GladeXML *load_glade_xml_if_it_exists(gchar *file_to_load)
  * @return returns the GladeXML structure if any, NULL otherwise
  */
 GladeXML *load_glade_xml_file(GList *location_list, gchar *filename)
-{	
+{
 	gchar *file_to_load = NULL;
 	GList *list = g_list_first(location_list);
 	GladeXML *xml = NULL;
@@ -173,11 +172,11 @@ GladeXML *load_glade_xml_file(GList *location_list, gchar *filename)
 
 			if (xml == NULL)
 				{
-					list = list->next;	
+					list = list->next;
 				}
 			g_free(file_to_load);
 		}
-	
+
 	return xml;
 }
 
@@ -189,13 +188,13 @@ GladeXML *load_glade_xml_file(GList *location_list, gchar *filename)
  * @return TRUE if everything went ok, FALSE otherwise
  */
 gboolean load_preference_file(heraia_window_t *main_window)
-{	
+{
 	if (main_window != NULL && main_window->prefs != NULL)
 	{
 		return g_key_file_load_from_file(main_window->prefs->file, main_window->prefs->filename,  G_KEY_FILE_KEEP_COMMENTS & G_KEY_FILE_KEEP_TRANSLATIONS, NULL);
 	}
 	else
-	{	
+	{
 		return FALSE;
 	}
 }
@@ -212,13 +211,13 @@ gboolean save_preferences_to_file(prefs_t *prefs)
 	gsize length = 0;
 	gchar *contents = NULL;
 	gboolean result = FALSE;
-	
+
 	if (prefs != NULL && prefs->file != NULL && prefs->filename != NULL)
 	{
 		contents = g_key_file_to_data(prefs->file, &length, NULL);
 		result = g_file_set_contents(prefs->filename, contents, length, NULL);
 		g_free(contents);
 	}
-	
+
 	return result;
 }

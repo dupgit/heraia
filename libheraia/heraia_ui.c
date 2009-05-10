@@ -2,24 +2,24 @@
 /*
   heraia_ui.c
   main menus, callback and utility functions
- 
+
   (C) Copyright 2005 - 2009 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
-	 
+
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
-  the Free Software Foundation; either version 2, or  (at your option) 
+  the Free Software Foundation; either version 2, or  (at your option)
   any later version.
-		 
+
   This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY;  without even the implied warranty of
   MERCHANTABILITY  or  FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
-		 
+
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
+  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 /** @file heraia_ui.c
  * This file has all the functions to manage heraia's ui
@@ -45,7 +45,7 @@ static void close_heraia(heraia_window_t *main_window);
 void on_quit_activate(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
-	
+
 	close_heraia(main_window);
 	gtk_main_quit();
 }
@@ -59,7 +59,7 @@ void on_quit_activate(GtkWidget *widget, gpointer data)
 void on_new_activate(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
-	
+
 	log_message(main_window, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
 }
 
@@ -74,14 +74,14 @@ void on_preferences_activate(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	GtkWidget *pref_window = NULL;
-	
+
 	pref_window = heraia_get_widget(main_window->xmls->main, "main_preferences_window");
-	
+
 	if (pref_window != NULL)
 	{
 		move_and_show_dialog_box(pref_window, main_window->win_prop->main_pref_window);
 	}
-	
+
 }
 
 /**
@@ -91,7 +91,7 @@ void on_preferences_activate(GtkWidget *widget, gpointer data)
  */
 static void set_a_propos_properties(GtkWidget *about_dialog)
 {
-	
+
 	if (about_dialog != NULL)
 	{
 		if (GTK_MINOR_VERSION >= 12)
@@ -116,18 +116,18 @@ void a_propos_activate(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	GtkWidget *about_dialog = NULL;
-	
+
 	about_dialog = heraia_get_widget(main_window->xmls->main, "about_dialog");
-	
+
 	if (about_dialog != NULL)
 	{
 		set_a_propos_properties(about_dialog);
-	
+
 		move_and_show_dialog_box(about_dialog, main_window->win_prop->about_box);
 	}
 }
 
-/** 
+/**
  * @fn void move_and_show_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_prop)
  *  Move the dialog box to the wanted position, shows it and says it in the displayed prop
  * @param dialog_box : the dialog box we want to move and show
@@ -156,7 +156,7 @@ void record_dialog_box_position(GtkWidget *dialog_box, window_prop_t *dialog_pro
 	gint y = 0;
 	gint width = WPT_DEFAULT_WIDTH;
 	gint height = WPT_DEFAULT_HEIGHT;
-	
+
 	if (dialog_prop != NULL && dialog_prop->displayed == TRUE)
 	{
 		if (dialog_box != NULL)
@@ -181,8 +181,8 @@ void record_all_dialog_box_positions(heraia_window_t *main_window)
 {
 	GtkWidget *dialog_box = NULL;
 
-	if (main_window != NULL && 
-		main_window->xmls != NULL && 
+	if (main_window != NULL &&
+		main_window->xmls != NULL &&
 		main_window->xmls->main != NULL &&
 		main_window->win_prop != NULL &&
 		main_window->current_DW != NULL)
@@ -190,34 +190,34 @@ void record_all_dialog_box_positions(heraia_window_t *main_window)
 		/* data interpretor */
 		dialog_box = main_window->current_DW->diw;
 		record_dialog_box_position(dialog_box, main_window->win_prop->data_interpretor);
-	
+
 		/* About box */
 		dialog_box = heraia_get_widget (main_window->xmls->main, "about_dialog");
 		record_dialog_box_position(dialog_box, main_window->win_prop->about_box);
-	
+
 		/* Log window */
 		dialog_box = heraia_get_widget (main_window->xmls->main, "log_window");
 		record_dialog_box_position(dialog_box, main_window->win_prop->log_box);
-	
+
 		/* main_dialog */
 		dialog_box = heraia_get_widget (main_window->xmls->main, "main_window");
 		record_dialog_box_position(dialog_box, main_window->win_prop->main_dialog);
-	
+
 		/* plugin_list */
 		dialog_box = heraia_get_widget (main_window->xmls->main, "plugin_list_window");
 		record_dialog_box_position(dialog_box, main_window->win_prop->plugin_list);
-	
+
 		/* list data types */
 		dialog_box = heraia_get_widget (main_window->xmls->main, "list_data_types_window");
 		record_dialog_box_position(dialog_box, main_window->win_prop->ldt);
-	
+
 		/* main_preferences */
 		dialog_box = heraia_get_widget (main_window->xmls->main, "main_preferences_window");
 		record_dialog_box_position(dialog_box, main_window->win_prop->main_pref_window);
 	}
 }
-	
-	
+
+
 /**
  * @fn void record_and_hide_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_prop)
  *  Record position and hide a dialog box
@@ -230,7 +230,7 @@ void record_and_hide_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_pro
 	if (dialog_prop->displayed == TRUE)
 	{
 		record_dialog_box_position(dialog_box, dialog_prop);
-		
+
 		gtk_widget_hide(dialog_box);
 		dialog_prop->displayed = FALSE;
 	}
@@ -244,10 +244,10 @@ void record_and_hide_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_pro
  */
 static void record_and_hide_about_box(heraia_window_t *main_window)
 {
-	GtkWidget *about_dialog = NULL;	
-	
+	GtkWidget *about_dialog = NULL;
+
 	about_dialog = heraia_get_widget(main_window->xmls->main, "about_dialog");
-	
+
 	if (about_dialog != NULL)
 	{
 		record_and_hide_dialog_box(about_dialog, main_window->win_prop->about_box);
@@ -294,7 +294,7 @@ static gboolean a_propos_delete(GtkWidget *widget, GdkEvent  *event, gpointer da
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	record_and_hide_about_box(main_window);
-	
+
 	return TRUE;
 }
 
@@ -310,7 +310,7 @@ static gboolean a_propos_delete(GtkWidget *widget, GdkEvent  *event, gpointer da
 void on_delete_activate(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
-	
+
 	log_message(main_window, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
 }
 
@@ -325,7 +325,7 @@ void on_delete_activate(GtkWidget *widget, gpointer data)
 void on_cut_activate(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
-	
+
 	log_message(main_window, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
 }
 
@@ -340,7 +340,7 @@ void on_cut_activate(GtkWidget *widget, gpointer data)
 void on_copy_activate(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
-	
+
 	log_message(main_window, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
 }
 
@@ -356,7 +356,7 @@ void on_copy_activate(GtkWidget *widget, gpointer data)
 void on_paste_activate(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
-	
+
 	log_message(main_window, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
 }
 
@@ -373,17 +373,17 @@ void refresh_file_labels(heraia_window_t *main_window)
 	GtkWidget *label = NULL;
 	guint64 position = 0;
 	gchar *text = NULL;
-	
+
 	if (main_window != NULL)
 		{
-			if (main_window->current_DW != NULL && main_window->current_DW->current_hexwidget != NULL)
+			if (main_window->current_doc != NULL && main_window->current_doc->hex_widget != NULL)
 				{
 					label = heraia_get_widget(main_window->xmls->main, "file_position_label");
-					position = ghex_get_cursor_position(main_window->current_DW);
+					position = ghex_get_cursor_position(main_window->current_doc->hex_widget);
 					/* position begins at 0 and this is not really human readable */
 					/* it's more confusing than anything so we do + 1             */
 					/* To translators : do not translate <small> and such         */
-					
+
 					if (is_toggle_button_activated(main_window->xmls->main, "mp_thousand_bt") == TRUE)
 					{
 						text = g_strdup_printf("<small>%'lld</small>", position + 1);
@@ -404,7 +404,7 @@ void refresh_file_labels(heraia_window_t *main_window)
 }
 
 
-/** 
+/**
  * @fn void refresh_event_handler(GtkWidget *widget, gpointer data)
  *  This function is here to ensure that everything will be
  *  refreshed upon a signal event.
@@ -417,7 +417,7 @@ void refresh_file_labels(heraia_window_t *main_window)
 void refresh_event_handler(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
-	
+
 	if (main_window != NULL)
 	{
 		/* Beware, this mechanism is not thread safe ! */
@@ -425,11 +425,11 @@ void refresh_event_handler(GtkWidget *widget, gpointer data)
 		{
 			main_window->event = HERAIA_REFRESH_CURSOR_MOVE;
 		}
-		
+
 		refresh_data_interpretor_window(widget, main_window);
 		refresh_all_plugins(main_window);
 		refresh_file_labels(main_window);
-		
+
 		main_window->event = HERAIA_REFRESH_NOTHING;
 	}
 }
@@ -449,16 +449,16 @@ void on_open_activate(GtkWidget *widget, gpointer data)
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	gchar *filename = NULL;
 	gboolean success = FALSE;
-	
+
 	filename = select_file_to_load(main_window);
-	if ( filename != NULL)
+	if (filename != NULL)
 	{
 		success = load_file_to_analyse(main_window, filename);
-		if (success == TRUE)
+		if (success == TRUE && main_window->current_doc != NULL)
 		 {
 			/* Not thread safe here ? */
 			main_window->event = HERAIA_REFRESH_NEW_FILE;
-			refresh_event_handler(main_window->current_DW->current_hexwidget, main_window);
+			refresh_event_handler(main_window->current_doc->hex_widget, main_window);
 		 }
 	}
 }
@@ -474,13 +474,13 @@ void on_open_activate(GtkWidget *widget, gpointer data)
  */
 void on_save_activate(GtkWidget *widget, gpointer data)
 {
-	heraia_window_t *main_window = (heraia_window_t *) data;	
+	heraia_window_t *main_window = (heraia_window_t *) data;
 	HERAIA_ERROR erreur = HERAIA_NOERR;
 	gchar *filename = NULL;
-	
+
 	if (main_window != NULL && main_window->current_doc != NULL)
 	{
-		erreur = heraia_hex_document_save(main_window);	
+		erreur = heraia_hex_document_save(main_window);
 
 		if (erreur != HERAIA_NOERR)
 		{
@@ -505,7 +505,7 @@ void on_save_as_activate(GtkWidget *widget, gpointer data)
 	if (main_window != NULL && main_window->current_doc != NULL)
 	{
 		filename = select_a_file_to_save(main_window);
-		
+
 		if (filename != NULL)
 		{
 			erreur = heraia_hex_document_save_as(main_window, filename);
@@ -514,7 +514,7 @@ void on_save_as_activate(GtkWidget *widget, gpointer data)
 		{
 			erreur = HERAIA_CANCELLED;
 		}
-		
+
 		if (erreur != HERAIA_NOERR)
 		{
 			if (erreur == HERAIA_CANCELLED)
@@ -540,41 +540,41 @@ void on_save_as_activate(GtkWidget *widget, gpointer data)
 /**
  * @fn void on_DIMenu_activate(GtkWidget *widget, gpointer data)
  *  This handles the menuitem "Data Interpretor" that
- *  shows or hides the data interpretor window     
+ *  shows or hides the data interpretor window
  * @param widget : the widget that issued the signal
  * @param data : user data MUST be heraia_window_t *main_window main structure
  */
 void on_DIMenu_activate(GtkWidget *widget, gpointer data)
 {
-	
+
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	data_window_t *dw = NULL;      /* program structure           */
 	GtkNotebook *notebook = NULL;  /* data interpretor's notebook */
-	
+
 	if (main_window != NULL)
 	{
 		dw = main_window->current_DW;
-		
+
 		if (dw != NULL)
 		{
 			if (dw->diw == NULL)
 			{
 				dw->diw = heraia_get_widget(main_window->xmls->main, "data_interpretor_window");
 			}
-			
+
 			if (dw->diw != NULL)
 			{
 				/* dw->window_displayed = !(dw->window_displayed); */
 				notebook = GTK_NOTEBOOK(heraia_get_widget(main_window->xmls->main, "diw_notebook"));
-				
+
 			if (main_window->win_prop->data_interpretor->displayed == FALSE)
 				{
-					/* Setting the first page of the notebook as default (Numbers) */					
+					/* Setting the first page of the notebook as default (Numbers) */
 					gtk_notebook_set_current_page(notebook, dw->tab_displayed);
-					
+
 					/* moving to the right position */
 					move_and_show_dialog_box(dw->diw, main_window->win_prop->data_interpretor);
-					
+
 					refresh_data_interpretor_window(widget, data);
 				}
 				else
@@ -592,15 +592,15 @@ void on_DIMenu_activate(GtkWidget *widget, gpointer data)
 /**
  * @fn delete_main_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
  *  When the user destroys or delete the main window
- * @param widget : calling widget 
+ * @param widget : calling widget
  * @param event : event associated (may be NULL as we don't use this here)
  * @param data : MUST be heraia_window_t *main_window main structure
  */
 gboolean delete_main_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {
-		
+
 	on_quit_activate(widget, data);
-	
+
 	return FALSE;
 }
 
@@ -613,11 +613,11 @@ gboolean delete_main_window_event(GtkWidget *widget, GdkEvent  *event, gpointer 
  * @param data : MUST be heraia_window_t *main_window main structure and not NULL
  */
 gboolean delete_dt_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
-{	
+{
 	heraia_window_t *main_window = (heraia_window_t *) data;
-	
+
 	g_signal_emit_by_name(heraia_get_widget(main_window->xmls->main, "DIMenu"), "activate");
-	
+
 	return TRUE;
 }
 
@@ -631,9 +631,37 @@ gboolean delete_dt_window_event(GtkWidget *widget, GdkEvent  *event, gpointer da
 void destroy_dt_window(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
-	
+
 	g_signal_emit_by_name(heraia_get_widget(main_window->xmls->main, "DIMenu"), "activate");
 }
+
+
+
+/**
+ * What to do when a change occurs in tabs (user selected a particular
+ * tab
+ * @param notebook : the widget that issued this signal
+ * @param page : the new current page
+ * @param tab_num : index of this page
+ * @param data : MUST be heraia_window_t *main_window !
+ */
+gboolean file_notebook_tab_changed(GtkNotebook *notebook, GtkNotebookPage *page, gint tab_num, gpointer data)
+{
+	heraia_window_t *main_window = (heraia_window_t *) data;
+
+	if (main_window != NULL)
+	{
+		main_window->current_doc = g_ptr_array_index(main_window->documents, tab_num);
+		update_main_window_name(main_window);
+		main_window->event = HERAIA_REFRESH_TAB_CHANGED;
+		refresh_event_handler(GTK_WIDGET(notebook), main_window);
+		main_window->event = HERAIA_REFRESH_NOTHING;
+
+	}
+
+	return TRUE;
+}
+
 /* End of call back functions that handle the data interpretor window */
 
 
@@ -642,7 +670,7 @@ void destroy_dt_window(GtkWidget *widget, GdkEvent  *event, gpointer data)
  *  Returns an absolute path to the filename
  *  the string should be freed when no longer needed
  *  very UGLy !
- * @todo do something without any system calls !!! 
+ * @todo do something without any system calls !!!
  * @param filename : relative notation filename from which to extract an
  *        absolute path
  * @return returns a string with the absolute path which should be freed when
@@ -652,7 +680,7 @@ static gchar *make_absolute_path(gchar *filename)
 {
 	gchar *current_dir = NULL;
 	gchar *new_dir = NULL;
-	
+
 	if (g_path_is_absolute(filename) == TRUE)
 	{
 		/* if the filename is already in an absolute format */
@@ -662,20 +690,20 @@ static gchar *make_absolute_path(gchar *filename)
 	{
 		current_dir = g_get_current_dir();
 		new_dir = g_path_get_dirname(filename);
-		
+
 		if (g_chdir(new_dir) == 0)
 		{
 			g_free(new_dir);
 			new_dir = g_get_current_dir();
 			g_chdir(current_dir);
 			g_free(current_dir);
-			
+
 			return new_dir;
 		}
 		else
 		{
 			g_free(current_dir);
-			
+
 			return NULL;
 		}
 	}
@@ -692,9 +720,9 @@ static gchar *make_absolute_path(gchar *filename)
 static void set_the_working_directory(GtkFileChooser *file_chooser, gchar *filename)
 {
 	gchar *dirname = NULL;    /* directory where we want to be, at first, in the file chooser */
-	
+
 	dirname = make_absolute_path(filename);
-	
+
 	if (dirname != NULL)
 	{
 		gtk_file_chooser_set_current_folder(file_chooser, dirname);
@@ -705,8 +733,8 @@ static void set_the_working_directory(GtkFileChooser *file_chooser, gchar *filen
 
 /**
  * @fn gboolean select_file_to_load(heraia_window_t *main_window)
- *  This function does open a file selector dialog box and returns the selected 
- *  filename. 
+ *  This function does open a file selector dialog box and returns the selected
+ *  filename. @todo enable multiple selections
  *  We do fill the main_window->filename parameter here !
  * @param main_window : main structure
  * @return returns TRUE if everything went ok, FALSE otherwise
@@ -716,23 +744,23 @@ gchar *select_file_to_load(heraia_window_t *main_window)
 	GtkWidget *parent = NULL; /* A parent window (we use main_window)      */
 	GtkFileChooser *file_chooser = NULL;
 	gchar *filename = NULL;   /* filename selected (if any) to be openned  */
-	
+
 	parent = heraia_get_widget(main_window->xmls->main, "main_window");
-	
+
 	file_chooser = GTK_FILE_CHOOSER(gtk_file_chooser_dialog_new("Select a file to analyse",
 																GTK_WINDOW(parent),
-																GTK_FILE_CHOOSER_ACTION_OPEN, 
+																GTK_FILE_CHOOSER_ACTION_OPEN,
 																GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-																GTK_STOCK_OPEN, GTK_RESPONSE_OK, 
+																GTK_STOCK_OPEN, GTK_RESPONSE_OK,
 																NULL));
-	
+
 	/**
-	 *  for the moment we do not want to retrieve multiples selections 
+	 *  for the moment we do not want to retrieve multiples selections
 	 *  but this could be a valuable thing in the future
 	 */
 	gtk_window_set_modal(GTK_WINDOW(file_chooser), TRUE);
 	gtk_file_chooser_set_select_multiple(file_chooser, FALSE);
-	
+
 	/**
 	 *  We want the file selection path to be the one of the previous
 	 *  openned file if any !
@@ -741,27 +769,27 @@ gchar *select_file_to_load(heraia_window_t *main_window)
 	   {
 			set_the_working_directory(file_chooser, doc_t_document_get_filename(main_window->current_doc));
 	   }
-	
-	switch (gtk_dialog_run(GTK_DIALOG(file_chooser))) 
+
+	switch (gtk_dialog_run(GTK_DIALOG(file_chooser)))
 	  {
 		case GTK_RESPONSE_OK:
 			filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(file_chooser));
 			log_message(main_window, G_LOG_LEVEL_DEBUG, "filename selected : %s", filename);
-			
-			/* this should be managed with lists and not here !! 	
+
+			/* this should be managed with lists and not here !!
 			if (main_window->filename != NULL)
 		       {
 					g_free(main_window->filename);
 		       }
-			*/	
-			
+			*/
+
 			gtk_widget_destroy(GTK_WIDGET(file_chooser));
 			return filename;
 		 break;
-		 
+
 		case GTK_RESPONSE_CANCEL:
 		default:
-			gtk_widget_destroy(GTK_WIDGET(file_chooser));	
+			gtk_widget_destroy(GTK_WIDGET(file_chooser));
 			return NULL;
 		 break;
 	   }
@@ -769,7 +797,7 @@ gchar *select_file_to_load(heraia_window_t *main_window)
 
 /**
  * @fn gchar *select_a_file_to_save(heraia_window_t *main_window)
- *  This function opens a dialog box that allow one to choose a 
+ *  This function opens a dialog box that allow one to choose a
  *  file name to the file which is about to be saved
  * @param main_window : main structure
  * @return returns complete filename (path and filename)
@@ -778,16 +806,16 @@ gchar *select_a_file_to_save(heraia_window_t *main_window)
 {
 	GtkWidget *parent = NULL;     /* A parent window (we use main_window) */
 	GtkFileChooser *fcd = NULL;
-	gchar *filename = NULL; 
+	gchar *filename = NULL;
 
 	parent = heraia_get_widget(main_window->xmls->main, "main_window");
-	
+
 	/* Selection a name to the file to save */
 	fcd = GTK_FILE_CHOOSER(gtk_file_chooser_dialog_new("Save As...",
 													   GTK_WINDOW(parent),
-													   GTK_FILE_CHOOSER_ACTION_SAVE, 
+													   GTK_FILE_CHOOSER_ACTION_SAVE,
 													   GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-													   GTK_STOCK_SAVE, GTK_RESPONSE_OK, 
+													   GTK_STOCK_SAVE, GTK_RESPONSE_OK,
 													   NULL));
 
 	/* window properties : modal, without multi-selection and with confirmation */
@@ -800,7 +828,7 @@ gchar *select_a_file_to_save(heraia_window_t *main_window)
 	   {
 			set_the_working_directory(fcd, doc_t_document_get_filename(main_window->current_doc));
 	   }
-	
+
 	switch(gtk_dialog_run(GTK_DIALOG(fcd)))
 		{
 		case GTK_RESPONSE_OK:
@@ -828,15 +856,15 @@ void update_main_window_name(heraia_window_t *main_window)
 	GtkWidget *widget = NULL;
 	gchar *filename = NULL;
 	gchar *whole_filename = NULL;
-	
+
 	if (main_window != NULL && main_window->current_doc != NULL)
 	   {
 			widget = heraia_get_widget(main_window->xmls->main, "main_window");
-			
+
 			whole_filename = doc_t_document_get_filename(main_window->current_doc);
-			
+
 		    filename = g_filename_display_basename(whole_filename);
-		   
+
 			gtk_window_set_title(GTK_WINDOW(widget), filename);
 	   }
 }
@@ -856,25 +884,25 @@ void set_notebook_tab_name(heraia_window_t *main_window)
 	gchar *filename = NULL;
 	gchar *whole_filename;
 	gint current = 0;
-	
+
 	if (main_window != NULL && main_window->current_doc != NULL)
 	   {
 		   notebook = heraia_get_widget(main_window->xmls->main, "file_notebook");
 		   current = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
 		   page = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), current);
 		   label = gtk_notebook_get_tab_label(GTK_NOTEBOOK(notebook), page);
-		   
+
 		   doc = g_ptr_array_index(main_window->documents, current);
 		   whole_filename = doc_t_document_get_filename(doc);
-		   
+
 		   if (whole_filename != NULL)
 		   {
 				filename = g_filename_display_basename(whole_filename);
 				gtk_label_set_text(GTK_LABEL(label), filename);
-				
+
 				/* gtk_widget_set_tooltip_text is available since gtk 2.12 */
-				if (GTK_MINOR_VERSION >= 12) 
-				{ 
+				if (GTK_MINOR_VERSION >= 12)
+				{
 					gtk_widget_set_tooltip_text(label, g_filename_display_name(whole_filename));
 				}
 		   }
@@ -886,23 +914,23 @@ void set_notebook_tab_name(heraia_window_t *main_window)
  * @fn init_heraia_interface(heraia_window_t *main_window)
  *  Here we might init some call backs and menu options
  *  and display the interface (main && sub-windows)
- *  This function should be called only once at main program's 
+ *  This function should be called only once at main program's
  *  init time
  * @param main_window : main structure
  */
 void init_heraia_interface(heraia_window_t *main_window)
 {
 	GtkWidget *notebook = NULL;  /* file notebook in main window */
-	
+
 	if (main_window != NULL)
 	{
 		/* inits window states (shows or hide windows) */
 		init_window_states(main_window);
-		
+
 		/* Notebook selection */
 		notebook = heraia_get_widget(main_window->xmls->main, "file_notebook");
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 0);
-		
+
 		if (main_window->current_doc != NULL)
 		{
 			gtk_widget_show(notebook);
@@ -911,10 +939,10 @@ void init_heraia_interface(heraia_window_t *main_window)
 		{
 			/** Hide notebook and menus @todo put these lines in a specific function */
 			gtk_widget_set_sensitive(heraia_get_widget(main_window->xmls->main, "save"), FALSE);
-			gtk_widget_set_sensitive(heraia_get_widget(main_window->xmls->main, "save_as"), FALSE);				 
-			gtk_widget_hide(notebook); 
+			gtk_widget_set_sensitive(heraia_get_widget(main_window->xmls->main, "save_as"), FALSE);
+			gtk_widget_hide(notebook);
 		}
-		
+
 		refresh_file_labels(main_window);
 	}
 }
@@ -923,7 +951,7 @@ void init_heraia_interface(heraia_window_t *main_window)
 /**
  * @fn gboolean load_heraia_glade_xml(heraia_window_t *main_window)
  *  Loads the glade xml files that describes the heraia project
- *  tries the following paths in that order :                 
+ *  tries the following paths in that order :
  *  - /etc/heraia/heraia.glade
  *  - /home/[user]/.heraia/heraia.glade
  *  - PWD/heraia.glade
@@ -933,13 +961,13 @@ void init_heraia_interface(heraia_window_t *main_window)
 static gboolean load_heraia_glade_xml(heraia_window_t *main_window)
 {
 	gchar *filename = NULL;
-	
+
 	if (main_window != NULL && main_window->xmls != NULL)
 	{
-		filename = g_strdup_printf("heraia.glade"); 
+		filename = g_strdup_printf("heraia.glade");
 		main_window->xmls->main = load_glade_xml_file(main_window->location_list, filename);
 		g_free(filename);
-		
+
 		if (main_window->xmls->main == NULL)
 		{
 			return FALSE;
@@ -959,11 +987,11 @@ static gboolean load_heraia_glade_xml(heraia_window_t *main_window)
  * @fn connect_cursor_moved_signal(heraia_window_t *main_window)
  *  Connects the signal that the cursor has moved to
  *  the refreshing function
- * @param main_window : main structure 
+ * @param main_window : main structure
  */
 void connect_cursor_moved_signal(heraia_window_t *main_window, GtkWidget *hex_widget)
 {
-	g_signal_connect(G_OBJECT(hex_widget), "cursor_moved", 
+	g_signal_connect(G_OBJECT(hex_widget), "cursor_moved",
 					 G_CALLBACK(refresh_event_handler), main_window);
 }
 
@@ -975,74 +1003,78 @@ void connect_cursor_moved_signal(heraia_window_t *main_window, GtkWidget *hex_wi
  */
 static void heraia_ui_connect_signals(heraia_window_t *main_window)
 {
-	
+
 	/* the data interpretor menu */
-	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "DIMenu")), "activate", 
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "DIMenu")), "activate",
 					  G_CALLBACK (on_DIMenu_activate), main_window);
-	
+
 	/* Quit, file menu */
-	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "quit")), "activate", 
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "quit")), "activate",
 					  G_CALLBACK (on_quit_activate), main_window);
-	
+
 	/* New, file menu */
-	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "new")), "activate",  
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "new")), "activate",
 					  G_CALLBACK (on_new_activate), main_window);
-	
+
 	/* Open, file menu */
-	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "open")), "activate",  
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "open")), "activate",
 					  G_CALLBACK (on_open_activate), main_window);
-	
+
 	/* Save, file menu */
-	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "save")), "activate",  
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "save")), "activate",
 					  G_CALLBACK (on_save_activate), main_window);
-	
+
 	/* Save As, file menu */
-	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "save_as")), "activate",  
-					  G_CALLBACK (on_save_as_activate), main_window); 
-	
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "save_as")), "activate",
+					  G_CALLBACK (on_save_as_activate), main_window);
+
 	/* Preferences, file menu ; See main_pref_window.c for main_pref_window's signals */
-	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "preferences")), "activate",  
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "preferences")), "activate",
 					  G_CALLBACK (on_preferences_activate), main_window);
-	
+
 	/* Cut, edit menu */
-	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "cut")), "activate",  
-					  G_CALLBACK (on_cut_activate), main_window); 
-	
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "cut")), "activate",
+					  G_CALLBACK (on_cut_activate), main_window);
+
 	/* Copy, edit menu */
-	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "copy")), "activate",  
-					  G_CALLBACK (on_copy_activate), main_window); 
-	
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "copy")), "activate",
+					  G_CALLBACK (on_copy_activate), main_window);
+
 	/* Paste, edit menu */
-	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "paste")), "activate",  
-					  G_CALLBACK (on_paste_activate), main_window); 
-	
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "paste")), "activate",
+					  G_CALLBACK (on_paste_activate), main_window);
+
 	/* Delete, edit menu */
-	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "delete")), "activate",  
-					  G_CALLBACK (on_delete_activate), main_window); 
-	
-	
-	/* about dialog box */		
-	g_signal_connect (G_OBJECT(heraia_get_widget(main_window->xmls->main, "a_propos")), "activate",  
-					  G_CALLBACK(a_propos_activate), main_window); 
-	
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "delete")), "activate",
+					  G_CALLBACK (on_delete_activate), main_window);
+
+
+	/* about dialog box */
+	g_signal_connect (G_OBJECT(heraia_get_widget(main_window->xmls->main, "a_propos")), "activate",
+					  G_CALLBACK(a_propos_activate), main_window);
+
 	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "about_dialog")), "close",
 					 G_CALLBACK(a_propos_close), main_window);
-	
+
 	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "about_dialog")), "response",
 					 G_CALLBACK(a_propos_response), main_window);
-	
+
 	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "about_dialog")), "delete-event",
 					 G_CALLBACK(a_propos_delete), main_window);
-	
-	
+
+	/* main notebook */
+	g_signal_connect(G_OBJECT(heraia_get_widget(main_window->xmls->main, "file_notebook")),"switch-page",
+					 G_CALLBACK(file_notebook_tab_changed), main_window);
+
+
 	/* main window killed or destroyed */
-	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "main_window")), "delete-event", 
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "main_window")), "delete-event",
 					  G_CALLBACK (delete_main_window_event), main_window);
-	
-	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "main_window")), "response", 
+
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "main_window")), "response",
 					  G_CALLBACK (delete_main_window_event), main_window);
-	
-	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "main_window")), "close", 
+
+	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "main_window")), "close",
 					  G_CALLBACK (on_quit_activate), main_window);
 }
 
@@ -1060,10 +1092,10 @@ static void heraia_ui_connect_signals(heraia_window_t *main_window)
 int load_heraia_ui(heraia_window_t *main_window)
 {
 	gboolean success = FALSE;
-	
+
 	/* load the XML interfaces (main & treatment) */
 	success = load_heraia_glade_xml(main_window);
-	
+
 	if (success == TRUE)
 	{
 		/* Heraia UI signals */
@@ -1071,84 +1103,84 @@ int load_heraia_ui(heraia_window_t *main_window)
 		{
 			fprintf(stdout, "Connecting heraia_ui signals     ");
 		}
-		
+
 		heraia_ui_connect_signals(main_window);
-		
+
 		if (main_window->debug == TRUE)
 		{
 			fprintf(stdout, " [Done]\n");
 		}
-		
+
 		/* The Log window */
 		if (main_window->debug == TRUE)
 		{
 			fprintf(stdout, "log window init interface        ");
 		}
-		
+
 		log_window_init_interface(main_window);
-		
+
 		if (main_window->debug == TRUE)
 		{
 			fprintf(stdout, " [Done]\n");
 		}
-		
+
 		/* Preferences window */
 		if (main_window->debug == TRUE)
 		{
 			fprintf(stdout, "preferences window init interface");
 		}
-		
+
 		main_pref_window_init_interface(main_window);
-		
+
 		if (main_window->debug == TRUE)
 		{
 			fprintf(stdout, " [Done]\n");
 		}
-		
-		
+
+
 		/* The data interpretor window */
 		if (main_window->debug == TRUE)
 		{
 			fprintf(stdout, "data interpretor init interface  ");
 		}
-		
+
 		data_interpretor_init_interface(main_window);
-		
+
 		if (main_window->debug == TRUE)
 		{
 			fprintf(stdout, " [Done]\n");
 		}
-		
-		
+
+
 		/* The list data types window */
 		if (main_window->debug == TRUE)
 		{
 			fprintf(stdout, "list data types init interface   ");
 		}
-		
+
 		list_data_types_init_interface(main_window);
-		
+
 		if (main_window->debug == TRUE)
 		{
 			fprintf(stdout, " [Done]\n");
 		}
-		
-		
+
+
 		/* The data type window (create or edit one type) */
 		if (main_window->debug == TRUE)
 		{
 			fprintf(stdout, "data type init interface         ");
 		}
-		
+
 		data_type_init_interface(main_window);
-		
+
 		if (main_window->debug == TRUE)
 		{
 			fprintf(stdout, " [Done]\n");
 		}
-		
+
 		fprintf(stdout, "Loading heraia preference file   ");
-		
+
 		if (load_preference_file(main_window) != TRUE)
 		{
 			fprintf(stdout, " [FAILED]\n");
@@ -1173,17 +1205,17 @@ int load_heraia_ui(heraia_window_t *main_window)
  * @param ... : a va_list arguments to fit format (as with printf)
  */
 void add_text_to_textview(GtkTextView *textview, const char *format, ...)
-{	
+{
 	va_list args;
 	GtkTextBuffer *tb = NULL;
 	GtkTextIter iEnd;
 	gchar *display = NULL;
 	GError *err = NULL;
-	
+
 	va_start(args, format);
 	display = g_locale_to_utf8(g_strdup_vprintf(format, args), -1, NULL, NULL, &err);
 	va_end(args);
-	
+
 	tb = GTK_TEXT_BUFFER(gtk_text_view_get_buffer(GTK_TEXT_VIEW(textview)));
 	gtk_text_buffer_get_end_iter(tb, &iEnd);
 	gtk_text_buffer_insert(tb, &iEnd, display, -1);
@@ -1201,7 +1233,7 @@ void kill_text_from_textview(GtkTextView *textview)
 	GtkTextBuffer *tb = NULL;
 	GtkTextIter iStart;
 	GtkTextIter iEnd;
-	
+
 	tb = GTK_TEXT_BUFFER(gtk_text_view_get_buffer(GTK_TEXT_VIEW(textview)));
 	gtk_text_buffer_get_start_iter(tb, &iStart);
 	gtk_text_buffer_get_end_iter(tb, &iEnd);
@@ -1220,7 +1252,7 @@ void kill_text_from_textview(GtkTextView *textview)
 GtkWidget *gtk_radio_button_get_active(GSList *group)
 {
 	GSList *tmp_slist = group;
-	
+
 	while (tmp_slist)
 	{
 		if (GTK_TOGGLE_BUTTON (tmp_slist->data)->active)
@@ -1229,7 +1261,7 @@ GtkWidget *gtk_radio_button_get_active(GSList *group)
 		}
 		tmp_slist = tmp_slist->next;
 	}
-	
+
 	return NULL;
 }
 
@@ -1242,7 +1274,7 @@ GtkWidget *gtk_radio_button_get_active(GSList *group)
  *          radio_group_member
  **/
 GtkWidget *gtk_radio_button_get_active_from_widget(GtkRadioButton *radio_group_member)
-{ 
+{
 	if (radio_group_member)
 	{
 		return gtk_radio_button_get_active(radio_group_member->group);
@@ -1268,22 +1300,22 @@ gboolean is_cmi_checked(GtkWidget *check_menu_item)
 
 /**
  * @fn gboolean is_toggle_button_activated(GladeXML *main_xml, gchar *check_button)
- *  returns the state of a named check button contained 
+ *  returns the state of a named check button contained
  *  in the Glade XML description
  * @param main_xml : a GladeXML definition
- * @param check_button : the name of an existing check_button within the glade 
+ * @param check_button : the name of an existing check_button within the glade
  *        definition
  * @return TRUE if the button is activated / toggled , FALSE otherwise
  */
 gboolean is_toggle_button_activated(GladeXML *main_xml, gchar *check_button)
 {
 	gboolean activated = FALSE;
-	
+
 	if (main_xml != NULL)
 	{
 		activated = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(heraia_get_widget(main_xml, check_button)));
 	}
-	
+
 	return activated;
 }
 
@@ -1294,18 +1326,18 @@ gboolean is_toggle_button_activated(GladeXML *main_xml, gchar *check_button)
  *  to simplify the developpers lives if they have to choose or
  *  propose other means to do the same thing than libglade (say,
  *  for example, GtkBuilder :)
- * @param xml : A glade XML definition 
+ * @param xml : A glade XML definition
  * @param widget_name : an existing widget name in the glade definition
  * @return returns the widget itself if it exists in the definition file (NULL
  *         otherwise)
  */
 GtkWidget *heraia_get_widget(GladeXML *xml, gchar *widget_name)
 {
-   /** 
+   /**
 	* For debug purposes only (very verbose as this function is the main used)
-	* fprintf(stdout, "Getting Widget named %s\n", widget_name); 
+	* fprintf(stdout, "Getting Widget named %s\n", widget_name);
 	*/
-	
+
 	if (xml != NULL && widget_name != NULL)
 	{
 		return glade_xml_get_widget(xml, widget_name);
@@ -1337,10 +1369,9 @@ void destroy_a_single_widget(GtkWidget *widget)
  */
 static void close_heraia(heraia_window_t *main_window)
 {
-
 	/* recording window's position */
 	record_all_dialog_box_positions(main_window);
-	
+
 	/* . Saving preferences */
 	save_preferences(main_window);
 }
@@ -1349,13 +1380,13 @@ static void close_heraia(heraia_window_t *main_window)
  * @fn void init_one_cmi_window_state(GtkWidget *dialog_box, GtkWidget *cmi, window_prop_t *dialog_prop)
  * init one cmi window based state
  * @param dialog_box : the window or dialog box we want to init its state
- * @param cmi : corresponding check menu item 
+ * @param cmi : corresponding check menu item
  * @param dialog_prop : corresponding window properties (should be initialized and not NULL)
  */
 static void init_one_cmi_window_state(GtkWidget *dialog_box, GtkWidget *cmi, window_prop_t *dialog_prop)
 {
 	gboolean activated = FALSE;
-	
+
 	if (dialog_box != NULL && cmi != NULL && dialog_prop != NULL)
 	{
 		activated = dialog_prop->displayed;
@@ -1379,7 +1410,7 @@ void init_window_states(heraia_window_t *main_window)
 {
 	GtkWidget *cmi = NULL;
 	GtkWidget *dialog_box = NULL;
-	
+
 	if (main_window != NULL && main_window->xmls != NULL  && main_window->xmls->main != NULL)
 	{
 		if (main_window->win_prop)
@@ -1392,12 +1423,12 @@ void init_window_states(heraia_window_t *main_window)
 				gtk_window_resize(GTK_WINDOW(dialog_box), main_window->win_prop->main_dialog->width, main_window->win_prop->main_dialog->height);
 				gtk_widget_show(dialog_box);
 			}
-			
+
 			/* Log Window Interface */
 			cmi = heraia_get_widget(main_window->xmls->main, "mw_cmi_show_logw");
 			dialog_box = heraia_get_widget(main_window->xmls->main, "log_window");
 			init_one_cmi_window_state(dialog_box, cmi, main_window->win_prop->log_box);
-			
+
 			/* Data Interpretor Interface */
 			cmi = heraia_get_widget(main_window->xmls->main, "DIMenu");
 			/* Emit the specific signal to activate the check_menu_item */
@@ -1406,17 +1437,17 @@ void init_window_states(heraia_window_t *main_window)
 				main_window->win_prop->data_interpretor->displayed = FALSE; /* dirty trick */
 				g_signal_emit_by_name(heraia_get_widget(main_window->xmls->main, "DIMenu"), "activate");
 			}
-		
+
 			/* List Data type Interface */
 			cmi = heraia_get_widget(main_window->xmls->main, "ldt_menu");
 			dialog_box = heraia_get_widget(main_window->xmls->main, "list_data_types_window");
 			init_one_cmi_window_state(dialog_box, cmi, main_window->win_prop->ldt);
-			
+
 			/* Plugin List Interface */
 			cmi = heraia_get_widget(main_window->xmls->main, "mw_cmi_plugin_list");
 			dialog_box = heraia_get_widget(main_window->xmls->main, "plugin_list_window");
-			init_one_cmi_window_state(dialog_box, cmi, main_window->win_prop->plugin_list);		
-			
+			init_one_cmi_window_state(dialog_box, cmi, main_window->win_prop->plugin_list);
+
 			/* Preferences window */
 			dialog_box = heraia_get_widget(main_window->xmls->main, "main_preferences_window");
 			if (main_window->win_prop->main_pref_window->displayed == TRUE)
@@ -1426,13 +1457,13 @@ void init_window_states(heraia_window_t *main_window)
 				gtk_window_resize(GTK_WINDOW(dialog_box), main_window->win_prop->main_pref_window->width, main_window->win_prop->main_pref_window->height);
 				gtk_widget_show_all(dialog_box);
 			}
-			
+
 			/* About Box */
 			dialog_box = heraia_get_widget(main_window->xmls->main, "about_dialog");
 			if (main_window->win_prop->about_box->displayed == TRUE)
 			{
 				/* main_window->win_prop->main_pref_window->displayed = FALSE; dirty trick */
-				gtk_window_move(GTK_WINDOW(dialog_box), main_window->win_prop->about_box->x, main_window->win_prop->about_box->y); 
+				gtk_window_move(GTK_WINDOW(dialog_box), main_window->win_prop->about_box->x, main_window->win_prop->about_box->y);
 				gtk_window_resize(GTK_WINDOW(dialog_box), main_window->win_prop->about_box->width, main_window->win_prop->about_box->height);
 				set_a_propos_properties(dialog_box);
 				gtk_widget_show_all(dialog_box);
@@ -1441,13 +1472,18 @@ void init_window_states(heraia_window_t *main_window)
 	}
 }
 
-
+/**
+ *  Adds a new tab to the main window in file's notebook
+ * @param main_window : main structure
+ * @param doc : the new document that will be related to the tab
+ */
 void add_new_tab_in_main_window(heraia_window_t *main_window, doc_t *doc)
 {
 	GtkWidget *vbox = NULL;       /**< used for vbox creation          */
 	GtkNotebook *notebook = NULL; /**< file_notebook from heraia.glade */
 	GtkWidget *tab_label = NULL;  /**< tab's label                     */
-	
+	gint tab_num = -1;            /**< new tab's index                 */
+
 	notebook = GTK_NOTEBOOK(heraia_get_widget(main_window->xmls->main, "file_notebook"));
 	vbox = gtk_vbox_new(FALSE, 2);
 	gtk_box_pack_start(GTK_BOX(vbox), doc->hex_widget, TRUE, TRUE, 3);
@@ -1455,8 +1491,11 @@ void add_new_tab_in_main_window(heraia_window_t *main_window, doc_t *doc)
 	tab_label = gtk_label_new(NULL);
 
 	gtk_widget_show_all(vbox);
-	gtk_notebook_append_page(notebook, vbox, tab_label);
-	
+	tab_num = gtk_notebook_append_page(notebook, vbox, tab_label);
+
+	gtk_notebook_set_current_page(notebook, tab_num);
+	main_window->current_doc = doc;
+
 	/* This may not be necessary here has it is done later
 		set_notebook_tab_name(main_window);
 	*/

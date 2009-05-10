@@ -44,12 +44,12 @@ static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window);
 static GList *init_heraia_location_list(void);
 static gboolean manage_command_line_options(Options *opt, int argc, char **argv);
 
-/** 
- *  libheraia_main_struct is a global variable that points 
- *  to the main structure and is intended for the library use ONLY ! 
+/**
+ *  libheraia_main_struct is a global variable that points
+ *  to the main structure and is intended for the library use ONLY !
  *  It should not be used anywhere else or for any other purpose
  */
-static heraia_window_t *libheraia_main_struct = NULL;  
+static heraia_window_t *libheraia_main_struct = NULL;
 
 
 /**
@@ -62,7 +62,7 @@ heraia_window_t *get_main_struct(void)
 	return libheraia_main_struct;
 }
 
-/** 
+/**
  *  prints program name, version, author, date and licence
  *  to the standard output
  */
@@ -73,12 +73,12 @@ static gboolean version(void)
 }
 
 
-/** 
+/**
  *  Function that informs the user about the command line options
  *  available with heraia
  *  @param status : integer that indicate wether to display help (!=0) or
  *	                an error message (0)
- *  @return 
+ *  @return
  *          - TRUE -> help message has been printed
  *          - FALSE -> error message has been printed
  */
@@ -107,7 +107,7 @@ static gboolean usage(int status)
  *  Inits the properties of a window with defined values
  *  @param  x,y are x,y coordinates on the screen
  *  @param  height represents the height of the window
- *  @param  width represents the width of the window. x+height,y+width is 
+ *  @param  width represents the width of the window. x+height,y+width is
  *          window's right bottom corner
  *  @param  displayed says wether the window is displayed or not
  *  @return a new allocated window_prop_t * structure.
@@ -176,7 +176,7 @@ static heraia_window_t *init_window_property_struct(heraia_window_t *main_window
 
 /**
  * Initialize the main structure (main_window)
- * @return a pointer to a newly initialized main structure 
+ * @return a pointer to a newly initialized main structure
  */
 static heraia_window_t *heraia_init_main_struct(void)
 {
@@ -196,7 +196,7 @@ static heraia_window_t *heraia_init_main_struct(void)
 	herwin->prefs = NULL;
 	init_preference_struct(herwin);
 	verify_preference_file(herwin->prefs->pathname, herwin->prefs->filename);
-	
+
 	/**
 	 * First, in this early stage of the development we want to toggle debugging
 	 *  mode ON which is enabled by default in the configure.ac file !
@@ -211,7 +211,7 @@ static heraia_window_t *heraia_init_main_struct(void)
 	herwin->current_data_type = NULL;
 	herwin->available_treatment_list = init_treatments(); /* treatment list initialization */
 
-	
+
 	/* xml_t structure initialisation */
 	xmls = (xml_t *) g_malloc0(sizeof(xml_t));
 	xmls->main = NULL;
@@ -271,7 +271,7 @@ static HERAIA_ERROR init_heraia_plugin_system(heraia_window_t *main_window)
 /**
  *  Here we want to init the location list where we might look for
  *  in the future. These can be viewed as default paths
- *  @warning when adding new locations, keep in ming that the list is a 
+ *  @warning when adding new locations, keep in ming that the list is a
              prepended list in reverse order.
  *  @return a new allocatde GList containing all locations
  */
@@ -333,6 +333,7 @@ static gboolean manage_command_line_options(Options *opt, int argc, char **argv)
 {
 	int exit_value = TRUE;
 	int c = 0;
+	gchar *filename = NULL;
 
 	while ((c = getopt_long (argc, argv, "vh", long_options, NULL)) != -1)
 		{
@@ -357,15 +358,35 @@ static gboolean manage_command_line_options(Options *opt, int argc, char **argv)
 				}
 		}
 
-	if (optind < argc) /** @todo manage a list of filenames instead of one filename */
+	while (optind < argc) /** @todo manage a list of filenames instead of one filename */
 		{
-			opt->filename = (char *) malloc (sizeof(char) * strlen(argv[optind]) + 1);
-			strcpy(opt->filename, argv[optind]);
+			filename = (char *) malloc (sizeof(char) * strlen(argv[optind]) + 1);
+			strcpy(filename, argv[optind]);
+			opt->filenames = g_list_prepend(opt->filenames, filename);
+			optind++;
 		}
 
 	return exit_value;
 }
 
+/**
+ * Inits the Options struct that contains all
+ * stuff needed to managed command line options
+ * within heraia
+ * @return returns a newly allocated Options structure
+ *         initialized to default values
+ */
+static Options *init_options_struct(void)
+{
+	Options *opt = NULL;
+
+	opt = (Options *) g_malloc0(sizeof(Options));
+
+	opt->filenames = NULL;  /* At first we do not have any filename */
+	opt->usage = FALSE;
+
+	return opt;
+}
 
 /**
  *  main program
@@ -378,11 +399,9 @@ int main (int argc, char ** argv)
 	Options *opt; /* A structure to manage the command line options  */
 	gboolean exit_value = TRUE;
 	heraia_window_t *main_window = NULL;
+	GList *list = NULL;
 
-	opt = (Options *) g_malloc0(sizeof(Options));
-
-	opt->filename = NULL;  /* At first we do not have any filename */
-	opt->usage = FALSE;
+	opt = init_options_struct();
 
 	main_window = heraia_init_main_struct();
 
@@ -413,12 +432,17 @@ int main (int argc, char ** argv)
 					log_message(main_window, G_LOG_LEVEL_INFO, "Main interface loaded (%s)", main_window->xmls->main->filename);
                     log_message(main_window, G_LOG_LEVEL_DEBUG, "Preference file is %s", main_window->prefs->filename);
 					log_message(main_window, G_LOG_LEVEL_DEBUG, "data interpretor's tab is %d", main_window->current_DW->tab_displayed);
-					
+
 					init_heraia_plugin_system(main_window);
 
-					if (opt->filename != NULL)
+					if (opt->filenames != NULL)
 						{
-							load_file_to_analyse(main_window, opt->filename);
+							list = g_list_first(opt->filenames);
+							while (list != NULL)
+							{
+								load_file_to_analyse(main_window, list->data);
+								list = g_list_next(list);
+							}
 						}
 
 					log_message(main_window, G_LOG_LEVEL_DEBUG, "Main_window : %p", main_window);

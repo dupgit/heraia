@@ -1,9 +1,32 @@
+06.05.2009
+   - Olivier Delhomme <heraia@delhomme.org>
+     * corrected a typo in HISTORY file
+	 * get rid of filename member of the main structure and modified the
+	   comments accordingly
+	 * hability to open more than one file at a time with the command line
+	 * Added new links to some information on decoding things
+	 * roadmap modifications (added new features deadlines)
+	 * Forgot export to PCV button in stat plugin...
+	 * Added HERAIA_REFRESH_TAB_CHANGED event to reflect a change when the
+	   user clics on a another tab of the main notebook
+	 * TODO review
+
+04.05.2009
+    - Olivier Delhomme <heraia@delhomme.org>
+	  * New function to managed tab changes (maintain current_doc accurate)
+	    Changes ito reflect that current_DW does not contain current_hexwidget
+		anymore and use current_doc (doc_t * type) instead
+	  * Now heraia seems to be able to open more than one file at a time and
+	    the filename's structure has been wiped out (even if it still exist
+		because of the unused code data_window.c. This will be until I decide
+		what to do with this code)
+
 27.04.2009
     - Olivier Delhomme <heraia@delhomme.org>
 	  * Trying to get rid of those old structures, merging Heraia_Document and
-	    HexWidget in one (doc_t *). All documents are managed in the array of 
+	    HexWidget in one (doc_t *). All documents are managed in the array of
 		pointer named "documents" in the main structure.
-		current_doc has changed it's type to reflect a pointer to the current 
+		current_doc has changed it's type to reflect a pointer to the current
 		document structure in the array.
 
 26.04.2009
@@ -13,9 +36,9 @@
 
 20.04.2009
     - Olivier Delhomme <heraia@delhomme.org>
-	  * begining work to get rid of the filename's name in heraia_window_t 
-	    structure  
-	  
+	  * begining work to get rid of the filename's name in heraia_window_t
+	    structure
+
 11.04.2009
 	- Olivier Delhomme <heraia@delhomme.org>
 	  * Changing output format for 2D PCV exports (now fancier)
@@ -28,7 +51,7 @@
 	- Olivier Delhomme <heraia@delhomme.org>
 	  * added double-clicking effect to the plugin_list window
 	  * Proposal for a new structure to manage the document
-	
+
 24.03.2009
 	- Olivier Delhomme <heraia@delhomme.org>
 	  * Corrected a regression on stat's window
@@ -36,21 +59,21 @@
 
 22.03.2009
 	- Olivier Delhomme <heraia@delhomme.org>
-	  * changed tht old file selector to the newest file chooser in stat plugin
+	  * changed the old file selector to the newest file chooser in stat plugin
 	  * corrected some mistakes and adde a few things to the gnuplot's exported
 	    file.
 
 21.03.2009
 	- Olivier Delhomme <heraia@delhomme.org>
-	  * working on stat plugin : 
-	    - translations (some sentences were still in french !) 
+	  * working on stat plugin :
+	    - translations (some sentences were still in french !)
 		- cleaning doxygen documentation
 		- correcting code to avoid possible bugs
 		- code coherency at some places
-		- added new functions that enables one to export raw datas to CSV and 
+		- added new functions that enables one to export raw datas to CSV and
 		  gnuplot usable file formats.
 	  * HISTORY corrected a typo
-		  
+
 17.03.2009
 	- Olivier Delhomme <heraia@delhomme.org>
 	  * release dates
@@ -71,17 +94,17 @@
 
 09.03.2009
     - Olivier Delhomme <heraia@delhomme.org>
-	  * Worked on a new way to pass parameters to the decoding functions and 
+	  * Worked on a new way to pass parameters to the decoding functions and
 		used decode_packed_BCD as an example
-	  
+
 05.03.2009
     - Olivier Delhomme <heraia@delhomme.org>
 	  * Roadmap minor change
 
 04.03.2009
     - Olivier Delhomme <heraia@delhomme.org>
-      * one may remember that "due to historical reasons, GtkNotebook refuses to 
-		switch to a page unless the child widget is visible. Therefore, it is 
+      * one may remember that "due to historical reasons, GtkNotebook refuses to
+		switch to a page unless the child widget is visible. Therefore, it is
         recommended to show child widgets before adding them to a notebook." !!
 
 01.03.2009
@@ -106,7 +129,7 @@
         Removing thing that we do not need any more -> simpler is better
         Removing unnecessary doxygen structures (because we do comment functions
         above the functions themselves)
-      * Deleted the menu in data_interpretor window as this is more confusing 
+      * Deleted the menu in data_interpretor window as this is more confusing
         than anything else.
 
 21.02.2009
@@ -117,14 +140,14 @@
     - Olivier Delhomme <heraia@delhomme.org>
       * Begun work on data_interpretor stuff that will ease, in the future,
         writing of new data types. I hope this to be usefull when I'll add
-        a scripting language in heraia or something similar to "create" new 
+        a scripting language in heraia or something similar to "create" new
         data types.
 
 18.02.2009
     - Olivier Delhomme <heraia@delhomme.org>
       * Corrected a bug that allowed refreshing event to show up even if no file
         were selected (cancel button)
-      * "greyed" stat plugin save as button if no file is loaded 
+      * "greyed" stat plugin save as button if no file is loaded
 
 17.02.2009
     - Olivier Delhomme <heraia@delhomme.org>
@@ -163,20 +186,20 @@
 
 10.02.2009
 	- Olivier Delhomme <heraia@delhomme.org>
-      * Added a new roadmap goal : modify the way types are added to data 
+      * Added a new roadmap goal : modify the way types are added to data
         interpretor's window -> add flexibility
 	  * Documenting libheraia.c
 
 09.02.2009
 	- Olivier Delhomme <heraia@delhomme.org>
-      * Changed visible property for stat_window and main_window (avoid 
+      * Changed visible property for stat_window and main_window (avoid
         flicking when running the program)
       * Corrected a bug that was crashing heraia when closing the stat window
 		(this may be bug #12942)
 
 04.02.2009
 	- Olivier Delhomme <heraia@delhomme.org>
-	  * stat.c 
+	  * stat.c
         - trying to do something with this 2D histogram
 
 03.02.2009
@@ -191,7 +214,7 @@
 	- Olivier Delhomme <heraia@delhomme.org>
       * BUG #12919 About box : I had forgot to include something to change
         version and package name when initializing windows states, now fixed.
-      * BUG #12920 Saving preference when closing : fixed (never connect a 
+      * BUG #12920 Saving preference when closing : fixed (never connect a
 		signal with no user data ...)
       * Documenting the code :
         - working on heraia_ui.c
@@ -225,9 +248,9 @@
 
 25.01.2009
 	- Olivier Delhomme <heraia@delhomme.org>
-      * Added a script that checks the package dependencies. This may be 
+      * Added a script that checks the package dependencies. This may be
         usefull to make packages.
-      * Script amelioration and Makefile.am modification in order that the 
+      * Script amelioration and Makefile.am modification in order that the
         files Description and check_dependencies.sh beeing distributed with
         the package (make dist)
 
@@ -247,7 +270,7 @@
 	- Olivier Delhomme <heraia@delhomme.org>
       * corrected bugs and stupid typos errors, displaying system coupled
         with saved preferences should now work correctly
-	  * Roadmoap modifications (folowing the version integration and adding 
+	  * Roadmoap modifications (folowing the version integration and adding
 		new wanted features)
       * New file : Description that contains heraia's description
 
@@ -284,12 +307,12 @@
 22.12.2008
    - Olivier Delhomme <heraia@delhomme.org>
 	 * Corrected a bug that crashed heraia when saving a non existing file
-	 * Suppressed a warning in a printf format 
+	 * Suppressed a warning in a printf format
 
 08.12.2008
    - Olivier Delhomme <heraia@delhomme.org>
 	 * Forgot to include some files into the svn repository.
-	 * Corrected bugs in the main preference dialog window (seg fault when 
+	 * Corrected bugs in the main preference dialog window (seg fault when
        closing)
 	 * New function to load a preference file
 
@@ -301,14 +324,14 @@
        directly in libheraia
      * moved all struct declarations from heraia_types.h to libheraia.h
      * moved heraia_ui.[ch], log.[ch], ghex_heraia_interface.[ch],
-       data_interpretor.[ch], heraia_errors.[ch], plugin.[ch], heraia_io.[ch], 
+       data_interpretor.[ch], heraia_errors.[ch], plugin.[ch], heraia_io.[ch],
        list_data_types.[ch], data_types.[ch], treatments.[ch] to libheraia
      * commented some instructions in the Makefile.am from libheraia
      * Changed Makefile.am from the plugin stat to reflect all huge changes
        in heraia's and libheraia's included files.
 
 20.10.2008
-   - Olivier Delhomme <heraia@delhomme.org>  
+   - Olivier Delhomme <heraia@delhomme.org>
 	 * Changed version numbers for upcoming release
      * Destroyed a scrooledwindow in heraia.glade to avoid a warning
 
@@ -316,7 +339,7 @@
    - Olivier Delhomme <heraia@delhomme.org>
      * Small fonts used with file position and selection labels
      * moving user_prefs to libheraia
-     
+
 19.09.2008
    - Olivier Delhomme <heraia@delhomme.org>
      * Flexibility with doxygen, using relative paths. Do not to forget to
@@ -327,7 +350,7 @@
    - Olivier Delhomme <heraia@delhomme.org>
 	* continuation of the migration work on libheraia.h
     * added one test to avoid using 2.12 functions were 2.12 is not available
-    * added user_prefs.[ch] files to manage user preference window and 
+    * added user_prefs.[ch] files to manage user preference window and
       properties
     * deleted decode.c and decode.h as they are migrated in libheraia
     * changed heraia.glade and added two labels that will receive cursor's
@@ -343,7 +366,7 @@
 
 12.09.2008
     - Olivier Delhomme <heraia@delhomme.org>
-    * took notebook's tab's names into account (this may be usefull when 
+    * took notebook's tab's names into account (this may be usefull when
       we'll have more than one file edited at a time).
 
 11.09.2008
@@ -356,10 +379,10 @@
     * Pushing back the libheraia skeleton, we need this!
 
 	- Olivier Delhomme <heraia@delhomme.org>
-	* Added licenses at file's begining, added "extern" keyword to 
+	* Added licenses at file's begining, added "extern" keyword to
       exported functions, copy-paste typo, added a #include directive
       (glib/gstdio.h) to avoid a warning on g_chdir.
-     
+
 
 26.08.2008
     - Sébastien Tricaud <toady@gscore.org>
