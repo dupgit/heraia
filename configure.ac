@@ -3,8 +3,12 @@ AC_PREREQ(2.59)
 AC_INIT([Heraia], [0.1.0],
         [Olivier Delhomme],
         [heraia])
+
+AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([src/heraia.c])
+
 AM_INIT_AUTOMAKE([$PACKAGE_TARNAME], [$PACKAGE_VERSION])
+
 
 dnl directory requirement
 TOP_SRCDIR=`pwd`

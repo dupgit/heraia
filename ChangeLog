@@ -1,3 +1,13 @@
+06.06.2009
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Forgot the release date in the Roadmap
+	 * removed unecessary comments at some places ...
+	 * removed current_hexwidget from data_window_t struct
+	 * passed usage option in Options_t struct from char to gboolean type
+	 * modified usage message to reflect that we can now open more than one 
+	   file at a time.
+	 * Added a specific error message for each unintrepreted row (decode_t struct)
+	 
 19.05.2009
    - Olivier Delhomme <heraia@delhomme.org>
      * Description modifications

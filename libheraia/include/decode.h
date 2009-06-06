@@ -61,8 +61,8 @@ extern gchar *decode_packed_BCD(guchar *data, gpointer data_struct);
 extern gboolean swap_bytes(guchar *to_swap, guint first, guint last);
 extern void reverse_byte_order(guchar *to_reverse);
 extern decode_parameters_t *new_decode_parameters_t(guint endianness, guint stream_size);
-extern decode_t * new_decode_t(DecodeFunc decode_func, GtkWidget *entry); 
-extern decode_generic_t *new_decode_generic_t(gchar *label, guint data_size, gboolean fixed_size, guint nb_cols, ...);
+extern decode_t * new_decode_t(DecodeFunc decode_func, GtkWidget *entry, const gchar *err_msg); 
+extern decode_generic_t *new_decode_generic_t(gchar *label, guint data_size, gboolean fixed_size, const gchar *err_msg, guint nb_cols, ...);
 
 #endif /* _LIBHERAIA_DECODE_H_ */
 

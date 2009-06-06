@@ -24,7 +24,7 @@
  * @file libheraia.h
  *
  *  This file contains all the definitions and includes all other .h
- *  file. This is not very friendly, but ease compilation on exotic
+ *  files. This is not very friendly, but ease compilation on exotic
  *  systems.
  */
 #ifndef _LIBHERAIA_H_
@@ -116,7 +116,7 @@ typedef gchar *(* DecodeFunc) (guchar *, gpointer);     /**< Decode function tem
 typedef struct
 {
 		guint endianness;  /**< endianness  */
-		guint stream_size; /**< stream_size    */
+		guint stream_size; /**< stream_size */
 } decode_parameters_t;
 
 /**
@@ -129,6 +129,9 @@ typedef struct
  {
     DecodeFunc func;  /**< a function to decode into something     */
     GtkWidget *entry; /**< the widget that will receive the result */
+	gchar *err_msg;   /**< error message if something went wrong when decoding
+						    expects a %d somewhere in the message to represents 
+							the stream lenght to be decoded                     */
  } decode_t;
 
 
@@ -169,8 +172,6 @@ typedef struct
  */
 typedef struct
 {
-    /** Current Hexwidget that we want data to be interpreted */
-    GtkWidget *current_hexwidget;  /** @todo we may want to move this from here to heraia_window_t structure. This should not be used anymore */
     GtkWidget *diw;                /**< data interpretor window                                              */
     gint tab_displayed;            /**< keeps the last displayed tab's number before closing                 */
     guint nb_tabs;                 /**< keeps Number of tabs in the GPtrArray                                */

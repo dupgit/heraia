@@ -141,12 +141,12 @@ data_type_t *copy_data_type_struct(heraia_window_t *main_window, data_type_t *a_
  */
 static void set_spinbutton_max_range(heraia_window_t *main_window)
 {
-	data_window_t *data_window = main_window->current_DW;
+	doc_t *doc = main_window->current_doc;
 	guint64 till_end = 0;
 	GtkSpinButton *size_spin_button = NULL;
 	GtkHex *gh = NULL;
 
-	gh = GTK_HEX(data_window->current_hexwidget);
+	gh = GTK_HEX(doc->hex_widget);
 
 	if (gh != NULL)
 		{
@@ -659,6 +659,7 @@ void refresh_hex_datas_entry(heraia_window_t *main_window)
 {
 	guchar *bin_datas = NULL;
 	data_window_t *data_window = main_window->current_DW;
+	doc_t *doc = main_window->current_doc;
 	guint length = 0;
 	gboolean result = FALSE;
 	GtkWidget *entry = NULL;
@@ -669,7 +670,7 @@ void refresh_hex_datas_entry(heraia_window_t *main_window)
 
 	length = main_window->current_data_type->size;
 
-	if (data_window->current_hexwidget != NULL)
+	if (doc->hex_widget != NULL)
 		{
 			bin_datas = (guchar *) g_malloc0(sizeof(guchar) * length);
 			result = ghex_get_data(data_window, length, H_DI_LITTLE_ENDIAN, bin_datas);

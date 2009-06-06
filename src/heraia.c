@@ -94,7 +94,7 @@ static gboolean usage(int status)
 		{
 			version();
 			fprintf(stdout, "\nheraia is a simple hexadecimal file editor and file analyser");
-			fprintf(stdout, "\nUsage :\n  heraia [options] filename\n");
+			fprintf(stdout, "\nUsage :\n  heraia [options] filename(s)\n");
 			fprintf(stdout, "\nOptions :\n\
   -h, --help\tThis help.\n\
   -v, --version\tProgram version information.\n");
@@ -219,9 +219,7 @@ static heraia_window_t *heraia_init_main_struct(void)
 
 	/* data interpretor structure initialization */
 	herwin->current_DW = (data_window_t *) g_malloc0 (sizeof(data_window_t));
-	herwin->current_DW->current_hexwidget = NULL;
 	herwin->current_DW->diw = NULL;
-	/* herwin->current_DW->window_displayed = FALSE; */
 	herwin->current_DW->tab_displayed = 0;  /* the first tab */
 
 	/* init window property structure */
@@ -378,7 +376,7 @@ static gboolean manage_command_line_options(Options *opt, int argc, char **argv)
  */
 static Options *init_options_struct(void)
 {
-	Options *opt = NULL;
+	Options *opt = NULL; /**< Structure to manage prgram's options */
 
 	opt = (Options *) g_malloc0(sizeof(Options));
 
@@ -396,7 +394,7 @@ static Options *init_options_struct(void)
  */
 int main (int argc, char ** argv)
 {
-	Options *opt; /* A structure to manage the command line options  */
+	Options *opt; /**< A structure to manage the command line options  */
 	gboolean exit_value = TRUE;
 	heraia_window_t *main_window = NULL;
 	GList *list = NULL;

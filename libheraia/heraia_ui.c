@@ -500,7 +500,7 @@ void on_save_as_activate(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
 	HERAIA_ERROR erreur = HERAIA_NOERR;
-	gchar *filename = NULL;  /* Auto malloc'ed, do not free */
+	gchar *filename = NULL;  /**< Auto malloc'ed, do not free */
 
 	if (main_window != NULL && main_window->current_doc != NULL)
 	{
@@ -548,8 +548,8 @@ void on_DIMenu_activate(GtkWidget *widget, gpointer data)
 {
 
 	heraia_window_t *main_window = (heraia_window_t *) data;
-	data_window_t *dw = NULL;      /* program structure           */
-	GtkNotebook *notebook = NULL;  /* data interpretor's notebook */
+	data_window_t *dw = NULL;      /**< data_window structure for data interpretor */
+	GtkNotebook *notebook = NULL;  /**< data interpretor's notebook                */
 
 	if (main_window != NULL)
 	{
@@ -564,10 +564,9 @@ void on_DIMenu_activate(GtkWidget *widget, gpointer data)
 
 			if (dw->diw != NULL)
 			{
-				/* dw->window_displayed = !(dw->window_displayed); */
 				notebook = GTK_NOTEBOOK(heraia_get_widget(main_window->xmls->main, "diw_notebook"));
 
-			if (main_window->win_prop->data_interpretor->displayed == FALSE)
+				if (main_window->win_prop->data_interpretor->displayed == FALSE)
 				{
 					/* Setting the first page of the notebook as default (Numbers) */
 					gtk_notebook_set_current_page(notebook, dw->tab_displayed);
@@ -719,7 +718,7 @@ static gchar *make_absolute_path(gchar *filename)
  */
 static void set_the_working_directory(GtkFileChooser *file_chooser, gchar *filename)
 {
-	gchar *dirname = NULL;    /* directory where we want to be, at first, in the file chooser */
+	gchar *dirname = NULL;    /**< directory where we want to be, at first, in the file chooser */
 
 	dirname = make_absolute_path(filename);
 
@@ -741,9 +740,9 @@ static void set_the_working_directory(GtkFileChooser *file_chooser, gchar *filen
  */
 gchar *select_file_to_load(heraia_window_t *main_window)
 {
-	GtkWidget *parent = NULL; /* A parent window (we use main_window)      */
+	GtkWidget *parent = NULL; /**< A parent window (we use main_window)      */
 	GtkFileChooser *file_chooser = NULL;
-	gchar *filename = NULL;   /* filename selected (if any) to be openned  */
+	gchar *filename = NULL;   /**< filename selected (if any) to be openned  */
 
 	parent = heraia_get_widget(main_window->xmls->main, "main_window");
 
@@ -775,21 +774,15 @@ gchar *select_file_to_load(heraia_window_t *main_window)
 		case GTK_RESPONSE_OK:
 			filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(file_chooser));
 			log_message(main_window, G_LOG_LEVEL_DEBUG, "filename selected : %s", filename);
-
-			/* this should be managed with lists and not here !!
-			if (main_window->filename != NULL)
-		       {
-					g_free(main_window->filename);
-		       }
-			*/
-
 			gtk_widget_destroy(GTK_WIDGET(file_chooser));
+			
 			return filename;
 		 break;
 
 		case GTK_RESPONSE_CANCEL:
 		default:
 			gtk_widget_destroy(GTK_WIDGET(file_chooser));
+			
 			return NULL;
 		 break;
 	   }

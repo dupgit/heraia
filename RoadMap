@@ -41,7 +41,7 @@ I let you imagine what I expect before I do a major release !!!
    * Save and Save As buttons should be greyed when no file is loaded (same
      thing applies to stat plugin)
 
-. 0.0.9
+. 0.0.9 [19.05.2009]
    * get rid of the filename structure in the heraia_window_t (it does
      duplicates the one contained in the hexdocument structure)
    * double clicking on a plugin in plugin list window opens it

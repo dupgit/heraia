@@ -28,7 +28,7 @@
 
 static guint which_endianness(heraia_window_t *main_window);
 static guint which_stream_size(heraia_window_t *main_window);
-static void interpret(doc_t *doc, DecodeFunc decode_it, decode_parameters_t *decode_parameters, GtkWidget *entry, guint length);
+static void interpret(doc_t *doc, decode_t *decode_struct, decode_parameters_t *decode_parameters, guint length);
 static void close_data_interpretor_window(GtkWidget *widget, gpointer data);
 static void connect_data_interpretor_signals(heraia_window_t *main_window);
 static void refresh_one_row(doc_t *doc, decode_generic_t *row,  guint nb_cols, decode_parameters_t *decode_parameters);
@@ -109,22 +109,18 @@ static guint which_stream_size(heraia_window_t *main_window)
  *   write down the result in a widget designated "entry"
  *  @warning We are assuming that main_window != NULL and main_window->xml != NULL
  *
- *    @param main_window : main structure
- *    @param decode_it : a DecodeDateFunc which is a function to be called to
- *				         decode the stream
- *     @param decode_parameters : structure that passes some arguments to the
+ *  @param main_window : main structure
+ *  @param decode : a decode_t structure that contains function, entry and error message
+ *  @param decode_parameters : structure that passes some arguments to the
  *            decoding functions
- *    @param entry : a GtkWidget * entry widget where we will put the result
- *                   of the computation of decode_it function
- *    @param length : the length of the data to be decoded (guint)
- * @todo Add text to the decode_generic_t struct to describe what to tell if
- *       something's wrong or if we can not decode anything
+ *  @param length : the length of the data to be decoded (guint)
  */
-static void interpret(doc_t *doc, DecodeFunc decode_it, decode_parameters_t *decode_parameters, GtkWidget *entry, guint length)
+static void interpret(doc_t *doc, decode_t *decode_struct, decode_parameters_t *decode_parameters, guint length)
 {
-	gint result = 0;    /**< used to test different results of function calls */
-	guchar *c = NULL;   /**< the character under the cursor                   */
-	gchar *text = NULL; /**< decoded text                                     */
+	gint result = 0;    /** used to test different results of function calls                            */
+	guchar *c = NULL;   /** the character under the cursor                                              */
+	gchar *text = NULL; /** decoded text                                                                */
+	DecodeFunc decode_it = NULL; /** A DecodeFunc which is a function to be called to decode the stream */
 
 	c = (guchar *) g_malloc0(sizeof(guchar) * length);
 
@@ -132,22 +128,31 @@ static void interpret(doc_t *doc, DecodeFunc decode_it, decode_parameters_t *dec
 
 	if (result == TRUE)
 		{
+			decode_it = decode_struct->func;
+			
 			text = decode_it(c, (gpointer) decode_parameters);
 
 			if (text != NULL)
 				{
-					gtk_entry_set_text(GTK_ENTRY(entry), text);
+					gtk_entry_set_text(GTK_ENTRY(decode_struct->entry), text);
 				}
 			else
 				{
 					text = g_strdup_printf("Something's wrong!");
-					gtk_entry_set_text(GTK_ENTRY(entry), text);
+					gtk_entry_set_text(GTK_ENTRY(decode_struct->entry), text);
 				}
 		}
 	else
 		{
-			text = g_strdup_printf("Cannot interpret as a %d byte(s)", length);
-			gtk_entry_set_text(GTK_ENTRY(entry), text);
+			if (decode_struct->err_msg != NULL)
+			{
+				text = g_strdup_printf(decode_struct->err_msg, length);
+			}
+			else
+			{
+				text = g_strdup_printf("Cannot interpret as a %d byte(s)", length);
+			}
+			gtk_entry_set_text(GTK_ENTRY(decode_struct->entry), text);
 		}
 
 	g_free(c);
@@ -185,19 +190,19 @@ static void close_data_interpretor_window(GtkWidget *widget, gpointer data)
  */
 static void refresh_one_row(doc_t *doc, decode_generic_t *row,  guint nb_cols, decode_parameters_t *decode_parameters)
 {
-	decode_t *couple = NULL;   /**< the couple entry / function */
+	decode_t *decode = NULL;   /**< entry, function and message */
 	guint i = 0 ;
 
 	while ( i < nb_cols)
 	{
-		couple = g_ptr_array_index(row->decode_array, i);
+		decode = g_ptr_array_index(row->decode_array, i);
 
 		if (row->fixed_size == FALSE)
 		{
 			row->data_size = decode_parameters->stream_size;
 		}
 
-		interpret(doc, couple->func, decode_parameters, couple->entry, row->data_size);
+		interpret(doc, decode, decode_parameters, row->data_size);
 		i++;
 	}
 }
@@ -493,13 +498,13 @@ static void add_default_tabs(heraia_window_t *main_window)
 	{
 		g_ptr_array_add(dw->tabs, (gpointer) tab);
 		dw->nb_tabs++;
-		row = new_decode_generic_t("8 bits", 1, TRUE, 2, decode_8bits_unsigned, decode_8bits_signed);
+		row = new_decode_generic_t("8 bits", 1, TRUE, "Can not interpret %d byte as a 8 bits number", 2,  decode_8bits_unsigned, decode_8bits_signed);
 		add_new_row_to_tab(tab, row);
-		row = new_decode_generic_t("16 bits", 2, TRUE, 2, decode_16bits_unsigned, decode_16bits_signed);
+		row = new_decode_generic_t("16 bits", 2, TRUE, "Can not interpret %d bytes as a 16 bits number", 2, decode_16bits_unsigned, decode_16bits_signed);
 		add_new_row_to_tab(tab, row);
-		row = new_decode_generic_t("32 bits", 4, TRUE, 2, decode_32bits_unsigned, decode_32bits_signed);
+		row = new_decode_generic_t("32 bits", 4, TRUE, "Can not interpret %d bytes as a 32 bits number", 2, decode_32bits_unsigned, decode_32bits_signed);
 		add_new_row_to_tab(tab, row);
-		row = new_decode_generic_t("64 bits", 8, TRUE, 2, decode_64bits_unsigned, decode_64bits_signed);
+		row = new_decode_generic_t("64 bits", 8, TRUE, "Can not interpret %d bytes as a 64 bits number", 2, decode_64bits_unsigned, decode_64bits_signed);
 		add_new_row_to_tab(tab, row);
 	}
 
@@ -510,9 +515,9 @@ static void add_default_tabs(heraia_window_t *main_window)
 	{
 		g_ptr_array_add(dw->tabs, (gpointer) tab);
 		dw->nb_tabs++;
-		row = new_decode_generic_t("Float (32 bits)", 4, TRUE, 2, decode_float_normal, decode_float_scientific);
+		row = new_decode_generic_t("Float (32 bits)", 4, TRUE, "Can not interpret %d bytes as a float number", 2, decode_float_normal, decode_float_scientific);
 		add_new_row_to_tab(tab, row);
-		row = new_decode_generic_t("Double (64 bits)", 8, TRUE, 2, decode_double_normal, decode_double_scientific);
+		row = new_decode_generic_t("Double (64 bits)", 8, TRUE, "Can not interpret %d bytes as a double number", 2, decode_double_normal, decode_double_scientific);
 		add_new_row_to_tab(tab, row);
 	}
 
@@ -523,13 +528,13 @@ static void add_default_tabs(heraia_window_t *main_window)
 	{
 		g_ptr_array_add(dw->tabs, (gpointer) tab);
 		dw->nb_tabs++;
-		row = new_decode_generic_t("MS-DOS", 4, TRUE, 1, decode_dos_date);
+		row = new_decode_generic_t("MS-DOS", 4, TRUE, "Can not interpret %d bytes as a DOS date", 1, decode_dos_date);
 		add_new_row_to_tab(tab, row);
-		row = new_decode_generic_t("Filetime", 8, TRUE, 1, decode_filetime_date);
+		row = new_decode_generic_t("Filetime", 8, TRUE,  "Can not interpret %d bytes as a filetime date", 1, decode_filetime_date);
 		add_new_row_to_tab(tab, row);
-		row = new_decode_generic_t("C", 4, TRUE, 1, decode_C_date);
+		row = new_decode_generic_t("C", 4, TRUE, "Can not interpret %d bytes as a C date", 1, decode_C_date);
 		add_new_row_to_tab(tab, row);
-		row = new_decode_generic_t("HFS", 4, TRUE, 1, decode_HFS_date);
+		row = new_decode_generic_t("HFS", 4, TRUE, "Can not interpret %d bytes as a HFS date",  1, decode_HFS_date);
 		add_new_row_to_tab(tab, row);
 	}
 
@@ -540,9 +545,9 @@ static void add_default_tabs(heraia_window_t *main_window)
 	{
 		g_ptr_array_add(dw->tabs, (gpointer) tab);
 		dw->nb_tabs++;
-		row = new_decode_generic_t("Bits", 1, FALSE, 1, decode_to_bits);
+		row = new_decode_generic_t("Bits", 1, FALSE, "Can not decode %d byte(s) to bits", 1, decode_to_bits);
 		add_new_row_to_tab(tab, row);
-		row = new_decode_generic_t("Packed BCD", 1, FALSE, 1, decode_packed_BCD);
+		row = new_decode_generic_t("Packed BCD", 1, FALSE, "Can not interpret %d byte(s) as packed BCD string",  1, decode_packed_BCD);
 		add_new_row_to_tab(tab, row);
 	}
 }

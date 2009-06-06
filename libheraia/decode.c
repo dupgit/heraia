@@ -1014,7 +1014,7 @@ decode_parameters_t *new_decode_parameters_t(guint endianness, guint stream_size
  * @return returns a newly allocated decode_t structure filled with the two
  *         parameters.
  */
-decode_t *new_decode_t(DecodeFunc decode_func, GtkWidget *entry)
+decode_t *new_decode_t(DecodeFunc decode_func, GtkWidget *entry, const gchar *err_msg)
 {
 	decode_t *decode_struct = NULL;
 	
@@ -1023,6 +1023,7 @@ decode_t *new_decode_t(DecodeFunc decode_func, GtkWidget *entry)
 		decode_struct = (decode_t *) g_malloc0(sizeof(decode_t));
 		decode_struct->func = decode_func;
 		decode_struct->entry = entry;
+		decode_struct->err_msg = g_strdup(err_msg);
 		
 		return decode_struct;
 	}
@@ -1038,6 +1039,8 @@ decode_t *new_decode_t(DecodeFunc decode_func, GtkWidget *entry)
  * @param data_size : a default data_size
  * @param fixed_size : TRUE if the size is fixed and should not be updated,
  *                     FALSE otherwise
+ * @param err_msg : an error message to be displayed if dcoding can not be 
+ *                  processed
  * @param nb_cols : number of decoding columns we want
  * @param ... : va_list of functions to fill in the columns (you MUST have the
  *              same number of columns and functions you passes here as 
@@ -1045,11 +1048,11 @@ decode_t *new_decode_t(DecodeFunc decode_func, GtkWidget *entry)
  * @return returns a newly allocated decode_generic_t structure filled with the 
  *         right parameters
  */
-decode_generic_t *new_decode_generic_t(gchar *label, guint data_size, gboolean fixed_size, guint nb_cols, ...)
+decode_generic_t *new_decode_generic_t(gchar *label, guint data_size, gboolean fixed_size, const gchar *err_msg, guint nb_cols, ...)
 {
     va_list args;                       /**< va_list arguments : decoding function names */ 
 	decode_generic_t *my_struct = NULL; /** structure to be initialized and returned     */
-	decode_t *couple;                   /** Entry and associated function                */
+	decode_t *decode;                   /** Entry and associated function                */
 	guint i = 0;
 	DecodeFunc decode_it;               /**< one decoding function                       */
 	GtkWidget *entry = NULL;            /**< entry associated to the decoding function   */
@@ -1065,8 +1068,8 @@ decode_generic_t *new_decode_generic_t(gchar *label, guint data_size, gboolean f
 		decode_it = (DecodeFunc) va_arg(args, DecodeFunc);
 		entry = gtk_entry_new();
 		gtk_entry_set_editable(GTK_ENTRY(entry), FALSE);
-		couple = new_decode_t(decode_it, entry);
-		g_ptr_array_add(decode_array, (gpointer) couple);	
+		decode = new_decode_t(decode_it, entry, err_msg);
+		g_ptr_array_add(decode_array, (gpointer) decode);	
 	}
 	va_end(args);
 	
