@@ -39,7 +39,7 @@ static void statw_export_to_csv_clicked(GtkWidget *widget, gpointer data);
 static void statw_export_to_gnuplot_clicked(GtkWidget *widget, gpointer data);
 static void statw_export_to_pcv_clicked(GtkWidget *widget, gpointer data);
 
-static gchar *stat_select_file_to_save(gchar *window_text);
+static gchar *stat_select_file_to_save(gchar *window_text, stat_t *extra);
 static void histo_radiobutton_toggled(GtkWidget *widget, gpointer data);
 static gboolean delete_stat_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data );
 static void realize_some_numerical_stat(heraia_window_t *main_struct, heraia_plugin_t *plugin);
@@ -63,8 +63,8 @@ static void do_pixbuf_2D_from_histo2D(stat_t *extra, guint max_2D);
  */
 heraia_plugin_t *heraia_plugin_init(heraia_plugin_t *plugin)
 {
-	stat_t *extra = NULL;  /**< extra structure specific to this plugin */
-	window_prop_t *stat_prop = NULL; /**< window properties */
+	stat_t *extra = NULL;            /**< extra structure specific to this plugin */
+	window_prop_t *stat_prop = NULL; /**< window properties                       */
 
 	plugin->state             = PLUGIN_STATE_INITIALIZING;
 	plugin->xml = NULL;
@@ -92,6 +92,7 @@ heraia_plugin_t *heraia_plugin_init(heraia_plugin_t *plugin)
 	extra = (stat_t *) g_malloc0 (sizeof(stat_t));
 	extra->infos_1D = (histo_infos_t *) g_malloc0 (sizeof(histo_infos_t));
 	extra->infos_2D = (histo_infos_t *) g_malloc0 (sizeof(histo_infos_t));
+	extra->dirname = NULL;
 
 	/* window properties */
 	stat_prop = (window_prop_t *) g_malloc0(sizeof(window_prop_t));
@@ -108,8 +109,6 @@ heraia_plugin_t *heraia_plugin_init(heraia_plugin_t *plugin)
 }
 
 /* the plugin interface functions */
-
-
 /**
  *  The real init function of the plugin (called at init time)
  * @param main_struct : main structure
@@ -218,7 +217,7 @@ static void set_statw_button_state(GladeXML *xml, gboolean sensitive)
  *  is already displayed (running)
  * @param main_struct : main structure
  * @param data : user data (the plugin itself) MUST be heraia_plugin_t *plugin
- *        structure
+ *               structure
  */
 void refresh(heraia_window_t *main_struct, void *data)
 {
@@ -294,6 +293,7 @@ static void statw_close_clicked(GtkWidget *widget, gpointer data)
 static void statw_save_as_clicked(GtkWidget *widget, gpointer data)
 {
 	heraia_plugin_t *plugin = (heraia_plugin_t *) data;
+	stat_t *extra = NULL;
 	GtkImage *image = NULL;
 	GdkPixbuf *pixbuf = NULL;
 	gchar *filename = NULL;
@@ -301,10 +301,12 @@ static void statw_save_as_clicked(GtkWidget *widget, gpointer data)
 
 	if (plugin != NULL)
 		{
+			extra = (stat_t *) plugin->extra;
+			
 			image = GTK_IMAGE(glade_xml_get_widget(plugin->xml, "histo_image"));
 			pixbuf = gtk_image_get_pixbuf(image);
 
-			filename = stat_select_file_to_save("Enter filename's to save the image to");
+			filename = stat_select_file_to_save("Enter filename's to save the image to", extra);
 			if (filename != NULL)
 			{
 				gdk_pixbuf_save(pixbuf, filename, "png", error, "compression", "9", NULL);
@@ -316,12 +318,10 @@ static void statw_save_as_clicked(GtkWidget *widget, gpointer data)
 /**
  *  Selecting the file filename where to save the file
  * @param window_text : text to be displayed in the selection window
- * @todo remember the last directory where we saved stuff
  * @return returns the new filename where to save a file
  */
-static gchar *stat_select_file_to_save(gchar *window_text)
+static gchar *stat_select_file_to_save(gchar *window_text, stat_t *extra)
 {
-	/* GtkFileSelection *file_selector = NULL; */
 	GtkFileChooser *file_chooser = NULL;
 	gint response_id = 0;
 	gchar *filename;
@@ -332,29 +332,40 @@ static gchar *stat_select_file_to_save(gchar *window_text)
 																GTK_STOCK_OPEN, GTK_RESPONSE_OK,
 																NULL));
 
-	/* file_selector = GTK_FILE_SELECTION (gtk_file_selection_new(window_text)); */
-
 	/* for the moment we do not want to retrieve multiples selections */
-	/* gtk_file_selection_set_select_multiple(file_selector, FALSE); */
 	gtk_window_set_modal(GTK_WINDOW(file_chooser), TRUE);
 	gtk_file_chooser_set_select_multiple(file_chooser, FALSE);
+	gtk_file_chooser_set_do_overwrite_confirmation(file_chooser, TRUE);
 
-	/* response_id = gtk_dialog_run(GTK_DIALOG (file_selector)); */
+    /* If it exists define a new directory name */
+	if (extra != NULL && extra->dirname != NULL)
+	{
+		gtk_file_chooser_set_current_folder(file_chooser, extra->dirname);
+	}
+
 	response_id = gtk_dialog_run(GTK_DIALOG(file_chooser));
 
 	switch (response_id)
 		{
 		case GTK_RESPONSE_OK:
 			filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(file_chooser));
-			/* filename = g_strdup(gtk_file_selection_get_filename (GTK_FILE_SELECTION (file_selector))); */
+			
+			/* Saving directory name in order to use it at a later call */
+			if (filename != NULL) 
+			{
+				if (extra->dirname != NULL)
+				{
+					g_free(extra->dirname);
+				}
+				extra->dirname = g_path_get_dirname(filename);
+			}
+			
 			break;
 		case GTK_RESPONSE_CANCEL:
 		default:
 			filename = NULL;
 			break;
 		}
-
-	/* gtk_widget_destroy (GTK_WIDGET(file_selector)); */
 
 	gtk_widget_destroy(GTK_WIDGET(file_chooser));
 	return filename;
@@ -378,7 +389,7 @@ static void statw_export_to_csv_clicked(GtkWidget *widget, gpointer data)
 		{
 			extra = (stat_t *) plugin->extra;
 
-			filename = stat_select_file_to_save("Enter filename to export data as CSV to");
+			filename = stat_select_file_to_save("Enter filename to export data as CSV to", extra);
 
 			if (filename != NULL)
 			{
@@ -445,7 +456,7 @@ static void statw_export_to_gnuplot_clicked(GtkWidget *widget, gpointer data)
 		{
 			extra = (stat_t *) plugin->extra;
 
-			filename = stat_select_file_to_save("Enter filename to export data as gnuplot to");
+			filename = stat_select_file_to_save("Enter filename to export data as gnuplot to", extra);
 
 			if (filename != NULL)
 			{
@@ -525,7 +536,7 @@ static void statw_export_to_pcv_clicked(GtkWidget *widget, gpointer data)
 		{
 			extra = (stat_t *) plugin->extra;
 
-			filename = stat_select_file_to_save("Enter filename to export data as PCV to");
+			filename = stat_select_file_to_save("Enter filename to export data as PCV to", extra);
 
 			if (filename != NULL)
 			{
@@ -664,7 +675,7 @@ static void stat_window_connect_signals(heraia_plugin_t *plugin)
 	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "statw_export_to_gnuplot")), "clicked",
 					 G_CALLBACK(statw_export_to_gnuplot_clicked), plugin);
 
-	/* Gnuplot button */
+	/* PCV button */
 	g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "statw_export_to_pcv")), "clicked",
 					 G_CALLBACK(statw_export_to_pcv_clicked), plugin);
 

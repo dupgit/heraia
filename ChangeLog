@@ -1,3 +1,12 @@
+07.06.2009
+   - Olivier Delhomme <heraia@delhomme.org>
+	 * Fancier configure.ac
+	 * Saving images in the stat window will remember the last directory
+	 * Overwrite confirmation for this window (when saving images or exporting
+	   to csv, gnuplot or picviz)
+	 * heraia_hex_document_save and save_as only needs to know about the
+	   current edited document as in current_doc struct (doc_t *)
+	 
 06.06.2009
    - Olivier Delhomme <heraia@delhomme.org>
      * Forgot the release date in the Roadmap

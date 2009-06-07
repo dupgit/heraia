@@ -356,7 +356,7 @@ static gboolean manage_command_line_options(Options *opt, int argc, char **argv)
 				}
 		}
 
-	while (optind < argc) /** @todo manage a list of filenames instead of one filename */
+	while (optind < argc)
 		{
 			filename = (char *) malloc (sizeof(char) * strlen(argv[optind]) + 1);
 			strcpy(filename, argv[optind]);

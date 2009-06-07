@@ -31,8 +31,8 @@ extern gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, guint endianness, 
 extern gboolean ghex_get_data(GtkWidget *hex_widget, guint length, guint endianness, guchar *c);
 
 extern doc_t *heraia_hex_document_new(heraia_window_t *main_window, char *filename);
-extern HERAIA_ERROR heraia_hex_document_save(heraia_window_t *main_window);
-extern HERAIA_ERROR heraia_hex_document_save_as(heraia_window_t *main_window, gchar *filename);
+extern HERAIA_ERROR heraia_hex_document_save(doc_t *current_doc);
+extern HERAIA_ERROR heraia_hex_document_save_as(doc_t *current_doc, gchar *filename);
 extern gchar *heraia_hex_document_get_filename(Heraia_Document *hex_doc);
 extern gchar *doc_t_document_get_filename(doc_t *doc);
 extern guint64 ghex_file_size(GtkHex *gh);

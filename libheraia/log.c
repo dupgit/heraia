@@ -91,6 +91,7 @@ static void my_log(heraia_window_t *main_window, gchar *log_domain, GLogLevelFla
 	GtkTextView *logw_textview = GTK_TEXT_VIEW(heraia_get_widget(main_window->xmls->main, "logw_textview"));
 	GtkTextBuffer *tb = NULL;
 	GtkTextIter iStart;
+	GtkTextMark *mark = NULL;
 
 	va_start(args, format);
 	str = g_strdup_vprintf(format, args);
@@ -144,6 +145,12 @@ static void my_log(heraia_window_t *main_window, gchar *log_domain, GLogLevelFla
 	tb = GTK_TEXT_BUFFER(gtk_text_view_get_buffer(GTK_TEXT_VIEW(logw_textview)));
 	gtk_text_buffer_get_end_iter(tb, &iStart);
 	gtk_text_buffer_insert(tb, &iStart, display, -1);
+	
+	/* Scrolling down to the new line */
+	gtk_text_iter_set_line_offset (&iStart, 0);
+	mark = gtk_text_buffer_get_mark (tb, "scroll");
+    gtk_text_buffer_move_mark (tb, mark, &iStart);
+	gtk_text_view_scroll_mark_onscreen (logw_textview, mark);
 	
 	g_free(str);
 	g_free(display);

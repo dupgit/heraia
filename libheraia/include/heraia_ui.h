@@ -52,6 +52,7 @@ extern gboolean file_notebook_tab_changed(GtkNotebook *notebook, GtkNotebookPage
 /* file selection */
 extern gchar *select_file_to_load(heraia_window_t *main_window);
 extern gchar *select_a_file_to_save(heraia_window_t *main_window);
+extern void set_the_working_directory(GtkFileChooser *file_chooser, gchar *filename);
 
 /* initialisation process */
 extern void init_heraia_interface(heraia_window_t *main_window);

@@ -480,7 +480,7 @@ void on_save_activate(GtkWidget *widget, gpointer data)
 
 	if (main_window != NULL && main_window->current_doc != NULL)
 	{
-		erreur = heraia_hex_document_save(main_window);
+		erreur = heraia_hex_document_save(main_window->current_doc);
 
 		if (erreur != HERAIA_NOERR)
 		{
@@ -508,7 +508,7 @@ void on_save_as_activate(GtkWidget *widget, gpointer data)
 
 		if (filename != NULL)
 		{
-			erreur = heraia_hex_document_save_as(main_window, filename);
+			erreur = heraia_hex_document_save_as(main_window->current_doc, filename);
 		}
 		else
 		{
@@ -710,13 +710,12 @@ static gchar *make_absolute_path(gchar *filename)
 
 
 /**
- * @fn void set_the_working_directory(GtkFileChooser *file_chooser, gchar *filename)
  *  Sets the working directory for the file chooser to the directory of the
  *  filename (even if filename is a relative filename such as ../docs/test_file)
  * @param file_chooser : An initialized GtkFileChooser
  * @param filename : a filename (one previously openned)
  */
-static void set_the_working_directory(GtkFileChooser *file_chooser, gchar *filename)
+void set_the_working_directory(GtkFileChooser *file_chooser, gchar *filename)
 {
 	gchar *dirname = NULL;    /**< directory where we want to be, at first, in the file chooser */
 
@@ -797,7 +796,7 @@ gchar *select_file_to_load(heraia_window_t *main_window)
  */
 gchar *select_a_file_to_save(heraia_window_t *main_window)
 {
-	GtkWidget *parent = NULL;     /* A parent window (we use main_window) */
+	GtkWidget *parent = NULL;     /**< A parent window (we use main_window) */
 	GtkFileChooser *fcd = NULL;
 	gchar *filename = NULL;
 

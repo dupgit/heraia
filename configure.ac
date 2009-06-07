@@ -9,17 +9,23 @@ AC_CONFIG_SRCDIR([src/heraia.c])
 
 AM_INIT_AUTOMAKE([$PACKAGE_TARNAME], [$PACKAGE_VERSION])
 
-
-dnl directory requirement
+dnl **************************************************
+dnl * Directory requirements                         *
+dnl **************************************************
 TOP_SRCDIR=`pwd`
 SRCDIR="${TOP_SRCDIR}/src"
 AC_SUBST(TOP_SRCDIR)
 AC_SUBST(SRCDIR)
 
-dnl Put the preprocessor macros in a header file instead of command line
+dnl **************************************************
+dnl * Put the preprocessor macros in a header file   *
+dnl * instead of command line                        *
+dnl **************************************************
 AC_CONFIG_HEADER([config.h])
 
-dnl Libraries requirements
+dnl **************************************************
+dnl * Libraries requirements                         *
+dnl **************************************************
 GLIB2_VERSION=2.2.0
 GTK2_VERSION=2.2.0
 GTKHEX_VERSION=1.0.0
@@ -32,10 +38,14 @@ AC_SUBST(GTK2_VERSION)
 AC_SUBST(LIBGLADE_VERSION)
 AC_SUBST(GMODULE_VERSION)
 
-dnl Build time sanity check
+dnl **************************************************
+dnl * Build time sanity check                        *
+dnl **************************************************
 AM_SANITY_CHECK
 
-dnl Initialize maintainer mode
+dnl **************************************************
+dnl * Initialize maintainer mode                     *
+dnl **************************************************
 AM_MAINTAINER_MODE
 
 dnl **************************************************
@@ -173,11 +183,11 @@ dnl **************************************************
 dnl * ./configure options                            *
 dnl **************************************************
 
-dnl *******************************
-dnl debug option
-dnl *******************************
-dnl At this early stage debugging IS activated
-dnl by default
+dnl **************************************************
+dnl * debug option                                   *
+dnl * At this early stage debugging IS activated     *
+dnl * by default                                     *
+dnl **************************************************
 AC_ARG_ENABLE([debug],
      [  --enable-debug    Turn on debugging],
      [case "${enableval}" in
@@ -194,9 +204,9 @@ else
  CFLAGS="$CFLAGS -ggdb"
 fi
 
-dnl *******************************
-dnl gcov option
-dnl *******************************
+dnl **************************************************
+dnl * gcov option                                    *
+dnl **************************************************
 AC_ARG_ENABLE([gcov],
      [  --enable-gcov     Enables gcov coverage tests],
      [case "${enableval}" in
@@ -211,9 +221,9 @@ else
  CFLAGS="$CFLAGS"
 fi
 
-dnl *******************************
-dnl gprof option
-dnl *******************************
+dnl **************************************************
+dnl * gprof option                                   *
+dnl **************************************************
 AC_ARG_ENABLE([gprof],
      [  --enable-gprof    Enables gprof profiling],
      [case "${enableval}" in
