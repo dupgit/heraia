@@ -1063,11 +1063,12 @@ static void heraia_ui_connect_signals(heraia_window_t *main_window)
 	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "main_window")), "delete-event",
 					  G_CALLBACK (delete_main_window_event), main_window);
 
-	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "main_window")), "response",
+/*	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "main_window")), "response",
 					  G_CALLBACK (delete_main_window_event), main_window);
 
 	g_signal_connect (G_OBJECT (heraia_get_widget(main_window->xmls->main, "main_window")), "close",
 					  G_CALLBACK (on_quit_activate), main_window);
+*/
 }
 
 /** @fn int load_heraia_ui(heraia_window_t *main_window)

@@ -1,6 +1,7 @@
 11.06.2009
    - Olivier Delhomme <heraia@delhomme.org>
      * documentation update
+	 * removed unused or unavailable signal handlers
 
 07.06.2009
    - Olivier Delhomme <heraia@delhomme.org>
