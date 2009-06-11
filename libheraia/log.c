@@ -359,9 +359,23 @@ static void log_window_connect_signals(heraia_window_t *main_window)
  */
 void log_window_init_interface(heraia_window_t *main_window)
 {
+	GtkTextView *logw_textview = NULL;
+	GtkTextBuffer *tb = NULL;
+	GtkTextIter iStart;
+	
+	
 	if (main_window != NULL)
 	{
 		/* Connecting signals */
 		log_window_connect_signals(main_window);
+		
+		/* Creating a "scroll" mark on the textview */
+		if (main_window->xmls != NULL && main_window->xmls->main != NULL)
+		{
+			logw_textview = GTK_TEXT_VIEW(heraia_get_widget(main_window->xmls->main, "logw_textview"));
+			tb = gtk_text_view_get_buffer(logw_textview);
+			gtk_text_buffer_get_end_iter(tb, &iStart);
+			gtk_text_buffer_create_mark (tb, "scroll", &iStart, TRUE);
+		}
 	}	
 }
