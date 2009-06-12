@@ -2,6 +2,8 @@
    - Olivier Delhomme <heraia@delhomme.org>
      * forgot to add the "scroll" mark in order to be able to scroll down
 	   log's textview
+	 * Changes in configure.ac in order to be able to compile smoothly on
+	   Centos 5.3
 
 11.06.2009
    - Olivier Delhomme <heraia@delhomme.org>
