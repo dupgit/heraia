@@ -447,13 +447,24 @@ void refresh_event_handler(GtkWidget *widget, gpointer data)
 void on_open_activate(GtkWidget *widget, gpointer data)
 {
 	heraia_window_t *main_window = (heraia_window_t *) data;
-	gchar *filename = NULL;
+	GSList *list = NULL;
+	GSList *head = NULL;
 	gboolean success = FALSE;
 
-	filename = select_file_to_load(main_window);
-	if (filename != NULL)
+	list = select_file_to_load(main_window);
+	
+	if (list != NULL)
 	{
-		success = load_file_to_analyse(main_window, filename);
+		head = list;
+		while (list != NULL)
+		{
+			success = load_file_to_analyse(main_window, list->data);
+			g_free(list->data);
+			list = g_slist_next(list);
+		}
+		
+		g_slist_free(head);
+		
 		if (success == TRUE && main_window->current_doc != NULL)
 		 {
 			/* Not thread safe here ? */
@@ -730,18 +741,16 @@ void set_the_working_directory(GtkFileChooser *file_chooser, gchar *filename)
 
 
 /**
- * @fn gboolean select_file_to_load(heraia_window_t *main_window)
  *  This function does open a file selector dialog box and returns the selected
- *  filename. @todo enable multiple selections
- *  We do fill the main_window->filename parameter here !
+ *  filename.
  * @param main_window : main structure
- * @return returns TRUE if everything went ok, FALSE otherwise
+ * @return returns a list of filenames to be loaded (if any)
  */
-gchar *select_file_to_load(heraia_window_t *main_window)
+GSList *select_file_to_load(heraia_window_t *main_window)
 {
-	GtkWidget *parent = NULL; /**< A parent window (we use main_window)      */
+	GtkWidget *parent = NULL; /**< A parent window (we use main_window)            */
 	GtkFileChooser *file_chooser = NULL;
-	gchar *filename = NULL;   /**< filename selected (if any) to be openned  */
+	GSList *list = NULL;   /**< list of selected (if any) filenames to be openned  */
 
 	parent = heraia_get_widget(main_window->xmls->main, "main_window");
 
@@ -757,7 +766,7 @@ gchar *select_file_to_load(heraia_window_t *main_window)
 	 *  but this could be a valuable thing in the future
 	 */
 	gtk_window_set_modal(GTK_WINDOW(file_chooser), TRUE);
-	gtk_file_chooser_set_select_multiple(file_chooser, FALSE);
+	gtk_file_chooser_set_select_multiple(file_chooser, TRUE);
 
 	/**
 	 *  We want the file selection path to be the one of the previous
@@ -771,11 +780,12 @@ gchar *select_file_to_load(heraia_window_t *main_window)
 	switch (gtk_dialog_run(GTK_DIALOG(file_chooser)))
 	  {
 		case GTK_RESPONSE_OK:
-			filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(file_chooser));
-			log_message(main_window, G_LOG_LEVEL_DEBUG, "filename selected : %s", filename);
+		
+			list = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(file_chooser));
+			/* log_message(main_window, G_LOG_LEVEL_DEBUG, "filename selected : %s", filename); */
 			gtk_widget_destroy(GTK_WIDGET(file_chooser));
 			
-			return filename;
+			return list;
 		 break;
 
 		case GTK_RESPONSE_CANCEL:
@@ -903,6 +913,37 @@ void set_notebook_tab_name(heraia_window_t *main_window)
 
 
 /**
+ * Hides or grey all widgets that needs an open file when boolean show is
+ * FALSE
+ * @param main : main Glade XML structure
+ * @param greyed : boolean (TRUE to hide an grey widgets)
+ */
+void grey_main_widgets(GladeXML *main, gboolean greyed)
+{
+	GtkWidget *notebook = NULL;  /* file notebook in main window */
+	
+	if (main != NULL)
+	{
+		notebook = heraia_get_widget(main, "file_notebook");
+		gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 0);
+		
+		if (greyed == TRUE)
+		{
+			gtk_widget_set_sensitive(heraia_get_widget(main, "save"), FALSE);
+			gtk_widget_set_sensitive(heraia_get_widget(main, "save_as"), FALSE);
+			gtk_widget_hide(notebook);
+		}
+		else
+		{
+			gtk_widget_set_sensitive(heraia_get_widget(main, "save"), TRUE);
+			gtk_widget_set_sensitive(heraia_get_widget(main, "save_as"), TRUE);
+			gtk_widget_show_all(notebook);
+		}
+	}	
+}
+
+
+/**
  * @fn init_heraia_interface(heraia_window_t *main_window)
  *  Here we might init some call backs and menu options
  *  and display the interface (main && sub-windows)
@@ -912,27 +953,19 @@ void set_notebook_tab_name(heraia_window_t *main_window)
  */
 void init_heraia_interface(heraia_window_t *main_window)
 {
-	GtkWidget *notebook = NULL;  /* file notebook in main window */
 
 	if (main_window != NULL)
 	{
 		/* inits window states (shows or hide windows) */
 		init_window_states(main_window);
 
-		/* Notebook selection */
-		notebook = heraia_get_widget(main_window->xmls->main, "file_notebook");
-		gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 0);
-
 		if (main_window->current_doc != NULL)
 		{
-			gtk_widget_show(notebook);
+			grey_main_widgets(main_window->xmls->main, TRUE);
 		}
 		else
 		{
-			/** Hide notebook and menus @todo put these lines in a specific function */
-			gtk_widget_set_sensitive(heraia_get_widget(main_window->xmls->main, "save"), FALSE);
-			gtk_widget_set_sensitive(heraia_get_widget(main_window->xmls->main, "save_as"), FALSE);
-			gtk_widget_hide(notebook);
+			grey_main_widgets(main_window->xmls->main, TRUE);
 		}
 
 		refresh_file_labels(main_window);

@@ -40,7 +40,7 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 {
 	struct stat *stat_buf = NULL;
 	gboolean success = FALSE;
-	GtkWidget *notebook = NULL;
+/*	GtkWidget *notebook = NULL; */
 	doc_t* doc = NULL;
 
 	g_return_val_if_fail(filename != NULL, FALSE);
@@ -60,37 +60,16 @@ gboolean load_file_to_analyse(heraia_window_t *main_window, gchar *filename)
 			{
 				add_new_tab_in_main_window(main_window, doc);
 
-				/*
-				gtk_box_pack_start(GTK_BOX(heraia_get_widget(main_window->xmls->main, "vbox1")),
-								   main_window->current_DW->current_hexwidget, TRUE, TRUE, 0);
-
-				gtk_widget_show(main_window->current_DW->current_hexwidget);
-				*/
-
 				log_message(main_window, G_LOG_LEVEL_DEBUG, "Hexwidget : %p", doc->hex_widget);
 
 				success = TRUE;
-
-			    /* No more needed
-				if (main_window->filename != filename)
-					{
-						if (main_window->filename != NULL)
-						{
-							g_free(main_window->filename);
-						}
-						main_window->filename = g_strdup_printf("%s", filename);
-					}
-				*/
 
 				/* updating the window name and tab's name */
 				update_main_window_name(main_window);
 				set_notebook_tab_name(main_window);
 
 				/* Showing all the widgets */
-				gtk_widget_set_sensitive(heraia_get_widget(main_window->xmls->main, "save"), TRUE);
-				gtk_widget_set_sensitive(heraia_get_widget(main_window->xmls->main, "save_as"), TRUE);
-				notebook = heraia_get_widget(main_window->xmls->main, "file_notebook");
-				gtk_widget_show(notebook);
+				grey_main_widgets(main_window->xmls->main, FALSE);
 
 				log_message(main_window, G_LOG_LEVEL_DEBUG, "file %s loaded !", filename);
 			}

@@ -48,9 +48,8 @@ extern void destroy_dt_window(GtkWidget *widget, GdkEvent  *event, gpointer data
 
 extern gboolean file_notebook_tab_changed(GtkNotebook *notebook, GtkNotebookPage *page, gint tab_num, gpointer data);
 
-
 /* file selection */
-extern gchar *select_file_to_load(heraia_window_t *main_window);
+extern GSList *select_file_to_load(heraia_window_t *main_window);
 extern gchar *select_a_file_to_save(heraia_window_t *main_window);
 extern void set_the_working_directory(GtkFileChooser *file_chooser, gchar *filename);
 
@@ -58,6 +57,7 @@ extern void set_the_working_directory(GtkFileChooser *file_chooser, gchar *filen
 extern void init_heraia_interface(heraia_window_t *main_window);
 extern int load_heraia_ui(heraia_window_t *main_window);
 extern void init_window_states(heraia_window_t *main_window);
+extern void grey_main_widgets(GladeXML *main, gboolean greyed);
 
 /* refreshing things */
 extern void refresh_event_handler(GtkWidget *widget, gpointer data);
