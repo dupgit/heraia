@@ -1,7 +1,7 @@
 16.06.2009
    - Olivier Delhomme <heraia@delhomme.org>
-     * enabled multiple selections when opening files from the UI
-	 * added a new function to grey or ungrey widgets when no files ar opened.
+     * enabled multiple selections when opening files from the UI (menu open)
+	 * added a new function to grey or ungrey widgets when no files are opened.
 	 * get rid of some old unused comments
 
 12.06.2009
