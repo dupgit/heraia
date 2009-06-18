@@ -370,35 +370,48 @@ void on_paste_activate(GtkWidget *widget, gpointer data)
  */
 void refresh_file_labels(heraia_window_t *main_window)
 {
-	GtkWidget *label = NULL;
+	GtkWidget *position_label = NULL;
+	GtkWidget *file_size_label = NULL;
 	guint64 position = 0;
-	gchar *text = NULL;
+	guint64 file_size = 0;
+	gchar *position_text = NULL;
+	gchar *file_size_text = NULL;
 
 	if (main_window != NULL)
 		{
+			position_label = heraia_get_widget(main_window->xmls->main, "file_position_label");
+			file_size_label = heraia_get_widget(main_window->xmls->main, "file_size_label");
+					
 			if (main_window->current_doc != NULL && main_window->current_doc->hex_widget != NULL)
 				{
-					label = heraia_get_widget(main_window->xmls->main, "file_position_label");
 					position = ghex_get_cursor_position(main_window->current_doc->hex_widget);
+					file_size = ghex_file_size(main_window->current_doc->hex_widget);
+					
 					/* position begins at 0 and this is not really human readable */
 					/* it's more confusing than anything so we do + 1             */
 					/* To translators : do not translate <small> and such         */
-
 					if (is_toggle_button_activated(main_window->xmls->main, "mp_thousand_bt") == TRUE)
 					{
-						text = g_strdup_printf("<small>%'lld</small>", position + 1);
+						position_text = g_strdup_printf("<small>%'lld</small>", position + 1);
+						file_size_text = g_strdup_printf("<small>%'lld</small>", file_size);
 					}
 					else
 					{
-						text = g_strdup_printf("<small>%lld</small>", position + 1);
+						position_text = g_strdup_printf("<small>%lld</small>", position + 1);
+						file_size_text = g_strdup_printf("<small>%lld</small>", file_size);
 					}
-					gtk_label_set_markup(GTK_LABEL(label), text);
-					g_free(text);
+					
+					gtk_label_set_markup(GTK_LABEL(position_label), position_text);
+					gtk_label_set_markup(GTK_LABEL(file_size_label), file_size_text);
+					
+					g_free(position_text);
+					g_free(file_size_text);
+
 				}
 			else
 				{
-					label = heraia_get_widget(main_window->xmls->main, "file_position_label");
-					gtk_label_set_text(GTK_LABEL(label), "");
+					gtk_label_set_text(GTK_LABEL(position_label), "");
+					gtk_label_set_text(GTK_LABEL(file_size_label), "");
 				}
 		}
 }
