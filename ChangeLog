@@ -1,3 +1,8 @@
+22.06.2009
+   - Olivier Delhomme <heraia@delhomme.org>
+     * comments added. May I add an option to the command line to force to show
+	   or hide data interpretor window regardless of the saved options ?
+	   
 18.06.2009
    - Olivier Delhomme <heraia@delhomme.org>
      * Added a new label to display file size directly

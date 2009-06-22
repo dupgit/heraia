@@ -36,7 +36,9 @@
  *
  * @def H_DI_DISPLAYED
  *  Says whether data_interpretor is displayed or not
- *  @todo verify if this is still used somewhere !
+ *  @todo this is used at initialisation time. We can add a new option to the
+ *        program in order to say wether we want the data interpretor to be
+ *        visible or not (regardless of options saved ?) 
  *
  * @def H_DI_BIG_ENDIAN
  *  Stands for big endian representation
