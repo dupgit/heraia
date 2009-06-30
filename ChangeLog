@@ -1,3 +1,8 @@
+30.06.2009
+   - Olivier Delhomme <heraia@delhomme.org>
+     * comments reviewed
+	 * moving show_hide_widget() function from plugin.c to heraia_ui.c
+	 
 22.06.2009
    - Olivier Delhomme <heraia@delhomme.org>
      * comments added. May I add an option to the command line to force to show

@@ -1539,3 +1539,36 @@ void add_new_tab_in_main_window(heraia_window_t *main_window, doc_t *doc)
 		set_notebook_tab_name(main_window);
 	*/
 }
+
+
+/**
+ *  To help plugins to deal with widgets, shows or hide a specific widget
+ * @param widget : the widget to show or hide
+ * @param show : what to do : TRUE to show the widget, FALSE to hide it
+ * @param win_prop : window properties.
+ */
+void show_hide_widget(GtkWidget *widget, gboolean show, window_prop_t *win_prop)
+{
+	if (win_prop != NULL)
+	{
+		if (show)
+		{
+			move_and_show_dialog_box(widget, win_prop);
+		}
+		else
+		{
+			record_and_hide_dialog_box(widget, win_prop);
+		}
+	}
+	else
+	{
+		if (show)
+		{
+			gtk_widget_show(widget);
+		}
+		else
+		{
+			gtk_widget_hide(widget);
+		}
+	}
+}

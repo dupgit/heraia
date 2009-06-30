@@ -258,7 +258,7 @@ static void refresh_all_tabs(doc_t *doc, data_window_t *dw, decode_parameters_t 
  */
 void refresh_data_interpretor_window(GtkWidget *widget, gpointer data)
 {
-	heraia_window_t *main_window = (heraia_window_t *) data;  /**< data interpretor window structure */
+	heraia_window_t *main_window = (heraia_window_t *) data;  /** data interpretor window structure */
 	decode_parameters_t *decode_parameters = NULL;
 	guint endianness = 0;
 	guint stream_size = 0;
@@ -268,8 +268,8 @@ void refresh_data_interpretor_window(GtkWidget *widget, gpointer data)
 		main_window->current_DW != NULL &&
 		main_window->win_prop->main_dialog->displayed == TRUE)
 		{
-			endianness = which_endianness(main_window);  /**< Endianness is computed only once here */
-			stream_size =  which_stream_size(main_window); /**< stream size is computed only once here */
+			endianness = which_endianness(main_window);    /** Endianness is computed only once here  */
+			stream_size =  which_stream_size(main_window); /** stream size is computed only once here */
 
 			decode_parameters = new_decode_parameters_t(endianness, stream_size);
 
