@@ -1,4 +1,4 @@
-30.06.2009
+30.06.2009 [release 0.1.0]
    - Olivier Delhomme <heraia@delhomme.org>
      * comments reviewed
 	 * moving show_hide_widget() function from plugin.c to heraia_ui.c
