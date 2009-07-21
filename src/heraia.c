@@ -29,7 +29,7 @@
  * @author Olivier DELHOMME,
  *         Sébastien TRICAUD,
  *         Grégory AUDET
- * @version 0.1.0
+ * @version 0.1.1
  * @date 2005-2009
  */
 
