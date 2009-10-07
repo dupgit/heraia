@@ -17,6 +17,8 @@ update-icon-cache:
 	fi
 
 pixmapsdir = $(datadir)/@PACKAGE@/pixmaps
-dist_pixmaps_DATA = 	\
-	new_logo.png 		\
-	new_logo_petit.png 
+dist_pixmaps_DATA = 				\
+	new_logo.png 					\
+	new_logo_petit.png				\
+	logo_with_transparency.png		\
+	logo_with_more_transparency.png

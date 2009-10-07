@@ -1,3 +1,9 @@
+07.10.2009
+   - Aurélie Deraisme <aureliederaisme@msn.com>
+     * added transparency to main logo
+   - Olivier Delhomme <heraia@delhomme.org>
+     * generated all logos from 16x16 to 128x128
+
 19.07.2009
    - Olivier Delhomme <heraia@delhomme.org>
      * now devel release leading to 0.1.1
@@ -6,12 +12,12 @@
    - Olivier Delhomme <heraia@delhomme.org>
      * comments reviewed
 	 * moving show_hide_widget() function from plugin.c to heraia_ui.c
-	 
+
 22.06.2009
    - Olivier Delhomme <heraia@delhomme.org>
      * comments added. May I add an option to the command line to force to show
 	   or hide data interpretor window regardless of the saved options ?
-	   
+
 18.06.2009
    - Olivier Delhomme <heraia@delhomme.org>
      * Added a new label to display file size directly
@@ -43,17 +49,17 @@
 	   to csv, gnuplot or picviz)
 	 * heraia_hex_document_save and save_as only needs to know about the
 	   current edited document as in current_doc struct (doc_t *)
-	 
+
 06.06.2009
    - Olivier Delhomme <heraia@delhomme.org>
      * Forgot the release date in the Roadmap
 	 * removed unecessary comments at some places ...
 	 * removed current_hexwidget from data_window_t struct
 	 * passed usage option in Options_t struct from char to gboolean type
-	 * modified usage message to reflect that we can now open more than one 
+	 * modified usage message to reflect that we can now open more than one
 	   file at a time.
 	 * Added a specific error message for each unintrepreted row (decode_t struct)
-	 
+
 19.05.2009
    - Olivier Delhomme <heraia@delhomme.org>
      * Description modifications
