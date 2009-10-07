@@ -110,7 +110,7 @@ dnl AC_DEFINE_UNQUOTED(PLUGINS_DIR, "$plugins_dir", [Directory where the plugins
 
 dnl **************************************************
 dnl * Check for Gtkdoc.                              *
-dnl * Commented out (we don't use this anyway)       * 
+dnl * Commented out (we don't use this anyway)       *
 dnl **************************************************
 dnl AC_CHECK_PROG(GTKDOC, gtkdoc-mkdb, true, false)
 dnl AM_CONDITIONAL(HAVE_GTK_DOC, test -n $GTKDOC)
@@ -269,6 +269,8 @@ pixmaps/hicolor/64x64/Makefile
 pixmaps/hicolor/64x64/apps/Makefile
 pixmaps/hicolor/128x128/Makefile
 pixmaps/hicolor/128x128/apps/Makefile
+pixmaps/hicolor/256x256/Makefile
+pixmaps/hicolor/256x256/apps/Makefile
 ])
 AC_OUTPUT
 
