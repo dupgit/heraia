@@ -41,7 +41,7 @@ extern void on_cut_activate(GtkWidget *widget, gpointer data);
 extern void on_copy_activate(GtkWidget *widget, gpointer data);
 extern void on_paste_activate(GtkWidget *widget, gpointer data);
 extern void on_DIMenu_activate(GtkWidget *widget, gpointer data);
-extern gboolean delete_main_window_event(GtkWidget *widget, GdkEvent *event, gpointer data);
+extern gboolean delete_main_struct_event(GtkWidget *widget, GdkEvent *event, gpointer data);
 
 extern gboolean delete_dt_window_event(GtkWidget *widget, GdkEvent *event, gpointer data);
 extern void destroy_dt_window(GtkWidget *widget, GdkEvent  *event, gpointer data);
@@ -49,24 +49,24 @@ extern void destroy_dt_window(GtkWidget *widget, GdkEvent  *event, gpointer data
 extern gboolean file_notebook_tab_changed(GtkNotebook *notebook, GtkNotebookPage *page, gint tab_num, gpointer data);
 
 /* file selection */
-extern GSList *select_file_to_load(heraia_window_t *main_window);
-extern gchar *select_a_file_to_save(heraia_window_t *main_window);
+extern GSList *select_file_to_load(heraia_struct_t *main_struct);
+extern gchar *select_a_file_to_save(heraia_struct_t *main_struct);
 extern void set_the_working_directory(GtkFileChooser *file_chooser, gchar *filename);
 
 /* initialisation process */
-extern void init_heraia_interface(heraia_window_t *main_window);
-extern int load_heraia_ui(heraia_window_t *main_window);
-extern void init_window_states(heraia_window_t *main_window);
+extern void init_heraia_interface(heraia_struct_t *main_struct);
+extern int load_heraia_ui(heraia_struct_t *main_struct);
+extern void init_window_states(heraia_struct_t *main_struct);
 extern void grey_main_widgets(GladeXML *main, gboolean greyed);
 
 /* refreshing things */
 extern void refresh_event_handler(GtkWidget *widget, gpointer data);
-extern void refresh_file_labels(heraia_window_t *main_window);
-extern void connect_cursor_moved_signal(heraia_window_t *main_window, GtkWidget *hex_widget);
+extern void refresh_file_labels(heraia_struct_t *main_struct);
+extern void connect_cursor_moved_signal(heraia_struct_t *main_struct, GtkWidget *hex_widget);
 
 /* window positionning system */
 extern void record_dialog_box_position(GtkWidget *dialog_box, window_prop_t *dialog_prop);
-extern void record_all_dialog_box_positions(heraia_window_t *main_window);
+extern void record_all_dialog_box_positions(heraia_struct_t *main_struct);
 extern void move_and_show_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_pos);
 extern void record_and_hide_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_pos);
 extern void show_hide_widget(GtkWidget *widget, gboolean show, window_prop_t *win_prop);
@@ -90,10 +90,10 @@ extern gboolean is_toggle_button_activated(GladeXML *main_xml, gchar *check_butt
 
 /* Widget */
 extern void destroy_a_single_widget(GtkWidget *widget);
-extern void update_main_window_name(heraia_window_t *main_window);
+extern void update_main_struct_name(heraia_struct_t *main_struct);
 
 /* NoteBook */
-extern void set_notebook_tab_name(heraia_window_t *main_window);
-extern void add_new_tab_in_main_window(heraia_window_t *main_window, doc_t *doc);
+extern void set_notebook_tab_name(heraia_struct_t *main_struct);
+extern void add_new_tab_in_main_struct(heraia_struct_t *main_struct, doc_t *doc);
 
 #endif /* _LIBHERAIA_HERAIA_UI_H_ */

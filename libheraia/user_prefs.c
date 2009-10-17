@@ -32,13 +32,13 @@ static void verify_preference_file_name_presence(gchar *filename);
 
 static void save_window_preferences(GKeyFile *file, gchar *name, window_prop_t *window_prop);
 
-static void save_mp_file_preferences_options(heraia_window_t *main_window);
-static void save_mp_display_preferences_options(heraia_window_t *main_window);
+static void save_mp_file_preferences_options(heraia_struct_t *main_struct);
+static void save_mp_display_preferences_options(heraia_struct_t *main_struct);
 
 static void load_window_preferences(GKeyFile *file, gchar *name, window_prop_t *window_prop);
 
-static void load_mp_file_preferences_options(heraia_window_t *main_window);
-static void load_mp_display_preferences_options(heraia_window_t *main_window);
+static void load_mp_file_preferences_options(heraia_struct_t *main_struct);
+static void load_mp_display_preferences_options(heraia_struct_t *main_struct);
 
 
 /**
@@ -48,47 +48,47 @@ static void load_mp_display_preferences_options(heraia_window_t *main_window);
  */
 static void verify_preference_file_path_presence(gchar *pathname)
 {
-	struct stat *buf = NULL;
-	gint result = 0;
-	
-	buf = (struct stat *) g_malloc0(sizeof(struct stat));
-	result = g_stat(pathname, buf);
+    struct stat *buf = NULL;
+    gint result = 0;
 
-	if (result != 0)
-	{
-		g_mkdir_with_parents(pathname, 488);
-	}
+    buf = (struct stat *) g_malloc0(sizeof(struct stat));
+    result = g_stat(pathname, buf);
+
+    if (result != 0)
+    {
+        g_mkdir_with_parents(pathname, 488);
+    }
 }
 
 
 /**
- *  Verify preference file's presence and creates it if it does 
+ *  Verify preference file's presence and creates it if it does
  *  not exists already
  *  @param filename is a name of a file to look presence for
  */
 static void verify_preference_file_name_presence(gchar *filename)
 {
-	FILE *fp = NULL;
-	
-	fp = g_fopen(filename, "r");
-	
-	if (fp == NULL)
-	{
-	  	fp = g_fopen(filename, "w");	
-		if (fp == NULL)
-		{
-			fprintf(stderr, "Unable to open and create the main preference file %s\n", filename);
-		}
-		else
-		{
-			fprintf(stderr, "Main preference file %s created successfully\n", filename);
-			fclose(fp);
-		}
-	}
-	else
-	{
-		fclose(fp);
-	}
+    FILE *fp = NULL;
+
+    fp = g_fopen(filename, "r");
+
+    if (fp == NULL)
+    {
+        fp = g_fopen(filename, "w");
+        if (fp == NULL)
+        {
+            fprintf(stderr, "Unable to open and create the main preference file %s\n", filename);
+        }
+        else
+        {
+            fprintf(stderr, "Main preference file %s created successfully\n", filename);
+            fclose(fp);
+        }
+    }
+    else
+    {
+        fclose(fp);
+    }
 }
 
 
@@ -100,37 +100,37 @@ static void verify_preference_file_name_presence(gchar *filename)
  */
 void verify_preference_file(gchar *pathname, gchar *filename)
 {
-	
-	verify_preference_file_path_presence(pathname);
-	verify_preference_file_name_presence(filename);
-	
+
+    verify_preference_file_path_presence(pathname);
+    verify_preference_file_name_presence(filename);
+
 }
 
 /**
  * look out if the preference structure exists or not. If not
  * it creates it.
- * @param main_window the main structure
+ * @param main_struct the main structure
  */
-void init_preference_struct(heraia_window_t *main_window)
+void init_preference_struct(heraia_struct_t *main_struct)
 {
-	prefs_t *prefs = NULL;
-	
-	if (main_window->prefs == NULL)
-	{
-	   main_window->prefs = (prefs_t *) g_malloc0(sizeof(prefs_t));
-	   main_window->prefs->file = g_key_file_new();
-	   main_window->prefs->pathname = g_strdup_printf("%s%c.%s", g_get_home_dir(), G_DIR_SEPARATOR, "heraia");
-	   main_window->prefs->filename = g_strdup_printf("%s%c%s", main_window->prefs->pathname, G_DIR_SEPARATOR, "main_preferences");
-	}
-	else
-	{
-		prefs = main_window->prefs;
-		
-		if (prefs->file == NULL)
-		{
-			prefs->file = g_key_file_new();
-		}
-	}
+    prefs_t *prefs = NULL;
+
+    if (main_struct->prefs == NULL)
+    {
+       main_struct->prefs = (prefs_t *) g_malloc0(sizeof(prefs_t));
+       main_struct->prefs->file = g_key_file_new();
+       main_struct->prefs->pathname = g_strdup_printf("%s%c.%s", g_get_home_dir(), G_DIR_SEPARATOR, "heraia");
+       main_struct->prefs->filename = g_strdup_printf("%s%c%s", main_struct->prefs->pathname, G_DIR_SEPARATOR, "main_preferences");
+    }
+    else
+    {
+        prefs = main_struct->prefs;
+
+        if (prefs->file == NULL)
+        {
+            prefs->file = g_key_file_new();
+        }
+    }
 }
 
 /**
@@ -141,136 +141,136 @@ void init_preference_struct(heraia_window_t *main_window)
  */
 static void save_window_preferences(GKeyFile *file, gchar *name, window_prop_t *window_prop)
 {
-	gchar *keyname = NULL;
-	
-	keyname = g_strconcat(name, " Displayed", NULL);
-	g_key_file_set_boolean(file, GN_GLOBAL_PREFS, keyname, window_prop->displayed);
-	g_free(keyname);
-	
-	keyname = g_strconcat(name, " X_pos", NULL);
-	g_key_file_set_integer(file, GN_GLOBAL_PREFS, keyname, window_prop->x);
-	g_free(keyname);
-	
-	keyname = g_strconcat(name, " Y_pos", NULL);
-	g_key_file_set_integer(file, GN_GLOBAL_PREFS, keyname, window_prop->y);
-	g_free(keyname);
-	
-	keyname = g_strconcat(name, " Height", NULL);
-	g_key_file_set_integer(file, GN_GLOBAL_PREFS, keyname, window_prop->height);
-	g_free(keyname);
+    gchar *keyname = NULL;
 
-	keyname = g_strconcat(name, " Width", NULL);
-	g_key_file_set_integer(file, GN_GLOBAL_PREFS, keyname, window_prop->width);
-	g_free(keyname);
+    keyname = g_strconcat(name, " Displayed", NULL);
+    g_key_file_set_boolean(file, GN_GLOBAL_PREFS, keyname, window_prop->displayed);
+    g_free(keyname);
+
+    keyname = g_strconcat(name, " X_pos", NULL);
+    g_key_file_set_integer(file, GN_GLOBAL_PREFS, keyname, window_prop->x);
+    g_free(keyname);
+
+    keyname = g_strconcat(name, " Y_pos", NULL);
+    g_key_file_set_integer(file, GN_GLOBAL_PREFS, keyname, window_prop->y);
+    g_free(keyname);
+
+    keyname = g_strconcat(name, " Height", NULL);
+    g_key_file_set_integer(file, GN_GLOBAL_PREFS, keyname, window_prop->height);
+    g_free(keyname);
+
+    keyname = g_strconcat(name, " Width", NULL);
+    g_key_file_set_integer(file, GN_GLOBAL_PREFS, keyname, window_prop->width);
+    g_free(keyname);
 }
 
 /**
  *  Save only file preferences related options
- *  @param main_window the main structure
+ *  @param main_struct the main structure
  */
-static void save_mp_file_preferences_options(heraia_window_t *main_window)
+static void save_mp_file_preferences_options(heraia_struct_t *main_struct)
 {
-	prefs_t *prefs = NULL;
-	gboolean activated = FALSE;
-	
-	if (main_window != NULL)
-	{
-		prefs = main_window->prefs;
-		
-		/* Saves the position */
-		activated = is_toggle_button_activated(main_window->xmls->main, "save_window_position_bt");
-		g_key_file_set_boolean(prefs->file, GN_GLOBAL_PREFS, KN_SAVE_WINDOW_PREFS, activated);
-			
-		/* Saving all window preferences if necessary */
-		if (activated == TRUE)
-		{
-			save_window_preferences(prefs->file, KN_ABOUT_BOX, main_window->win_prop->about_box);
-			save_window_preferences(prefs->file, KN_DATA_INTERPRETOR, main_window->win_prop->data_interpretor);
-			save_window_preferences(prefs->file, KN_LOG_BOX, main_window->win_prop->log_box);
-			save_window_preferences(prefs->file, KN_MAIN_DIALOG, main_window->win_prop->main_dialog);
-			save_window_preferences(prefs->file, KN_PLUGIN_LIST, main_window->win_prop->plugin_list);
-			save_window_preferences(prefs->file, KN_LDT, main_window->win_prop->ldt);
-			save_window_preferences(prefs->file, KN_MAIN_PREFS, main_window->win_prop->main_pref_window);
-		}
-	}
+    prefs_t *prefs = NULL;
+    gboolean activated = FALSE;
+
+    if (main_struct != NULL)
+    {
+        prefs = main_struct->prefs;
+
+        /* Saves the position */
+        activated = is_toggle_button_activated(main_struct->xmls->main, "save_window_position_bt");
+        g_key_file_set_boolean(prefs->file, GN_GLOBAL_PREFS, KN_SAVE_WINDOW_PREFS, activated);
+
+        /* Saving all window preferences if necessary */
+        if (activated == TRUE)
+        {
+            save_window_preferences(prefs->file, KN_ABOUT_BOX, main_struct->win_prop->about_box);
+            save_window_preferences(prefs->file, KN_DATA_INTERPRETOR, main_struct->win_prop->data_interpretor);
+            save_window_preferences(prefs->file, KN_LOG_BOX, main_struct->win_prop->log_box);
+            save_window_preferences(prefs->file, KN_MAIN_DIALOG, main_struct->win_prop->main_dialog);
+            save_window_preferences(prefs->file, KN_PLUGIN_LIST, main_struct->win_prop->plugin_list);
+            save_window_preferences(prefs->file, KN_LDT, main_struct->win_prop->ldt);
+            save_window_preferences(prefs->file, KN_MAIN_PREFS, main_struct->win_prop->main_pref_window);
+        }
+    }
 }
 
 
 /**
  *  Save only display related preferences
- *  @param main_window : main structure
+ *  @param main_struct : main structure
  */
-static void save_mp_display_preferences_options(heraia_window_t *main_window)
+static void save_mp_display_preferences_options(heraia_struct_t *main_struct)
 {
-	prefs_t *prefs = NULL;
-	gboolean activated = FALSE;
-	
-	if (main_window != NULL)
-	{
-		prefs = main_window->prefs;
-		
-		/* Display Thousand (or not) */
-		activated = is_toggle_button_activated(main_window->xmls->main, "mp_thousand_bt");
-		g_key_file_set_boolean(prefs->file, GN_DISPLAY_PREFS, KN_DISP_THOUSAND, activated);
-	}
+    prefs_t *prefs = NULL;
+    gboolean activated = FALSE;
+
+    if (main_struct != NULL)
+    {
+        prefs = main_struct->prefs;
+
+        /* Display Thousand (or not) */
+        activated = is_toggle_button_activated(main_struct->xmls->main, "mp_thousand_bt");
+        g_key_file_set_boolean(prefs->file, GN_DISPLAY_PREFS, KN_DISP_THOUSAND, activated);
+    }
 }
 
 
 /**
  * Saves data interpretor state and preferences
- * @param main_window : main structure
+ * @param main_struct : main structure
  */
-static void save_di_preferences(heraia_window_t *main_window)
+static void save_di_preferences(heraia_struct_t *main_struct)
 {
-	GtkNotebook *notebook = NULL;  /**< data interpretor's notebook               */
-	gint selected_tab;             /**< Selected tab in data interpretor's window */
-	prefs_t *prefs = NULL;         /**< structure for preferences                 */
-	
-	if (main_window != NULL && main_window->current_DW != NULL)
-	{
-		prefs = main_window->prefs;
-		
-		notebook = GTK_NOTEBOOK(heraia_get_widget(main_window->xmls->main, "diw_notebook"));
-		
-		if (notebook != NULL)
-		{
-			selected_tab = gtk_notebook_get_current_page(notebook);
-			
-			if (selected_tab >= 0)
-			{
-				g_key_file_set_integer(prefs->file, GN_DI_PREFS, KN_DI_SELECTED_TAB, selected_tab);
-			}
-		}
-	}
+    GtkNotebook *notebook = NULL;  /**< data interpretor's notebook               */
+    gint selected_tab;             /**< Selected tab in data interpretor's window */
+    prefs_t *prefs = NULL;         /**< structure for preferences                 */
+
+    if (main_struct != NULL && main_struct->current_DW != NULL)
+    {
+        prefs = main_struct->prefs;
+
+        notebook = GTK_NOTEBOOK(heraia_get_widget(main_struct->xmls->main, "diw_notebook"));
+
+        if (notebook != NULL)
+        {
+            selected_tab = gtk_notebook_get_current_page(notebook);
+
+            if (selected_tab >= 0)
+            {
+                g_key_file_set_integer(prefs->file, GN_DI_PREFS, KN_DI_SELECTED_TAB, selected_tab);
+            }
+        }
+    }
 }
- 
+
 
 /**
  * Save all preferences to the user preference file
- * @param main_window the main structure
+ * @param main_struct the main structure
  */
-void save_preferences(heraia_window_t *main_window)
+void save_preferences(heraia_struct_t *main_struct)
 {
-	if (main_window != NULL)
-	{
-		/* 0. Init or verify the struct */
-		/* init_preference_struct(main_window); */
-		
-		/* 1. Saving main Preferences */
-		save_mp_file_preferences_options(main_window);
-		
-		/* 2. Saving Display Preferences */
-		save_mp_display_preferences_options(main_window);
-		
-		/* 3. Saving Data Interpretor Preferences */
-		save_di_preferences(main_window);
-		
-		if (main_window->prefs != NULL)
-		{
-			/* Saving to file */
-			save_preferences_to_file(main_window->prefs);
-		}
-	}
+    if (main_struct != NULL)
+    {
+        /* 0. Init or verify the struct */
+        /* init_preference_struct(main_struct); */
+
+        /* 1. Saving main Preferences */
+        save_mp_file_preferences_options(main_struct);
+
+        /* 2. Saving Display Preferences */
+        save_mp_display_preferences_options(main_struct);
+
+        /* 3. Saving Data Interpretor Preferences */
+        save_di_preferences(main_struct);
+
+        if (main_struct->prefs != NULL)
+        {
+            /* Saving to file */
+            save_preferences_to_file(main_struct->prefs);
+        }
+    }
 }
 
 
@@ -282,134 +282,134 @@ void save_preferences(heraia_window_t *main_window)
  */
 static void load_window_preferences(GKeyFile *file, gchar *name, window_prop_t *window_prop)
 {
-	gchar *keyname = NULL;
-	
-	keyname = g_strconcat(name, " Displayed", NULL);
-	window_prop->displayed = g_key_file_get_boolean(file, GN_GLOBAL_PREFS, keyname, NULL);
-	g_free(keyname);
-	
-	keyname = g_strconcat(name, " X_pos", NULL);
-	window_prop->x = g_key_file_get_integer(file, GN_GLOBAL_PREFS, keyname, NULL);
-	g_free(keyname);
-	
-	keyname = g_strconcat(name, " Y_pos", NULL);
-	window_prop->y = g_key_file_get_integer(file, GN_GLOBAL_PREFS, keyname, NULL);
-	g_free(keyname);
-	
-	keyname = g_strconcat(name, " Height", NULL);
-	window_prop->height = g_key_file_get_integer(file, GN_GLOBAL_PREFS, keyname, NULL);
-	g_free(keyname);
+    gchar *keyname = NULL;
 
-	keyname = g_strconcat(name, " Width", NULL);
-	window_prop->width = g_key_file_get_integer(file, GN_GLOBAL_PREFS, keyname, NULL);
-	g_free(keyname);
-	
+    keyname = g_strconcat(name, " Displayed", NULL);
+    window_prop->displayed = g_key_file_get_boolean(file, GN_GLOBAL_PREFS, keyname, NULL);
+    g_free(keyname);
+
+    keyname = g_strconcat(name, " X_pos", NULL);
+    window_prop->x = g_key_file_get_integer(file, GN_GLOBAL_PREFS, keyname, NULL);
+    g_free(keyname);
+
+    keyname = g_strconcat(name, " Y_pos", NULL);
+    window_prop->y = g_key_file_get_integer(file, GN_GLOBAL_PREFS, keyname, NULL);
+    g_free(keyname);
+
+    keyname = g_strconcat(name, " Height", NULL);
+    window_prop->height = g_key_file_get_integer(file, GN_GLOBAL_PREFS, keyname, NULL);
+    g_free(keyname);
+
+    keyname = g_strconcat(name, " Width", NULL);
+    window_prop->width = g_key_file_get_integer(file, GN_GLOBAL_PREFS, keyname, NULL);
+    g_free(keyname);
+
 }
 
 
 /**
  *  Load only main preferences related options
- * @param main_window the main structure
+ * @param main_struct the main structure
  */
-static void load_mp_file_preferences_options(heraia_window_t *main_window)
+static void load_mp_file_preferences_options(heraia_struct_t *main_struct)
 {
-	prefs_t *prefs = NULL;
-	GtkWidget *save_window_position_bt = NULL;
-	gboolean activated = FALSE;
-	
-	if (main_window != NULL)
-	{
-		prefs = main_window->prefs;
-		
-		/* Saving window's positions ? */
-		activated = g_key_file_get_boolean(prefs->file, GN_GLOBAL_PREFS, KN_SAVE_WINDOW_PREFS, NULL);
-		save_window_position_bt = heraia_get_widget(main_window->xmls->main, "save_window_position_bt");
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(save_window_position_bt), activated);
-			
-		if (activated == TRUE)
-		{
-			/* window's positions */
-			load_window_preferences(prefs->file, KN_ABOUT_BOX, main_window->win_prop->about_box);
-			load_window_preferences(prefs->file, KN_DATA_INTERPRETOR, main_window->win_prop->data_interpretor);
-			load_window_preferences(prefs->file, KN_LOG_BOX, main_window->win_prop->log_box);
-			load_window_preferences(prefs->file, KN_MAIN_DIALOG, main_window->win_prop->main_dialog);
-			load_window_preferences(prefs->file, KN_PLUGIN_LIST, main_window->win_prop->plugin_list);
-			load_window_preferences(prefs->file, KN_LDT, main_window->win_prop->ldt);
-			load_window_preferences(prefs->file, KN_MAIN_PREFS, main_window->win_prop->main_pref_window);	
-		}
-	}
+    prefs_t *prefs = NULL;
+    GtkWidget *save_window_position_bt = NULL;
+    gboolean activated = FALSE;
+
+    if (main_struct != NULL)
+    {
+        prefs = main_struct->prefs;
+
+        /* Saving window's positions ? */
+        activated = g_key_file_get_boolean(prefs->file, GN_GLOBAL_PREFS, KN_SAVE_WINDOW_PREFS, NULL);
+        save_window_position_bt = heraia_get_widget(main_struct->xmls->main, "save_window_position_bt");
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(save_window_position_bt), activated);
+
+        if (activated == TRUE)
+        {
+            /* window's positions */
+            load_window_preferences(prefs->file, KN_ABOUT_BOX, main_struct->win_prop->about_box);
+            load_window_preferences(prefs->file, KN_DATA_INTERPRETOR, main_struct->win_prop->data_interpretor);
+            load_window_preferences(prefs->file, KN_LOG_BOX, main_struct->win_prop->log_box);
+            load_window_preferences(prefs->file, KN_MAIN_DIALOG, main_struct->win_prop->main_dialog);
+            load_window_preferences(prefs->file, KN_PLUGIN_LIST, main_struct->win_prop->plugin_list);
+            load_window_preferences(prefs->file, KN_LDT, main_struct->win_prop->ldt);
+            load_window_preferences(prefs->file, KN_MAIN_PREFS, main_struct->win_prop->main_pref_window);
+        }
+    }
 }
 
 
 /**
  *  Load display related preferences
- * @param main_window the main structure
+ * @param main_struct the main structure
  */
-static void load_mp_display_preferences_options(heraia_window_t *main_window)
+static void load_mp_display_preferences_options(heraia_struct_t *main_struct)
 {
-	prefs_t *prefs = NULL;
-	GtkWidget *display_thousand_bt = NULL;
-	gboolean activated = FALSE;
-	
-	if (main_window != NULL)
-	{
-		prefs = main_window->prefs;
-		
-		/* Display thousands (or not) */
-		activated = g_key_file_get_boolean(prefs->file, GN_DISPLAY_PREFS, KN_DISP_THOUSAND, NULL);
-		display_thousand_bt = heraia_get_widget(main_window->xmls->main, "mp_thousand_bt");
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(display_thousand_bt), activated);
-	}
+    prefs_t *prefs = NULL;
+    GtkWidget *display_thousand_bt = NULL;
+    gboolean activated = FALSE;
+
+    if (main_struct != NULL)
+    {
+        prefs = main_struct->prefs;
+
+        /* Display thousands (or not) */
+        activated = g_key_file_get_boolean(prefs->file, GN_DISPLAY_PREFS, KN_DISP_THOUSAND, NULL);
+        display_thousand_bt = heraia_get_widget(main_struct->xmls->main, "mp_thousand_bt");
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(display_thousand_bt), activated);
+    }
 }
 
 
 /**
  * Load data interpretor state and preferences
- * @param main_window : main structure
+ * @param main_struct : main structure
  */
-static void load_di_preferences(heraia_window_t *main_window)
+static void load_di_preferences(heraia_struct_t *main_struct)
 {
-	GtkNotebook *notebook = NULL;  /**< data interpretor's notebook               */
-	gint selected_tab;             /**< Selected tab in data interpretor's window */
-	prefs_t *prefs = NULL;         /**< structure for preferences                 */
+    GtkNotebook *notebook = NULL;  /**< data interpretor's notebook               */
+    gint selected_tab;             /**< Selected tab in data interpretor's window */
+    prefs_t *prefs = NULL;         /**< structure for preferences                 */
 
-	if (main_window != NULL && main_window->current_DW != NULL && main_window->xmls != NULL && main_window->xmls->main != NULL)
-	{
-		notebook = GTK_NOTEBOOK(heraia_get_widget(main_window->xmls->main, "diw_notebook"));
-		prefs = main_window->prefs;
-		
-		if (notebook != NULL)
-		{
-			selected_tab = g_key_file_get_integer(prefs->file, GN_DI_PREFS, KN_DI_SELECTED_TAB, NULL);
-			
-			if (selected_tab >= 0)
-			{
-				gtk_notebook_set_current_page(notebook, selected_tab);
-				main_window->current_DW->tab_displayed = selected_tab;
-			}
-		}
-	}
+    if (main_struct != NULL && main_struct->current_DW != NULL && main_struct->xmls != NULL && main_struct->xmls->main != NULL)
+    {
+        notebook = GTK_NOTEBOOK(heraia_get_widget(main_struct->xmls->main, "diw_notebook"));
+        prefs = main_struct->prefs;
+
+        if (notebook != NULL)
+        {
+            selected_tab = g_key_file_get_integer(prefs->file, GN_DI_PREFS, KN_DI_SELECTED_TAB, NULL);
+
+            if (selected_tab >= 0)
+            {
+                gtk_notebook_set_current_page(notebook, selected_tab);
+                main_struct->current_DW->tab_displayed = selected_tab;
+            }
+        }
+    }
 }
 
 
 /**
  *  Sets up the preferences as loaded in the preference file
- * @param main_window the main structure
+ * @param main_struct the main structure
  */
-void load_preferences(heraia_window_t *main_window)
+void load_preferences(heraia_struct_t *main_struct)
 {
-	if (main_window != NULL)
-	{
-		/* 0. Init or verify the struct */
-		/* init_preference_struct(main_window); */
-		
-		/* 1. Main Preferences */
-		load_mp_file_preferences_options(main_window);
-		
-		/* 2. Display preferences */
-		load_mp_display_preferences_options(main_window);
-		
-		/* 3. Data Interpretor Preferences */
-		load_di_preferences(main_window);
-	}
+    if (main_struct != NULL)
+    {
+        /* 0. Init or verify the struct */
+        /* init_preference_struct(main_struct); */
+
+        /* 1. Main Preferences */
+        load_mp_file_preferences_options(main_struct);
+
+        /* 2. Display preferences */
+        load_mp_display_preferences_options(main_struct);
+
+        /* 3. Data Interpretor Preferences */
+        load_di_preferences(main_struct);
+    }
 }

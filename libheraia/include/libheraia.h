@@ -95,13 +95,13 @@ typedef gint RefreshType;
  */
 typedef struct
 {
-	guint32 year;
-	guint32 month;
-	guint32 day;
+    guint32 year;
+    guint32 month;
+    guint32 day;
 
-	guint32 hour;
-	guint32 minutes;
-	guint32 seconds;
+    guint32 hour;
+    guint32 minutes;
+    guint32 seconds;
 } date_and_time_t;
 
 
@@ -115,8 +115,8 @@ typedef gchar *(* DecodeFunc) (guchar *, gpointer);     /**< Decode function tem
  */
 typedef struct
 {
-		guint endianness;  /**< endianness  */
-		guint stream_size; /**< stream_size */
+        guint endianness;  /**< endianness  */
+        guint stream_size; /**< stream_size */
 } decode_parameters_t;
 
 /**
@@ -129,9 +129,9 @@ typedef struct
  {
     DecodeFunc func;  /**< a function to decode into something     */
     GtkWidget *entry; /**< the widget that will receive the result */
-	gchar *err_msg;   /**< error message if something went wrong when decoding
-						    expects a %d somewhere in the message to represents 
-							the stream lenght to be decoded                     */
+    gchar *err_msg;   /**< error message if something went wrong when decoding
+                            expects a %d somewhere in the message to represents
+                            the stream lenght to be decoded                     */
  } decode_t;
 
 
@@ -157,13 +157,13 @@ typedef struct
  */
 typedef struct
 {
-	guint index;           /**< number for this tab                                             */
-	guint nb_cols;         /**< number of columns in this tab - this MUST NOT change in any way */
-	guint nb_rows;         /**< number of rows in this tab - this is automatically updated      */
-	GtkWidget *label;      /**< label for this tab                                              */
-	GPtrArray *col_labels; /**< array of GtkWidgets of columns labels                           */
-	GPtrArray *vboxes;     /**< array of vboxes where we will pack label and entry widgets      */
-	GPtrArray *rows;       /**< array of pointers to decode_generic_t variables.                */
+    guint index;           /**< number for this tab                                             */
+    guint nb_cols;         /**< number of columns in this tab - this MUST NOT change in any way */
+    guint nb_rows;         /**< number of rows in this tab - this is automatically updated      */
+    GtkWidget *label;      /**< label for this tab                                              */
+    GPtrArray *col_labels; /**< array of GtkWidgets of columns labels                           */
+    GPtrArray *vboxes;     /**< array of vboxes where we will pack label and entry widgets      */
+    GPtrArray *rows;       /**< array of pointers to decode_generic_t variables.                */
 } tab_t;
 
 /**
@@ -183,7 +183,7 @@ typedef GList *(* TreatmentDoFunc) (GList *);     /**< Treatment function called
 typedef void (* TreatmentInitFunc) (gpointer);    /**< Treatment init function                                 */
 typedef void (* TreatmentDelFunc) (gpointer);     /**< Treatment delete function                               */
 typedef gpointer (*TreatmentCopyFunc) (gpointer); /**< Treatment copy function that have to copy internal
-													   structures (widgets and all stuff in it)                */
+                                                       structures (widgets and all stuff in it)                */
 /**
  * @struct treatment_t
  *  Treatment structure
@@ -193,12 +193,12 @@ typedef gpointer (*TreatmentCopyFunc) (gpointer); /**< Treatment copy function t
  */
 typedef struct
 {
-	gchar *name;               /**< Treatment name  */
-	TreatmentDoFunc do_it;     /**< Treatment function that manages the whole treatment (interface + treatment itself) */
-	TreatmentInitFunc init;    /**< inits the interface */
-	TreatmentDelFunc kill;     /**< kills the treatment itself */
-	TreatmentCopyFunc copy;    /**< Copy the gpointer data sub structure of the treatment itself */
-	gpointer data;             /**< Generic treatment data. Each instantiated treatment may have it's own              */
+    gchar *name;               /**< Treatment name  */
+    TreatmentDoFunc do_it;     /**< Treatment function that manages the whole treatment (interface + treatment itself) */
+    TreatmentInitFunc init;    /**< inits the interface */
+    TreatmentDelFunc kill;     /**< kills the treatment itself */
+    TreatmentCopyFunc copy;    /**< Copy the gpointer data sub structure of the treatment itself */
+    gpointer data;             /**< Generic treatment data. Each instantiated treatment may have it's own              */
 } treatment_t;
 
 /**
@@ -210,14 +210,14 @@ typedef struct
  */
 typedef struct
 {
-	GtkWidget *container_box;  /**< Upper box containing the whole stuff                */
-	GtkWidget *button_box;     /**< Right part of the hbox. Contains "-", GtkEntry, "+" */
-	GtkWidget *combo_box;      /**< Left box where we have the combobox                 */
-	GtkWidget *tment_list;     /**< Combobox containning the treatment list             */
-	GtkWidget *result;         /**< The GtkEntry in the vbox                            */
-	GtkWidget *moins;          /**< "-" button                                          */
-	GtkWidget *plus;           /**< "+" button                                          */
-	treatment_t *treatment;    /**< Selected treatment                                  */
+    GtkWidget *container_box;  /**< Upper box containing the whole stuff                */
+    GtkWidget *button_box;     /**< Right part of the hbox. Contains "-", GtkEntry, "+" */
+    GtkWidget *combo_box;      /**< Left box where we have the combobox                 */
+    GtkWidget *tment_list;     /**< Combobox containning the treatment list             */
+    GtkWidget *result;         /**< The GtkEntry in the vbox                            */
+    GtkWidget *moins;          /**< "-" button                                          */
+    GtkWidget *plus;           /**< "+" button                                          */
+    treatment_t *treatment;    /**< Selected treatment                                  */
 } treatment_container_t;
 
 /**
@@ -235,12 +235,12 @@ typedef struct
  */
 typedef struct
 {
-	gchar *name;             /**< Name of the data type                                                       */
-	guint size;              /**< size of the data type  (here we may limit size entry, eg <= 16 for example) */
-	GList *treatment_c_list; /**< Treatments containers to be applied (in the list order) to the data
-								  (treatment_container_t *)                                                   */
-	GtkWidget *di_label;     /**< label for the data_interpretor window                                       */
-	GtkWidget *di_entry;     /**< entry for the data interpretor window                                       */
+    gchar *name;             /**< Name of the data type                                                       */
+    guint size;              /**< size of the data type  (here we may limit size entry, eg <= 16 for example) */
+    GList *treatment_c_list; /**< Treatments containers to be applied (in the list order) to the data
+                                  (treatment_container_t *)                                                   */
+    GtkWidget *di_label;     /**< label for the data_interpretor window                                       */
+    GtkWidget *di_entry;     /**< entry for the data interpretor window                                       */
 } data_type_t;
 
 
@@ -251,7 +251,7 @@ typedef struct
  */
 typedef struct
 {
-	GladeXML *main;      /**< the main interface xml description */
+    GladeXML *main;      /**< the main interface xml description */
 } xml_t;
 
 
@@ -273,11 +273,11 @@ typedef struct
  */
 typedef struct
 {
-	gint x;              /**< x position (upper left corner)     */
-	gint y;              /**< y position (upper left corner)     */
-	guint height;        /**< y+height (bottom right corner)     */
-	guint width;         /**< x+width (bottom right corner)     */
-	gboolean displayed;  /**< TRUE if displayed, FALSE otherwise */
+    gint x;              /**< x position (upper left corner)     */
+    gint y;              /**< y position (upper left corner)     */
+    guint height;        /**< y+height (bottom right corner)     */
+    guint width;         /**< x+width (bottom right corner)     */
+    gboolean displayed;  /**< TRUE if displayed, FALSE otherwise */
 } window_prop_t;
 
 /**
@@ -286,13 +286,13 @@ typedef struct
  */
 typedef struct
 {
-	window_prop_t *about_box;
-	window_prop_t *data_interpretor;  /**< data interpretor window   */
-	window_prop_t *log_box;           /**< log window                */
-	window_prop_t *main_dialog;       /**< heraia's main window      */
-	window_prop_t *plugin_list;       /**< plugin description window */
-	window_prop_t *ldt;               /**< list data types window    */
-	window_prop_t *main_pref_window;  /**< main preference window    */
+    window_prop_t *about_box;
+    window_prop_t *data_interpretor;  /**< data interpretor window   */
+    window_prop_t *log_box;           /**< log window                */
+    window_prop_t *main_dialog;       /**< heraia's main window      */
+    window_prop_t *plugin_list;       /**< plugin description window */
+    window_prop_t *ldt;               /**< list data types window    */
+    window_prop_t *main_pref_window;  /**< main preference window    */
 } all_window_prop_t;
 
 /**
@@ -314,32 +314,32 @@ typedef struct
  */
 typedef struct
 {
-	Heraia_Document *hex_doc;  /**< Document definition related to libgtkhex */
-	GtkWidget *hex_widget;     /**< hexwidget corresponding to the document  */
+    Heraia_Document *hex_doc;  /**< Document definition related to libgtkhex */
+    GtkWidget *hex_widget;     /**< hexwidget corresponding to the document  */
 } doc_t;
 
 
 /**
- * @struct heraia_window_t
- *  This is the main structure (mainly named main_window due to historycal reasons)
+ * @struct heraia_struct_t
+ *  This is the main structure (mainly named main_struct due to historycal reasons)
  *  It contains all things that the program needs
  */
 typedef struct
 {
-	gboolean  debug;                /**< Used to tell the program wether we want to display debug messages or not  */
-	doc_t *current_doc;             /**< This is a pointer to the current edited document                          */
-	GPtrArray *documents;		    /**< An array of doc_t in order to be able to open more than one doc           */
-	xml_t *xmls;                    /**< All the xmls used in the program, loaded at running time                  */
-   	data_window_t *current_DW;      /**< data_interpretor pointer                                                  */
-	GList *location_list;           /**< this is the location list where we store some paths                       */
-	GList *plugins_list;            /**< A list of plugins                                                         */
-	GList *data_type_list;          /**< A list of data types                                                      */
-	data_type_t *current_data_type; /**< data type that is being edited                                            */
-	GList *available_treatment_list;/**< Available treatments that can be used by the user in the data type window */
-	RefreshType event;              /**< Tells what is happening                                                   */
-	all_window_prop_t *win_prop;    /**< Keeps window properties                                                   */
-	prefs_t *prefs;                 /**< All datas related to main preferences                                     */
-} heraia_window_t;
+    gboolean  debug;                /**< Used to tell the program wether we want to display debug messages or not  */
+    doc_t *current_doc;             /**< This is a pointer to the current edited document                          */
+    GPtrArray *documents;           /**< An array of doc_t in order to be able to open more than one doc           */
+    xml_t *xmls;                    /**< All the xmls used in the program, loaded at running time                  */
+    data_window_t *current_DW;      /**< data_interpretor pointer                                                  */
+    GList *location_list;           /**< this is the location list where we store some paths                       */
+    GList *plugins_list;            /**< A list of plugins                                                         */
+    GList *data_type_list;          /**< A list of data types                                                      */
+    data_type_t *current_data_type; /**< data type that is being edited                                            */
+    GList *available_treatment_list;/**< Available treatments that can be used by the user in the data type window */
+    RefreshType event;              /**< Tells what is happening                                                   */
+    all_window_prop_t *win_prop;    /**< Keeps window properties                                                   */
+    prefs_t *prefs;                 /**< All datas related to main preferences                                     */
+} heraia_struct_t;
 
 #include "config.h"
 #include "data_interpretor.h"

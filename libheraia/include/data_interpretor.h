@@ -2,24 +2,24 @@
 /*
   data_interpretor.h
   heraia - an hexadecimal file editor and analyser based on ghex
- 
+
   (C) Copyright 2005 - 2007 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
- 
+
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
-  the Free Software Foundation; either version 2, or  (at your option) 
+  the Free Software Foundation; either version 2, or  (at your option)
   any later version.
- 
+
   This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY;  without even the implied warranty of
   MERCHANTABILITY  or  FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */ 
+  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
 /**
  * @file data_interpretor.h
  * Header file for the data interpretor
@@ -30,7 +30,7 @@
 
 /**
  * @note
- *  Naming : 
+ *  Naming :
  *   H stands for Heraia
  *   DI stands for Data_Interpretor
  *
@@ -38,7 +38,7 @@
  *  Says whether data_interpretor is displayed or not
  *  @todo this is used at initialisation time. We can add a new option to the
  *        program in order to say wether we want the data interpretor to be
- *        visible or not (regardless of options saved ?) 
+ *        visible or not (regardless of options saved ?)
  *
  * @def H_DI_BIG_ENDIAN
  *  Stands for big endian representation
@@ -56,7 +56,7 @@
 #define H_DI_MIDDLE_ENDIAN 4
 #define H_DI_LITTLE_ENDIAN 8
 
-extern void data_interpretor_init_interface(heraia_window_t *main_window);
+extern void data_interpretor_init_interface(heraia_struct_t *main_struct);
 extern void refresh_data_interpretor_window(GtkWidget *hexwidget, gpointer data);
 
 /**

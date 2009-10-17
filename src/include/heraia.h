@@ -55,17 +55,17 @@
  */
 typedef struct
 {
-	GList *filenames;  /**< the filename to open                      */
-	gboolean usage;    /**< to know if we displayed the usage message */
+    GList *filenames;  /**< the filename to open                      */
+    gboolean usage;    /**< to know if we displayed the usage message */
 } Options;
 
 static struct option const long_options[] =
 {
-	{"version", no_argument, NULL, 'v'},  /**< displays version informations */
-	{"help", no_argument, NULL, 'h'},     /**< displays help (usage)         */
-	{NULL, 0, NULL, 0}
+    {"version", no_argument, NULL, 'v'},  /**< displays version informations */
+    {"help", no_argument, NULL, 'h'},     /**< displays help (usage)         */
+    {NULL, 0, NULL, 0}
 };
 
-extern heraia_window_t *get_main_struct(void);
+extern heraia_struct_t *get_main_struct(void);
 
 #endif /* _HERAIA_H_ */

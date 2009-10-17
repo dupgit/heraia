@@ -27,55 +27,55 @@
 #include <libheraia.h>
 
 /**
- * @fn HERAIA_ERROR heraia_hex_document_new(heraia_window_t *main_window, char *filename)
+ * @fn HERAIA_ERROR heraia_hex_document_new(heraia_struct_t *main_struct, char *filename)
  *  Removes the old document if it exists and adds a new one
  *  from the filename 'filename'
- * @param main_window : main structure
+ * @param main_struct : main structure
  * @param filename : a char * representing an existing file named "filename"
  * @return Always returns HERAIA_NOERR; @todo : do something to take errors into
  *         account
  */
-doc_t *heraia_hex_document_new(heraia_window_t *main_window, char *filename)
+doc_t *heraia_hex_document_new(heraia_struct_t *main_struct, char *filename)
 {
-	Heraia_Document *hex_doc = NULL;
-	GtkWidget *hex_widget = NULL;
-	doc_t *doc = NULL;
+    Heraia_Document *hex_doc = NULL;
+    GtkWidget *hex_widget = NULL;
+    doc_t *doc = NULL;
 
-	/* There is no more reasons that we destroy any documents here */
-	/* if (main_window->current_doc != NULL)
-		{
-			hex_document_remove_view(main_window->current_doc, main_window->current_DW->current_hexwidget);
-		}
+    /* There is no more reasons that we destroy any documents here */
+    /* if (main_struct->current_doc != NULL)
+        {
+            hex_document_remove_view(main_struct->current_doc, main_struct->current_DW->current_hexwidget);
+        }
 
-	if (main_window->current_DW->current_hexwidget != NULL )
-		{
-			gtk_widget_destroy(main_window->current_DW->current_hexwidget);
-		}
-	*/
+    if (main_struct->current_DW->current_hexwidget != NULL )
+        {
+            gtk_widget_destroy(main_struct->current_DW->current_hexwidget);
+        }
+    */
 
-	/* Creating a new hex document */
-	hex_doc = hex_document_new_from_file(filename);
+    /* Creating a new hex document */
+    hex_doc = hex_document_new_from_file(filename);
 
-	if (hex_doc != NULL)
-	 {
-		/* creating a new view to this new document */
-		hex_widget = hex_document_add_view(hex_doc);
+    if (hex_doc != NULL)
+     {
+        /* creating a new view to this new document */
+        hex_widget = hex_document_add_view(hex_doc);
 
-		/* joining those two new structures in one */
-		doc = new_doc_t(hex_doc, hex_widget);
+        /* joining those two new structures in one */
+        doc = new_doc_t(hex_doc, hex_widget);
 
-		/* Adding this new doc to the list of docs (here a GPtrArray) */
-		g_ptr_array_add(main_window->documents, doc);
+        /* Adding this new doc to the list of docs (here a GPtrArray) */
+        g_ptr_array_add(main_struct->documents, doc);
 
-		/* signal connection on cursor moves */
-		connect_cursor_moved_signal(main_window, hex_widget);
+        /* signal connection on cursor moves */
+        connect_cursor_moved_signal(main_struct, hex_widget);
 
-		return doc;
-	 }
-	 else
-	 {
-		 return NULL;
-	 }
+        return doc;
+     }
+     else
+     {
+         return NULL;
+     }
 }
 
 
@@ -86,14 +86,14 @@ doc_t *heraia_hex_document_new(heraia_window_t *main_window, char *filename)
  */
 gchar *heraia_hex_document_get_filename(Heraia_Document *hex_doc)
 {
-	if (hex_doc != NULL)
-	{
-		return hex_doc->file_name;
-	}
-	else
-	{
-		return NULL;
-	}
+    if (hex_doc != NULL)
+    {
+        return hex_doc->file_name;
+    }
+    else
+    {
+        return NULL;
+    }
 }
 
 /**
@@ -103,44 +103,44 @@ gchar *heraia_hex_document_get_filename(Heraia_Document *hex_doc)
  */
 gchar *doc_t_document_get_filename(doc_t *doc)
 {
-	if (doc != NULL)
-	{
-		return heraia_hex_document_get_filename(doc->hex_doc);
-	}
-	else
-	{
-		return NULL;
-	}
+    if (doc != NULL)
+    {
+        return heraia_hex_document_get_filename(doc->hex_doc);
+    }
+    else
+    {
+        return NULL;
+    }
 }
 
 
 
 /**
- * @fn HERAIA_ERROR heraia_hex_document_save(heraia_window_t *main_window)
+ * @fn HERAIA_ERROR heraia_hex_document_save(heraia_struct_t *main_struct)
  * Saves an open and edited document
  * @param current_doc : current edited document (doc_t * structure)
  * @return returns HERAIA_NOERR if everything went ok or HERAIA_FILE_ERROR in case of an error
  */
 HERAIA_ERROR heraia_hex_document_save(doc_t *current_doc)
 {
-	gint return_value = FALSE;
+    gint return_value = FALSE;
 
-	if (current_doc != NULL)
-	{
-		if (current_doc->hex_doc != NULL)
-		{
-			return_value = hex_document_write(current_doc->hex_doc);
-		}
-	}
+    if (current_doc != NULL)
+    {
+        if (current_doc->hex_doc != NULL)
+        {
+            return_value = hex_document_write(current_doc->hex_doc);
+        }
+    }
 
-	if (return_value != FALSE)
-	{
-		return HERAIA_NOERR;
-	}
-	else
-	{
-		return HERAIA_FILE_ERROR;
-	}
+    if (return_value != FALSE)
+    {
+        return HERAIA_NOERR;
+    }
+    else
+    {
+        return HERAIA_FILE_ERROR;
+    }
 }
 
 /**
@@ -151,40 +151,40 @@ HERAIA_ERROR heraia_hex_document_save(doc_t *current_doc)
  */
 HERAIA_ERROR heraia_hex_document_save_as(doc_t *current_doc, gchar *filename)
 {
-	gint return_value = FALSE;
-	FILE *fp = NULL;
-	gint i = 0;
-	gchar *path_end = NULL; /**< to make libghex happy ! */
+    gint return_value = FALSE;
+    FILE *fp = NULL;
+    gint i = 0;
+    gchar *path_end = NULL; /**< to make libghex happy ! */
 
-	if (current_doc != NULL && current_doc->hex_doc != NULL && filename != NULL)
-	   {
-			fp = fopen(filename, "w");
-			if (fp != NULL)
-			{
-				return_value = hex_document_write_to_file(current_doc->hex_doc, fp);
-				fclose(fp);
+    if (current_doc != NULL && current_doc->hex_doc != NULL && filename != NULL)
+       {
+            fp = fopen(filename, "w");
+            if (fp != NULL)
+            {
+                return_value = hex_document_write_to_file(current_doc->hex_doc, fp);
+                fclose(fp);
 
-				/* path_end stuff from ghex-window.c from ghex project !!! */
-				for(i = strlen(current_doc->hex_doc->file_name);
+                /* path_end stuff from ghex-window.c from ghex project !!! */
+                for(i = strlen(current_doc->hex_doc->file_name);
                         (i >= 0) && (current_doc->hex_doc->file_name[i] != '/');
                         i--);
-				if (current_doc->hex_doc->file_name[i] == '/')
-					path_end = &current_doc->hex_doc->file_name[i+1];
-				else
-					path_end = current_doc->hex_doc->file_name;
+                if (current_doc->hex_doc->file_name[i] == '/')
+                    path_end = &current_doc->hex_doc->file_name[i+1];
+                else
+                    path_end = current_doc->hex_doc->file_name;
 
-				current_doc->hex_doc->path_end = g_filename_to_utf8(path_end, -1, NULL, NULL, NULL);
-			}
-		}
+                current_doc->hex_doc->path_end = g_filename_to_utf8(path_end, -1, NULL, NULL, NULL);
+            }
+        }
 
-	if (return_value != FALSE)
-	{
-		return HERAIA_NOERR;
-	}
-	else
-	{
-		return HERAIA_FILE_ERROR;
-	}
+    if (return_value != FALSE)
+    {
+        return HERAIA_NOERR;
+    }
+    else
+    {
+        return HERAIA_FILE_ERROR;
+    }
 }
 
 /**
@@ -206,22 +206,22 @@ HERAIA_ERROR heraia_hex_document_save_as(doc_t *current_doc, gchar *filename)
  */
 static void change_endianness(guint len, guint endianness, guchar *result)
 {
-	if (endianness == H_DI_BIG_ENDIAN)
-		{
-			if (len > 1) /* We swap bytes only if we have two or more */
-				{
-					swap_bytes(result, 0, len-1);
-				}
-			else
-				{
-					reverse_byte_order(result);  /* Only one byte and big endian requested */
-				}
-		}
-	else if (endianness == H_DI_MIDDLE_ENDIAN && len >= 4)
-		{
-			swap_bytes(result, 0, (len/2)-1);
-			swap_bytes(result, (len/2), len-1);
-		}
+    if (endianness == H_DI_BIG_ENDIAN)
+        {
+            if (len > 1) /* We swap bytes only if we have two or more */
+                {
+                    swap_bytes(result, 0, len-1);
+                }
+            else
+                {
+                    reverse_byte_order(result);  /* Only one byte and big endian requested */
+                }
+        }
+    else if (endianness == H_DI_MIDDLE_ENDIAN && len >= 4)
+        {
+            swap_bytes(result, 0, (len/2)-1);
+            swap_bytes(result, (len/2), len-1);
+        }
 }
 
 
@@ -243,29 +243,29 @@ static void change_endianness(guint len, guint endianness, guchar *result)
  */
 gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, guint endianness, guchar *result)
 {
-	guint i;
+    guint i;
 
-	if (result == NULL || gh == NULL)
-		{
-			return FALSE;
-		}
-	else if ((pos < 0) || ((pos+len) > ghex_file_size(gh))) /* pos located in the file limits ! */
-		{
-			return FALSE;
-		}
-	else
-		{
-			/* Extracts len bytes from the Ghex widget */
-			for (i=0; i<len ; i++)
-				{
-						result[i] = gtk_hex_get_byte(gh, pos+i);
-				}
+    if (result == NULL || gh == NULL)
+        {
+            return FALSE;
+        }
+    else if ((pos < 0) || ((pos+len) > ghex_file_size(gh))) /* pos located in the file limits ! */
+        {
+            return FALSE;
+        }
+    else
+        {
+            /* Extracts len bytes from the Ghex widget */
+            for (i=0; i<len ; i++)
+                {
+                        result[i] = gtk_hex_get_byte(gh, pos+i);
+                }
 
-			/* Deals with endianness to rearrange datas */
-			change_endianness(len, endianness, result);
+            /* Deals with endianness to rearrange datas */
+            change_endianness(len, endianness, result);
 
-			return TRUE;
-		}
+            return TRUE;
+        }
 }
 
 
@@ -284,19 +284,19 @@ gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, guint endianness, guchar 
  */
 gboolean ghex_get_data(GtkWidget *hex_widget, guint length, guint endianness, guchar *c)
 {
-	gboolean result = FALSE;
-	GtkHex *gh = GTK_HEX(hex_widget);
+    gboolean result = FALSE;
+    GtkHex *gh = GTK_HEX(hex_widget);
 
-	if (gh != NULL)
-		{
-			result = ghex_memcpy(gh, gtk_hex_get_cursor(gh), length, endianness, c);
-		}
-	else
-		{
-			result = FALSE;
-		}
+    if (gh != NULL)
+        {
+            result = ghex_memcpy(gh, gtk_hex_get_cursor(gh), length, endianness, c);
+        }
+    else
+        {
+            result = FALSE;
+        }
 
-	return result;
+    return result;
 }
 
 
@@ -307,14 +307,14 @@ gboolean ghex_get_data(GtkWidget *hex_widget, guint length, guint endianness, gu
  */
 guint64 ghex_file_size(GtkHex *gh)
 {
-	if (gh != NULL && gh->document != NULL)
-		{
-			return gh->document->file_size;
-		}
-	else
-		{
-			return 0;
-		}
+    if (gh != NULL && gh->document != NULL)
+        {
+            return gh->document->file_size;
+        }
+    else
+        {
+            return 0;
+        }
 }
 
 /**
@@ -324,16 +324,16 @@ guint64 ghex_file_size(GtkHex *gh)
  */
 guint64 ghex_get_cursor_position(GtkWidget *hex_widget)
 {
-	GtkHex *gh = GTK_HEX(hex_widget);
+    GtkHex *gh = GTK_HEX(hex_widget);
 
-	if (gh != NULL)
-	{
-		  return gtk_hex_get_cursor(gh);
-	}
-	else
-	{
-		  return 0;
-	}
+    if (gh != NULL)
+    {
+          return gtk_hex_get_cursor(gh);
+    }
+    else
+    {
+          return 0;
+    }
 }
 
 
@@ -346,12 +346,12 @@ guint64 ghex_get_cursor_position(GtkWidget *hex_widget)
  */
 doc_t *new_doc_t(Heraia_Document *hex_doc, GtkWidget *hex_widget)
 {
-	doc_t *new_doc;
+    doc_t *new_doc;
 
-	new_doc = (doc_t *) g_malloc0(sizeof(doc_t));
+    new_doc = (doc_t *) g_malloc0(sizeof(doc_t));
 
-	new_doc->hex_doc = hex_doc;
-	new_doc->hex_widget = hex_widget;
+    new_doc->hex_doc = hex_doc;
+    new_doc->hex_widget = hex_widget;
 
-	return new_doc;
+    return new_doc;
 }

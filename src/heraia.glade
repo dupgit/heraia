@@ -4,6 +4,7 @@
   <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="main_preferences_window">
     <property name="title" translatable="yes">Main Preferences</property>
+    <property name="icon">pixmaps/logo_with_more_transparency.png</property>
     <child>
       <widget class="GtkVBox" id="vbox7">
         <property name="visible">True</property>
@@ -219,6 +220,7 @@
     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
     <property name="title" translatable="yes">User defined data types</property>
     <property name="modal">True</property>
+    <property name="icon">pixmaps/logo_with_more_transparency.png</property>
     <child>
       <widget class="GtkVBox" id="vbox5">
         <property name="visible">True</property>
@@ -386,7 +388,7 @@
   <widget class="GtkWindow" id="list_data_types_window">
     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
     <property name="title" translatable="yes">List elementary data types</property>
-    <property name="icon">heraia.png</property>
+    <property name="icon">pixmaps/logo_with_more_transparency.png</property>
     <child>
       <widget class="GtkHBox" id="hbox3">
         <property name="visible">True</property>
@@ -579,6 +581,7 @@
     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
     <property name="border_width">2</property>
     <property name="title" translatable="yes">Data interpretor</property>
+    <property name="icon">pixmaps/logo_with_more_transparency.png</property>
     <child>
       <widget class="GtkVBox" id="vbox2">
         <property name="visible">True</property>
@@ -773,7 +776,7 @@
   </widget>
   <widget class="GtkWindow" id="plugin_list_window">
     <property name="title" translatable="yes">Plugins list</property>
-    <property name="icon">heraia.png</property>
+    <property name="icon">pixmaps/logo_with_more_transparency.png</property>
     <child>
       <widget class="GtkVBox" id="vbox4">
         <property name="visible">True</property>
@@ -920,6 +923,7 @@
   </widget>
   <widget class="GtkAboutDialog" id="about_dialog">
     <property name="title" translatable="yes">About Heraia</property>
+    <property name="icon">pixmaps/logo_with_more_transparency.png</property>
     <property name="type_hint">normal</property>
     <property name="copyright">(C) 2005 - 2009 Two or more autors (see Credits)</property>
     <property name="comments" translatable="yes">An hexadecimal analyser and editor</property>
@@ -1160,8 +1164,9 @@ POSSIBILITY OF SUCH DAMAGES.
 (C) 2005 - 2008 S&#xE9;bastien Tricaud</property>
     <property name="documenters"></property>
     <property name="translator_credits" translatable="yes" comments="TRANSLATORS: Replace this string with your names, one name per line.">translator-credits</property>
-    <property name="artists">(C) 2005 - 2007 Gregory Audet</property>
-    <property name="logo">heraia.png</property>
+    <property name="artists">(C) 2005 - 2007 Gregory Audet
+(C) 2009 - Aur&#xE9;lie Deraisme</property>
+    <property name="logo">pixmaps/logo_with_more_transparency.png</property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox1">
         <child internal-child="action_area">
@@ -1179,6 +1184,7 @@ POSSIBILITY OF SUCH DAMAGES.
     <property name="width_request">400</property>
     <property name="height_request">200</property>
     <property name="title" translatable="yes">Log</property>
+    <property name="icon">pixmaps/logo_with_more_transparency.png</property>
     <child>
       <widget class="GtkVBox" id="vbox3">
         <property name="visible">True</property>
@@ -1247,7 +1253,7 @@ POSSIBILITY OF SUCH DAMAGES.
   </widget>
   <widget class="GtkWindow" id="main_window">
     <property name="title" translatable="yes">Heraia</property>
-    <property name="icon">heraia.png</property>
+    <property name="icon">pixmaps/logo_with_more_transparency.png</property>
     <child>
       <widget class="GtkVBox" id="vbox8">
         <property name="visible">True</property>
@@ -1495,7 +1501,7 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="top_attach">1</property>
                         <property name="bottom_attach">2</property>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options">GTK_FILL</property>
                         <property name="x_padding">2</property>
                         <property name="y_padding">2</property>
                       </packing>
@@ -1512,7 +1518,7 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="top_attach">2</property>
                         <property name="bottom_attach">3</property>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options">GTK_FILL</property>
                         <property name="x_padding">2</property>
                         <property name="y_padding">2</property>
                       </packing>
@@ -1565,7 +1571,7 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="top_attach">3</property>
                         <property name="bottom_attach">4</property>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options">GTK_FILL</property>
                         <property name="x_padding">2</property>
                         <property name="y_padding">2</property>
                       </packing>
@@ -1599,6 +1605,8 @@ POSSIBILITY OF SUCH DAMAGES.
                       <packing>
                         <property name="x_options">GTK_FILL</property>
                         <property name="y_options">GTK_FILL</property>
+                        <property name="x_padding">2</property>
+                        <property name="y_padding">2</property>
                       </packing>
                     </child>
                     <child>

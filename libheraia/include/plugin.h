@@ -2,21 +2,21 @@
 /*
   plugin.h
   heraia - an hexadecimal file editor and analyser based on ghex
- 
+
   (C) Copyright 2007 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
- 
+
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
-  the Free Software Foundation; either version 2, or  (at your option) 
+  the Free Software Foundation; either version 2, or  (at your option)
   any later version.
- 
+
   This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY;  without even the implied warranty of
   MERCHANTABILITY  or  FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
@@ -42,9 +42,9 @@
  */
 typedef enum
 {
-	HERAIA_PLUGIN_UNKNOWN  = -1,  /**< Unknown type   */
-	HERAIA_PLUGIN_FILTER = 0,     /**< Filter plugin  */
-	HERAIA_PLUGIN_ACTION = 1,     /**< Action plugin  */
+    HERAIA_PLUGIN_UNKNOWN  = -1,  /**< Unknown type   */
+    HERAIA_PLUGIN_FILTER = 0,     /**< Filter plugin  */
+    HERAIA_PLUGIN_ACTION = 1,     /**< Action plugin  */
 } PluginType;
 
 /**
@@ -52,19 +52,19 @@ typedef enum
  */
 typedef enum
 {
-	PLUGIN_STATE_RUNNING,
-	PLUGIN_STATE_INITIALIZING,
-	PLUGIN_STATE_LOADED,
-	PLUGIN_STATE_NEW,
-	PLUGIN_STATE_EXITING,
-	PLUGIN_STATE_NONE,
+    PLUGIN_STATE_RUNNING,
+    PLUGIN_STATE_INITIALIZING,
+    PLUGIN_STATE_LOADED,
+    PLUGIN_STATE_NEW,
+    PLUGIN_STATE_EXITING,
+    PLUGIN_STATE_NONE,
 } PluginState;
 
 /* plugins functions */
-typedef void (* InitProc)    (heraia_window_t *);         /* Called once when the plugin is loaded              */
+typedef void (* InitProc)    (heraia_struct_t *);         /* Called once when the plugin is loaded              */
 typedef void (* QuitProc)    (void);                      /* Called once when the plugin is unloaded            */
 typedef void (* RunProc)     (GtkWidget *, gpointer);     /* Called via the menu interface                      */
-typedef void (* RefreshProc) (heraia_window_t *, void *); /* Called every time that the cursor position changes */
+typedef void (* RefreshProc) (heraia_struct_t *, void *); /* Called every time that the cursor position changes */
 /* this double structure is here to improve speed avoiding a list search */
 
 
@@ -81,7 +81,7 @@ typedef void (* RefreshProc) (heraia_window_t *, void *); /* Called every time t
  *
  * @note do we use this ?
  */
-typedef int PluginPriority; 
+typedef int PluginPriority;
 #define HERAIA_PRIORITY_DEFAULT     0
 #define HERAIA_PRIORITY_HIGHEST  9999
 #define HERAIA_PRIORITY_LOWEST  -9999
@@ -103,10 +103,10 @@ typedef gboolean (* ExportFunction) (const gchar *filename, void *user_data);
  */
 typedef struct
 {
-	char *extensions;
+    char *extensions;
 
-	ImportFunction import;
-	ExportFunction export;
+    ImportFunction import;
+    ExportFunction export;
 } plugin_filter_t;
 
 
@@ -116,17 +116,17 @@ typedef struct
  */
 typedef struct
 {
-	unsigned int api_version;
-	PluginType type;
-	PluginPriority priority;
-	unsigned int id;
+    unsigned int api_version;
+    PluginType type;
+    PluginPriority priority;
+    unsigned int id;
 
-	char  *name;
-	char  *version;
-	char  *summary;
-	char  *description;
-	char  *author;
-	char  *homepage;
+    char  *name;
+    char  *version;
+    char  *summary;
+    char  *description;
+    char  *author;
+    char  *homepage;
 
 } plugin_info_t;
 
@@ -134,25 +134,25 @@ typedef struct
  * @struct heraia_plugin_t
  *  Complete plugin structure.
  */
-typedef struct 
+typedef struct
 {
-	PluginState state;         /**< The state of the plugin                  */
-	GModule *handle;           /**< The module handle                        */
-	char *path;                /**< The path to the plugin                   */
-	char *filename;            /**< Filename of the plugin                   */
-	plugin_info_t *info;       /**< The plugin information                   */
-	plugin_filter_t *filter;   /**< The plugin filter                        */
-	char *error;               /**< last error message                       */
-	void *extra;               /**< Plugin-specific data                     */
-	
-	InitProc init_proc;       /**< Called when the application initialy starts up            */
-	QuitProc quit_proc;       /**< Called when the application exits                         */
-	RunProc  run_proc;        /**< Called to run an interface everytime the plugin is called */
-	RefreshProc refresh_proc; /**< Called when the cursor changes it's position              */
+    PluginState state;         /**< The state of the plugin                  */
+    GModule *handle;           /**< The module handle                        */
+    char *path;                /**< The path to the plugin                   */
+    char *filename;            /**< Filename of the plugin                   */
+    plugin_info_t *info;       /**< The plugin information                   */
+    plugin_filter_t *filter;   /**< The plugin filter                        */
+    char *error;               /**< last error message                       */
+    void *extra;               /**< Plugin-specific data                     */
 
-	GtkCheckMenuItem *cmi_entry; /**< The CheckMenuItem that may be created in the heraia interface */
-	GladeXML *xml;               /**< Eventually the plugin Glade XML interface                     */
-	window_prop_t *win_prop;     /**< Stores the window's properties                                */
+    InitProc init_proc;       /**< Called when the application initialy starts up            */
+    QuitProc quit_proc;       /**< Called when the application exits                         */
+    RunProc  run_proc;        /**< Called to run an interface everytime the plugin is called */
+    RefreshProc refresh_proc; /**< Called when the cursor changes it's position              */
+
+    GtkCheckMenuItem *cmi_entry; /**< The CheckMenuItem that may be created in the heraia interface */
+    GladeXML *xml;               /**< Eventually the plugin Glade XML interface                     */
+    window_prop_t *win_prop;     /**< Stores the window's properties                                */
 } heraia_plugin_t;
 
 
@@ -163,10 +163,10 @@ typedef struct
 extern gboolean plugin_capable(void);
 extern heraia_plugin_t *new_plugin(void);
 extern void free_plugin(heraia_plugin_t *plugin);
-extern void load_plugins(heraia_window_t *main_window);
-extern void add_entry_to_plugins_menu(heraia_window_t *main_window, heraia_plugin_t *plugin);
+extern void load_plugins(heraia_struct_t *main_struct);
+extern void add_entry_to_plugins_menu(heraia_struct_t *main_struct, heraia_plugin_t *plugin);
 extern heraia_plugin_t *find_plugin_by_name(GList *plugins_list, gchar *name);
-extern gboolean load_plugin_glade_xml(heraia_window_t *main_window, heraia_plugin_t *plugin);
-extern void refresh_all_plugins(heraia_window_t *main_window);
+extern gboolean load_plugin_glade_xml(heraia_struct_t *main_struct, heraia_plugin_t *plugin);
+extern void refresh_all_plugins(heraia_struct_t *main_struct);
 
 #endif /* _HERAIA_PLUGIN_H_ */
