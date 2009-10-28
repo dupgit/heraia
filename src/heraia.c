@@ -207,10 +207,6 @@ static heraia_struct_t *heraia_init_main_struct(void)
     herwin->current_doc = NULL;
     herwin->plugins_list = NULL;
     herwin->location_list = init_heraia_location_list(); /* location list initilization */
-    herwin->data_type_list = NULL;
-    herwin->current_data_type = NULL;
-    herwin->available_treatment_list = init_treatments(); /* treatment list initialization */
-
 
     /* xml_t structure initialisation */
     xmls = (xml_t *) g_malloc0(sizeof(xml_t));

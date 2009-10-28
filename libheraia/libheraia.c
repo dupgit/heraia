@@ -22,7 +22,7 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
 /**
  * @file libheraia.c
- * 
+ *
  * Contains function that may be usefull if we want all this beeing
  * integrated in a python script or something similar
  *
@@ -39,7 +39,6 @@
 #include "heraia_errors.h"
 #include "heraia_io.h"
 #include "heraia_ui.h"
-#include "list_data_types.h"
 #include "log.h"
 #include "main_pref_window.h"
 #include "plugin.h"
@@ -53,8 +52,8 @@
 
 int libheraia_test(void)
 {
-	fprintf(stdout, "Libheraia library test OK\n");
-	return 0;
+    fprintf(stdout, "Libheraia library test OK\n");
+    return 0;
 }
 
 void libheraia_initialize(void)

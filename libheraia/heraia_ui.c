@@ -795,7 +795,6 @@ GSList *select_file_to_load(heraia_struct_t *main_struct)
         case GTK_RESPONSE_OK:
 
             list = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(file_chooser));
-            /* log_message(main_struct, G_LOG_LEVEL_DEBUG, "filename selected : %s", filename); */
             gtk_widget_destroy(GTK_WIDGET(file_chooser));
 
             return list;
@@ -1108,13 +1107,6 @@ static void heraia_ui_connect_signals(heraia_struct_t *main_struct)
     /* main window killed or destroyed */
     g_signal_connect (G_OBJECT (heraia_get_widget(main_struct->xmls->main, "main_window")), "delete-event",
                       G_CALLBACK (delete_main_struct_event), main_struct);
-
-/*  g_signal_connect (G_OBJECT (heraia_get_widget(main_struct->xmls->main, "main_window")), "response",
-                      G_CALLBACK (delete_main_struct_event), main_struct);
-
-    g_signal_connect (G_OBJECT (heraia_get_widget(main_struct->xmls->main, "main_window")), "close",
-                      G_CALLBACK (on_quit_activate), main_struct);
-*/
 }
 
 /** @fn int load_heraia_ui(heraia_struct_t *main_struct)
@@ -1191,32 +1183,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
         }
 
 
-        /* The list data types window */
-        if (main_struct->debug == TRUE)
-        {
-            fprintf(stdout, "list data types init interface   ");
-        }
-
-        list_data_types_init_interface(main_struct);
-
-        if (main_struct->debug == TRUE)
-        {
-            fprintf(stdout, " [Done]\n");
-        }
-
-
-        /* The data type window (create or edit one type) */
-        if (main_struct->debug == TRUE)
-        {
-            fprintf(stdout, "data type init interface         ");
-        }
-
-        data_type_init_interface(main_struct);
-
-        if (main_struct->debug == TRUE)
-        {
-            fprintf(stdout, " [Done]\n");
-        }
+        /* preferences file */
 
         fprintf(stdout, "Loading heraia preference file   ");
 
@@ -1491,7 +1458,6 @@ void init_window_states(heraia_struct_t *main_struct)
             dialog_box = heraia_get_widget(main_struct->xmls->main, "main_preferences_window");
             if (main_struct->win_prop->main_pref_window->displayed == TRUE)
             {
-                /* main_struct->win_prop->main_pref_window->displayed = FALSE; dirty trick */
                 gtk_window_move(GTK_WINDOW(dialog_box), main_struct->win_prop->main_pref_window->x, main_struct->win_prop->main_pref_window->y);
                 gtk_window_resize(GTK_WINDOW(dialog_box), main_struct->win_prop->main_pref_window->width, main_struct->win_prop->main_pref_window->height);
                 gtk_widget_show_all(dialog_box);
@@ -1501,7 +1467,6 @@ void init_window_states(heraia_struct_t *main_struct)
             dialog_box = heraia_get_widget(main_struct->xmls->main, "about_dialog");
             if (main_struct->win_prop->about_box->displayed == TRUE)
             {
-                /* main_struct->win_prop->main_pref_window->displayed = FALSE; dirty trick */
                 gtk_window_move(GTK_WINDOW(dialog_box), main_struct->win_prop->about_box->x, main_struct->win_prop->about_box->y);
                 gtk_window_resize(GTK_WINDOW(dialog_box), main_struct->win_prop->about_box->width, main_struct->win_prop->about_box->height);
                 set_a_propos_properties(dialog_box);

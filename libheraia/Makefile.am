@@ -10,10 +10,7 @@ headerfiles = 							\
 	    include/heraia_io.h		   		\
 		include/plugin.h				\
 		include/heraia_errors.h			\
-		include/list_data_types.h		\
 		include/data_interpretor.h		\
-		include/data_type.h				\
-		include/treatments.h			\
 		include/plugin_list.h			\
 		include/log.h
 
@@ -39,10 +36,7 @@ libheraia_la_SOURCES =  		\
 		ghex_heraia_interface.c	\
 		plugin.c				\
 		heraia_io.c 			\
-		list_data_types.c		\
 		data_interpretor.c		\
-		data_type.c				\
-		treatments.c			\
 		plugin_list.c			\
 		$(headerfiles)
 

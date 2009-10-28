@@ -40,7 +40,6 @@ gboolean load_file_to_analyse(heraia_struct_t *main_struct, gchar *filename)
 {
     struct stat *stat_buf = NULL;
     gboolean success = FALSE;
-/*  GtkWidget *notebook = NULL; */
     doc_t* doc = NULL;
 
     g_return_val_if_fail(filename != NULL, FALSE);

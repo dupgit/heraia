@@ -253,9 +253,6 @@ void save_preferences(heraia_struct_t *main_struct)
 {
     if (main_struct != NULL)
     {
-        /* 0. Init or verify the struct */
-        /* init_preference_struct(main_struct); */
-
         /* 1. Saving main Preferences */
         save_mp_file_preferences_options(main_struct);
 
@@ -400,9 +397,6 @@ void load_preferences(heraia_struct_t *main_struct)
 {
     if (main_struct != NULL)
     {
-        /* 0. Init or verify the struct */
-        /* init_preference_struct(main_struct); */
-
         /* 1. Main Preferences */
         load_mp_file_preferences_options(main_struct);
 

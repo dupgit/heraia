@@ -1,3 +1,7 @@
+28.10.2009
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Deleted unused code (data_type.[ch], list_data_types.[ch], treatments.h)
+
 17.10.2009
    - Olivier Delhomme <heraia@delhomme.org>
      * Replaced all main_window by main_struct and heraia_window_t by

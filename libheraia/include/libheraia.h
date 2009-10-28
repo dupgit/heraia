@@ -88,6 +88,7 @@ typedef gint RefreshType;
 #define HERAIA_REFRESH_CURSOR_MOVE 2
 #define HERAIA_REFRESH_TAB_CHANGED 3
 
+
 /**
  * @struct date_and_time_t
  *  A human struct to store a date with a time.
@@ -108,6 +109,7 @@ typedef struct
 /** Templates for the decoding functions */
 typedef gchar *(* DecodeFunc) (guchar *, gpointer);     /**< Decode function template */
 
+
 /**
  * @struct decode_parameters_t
  * Used to pass decoding options to the functions. Those options are evaluated
@@ -118,6 +120,7 @@ typedef struct
         guint endianness;  /**< endianness  */
         guint stream_size; /**< stream_size */
 } decode_parameters_t;
+
 
 /**
  * @struct decode_t
@@ -166,6 +169,7 @@ typedef struct
     GPtrArray *rows;       /**< array of pointers to decode_generic_t variables.                */
 } tab_t;
 
+
 /**
  * @struct data_window_t
  *  Data interpretor window structure
@@ -177,71 +181,6 @@ typedef struct
     guint nb_tabs;                 /**< keeps Number of tabs in the GPtrArray                                */
     GPtrArray *tabs;               /**< an array of tabs displayed in data interpretor's notebook            */
 } data_window_t;
-
-/* Treatment Stuff (if one wants to add new data types) */
-typedef GList *(* TreatmentDoFunc) (GList *);     /**< Treatment function called while operating the treatment */
-typedef void (* TreatmentInitFunc) (gpointer);    /**< Treatment init function                                 */
-typedef void (* TreatmentDelFunc) (gpointer);     /**< Treatment delete function                               */
-typedef gpointer (*TreatmentCopyFunc) (gpointer); /**< Treatment copy function that have to copy internal
-                                                       structures (widgets and all stuff in it)                */
-/**
- * @struct treatment_t
- *  Treatment structure
- * @warning I'm not happy with this struct and all data_type.c file. I plan
- *          to replace thoses ugly things with an embedded scripting language
- *          such as python.
- */
-typedef struct
-{
-    gchar *name;               /**< Treatment name  */
-    TreatmentDoFunc do_it;     /**< Treatment function that manages the whole treatment (interface + treatment itself) */
-    TreatmentInitFunc init;    /**< inits the interface */
-    TreatmentDelFunc kill;     /**< kills the treatment itself */
-    TreatmentCopyFunc copy;    /**< Copy the gpointer data sub structure of the treatment itself */
-    gpointer data;             /**< Generic treatment data. Each instantiated treatment may have it's own              */
-} treatment_t;
-
-/**
- * @struct treatment_container_t
- *  Structure in order to contain one treatment
- * @warning I'm not happy with this struct and all data_type.c file. I plan
- *          to replace thoses ugly things with an embedded scripting language
- *          such as python.
- */
-typedef struct
-{
-    GtkWidget *container_box;  /**< Upper box containing the whole stuff                */
-    GtkWidget *button_box;     /**< Right part of the hbox. Contains "-", GtkEntry, "+" */
-    GtkWidget *combo_box;      /**< Left box where we have the combobox                 */
-    GtkWidget *tment_list;     /**< Combobox containning the treatment list             */
-    GtkWidget *result;         /**< The GtkEntry in the vbox                            */
-    GtkWidget *moins;          /**< "-" button                                          */
-    GtkWidget *plus;           /**< "+" button                                          */
-    treatment_t *treatment;    /**< Selected treatment                                  */
-} treatment_container_t;
-
-/**
- * @struct data_type_t
- *  Data type structure entry that contains user defined data types
- *  This is integrated within a GList.
- *  !! Do not forget to update the functions related to this such as
- *   - new_data_type
- *   - free_data_type
- *   - copy_data_type
- *  See data_type.c for thoses functions
- * @warning I'm not happy with this struct and all data_type.c file. I plan
- *          to replace thoses ugly things with an embedded scripting language
- *          such as python.
- */
-typedef struct
-{
-    gchar *name;             /**< Name of the data type                                                       */
-    guint size;              /**< size of the data type  (here we may limit size entry, eg <= 16 for example) */
-    GList *treatment_c_list; /**< Treatments containers to be applied (in the list order) to the data
-                                  (treatment_container_t *)                                                   */
-    GtkWidget *di_label;     /**< label for the data_interpretor window                                       */
-    GtkWidget *di_entry;     /**< entry for the data interpretor window                                       */
-} data_type_t;
 
 
 /**
@@ -265,6 +204,7 @@ typedef struct
 #define WPT_DEFAULT_HEIGHT 200
 #define WPT_DEFAULT_WIDTH 200
 
+
 /**
  * @struct window_prop_t
  * Window properties
@@ -280,6 +220,7 @@ typedef struct
     gboolean displayed;  /**< TRUE if displayed, FALSE otherwise */
 } window_prop_t;
 
+
 /**
  * @struct all_window_prop_t
  *  Structure to keep window properties for each window
@@ -294,6 +235,7 @@ typedef struct
     window_prop_t *ldt;               /**< list data types window    */
     window_prop_t *main_pref_window;  /**< main preference window    */
 } all_window_prop_t;
+
 
 /**
  * @struct prefs_t
@@ -333,31 +275,27 @@ typedef struct
     data_window_t *current_DW;      /**< data_interpretor pointer                                                  */
     GList *location_list;           /**< this is the location list where we store some paths                       */
     GList *plugins_list;            /**< A list of plugins                                                         */
-    GList *data_type_list;          /**< A list of data types                                                      */
-    data_type_t *current_data_type; /**< data type that is being edited                                            */
-    GList *available_treatment_list;/**< Available treatments that can be used by the user in the data type window */
     RefreshType event;              /**< Tells what is happening                                                   */
     all_window_prop_t *win_prop;    /**< Keeps window properties                                                   */
     prefs_t *prefs;                 /**< All datas related to main preferences                                     */
 } heraia_struct_t;
 
+
 #include "config.h"
 #include "data_interpretor.h"
-#include "data_type.h"
 #include "decode.h"
 #include "ghex_heraia_interface.h"
 #include "heraia_errors.h"
 #include "heraia_io.h"
 #include "heraia_ui.h"
-#include "list_data_types.h"
 #include "log.h"
 #include "main_pref_window.h"
 #include "plugin.h"
 #include "plugin_list.h"
-#include "treatments.h"
 #include "user_prefs.h"
 
 extern int libheraia_test(void);
+
 
 /**
  * Python specific

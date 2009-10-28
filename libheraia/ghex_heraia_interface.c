@@ -41,18 +41,6 @@ doc_t *heraia_hex_document_new(heraia_struct_t *main_struct, char *filename)
     GtkWidget *hex_widget = NULL;
     doc_t *doc = NULL;
 
-    /* There is no more reasons that we destroy any documents here */
-    /* if (main_struct->current_doc != NULL)
-        {
-            hex_document_remove_view(main_struct->current_doc, main_struct->current_DW->current_hexwidget);
-        }
-
-    if (main_struct->current_DW->current_hexwidget != NULL )
-        {
-            gtk_widget_destroy(main_struct->current_DW->current_hexwidget);
-        }
-    */
-
     /* Creating a new hex document */
     hex_doc = hex_document_new_from_file(filename);
 
