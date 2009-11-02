@@ -423,7 +423,7 @@ int main (int argc, char ** argv)
             if (load_heraia_ui(main_struct) == TRUE)
                 {
 
-                    log_message(main_struct, G_LOG_LEVEL_INFO, "Main interface loaded (%s)", main_struct->xmls->main->filename);
+                    log_message(main_struct, G_LOG_LEVEL_INFO, "Main interface loaded");
                     log_message(main_struct, G_LOG_LEVEL_DEBUG, "Preference file is %s", main_struct->prefs->filename);
                     log_message(main_struct, G_LOG_LEVEL_DEBUG, "data interpretor's tab is %d", main_struct->current_DW->tab_displayed);
 
@@ -450,7 +450,7 @@ int main (int argc, char ** argv)
                 }
             else
                 {
-                    fprintf(stderr, "File heraia.glade not found !\n");
+                    fprintf(stderr, "File heraia.gtkbuilder not found !\n");
                 }
         }
 

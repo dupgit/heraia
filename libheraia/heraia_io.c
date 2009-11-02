@@ -26,7 +26,7 @@
  */
 #include <libheraia.h>
 
-static GladeXML *load_glade_xml_if_it_exists(char *file_to_load);
+static GtkBuilder *load_xml_if_it_exists(char *file_to_load);
 
 /**
  *  Loads the file 'filename' to analyse and populates the
@@ -99,23 +99,30 @@ gboolean load_file_to_analyse(heraia_struct_t *main_struct, gchar *filename)
 
 
 /**
- * @fn GladeXML *load_glade_xml_if_it_exists(gchar *file_to_load)
+ * @fn GtkBuilder *load_xml_if_it_exists(gchar *file_to_load)
  *  Checks if file_to_load exists and is valid and if possible, loads it
  *  in the xml structure
- * @param file_to_load : a filename of a possibly existing glade file
- * @return returns the GladeXML structure if any, NULL otherwise
+ * @param file_to_load : a filename of a possibly existing GtkBuilder file
+ * @return returns the GtkBuilder XML structure if any, NULL otherwise
  */
-static GladeXML *load_glade_xml_if_it_exists(gchar *file_to_load)
+static GtkBuilder *load_xml_if_it_exists(gchar *file_to_load)
 {
     struct stat *stat_buf;
-    GladeXML *xml = NULL;
+    GtkBuilder *xml = NULL;
 
     stat_buf = (struct stat *) g_malloc0 (sizeof(struct stat));
 
     stat(file_to_load, stat_buf);
     if (S_ISREG(stat_buf->st_mode) && stat_buf->st_size>0)
         {
-            xml = glade_xml_new(file_to_load, NULL, NULL);
+            GError* error = NULL;
+            xml = gtk_builder_new ();
+
+            if (!gtk_builder_add_from_file(xml, file_to_load, &error))
+                {
+                    g_warning ("Couldn't load builder file: %s", error->message);
+                    g_error_free (error);
+                }
         }
     else
         {
@@ -128,25 +135,25 @@ static GladeXML *load_glade_xml_if_it_exists(gchar *file_to_load)
 }
 
 /**
- * @fn GladeXML *load_glade_xml_file(GList *location_list, gchar *filename)
- *  loads the glade xml file ('filename') that describes an interface,
+ * @fn GtkBuilder *load_xml_file(GList *location_list, gchar *filename)
+ *  loads the GtkBuilder xml file ('filename') that describes an interface,
  *  tries all the paths defined in the location_list and put the definition
- *  in the 'xml' variable. A frontend to load_glade_xml_if_it_exists function
+ *  in the 'xml' variable. A frontend to load_xml_if_it_exists function
  * @param location_list : a Glist containing paths where we might found the file
- * @param filename : glade's file's name that we want to load (possibly)
- * @return returns the GladeXML structure if any, NULL otherwise
+ * @param filename : GtkBuilder filename that we want to load (possibly)
+ * @return returns the GtkBuilder XML structure if any, NULL otherwise
  */
-GladeXML *load_glade_xml_file(GList *location_list, gchar *filename)
+GtkBuilder *load_xml_file(GList *location_list, gchar *filename)
 {
     gchar *file_to_load = NULL;
     GList *list = g_list_first(location_list);
-    GladeXML *xml = NULL;
+    GtkBuilder *xml = NULL;
 
     while (list != NULL && xml == NULL)
         {
             file_to_load =  g_build_filename((gchar *) list->data, filename, NULL);
 
-            xml = load_glade_xml_if_it_exists(file_to_load);
+            xml = load_xml_if_it_exists(file_to_load);
 
             if (xml == NULL)
                 {

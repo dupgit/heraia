@@ -16,11 +16,10 @@ headerfiles = 							\
 
 libheraia_la_CPPFLAGS = -I$(top_builddir) -DPLUGINS_DIR=\"$(plugins_dir)\"	 \
 						-I$(top_builddir)/libheraia/include $(GTKHEX_CFLAGS) \
-						$(LIBGLADE_CFLAGS) $(GMODULE_CFLAGS) $(CFLAGS)		 \
-						$(GTK2_CFLAGS) $(GLIB2_CFLAGS)
+						$(GMODULE_CFLAGS) $(CFLAGS)	$(GTK2_CFLAGS) 			 \
+						$(GLIB2_CFLAGS)
 
-AM_LDFLAGS = $(GTKHEX_LIBS) $(LIBGLADE_LIBS) $(GMODULES_LIBS) $(GLIB2_LIBS)  \
-			 $(GTK2_LIBS)
+AM_LDFLAGS = $(GTKHEX_LIBS) $(GMODULES_LIBS) $(GLIB2_LIBS) $(GTK2_LIBS)
 
 # include_HEADERS = $(headerfiles)
 

@@ -57,7 +57,7 @@ extern void set_the_working_directory(GtkFileChooser *file_chooser, gchar *filen
 extern void init_heraia_interface(heraia_struct_t *main_struct);
 extern int load_heraia_ui(heraia_struct_t *main_struct);
 extern void init_window_states(heraia_struct_t *main_struct);
-extern void grey_main_widgets(GladeXML *main, gboolean greyed);
+extern void grey_main_widgets(GtkBuilder *main, gboolean greyed);
 
 /* refreshing things */
 extern void refresh_event_handler(GtkWidget *widget, gpointer data);
@@ -71,8 +71,8 @@ extern void move_and_show_dialog_box(GtkWidget *dialog_box, window_prop_t *dialo
 extern void record_and_hide_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_pos);
 extern void show_hide_widget(GtkWidget *widget, gboolean show, window_prop_t *win_prop);
 
-/* libglade wrapper */
-GtkWidget *heraia_get_widget(GladeXML *xml, gchar *widget_name);
+/* libglade wrapper (now GtkBuilder's one) */
+GtkWidget *heraia_get_widget(GtkBuilder *xml, gchar *widget_name);
 
 /* Text view */
 extern void add_text_to_textview(GtkTextView *textview, const char *format, ...);
@@ -86,7 +86,7 @@ extern GtkWidget *gtk_radio_button_get_active_from_widget(GtkRadioButton *radio_
 extern gboolean is_cmi_checked(GtkWidget *check_menu_item);
 
 /* Toogle Button */
-extern gboolean is_toggle_button_activated(GladeXML *main_xml, gchar *check_button);
+extern gboolean is_toggle_button_activated(GtkBuilder *main_xml, gchar *check_button);
 
 /* Widget */
 extern void destroy_a_single_widget(GtkWidget *widget);

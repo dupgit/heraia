@@ -1,8 +1,0 @@
-#!/bin/bash
-# This script is here because i'm getting upset doing this manually
-# and i couldn't find out why my glade program do not want to save
-# projects in my Héraia directory (may be the é character !?)
-cp /home/dup/Projets/projet2/stat.glade /home/dup/.heraia/
-cp /home/dup/Projets/projet2/stat.glade plugins/stat/
-cp /home/dup/Projets/projet1/heraia/heraia.glade /home/dup/.heraia/
-cp /home/dup/Projets/projet1/heraia/heraia.glade src/

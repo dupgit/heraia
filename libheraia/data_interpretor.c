@@ -79,28 +79,21 @@ static guint which_endianness(heraia_struct_t *main_struct)
  */
 static guint which_stream_size(heraia_struct_t *main_struct)
 {
-   GtkWidget *spin_button = NULL;
-   guint stream_size = 1;
+    GtkWidget *spin_button = NULL;
+    guint stream_size = 1;
 
-   if (main_struct != NULL && main_struct->xmls != NULL && main_struct->xmls->main != NULL)
-   {
-       spin_button = heraia_get_widget(main_struct->xmls->main, "stream_size_spin_button");
+    spin_button = heraia_get_widget(main_struct->xmls->main, "stream_size_spin_button");
 
-       stream_size = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spin_button));
+    stream_size = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spin_button));
 
-       if (stream_size >= 1)
-       {
-           return stream_size;
-       }
-       else
-       {
-           return 1;
-       }
-   }
-   else
-   {
-       return 1;
-   }
+    if (stream_size >= 1)
+        {
+            return stream_size;
+        }
+    else
+        {
+            return 1;
+        }
 }
 
 
@@ -294,10 +287,6 @@ static void connect_data_interpretor_signals(heraia_struct_t *main_struct)
 
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "data_interpretor_window")), "destroy",
                      G_CALLBACK(destroy_dt_window), main_struct);
-
-    /* Menu "close" */
-    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "diw_close_menu")), "activate",
-                     G_CALLBACK(close_data_interpretor_window), main_struct);
 
     /* Radio Button "Little Endian" */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "diw_rb_little_endian")), "toggled",

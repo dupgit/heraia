@@ -28,7 +28,7 @@
 #define _HERAIA_IO_H_
 
 extern gboolean load_file_to_analyse(heraia_struct_t *main_struct, gchar *filename);
-extern GladeXML *load_glade_xml_file(GList *location_list, gchar *filename);
+extern GtkBuilder *load_xml_file(GList *location_list, gchar *filename);
 extern gboolean save_preferences_to_file(prefs_t *prefs);
 extern gboolean load_preference_file(heraia_struct_t *main_struct);
 

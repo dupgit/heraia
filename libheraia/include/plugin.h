@@ -151,7 +151,7 @@ typedef struct
     RefreshProc refresh_proc; /**< Called when the cursor changes it's position              */
 
     GtkCheckMenuItem *cmi_entry; /**< The CheckMenuItem that may be created in the heraia interface */
-    GladeXML *xml;               /**< Eventually the plugin Glade XML interface                     */
+    GtkBuilder *xml;             /**< Eventually the plugin's GtkBuilder XML interface                     */
     window_prop_t *win_prop;     /**< Stores the window's properties                                */
 } heraia_plugin_t;
 
@@ -166,7 +166,7 @@ extern void free_plugin(heraia_plugin_t *plugin);
 extern void load_plugins(heraia_struct_t *main_struct);
 extern void add_entry_to_plugins_menu(heraia_struct_t *main_struct, heraia_plugin_t *plugin);
 extern heraia_plugin_t *find_plugin_by_name(GList *plugins_list, gchar *name);
-extern gboolean load_plugin_glade_xml(heraia_struct_t *main_struct, heraia_plugin_t *plugin);
+extern gboolean load_plugin_xml(heraia_struct_t *main_struct, heraia_plugin_t *plugin);
 extern void refresh_all_plugins(heraia_struct_t *main_struct);
 
 #endif /* _HERAIA_PLUGIN_H_ */

@@ -29,13 +29,11 @@ dnl **************************************************
 GLIB2_VERSION=2.2.0
 GTK2_VERSION=2.2.0
 GTKHEX_VERSION=1.0.0
-LIBGLADE_VERSION=1.110.0
 GMODULE_VERSION=2.0.0
 
 AC_SUBST(GTKHEX_VERSION)
 AC_SUBST(GLIB2_VERSION)
 AC_SUBST(GTK2_VERSION)
-AC_SUBST(LIBGLADE_VERSION)
 AC_SUBST(GMODULE_VERSION)
 
 dnl **************************************************
@@ -81,11 +79,11 @@ dnl **************************************************
 dnl * Checks for paths                               *
 dnl **************************************************
 if test "x$prefix" = "xNONE"; then
-	prefix="/usr/local"
+    prefix="/usr/local"
 fi
 
 if test "x$localstatedir" = "x\${prefix}/var"; then
-	localstatedir="$prefix/var"
+    localstatedir="$prefix/var"
 fi
 
 if test "x$sysconfdir" = "x\${prefix}/etc"; then
@@ -147,11 +145,6 @@ dnl **************************************************
 PKG_CHECK_MODULES(GTKHEX, [gtkhex >= $GTKHEX_VERSION])
 
 dnl **************************************************
-dnl * checking for libglade                          *
-dnl **************************************************
-PKG_CHECK_MODULES(LIBGLADE, [libglade-2.0 >= $LIBGLADE_VERSION])
-
-dnl **************************************************
 dnl * checking for gmodule                           *
 dnl **************************************************
 PKG_CHECK_MODULES(GMODULE, [gmodule-2.0 >= $GMODULE_VERSION])
@@ -169,14 +162,14 @@ dnl **************************************************
 
 case $build_os in
     *linux*)
-		AC_DEFINE_UNQUOTED(SYS_LINUX, 1, [This is a Linux system])
-		LDFLAGS="$LDFLAGS -export-dynamic -no-undefined -module"
-	;;
+        AC_DEFINE_UNQUOTED(SYS_LINUX, 1, [This is a Linux system])
+        LDFLAGS="$LDFLAGS -export-dynamic -no-undefined -module"
+    ;;
     *mingw*)
-		AC_DEFINE_UNQUOTED(SYS_MINGW, 1, [This is a Windows system using MinGW])
-		LDFLAGS="$LDFLAGS -export-dynamic -no-undefined -module -Wl,--export-all-symbols"
-		CFLAGS="$CFLAGS -mms-bitfields -mwindows -mno-cygwin"
-	;;
+        AC_DEFINE_UNQUOTED(SYS_MINGW, 1, [This is a Windows system using MinGW])
+        LDFLAGS="$LDFLAGS -export-dynamic -no-undefined -module -Wl,--export-all-symbols"
+        CFLAGS="$CFLAGS -mms-bitfields -mwindows -mno-cygwin"
+    ;;
 esac
 
 dnl **************************************************
@@ -242,8 +235,6 @@ AC_SUBST(LDFLAGS)
 AC_SUBST(CFLAGS)
 AC_SUBST(GTKHEX_CFLAGS)
 AC_SUBST(GTKHEX_LIBS)
-AC_SUBST(LIBGLADE_CFLAGS)
-AC_SUBST(LIBGLADE_LIBS)
 AC_SUBST(GMODULE_CFLAGS)
 AC_SUBST(GMODULE_LIBS)
 AC_SUBST(GLIB2_CFLAGS)

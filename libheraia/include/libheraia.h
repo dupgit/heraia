@@ -41,7 +41,6 @@
 
 #include <glib.h>
 #include <glib/gstdio.h>
-#include <glade/glade.h>
 #include <gmodule.h>
 
 #include <gtkhex/gtkhex.h>
@@ -186,11 +185,11 @@ typedef struct
 /**
  * @struct xml_t
  *  Structure that contains all the xml definitions loaded at
- *  running time using libglade
+ *  running time using GtkBuilder
  */
 typedef struct
 {
-    GladeXML *main;      /**< the main interface xml description */
+    GtkBuilder *main;      /**< the main interface xml description */
 } xml_t;
 
 

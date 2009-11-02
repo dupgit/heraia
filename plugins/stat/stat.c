@@ -44,7 +44,7 @@ static void histo_radiobutton_toggled(GtkWidget *widget, gpointer data);
 static gboolean delete_stat_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data );
 static void realize_some_numerical_stat(heraia_struct_t *main_struct, heraia_plugin_t *plugin);
 static void init_stats_histos(heraia_plugin_t *plugin);
-static void set_statw_button_state(GladeXML *xml, gboolean sensitive);
+static void set_statw_button_state(GtkBuilder *xml, gboolean sensitive);
 static void populate_stats_histos(heraia_struct_t *main_struct, heraia_plugin_t *plugin);
 static void calc_infos_histo_1D(stat_t *extra);
 static void calc_infos_histo_2D(stat_t *extra);
@@ -125,7 +125,7 @@ void init(heraia_struct_t *main_struct)
         {
             /* load the xml interface */
             log_message(main_struct, G_LOG_LEVEL_INFO, "Plugin from %s found !", plugin->info->author);
-            if (load_plugin_glade_xml(main_struct, plugin) == TRUE)
+            if (load_plugin_xml(main_struct, plugin) == TRUE)
             {
                 log_message(main_struct, G_LOG_LEVEL_INFO, "%s xml interface loaded.", plugin->info->name);
             }
@@ -140,7 +140,7 @@ void init(heraia_struct_t *main_struct)
             /* shows or hide the interface (hides it at first as all windows shows up) */
             if (plugin->win_prop->displayed == FALSE)
             {
-                gtk_widget_hide(GTK_WIDGET(glade_xml_get_widget(plugin->xml, "stat_window")));
+                gtk_widget_hide(GTK_WIDGET(heraia_get_widget(plugin->xml, "stat_window")));
             }
             else
             {
@@ -180,7 +180,7 @@ void run(GtkWidget *widget, gpointer data)
 
     if (plugin != NULL)
         {
-            show_hide_widget(GTK_WIDGET(glade_xml_get_widget(plugin->xml, "stat_window")),
+            show_hide_widget(GTK_WIDGET(heraia_get_widget(plugin->xml, "stat_window")),
                              gtk_check_menu_item_get_active(plugin->cmi_entry), plugin->win_prop);
             if (gtk_check_menu_item_get_active(plugin->cmi_entry) == TRUE)
                 {
@@ -200,14 +200,14 @@ void run(GtkWidget *widget, gpointer data)
  * @param xml : The plugin's xml description
  * @param sensitive : whether the buttons are greyed (FALSE) or not (TRUE)
  */
-static void set_statw_button_state(GladeXML *xml, gboolean sensitive)
+static void set_statw_button_state(GtkBuilder *xml, gboolean sensitive)
 {
     if (xml != NULL)
     {
-        gtk_widget_set_sensitive(glade_xml_get_widget(xml, "statw_save_as"), sensitive);
-        gtk_widget_set_sensitive(glade_xml_get_widget(xml, "statw_export_to_csv"), sensitive);
-        gtk_widget_set_sensitive(glade_xml_get_widget(xml, "statw_export_to_gnuplot"), sensitive);
-        gtk_widget_set_sensitive(glade_xml_get_widget(xml, "statw_export_to_pcv"), sensitive);
+        gtk_widget_set_sensitive(heraia_get_widget(xml, "statw_save_as"), sensitive);
+        gtk_widget_set_sensitive(heraia_get_widget(xml, "statw_export_to_csv"), sensitive);
+        gtk_widget_set_sensitive(heraia_get_widget(xml, "statw_export_to_gnuplot"), sensitive);
+        gtk_widget_set_sensitive(heraia_get_widget(xml, "statw_export_to_pcv"), sensitive);
     }
 }
 
@@ -279,7 +279,7 @@ static void statw_close_clicked(GtkWidget *widget, gpointer data)
 
     if (plugin != NULL)
         {
-            show_hide_widget(GTK_WIDGET(glade_xml_get_widget(plugin->xml, "stat_window")), FALSE, plugin->win_prop);
+            show_hide_widget(GTK_WIDGET(heraia_get_widget(plugin->xml, "stat_window")), FALSE, plugin->win_prop);
             gtk_check_menu_item_set_active(plugin->cmi_entry, FALSE);
         }
 }
@@ -303,7 +303,7 @@ static void statw_save_as_clicked(GtkWidget *widget, gpointer data)
         {
             extra = (stat_t *) plugin->extra;
 
-            image = GTK_IMAGE(glade_xml_get_widget(plugin->xml, "histo_image"));
+            image = GTK_IMAGE(heraia_get_widget(plugin->xml, "histo_image"));
             pixbuf = gtk_image_get_pixbuf(image);
 
             filename = stat_select_file_to_save("Enter filename's to save the image to", extra);
@@ -398,7 +398,7 @@ static void statw_export_to_csv_clicked(GtkWidget *widget, gpointer data)
 
             if (fp != NULL && extra != NULL)
             {
-                if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(glade_xml_get_widget(plugin->xml, "rb_1D"))) == TRUE)
+                if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(heraia_get_widget(plugin->xml, "rb_1D"))) == TRUE)
                 {
                     /* 1D display */
                     fprintf(fp, "\"Byte\";\"Count\"\n");
@@ -471,7 +471,7 @@ static void statw_export_to_gnuplot_clicked(GtkWidget *widget, gpointer data)
                 fprintf(fp, "set xrange [-10:265]\n");
                 fprintf(fp, "set xlabel 'Bytes'\n");
 
-                if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(glade_xml_get_widget(plugin->xml, "rb_1D"))) == TRUE)
+                if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(heraia_get_widget(plugin->xml, "rb_1D"))) == TRUE)
                 {
                     /* 1D display */
                     fprintf(fp, "set title 'Classical histogram'\n");  /**< @todo we might add here the name of the file being edited */
@@ -545,7 +545,7 @@ static void statw_export_to_pcv_clicked(GtkWidget *widget, gpointer data)
 
             if (fp != NULL && extra != NULL)
             {
-                if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(glade_xml_get_widget(plugin->xml, "rb_1D"))) == TRUE)
+                if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(heraia_get_widget(plugin->xml, "rb_1D"))) == TRUE)
                 {
                     /* 1D display */
                     fprintf(fp, "header {\n");
@@ -625,14 +625,14 @@ static void histo_radiobutton_toggled(GtkWidget *widget, gpointer data)
 
     if (plugin != NULL)
         {
-            GtkImage *image = GTK_IMAGE(glade_xml_get_widget(plugin->xml, "histo_image"));
+            GtkImage *image = GTK_IMAGE(heraia_get_widget(plugin->xml, "histo_image"));
             stat_t *extra = (stat_t *) plugin->extra;
 
-            if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(glade_xml_get_widget(plugin->xml, "rb_1D"))) == TRUE)
+            if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(heraia_get_widget(plugin->xml, "rb_1D"))) == TRUE)
                 gtk_image_set_from_pixbuf(image, extra->pixbuf_1D);
             else
                 {
-                    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(glade_xml_get_widget(plugin->xml, "rb_2D"))) == TRUE)
+                    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(heraia_get_widget(plugin->xml, "rb_2D"))) == TRUE)
                         gtk_image_set_from_pixbuf(image, extra->pixbuf_2D);
                 }
         }
@@ -646,37 +646,37 @@ static void histo_radiobutton_toggled(GtkWidget *widget, gpointer data)
 static void stat_window_connect_signals(heraia_plugin_t *plugin)
 {
 
-    g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "stat_window")), "delete_event",
+    g_signal_connect(G_OBJECT(heraia_get_widget(plugin->xml, "stat_window")), "delete_event",
                      G_CALLBACK(delete_stat_window_event), plugin);
 
-    g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "stat_window")), "destroy",
+    g_signal_connect(G_OBJECT(heraia_get_widget(plugin->xml, "stat_window")), "destroy",
                      G_CALLBACK(destroy_stat_window), plugin);
 
     /* Close Button */
-    g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "statw_close_b")), "clicked",
+    g_signal_connect(G_OBJECT(heraia_get_widget(plugin->xml, "statw_close_b")), "clicked",
                      G_CALLBACK(statw_close_clicked), plugin);
 
     /* RadioButton */
-    g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "rb_1D")), "toggled",
+    g_signal_connect(G_OBJECT(heraia_get_widget(plugin->xml, "rb_1D")), "toggled",
                      G_CALLBACK(histo_radiobutton_toggled), plugin);
 
-    g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "rb_2D")), "toggled",
+    g_signal_connect(G_OBJECT(heraia_get_widget(plugin->xml, "rb_2D")), "toggled",
                      G_CALLBACK(histo_radiobutton_toggled), plugin);
 
     /* Save As Button */
-    g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "statw_save_as")), "clicked",
+    g_signal_connect(G_OBJECT(heraia_get_widget(plugin->xml, "statw_save_as")), "clicked",
                      G_CALLBACK(statw_save_as_clicked), plugin);
 
     /* CVS button */
-    g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "statw_export_to_csv")), "clicked",
+    g_signal_connect(G_OBJECT(heraia_get_widget(plugin->xml, "statw_export_to_csv")), "clicked",
                      G_CALLBACK(statw_export_to_csv_clicked), plugin);
 
     /* Gnuplot button */
-    g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "statw_export_to_gnuplot")), "clicked",
+    g_signal_connect(G_OBJECT(heraia_get_widget(plugin->xml, "statw_export_to_gnuplot")), "clicked",
                      G_CALLBACK(statw_export_to_gnuplot_clicked), plugin);
 
     /* PCV button */
-    g_signal_connect(G_OBJECT(glade_xml_get_widget(plugin->xml, "statw_export_to_pcv")), "clicked",
+    g_signal_connect(G_OBJECT(heraia_get_widget(plugin->xml, "statw_export_to_pcv")), "clicked",
                      G_CALLBACK(statw_export_to_pcv_clicked), plugin);
 
     /* the toogle button is already connected to the run_proc function ! */
@@ -694,7 +694,7 @@ static void realize_some_numerical_stat(heraia_struct_t *main_struct, heraia_plu
     gchar buf[42];           /**< used for date printing */
     gchar *filename = NULL;
     stat_t *extra = NULL;
-    GtkTextView *textview = GTK_TEXT_VIEW(glade_xml_get_widget(plugin->xml, "statw_textview"));
+    GtkTextView *textview = GTK_TEXT_VIEW(heraia_get_widget(plugin->xml, "statw_textview"));
 
     if (main_struct != NULL && main_struct->current_doc != NULL)
     {
@@ -768,9 +768,9 @@ static void populate_stats_histos(heraia_struct_t *main_struct, heraia_plugin_t 
     guint64 taille = ghex_file_size(gh);
     guchar c1, c2;
     stat_t *extra = (stat_t *) plugin->extra;
-    GtkImage *image = GTK_IMAGE(glade_xml_get_widget(plugin->xml, "histo_image"));
-    GtkToggleButton *rb_1D = GTK_TOGGLE_BUTTON(glade_xml_get_widget(plugin->xml, "rb_1D"));
-    GtkToggleButton *rb_2D = GTK_TOGGLE_BUTTON(glade_xml_get_widget(plugin->xml, "rb_2D"));
+    GtkImage *image = GTK_IMAGE(heraia_get_widget(plugin->xml, "histo_image"));
+    GtkToggleButton *rb_1D = GTK_TOGGLE_BUTTON(heraia_get_widget(plugin->xml, "rb_1D"));
+    GtkToggleButton *rb_2D = GTK_TOGGLE_BUTTON(heraia_get_widget(plugin->xml, "rb_2D"));
 
     init_stats_histos(plugin);
 

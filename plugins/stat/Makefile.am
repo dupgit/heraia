@@ -1,10 +1,10 @@
-SUBDIRS = 
+SUBDIRS =
 
 DEFS = -I$(SRCDIR) -I$(SRCDIR)/include			\
        -DPLUGINS_DIR=\"$(plugins_dir)\"	     	\
 	   -I$(top_builddir)/libheraia/include		\
 	   -DDATA_DIR=\"$(data_dir)\"				\
-	   $(GTKHEX_CFLAGS) $(LIBGLADE_CFLAGS)		\
+	   $(GTKHEX_CFLAGS)							\
 	   $(GMODULE_CFLAGS) $(CFLAGS)				\
 	   $(GTK2_CFLAGS) $(GLIB2_CFLAGS)
 
@@ -15,12 +15,15 @@ libstat_la_SOURCES = 	\
 	stat.h
 
 libstat_la_LDFLAGS = $(LDFLAGS)
-libstat_la_LIBADD = $(GTKHEX_LIBS) $(LIBGLADE_LIBS) $(GMODULE_LIBS)	\
+libstat_la_LIBADD = $(GTKHEX_LIBS) $(GMODULE_LIBS)	\
 					$(GTK2_LIBS) $(GLIB2_LIBS)
 
 libstatdir = $(plugins_dir)
 
-statgladefiles = stat.glade
-statgladedir = $(datadir)/@PACKAGE@
-statglade_DATA = $(statgladefiles)
-EXTRA_DIST = $(statgladefiles)
+statgtkbuilderfiles = stat.gtkbuilder
+
+statgtkbuilderdir = $(datadir)/@PACKAGE@
+
+statgtkbuilder_DATA = $(statgtkbuilderfiles)
+
+EXTRA_DIST = $(statgtkbuilderfiles)

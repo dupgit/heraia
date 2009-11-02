@@ -323,21 +323,21 @@ heraia_plugin_t *find_plugin_by_name(GList *plugins_list, gchar *name)
 
 
 /**
- * @fn load_plugin_glade_xml(heraia_struct_t *main_struct, heraia_plugin_t *plugin)
- *  Loads the glade xml file that describes the plugin (.glade suffix)
+ * @fn load_plugin_xml(heraia_struct_t *main_struct, heraia_plugin_t *plugin)
+ *  Loads the xml's definition file that describes the plugin (.gtkbuilder suffix)
  *  tries the paths found in the location_list
  * @param main_struct : main structure
- * @param plugin : plugin for whom we want to load it's glade XML definition
+ * @param plugin : plugin for whom we want to load it's GtkBuilder XML definition
  *        file
  * @return Returns TRUE if everything went ok, FALSE otherwise
  */
-gboolean load_plugin_glade_xml(heraia_struct_t *main_struct, heraia_plugin_t *plugin)
+gboolean load_plugin_xml(heraia_struct_t *main_struct, heraia_plugin_t *plugin)
 {
     gchar *filename = NULL;
 
-    filename = g_strdup_printf("%s.glade", plugin->info->name);
+    filename = g_strdup_printf("%s.gtkbuilder", plugin->info->name);
 
-    plugin->xml = load_glade_xml_file(main_struct->location_list, filename);
+    plugin->xml = load_xml_file(main_struct->location_list, filename);
 
     g_free(filename);
 

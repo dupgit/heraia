@@ -7,6 +7,7 @@
     <property name="height_request">380</property>
     <property name="title" translatable="yes">Stats</property>
     <property name="destroy_with_parent">True</property>
+    <property name="icon">pixmaps/logo_with_more_transparency.png</property>
     <child>
       <widget class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
@@ -318,6 +319,8 @@
                 <property name="use_stock">True</property>
               </widget>
               <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">0</property>
               </packing>
             </child>

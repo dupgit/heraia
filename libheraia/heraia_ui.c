@@ -31,7 +31,7 @@
 #include <libheraia.h>
 
 static void set_a_propos_properties(GtkWidget *about_dialog);
-static gboolean load_heraia_glade_xml(heraia_struct_t *main_struct);
+static gboolean load_heraia_xml(heraia_struct_t *main_struct);
 static void heraia_ui_connect_signals(heraia_struct_t *main_struct);
 static void record_and_hide_about_box(heraia_struct_t *main_struct);
 static void close_heraia(heraia_struct_t *main_struct);
@@ -385,7 +385,7 @@ void refresh_file_labels(heraia_struct_t *main_struct)
             if (main_struct->current_doc != NULL && main_struct->current_doc->hex_widget != NULL)
                 {
                     position = ghex_get_cursor_position(main_struct->current_doc->hex_widget);
-                    file_size = ghex_file_size(main_struct->current_doc->hex_widget);
+                    file_size = ghex_file_size((Heraia_Hex *) main_struct->current_doc->hex_widget);
 
                     /* position begins at 0 and this is not really human readable */
                     /* it's more confusing than anything so we do + 1             */
@@ -927,10 +927,10 @@ void set_notebook_tab_name(heraia_struct_t *main_struct)
 /**
  * Hides or grey all widgets that needs an open file when boolean show is
  * FALSE
- * @param main : main Glade XML structure
+ * @param main : main GtkBuilder XML structure
  * @param greyed : boolean (TRUE to hide an grey widgets)
  */
-void grey_main_widgets(GladeXML *main, gboolean greyed)
+void grey_main_widgets(GtkBuilder *main, gboolean greyed)
 {
     GtkWidget *notebook = NULL;  /* file notebook in main window */
 
@@ -986,23 +986,23 @@ void init_heraia_interface(heraia_struct_t *main_struct)
 
 
 /**
- * @fn gboolean load_heraia_glade_xml(heraia_struct_t *main_struct)
- *  Loads the glade xml files that describes the heraia project
+ * @fn gboolean load_heraia_xml(heraia_struct_t *main_struct)
+ *  Loads the GtkBuilder xml files that describes the heraia project
  *  tries the following paths in that order :
- *  - /etc/heraia/heraia.glade
- *  - /home/[user]/.heraia/heraia.glade
- *  - PWD/heraia.glade
+ *  - /etc/heraia/heraia.gtkbuilder
+ *  - /home/[user]/.heraia/heraia.gtkbuilder
+ *  - PWD/heraia.gtkbuilder
  * @param main_struct : main structure
  * @return TRUE if everything went ok, FALSE otherwise
  */
-static gboolean load_heraia_glade_xml(heraia_struct_t *main_struct)
+static gboolean load_heraia_xml(heraia_struct_t *main_struct)
 {
     gchar *filename = NULL;
 
     if (main_struct != NULL && main_struct->xmls != NULL)
     {
-        filename = g_strdup_printf("heraia.glade");
-        main_struct->xmls->main = load_glade_xml_file(main_struct->location_list, filename);
+        filename = g_strdup_printf("heraia.gtkbuilder");
+        main_struct->xmls->main = load_xml_file(main_struct->location_list, filename);
         g_free(filename);
 
         if (main_struct->xmls->main == NULL)
@@ -1110,13 +1110,13 @@ static void heraia_ui_connect_signals(heraia_struct_t *main_struct)
 }
 
 /** @fn int load_heraia_ui(heraia_struct_t *main_struct)
- *  Loads, if possible, the glade xml file and then connects the
+ *  Loads, if possible, the gtkbuilder xml file and then connects the
  *  signals and inits the following windows :
  *  - log window
  *  - data_interpretor window
  *  - list data types
  * @param main_struct : main structure
- * @return TRUE if load_heraia_glade suceeded, FALSE otherwise
+ * @return TRUE if load_heraia_xml suceeded, FALSE otherwise
  * @todo add more return values to init functions to detect any error while
  *       initializing the ui
  */
@@ -1125,7 +1125,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
     gboolean success = FALSE;
 
     /* load the XML interfaces (main & treatment) */
-    success = load_heraia_glade_xml(main_struct);
+    success = load_heraia_xml(main_struct);
 
     if (success == TRUE)
     {
@@ -1305,15 +1305,15 @@ gboolean is_cmi_checked(GtkWidget *check_menu_item)
 
 
 /**
- * @fn gboolean is_toggle_button_activated(GladeXML *main_xml, gchar *check_button)
+ * @fn gboolean is_toggle_button_activated(GtkBuilder *main_xml, gchar *check_button)
  *  returns the state of a named check button contained
- *  in the Glade XML description
- * @param main_xml : a GladeXML definition
- * @param check_button : the name of an existing check_button within the glade
+ *  in the GtkBuilder XML description
+ * @param main_xml : a GtkBuilder XML definition
+ * @param check_button : the name of an existing check_button within the GtkBuilder
  *        definition
  * @return TRUE if the button is activated / toggled , FALSE otherwise
  */
-gboolean is_toggle_button_activated(GladeXML *main_xml, gchar *check_button)
+gboolean is_toggle_button_activated(GtkBuilder *main_xml, gchar *check_button)
 {
     gboolean activated = FALSE;
 
@@ -1327,17 +1327,17 @@ gboolean is_toggle_button_activated(GladeXML *main_xml, gchar *check_button)
 
 
 /**
- * @fn GtkWidget *heraia_get_widget(GladeXML *xml, gchar *widget_name)
- *  This is a wrapper to the glade xml get widget. It is intended
+ * @fn GtkWidget *heraia_get_widget(GtkBuilder *xml, gchar *widget_name)
+ *  This is a wrapper to the GtkBuilder xml get widget. It is intended
  *  to simplify the developpers lives if they have to choose or
  *  propose other means to do the same thing than libglade (say,
- *  for example, GtkBuilder :)
- * @param xml : A glade XML definition
- * @param widget_name : an existing widget name in the glade definition
+ *  for example, GtkBuilder ;-)
+ * @param xml : A GtkBuilder XML definition
+ * @param widget_name : an existing widget name in the GtkBuilder definition
  * @return returns the widget itself if it exists in the definition file (NULL
  *         otherwise)
  */
-GtkWidget *heraia_get_widget(GladeXML *xml, gchar *widget_name)
+GtkWidget *heraia_get_widget(GtkBuilder *xml, gchar *widget_name)
 {
    /**
     * For debug purposes only (very verbose as this function is the main used)
@@ -1346,7 +1346,7 @@ GtkWidget *heraia_get_widget(GladeXML *xml, gchar *widget_name)
 
     if (xml != NULL && widget_name != NULL)
     {
-        return glade_xml_get_widget(xml, widget_name);
+        return GTK_WIDGET(gtk_builder_get_object(xml, widget_name));
     }
     else
     {
@@ -1483,10 +1483,10 @@ void init_window_states(heraia_struct_t *main_struct)
  */
 void add_new_tab_in_main_struct(heraia_struct_t *main_struct, doc_t *doc)
 {
-    GtkWidget *vbox = NULL;       /**< used for vbox creation          */
-    GtkNotebook *notebook = NULL; /**< file_notebook from heraia.glade */
-    GtkWidget *tab_label = NULL;  /**< tab's label                     */
-    gint tab_num = -1;            /**< new tab's index                 */
+    GtkWidget *vbox = NULL;       /**< used for vbox creation               */
+    GtkNotebook *notebook = NULL; /**< file_notebook from heraia.gtkbuilder */
+    GtkWidget *tab_label = NULL;  /**< tab's label                          */
+    gint tab_num = -1;            /**< new tab's index                      */
 
     notebook = GTK_NOTEBOOK(heraia_get_widget(main_struct->xmls->main, "file_notebook"));
     vbox = gtk_vbox_new(FALSE, 2);

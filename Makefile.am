@@ -3,7 +3,7 @@ SUBDIRS = libheraia src plugins pixmaps
 gnomemenufiles =		\
 	heraia.desktop
 
-gnomemenudir = $(datadir)/applications/
+gnomemenudir = $(datadir)/applications
 
 dist_gnomemenu_DATA = $(gnomemenufiles)
 

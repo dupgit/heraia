@@ -1,3 +1,11 @@
+31.10.2009
+   - Olivier Delhomme <heraia@delhomme.org>
+     * aranged autogen.sh. Message length is less than 80 characters now.
+     * Changed icon name in stat.glade
+     * Passed everything from libglade to GtkBuilder !
+     * Got rid of libglade's dependancy
+     * Got rid of a trailing "/"
+
 28.10.2009
    - Olivier Delhomme <heraia@delhomme.org>
      * Deleted unused code (data_type.[ch], list_data_types.[ch], treatments.h)

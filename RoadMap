@@ -46,16 +46,16 @@ I let you imagine what I expect before I do a major release !!!
      duplicates the one contained in the hexdocument structure)
    * double clicking on a plugin in plugin list window opens it
 
-- 0.1.0
+- 0.1.0 [30.06.2009]
    * save and save as functions
    * record window positions (save them to a user preference file)
    * add somewhere, the cursor's position and file length
    * do some of the most important todos found in the code
 
-	Delayed features : I may do this if someone wants it :
+    Delayed features : I may do this if someone wants it :
      . save plugins preferences to the config file
      . save plugins display preferences
-	 . add plugins preferences files
+     . add plugins preferences files
      . load plugins preferences from the config file (when initialiazing plugins)
      . add a preference option where the user may be able to reset window
        properties (not necessary as one may only uncheck saving properties)
@@ -63,7 +63,7 @@ I let you imagine what I expect before I do a major release !!!
 . 0.1.1
    * rename main_window variable and heraia_window_t structure in
      main_struct variable and heraia_struct_t structure which
-	 will be less confusing.
+     will be less confusing.
    * Clear unused code - do code coverage tests
    * review code with coherence in mind and replace 'GtkHex' by 'Heraia_Hex'
      for example
@@ -82,7 +82,7 @@ I let you imagine what I expect before I do a major release !!!
    * have basic search functions
 
 . 0.1.7
-   * save and load  a "project" like geany editor (saving preferences, opened 
+   * save and load  a "project" like geany editor (saving preferences, opened
      files, current opened tab and so on...)
 
 . 0.1.8
@@ -91,12 +91,12 @@ I let you imagine what I expect before I do a major release !!!
 
 - 0.2.0
    * rename tha main_window_t structure in main_struct_t structure which
-	 will be less confusing.
+     will be less confusing.
    * rewrite the data_type creation in order to allow a script, or an extern
      program execution
    * ability to open more than one file at a time and close them
    * have the selection positions added near the cursor's position
-   * save and load  a "project" like geany editor (saving preferences, opened 
+   * save and load  a "project" like geany editor (saving preferences, opened
      files, current opened tab and so on...)
    * enhance python bindings
    * work in progress to make the whole project translatable

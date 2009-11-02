@@ -293,7 +293,7 @@ gboolean ghex_get_data(GtkWidget *hex_widget, guint length, guint endianness, gu
  * @param gh : an opened GtkHex document
  * @return resturns the file size of that document
  */
-guint64 ghex_file_size(GtkHex *gh)
+guint64 ghex_file_size(Heraia_Hex *gh)
 {
     if (gh != NULL && gh->document != NULL)
         {
