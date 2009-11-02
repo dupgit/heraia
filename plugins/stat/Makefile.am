@@ -20,10 +20,8 @@ libstat_la_LIBADD = $(GTKHEX_LIBS) $(GMODULE_LIBS)	\
 
 libstatdir = $(plugins_dir)
 
-statgtkbuilderfiles = stat.gtkbuilder
+statdatafiles = stat.gtkbuilder
 
-statgtkbuilderdir = $(datadir)/@PACKAGE@
-
-statgtkbuilder_DATA = $(statgtkbuilderfiles)
-
-EXTRA_DIST = $(statgtkbuilderfiles)
+statdatadir = $(datadir)/@PACKAGE@
+statdata_DATA = $(statdatafiles)
+EXTRA_DIST = $(statdatafiles)

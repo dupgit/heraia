@@ -319,7 +319,7 @@
                   <object class="GtkHBox" id="hbox4">
                     <property name="visible">True</property>
                     <child>
-                      <object class="GtkLabel" id="label1">
+                      <object class="GtkLabel" id="stream_size_label">
                         <property name="visible">True</property>
                         <property name="xpad">2</property>
                         <property name="ypad">2</property>

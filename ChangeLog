@@ -1,6 +1,6 @@
 02.11.2009
-    - Olivier Delhomme <heraia@delhomme.org>
-      * Typo and forgot to include stat.gtkbuilder
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Typos and XML gtkbuilder interfaces and label name duplicated
 
 31.10.2009
    - Olivier Delhomme <heraia@delhomme.org>
