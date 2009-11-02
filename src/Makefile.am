@@ -24,7 +24,7 @@ gtkbuilderfiles = heraia.gtkbuilder
 
 gtkbuilderdir = $(datadir)/@PACKAGE@
 gtkbuilder_DATA = $(gtkbuilderfiles)
-EXTRA_DIST = $(gltkbuilderfiles)
+EXTRA_DIST = $(gtkbuilderfiles)
 
 AM_CPPFLAGS = 			\
 	$(GMODULE_CFLAGS) 	\

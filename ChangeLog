@@ -1,3 +1,7 @@
+02.11.2009
+    - Olivier Delhomme <heraia@delhomme.org>
+      * Typo and forgot to include stat.gtkbuilder
+
 31.10.2009
    - Olivier Delhomme <heraia@delhomme.org>
      * aranged autogen.sh. Message length is less than 80 characters now.
