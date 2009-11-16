@@ -1,3 +1,13 @@
+16.11.2009
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Replaced GtkHex by Heraia_Hex which may help when one would want to
+       switch to another widget
+     * Created a tests directory where I will place tests and such. Added a new
+       file with some calls to heraia
+     * Corrected licence message
+     * Added a new option to allow self tests (no argument for now, but I might
+       add some later)
+
 02.11.2009
    - Olivier Delhomme <heraia@delhomme.org>
      * Typos and XML gtkbuilder interfaces and label name duplicated

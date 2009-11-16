@@ -47,11 +47,11 @@
 
 /**
  * @typedef HexDocument Heraia_Document
- *  Abstract layer this may be usefull if we decide to leave GtkHex
+ *  Abstract layer this may be usefull if we decide to leave Heraia_Hex
  *  and use something else !
  *
- * @typedef GtkHex Heraia_Hex
- *  Abstract layer this may be usefull if we decide to leave GtkHex
+ * @typedef Heraia_Hex Heraia_Hex
+ *  Abstract layer this may be usefull if we decide to leave Heraia_Hex
  *  and use something else !
  */
 /**
@@ -255,7 +255,7 @@ typedef struct
  */
 typedef struct
 {
-    Heraia_Document *hex_doc;  /**< Document definition related to libgtkhex */
+    Heraia_Document *hex_doc;  /**< Document definition related to libHeraia_Hex */
     GtkWidget *hex_widget;     /**< hexwidget corresponding to the document  */
 } doc_t;
 

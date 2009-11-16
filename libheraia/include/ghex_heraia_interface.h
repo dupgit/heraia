@@ -22,12 +22,12 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
 /**
  * @file ghex_heraia_interface.h
- * Header file providing an interface to GtkHex
+ * Header file providing an interface to Heraia_Hex
  */
 #ifndef _GHEX_HERAIA_INTERFACE_H_
 #define _GHEX_HERAIA_INTERFACE_H_
 
-extern gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, guint endianness, guchar *result);
+extern gboolean ghex_memcpy(Heraia_Hex *gh, guint pos, guint len, guint endianness, guchar *result);
 extern gboolean ghex_get_data(GtkWidget *hex_widget, guint length, guint endianness, guchar *c);
 
 extern doc_t *heraia_hex_document_new(heraia_struct_t *main_struct, char *filename);
@@ -35,7 +35,7 @@ extern HERAIA_ERROR heraia_hex_document_save(doc_t *current_doc);
 extern HERAIA_ERROR heraia_hex_document_save_as(doc_t *current_doc, gchar *filename);
 extern gchar *heraia_hex_document_get_filename(Heraia_Document *hex_doc);
 extern gchar *doc_t_document_get_filename(doc_t *doc);
-extern guint64 ghex_file_size(GtkHex *gh);
+extern guint64 ghex_file_size(Heraia_Hex *gh);
 extern guint64 ghex_get_cursor_position(GtkWidget *hex_widget);
 
 extern doc_t *new_doc_t(Heraia_Document *hex_doc, GtkWidget *hex_widget);

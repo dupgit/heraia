@@ -214,14 +214,14 @@ static void change_endianness(guint len, guint endianness, guchar *result)
 
 
 /**
- *  Returns 'len' number of bytes located at 'pos' in the GtkHex
+ *  Returns 'len' number of bytes located at 'pos' in the Heraia_Hex
  *  document and puts it in the result variable
  *
  *  @warning We assume that a previous g_malloc has been done in order to
  *           use the function. Here we need the "swap_bytes" function
  *           defined in the decode.h header in order to take the endianness
  *           into account
- *  @param gh : A GtkHex document.
+ *  @param gh : A Heraia_Hex document.
  *  @param pos : position where we want to begin to copy bytes
  *  @param len : number of bytes we want to copy
  *  @param endianness : endianness we want to apply to the bytes we want to copy
@@ -229,7 +229,7 @@ static void change_endianness(guint len, guint endianness, guchar *result)
  *              copied bytes.
  *  @return TRUE if everything went ok, FALSE otherwise
  */
-gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, guint endianness, guchar *result)
+gboolean ghex_memcpy(Heraia_Hex *gh, guint pos, guint len, guint endianness, guchar *result)
 {
     guint i;
 
@@ -273,7 +273,7 @@ gboolean ghex_memcpy(GtkHex *gh, guint pos, guint len, guint endianness, guchar 
 gboolean ghex_get_data(GtkWidget *hex_widget, guint length, guint endianness, guchar *c)
 {
     gboolean result = FALSE;
-    GtkHex *gh = GTK_HEX(hex_widget);
+    Heraia_Hex *gh = GTK_HEX(hex_widget);
 
     if (gh != NULL)
         {
@@ -289,8 +289,8 @@ gboolean ghex_get_data(GtkWidget *hex_widget, guint length, guint endianness, gu
 
 
 /**
- *  Returns the file size of an opened GtkHex document.
- * @param gh : an opened GtkHex document
+ *  Returns the file size of an opened Heraia_Hex document.
+ * @param gh : an opened Heraia_Hex document
  * @return resturns the file size of that document
  */
 guint64 ghex_file_size(Heraia_Hex *gh)
@@ -312,7 +312,7 @@ guint64 ghex_file_size(Heraia_Hex *gh)
  */
 guint64 ghex_get_cursor_position(GtkWidget *hex_widget)
 {
-    GtkHex *gh = GTK_HEX(hex_widget);
+    Heraia_Hex *gh = GTK_HEX(hex_widget);
 
     if (gh != NULL)
     {

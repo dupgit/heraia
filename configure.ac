@@ -140,7 +140,7 @@ dnl **************************************************
 PKG_CHECK_MODULES(GKT2, [gtk+-2.0 >= $GTK2_VERSION])
 
 dnl **************************************************
-dnl * checking for gtkhex                            *
+dnl * checking for GtkHex                            *
 dnl **************************************************
 PKG_CHECK_MODULES(GTKHEX, [gtkhex >= $GTKHEX_VERSION])
 

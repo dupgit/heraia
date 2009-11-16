@@ -763,7 +763,7 @@ static void init_stats_histos(heraia_plugin_t *plugin)
  */
 static void populate_stats_histos(heraia_struct_t *main_struct, heraia_plugin_t *plugin)
 {
-    GtkHex *gh = GTK_HEX(main_struct->current_doc->hex_widget);
+    Heraia_Hex *gh = GTK_HEX(main_struct->current_doc->hex_widget);
     guint64 i = 0;
     guint64 taille = ghex_file_size(gh);
     guchar c1, c2;

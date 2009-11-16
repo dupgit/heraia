@@ -97,7 +97,8 @@ static gboolean usage(int status)
             fprintf(stdout, "\nUsage :\n  heraia [options] filename(s)\n");
             fprintf(stdout, "\nOptions :\n\
   -h, --help\tThis help.\n\
-  -v, --version\tProgram version information.\n");
+  -v, --version\tProgram version information.\n\
+  -t, --tests\tRuns some self tests.\n");
             return TRUE;
         }
 }
@@ -315,6 +316,19 @@ static GList *init_heraia_location_list(void)
     return location_list;
 }
 
+
+/**
+ * Does some self tests in heraia
+ * @param main_struct : main structure (heraia_struct_t *)
+ * @return gboolean as an exit value for the program
+ */
+static gboolean do_heraia_self_tests(heraia_struct_t *main_struct)
+{
+
+    return TRUE;
+}
+
+
 /**
  *  Manages all the command line options and populates the
  *  Options *opt structure accordingly
@@ -329,7 +343,7 @@ static gboolean manage_command_line_options(Options *opt, int argc, char **argv)
     int c = 0;
     gchar *filename = NULL;
 
-    while ((c = getopt_long (argc, argv, "vh", long_options, NULL)) != -1)
+    while ((c = getopt_long (argc, argv, "vht", long_options, NULL)) != -1)
         {
             switch (c)
                 {
@@ -344,6 +358,11 @@ static gboolean manage_command_line_options(Options *opt, int argc, char **argv)
                 case 'h':
                     exit_value = usage(1);
                     opt->usage = TRUE;
+                    break;
+
+                case 't':
+                    exit_value = TRUE;
+                    opt->tests = COVERAGE_TESTS;
                     break;
 
                 default:
@@ -378,6 +397,7 @@ static Options *init_options_struct(void)
 
     opt->filenames = NULL;  /* At first we do not have any filename */
     opt->usage = FALSE;
+    opt->tests = NO_TESTS;
 
     return opt;
 }
@@ -387,6 +407,7 @@ static Options *init_options_struct(void)
  *  options :
  *   - --version
  *   - --help
+ *   - --tests
  */
 int main (int argc, char ** argv)
 {
@@ -443,10 +464,20 @@ int main (int argc, char ** argv)
 
                     init_heraia_interface(main_struct);
 
-                    /* gtk main loop */
-                    gtk_main();
+                    if (opt->tests != NO_TESTS)
+                        {
+                            if (opt->tests == COVERAGE_TESTS)
+                                {
+                                    exit_value = do_heraia_self_tests(main_struct);
+                                }
+                        }
+                    else
+                        {
+                            /* gtk main loop */
+                            gtk_main();
 
-                    exit_value = TRUE;
+                            exit_value = TRUE;
+                        }
                 }
             else
                 {

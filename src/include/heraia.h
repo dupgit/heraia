@@ -35,7 +35,7 @@
  * defines heraia's main authors
  *
  * @def HERAIA_LICENSE
- * defines heraia's license (a least GPL)
+ * defines heraia's license (at least GPL v2)
  *
  * @def HERAIA_VERSION
  * defines heraia's current version and release date of this version
@@ -43,8 +43,20 @@
  */
 #define HERAIA_AUTHORS "Olivier Delhomme, Sébastien TRICAUD, Grégory AUDET"
 #define HERAIA_DATE "20 02 2005"
-#define HERAIA_LICENSE "GPL"
+#define HERAIA_LICENSE "GPL v2 or later"
 #define HERAIA_VERSION "0.1.1 (00.00.0000)"
+
+
+
+/**
+ * @def NO_TESTS
+ * defines that no tests should be done (this is the default behaviour)
+ *
+ * @def COVERAGE_TESTS
+ * In order to do some coverage tests.
+ */
+#define NO_TESTS 0
+#define COVERAGE_TESTS 1
 
 /**
  * @struct Options
@@ -55,14 +67,16 @@
  */
 typedef struct
 {
-    GList *filenames;  /**< the filename to open                      */
-    gboolean usage;    /**< to know if we displayed the usage message */
+    GList *filenames;  /**< the filename to open                        */
+    gboolean usage;    /**< to know if we displayed the usage message   */
+    gint8 tests;       /**< to know if the users wants to do self tests */
 } Options;
 
 static struct option const long_options[] =
 {
     {"version", no_argument, NULL, 'v'},  /**< displays version informations */
     {"help", no_argument, NULL, 'h'},     /**< displays help (usage)         */
+    {"tests", no_argument, NULL, 't'},    /**< self tests                    */
     {NULL, 0, NULL, 0}
 };
 
