@@ -57,6 +57,7 @@
  */
 #define NO_TESTS 0
 #define COVERAGE_TESTS 1
+#define LOADING_TESTS 2
 
 /**
  * @struct Options
@@ -74,9 +75,9 @@ typedef struct
 
 static struct option const long_options[] =
 {
-    {"version", no_argument, NULL, 'v'},  /**< displays version informations */
-    {"help", no_argument, NULL, 'h'},     /**< displays help (usage)         */
-    {"tests", no_argument, NULL, 't'},    /**< self tests                    */
+    {"version", no_argument, NULL, 'v'},     /**< displays version informations */
+    {"help", no_argument, NULL, 'h'},        /**< displays help (usage)         */
+    {"tests", optional_argument, NULL, 't'}, /**< self tests                    */
     {NULL, 0, NULL, 0}
 };
 
