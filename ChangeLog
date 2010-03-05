@@ -1,5 +1,8 @@
 05.03.2010
    - Olivier Delhomme <heraia@delhomme.org>
+     * Now libheraia compiles as a library
+     * Added a python test file to see if I can do things with Ctypes...
+     * Corrected years in the gtkbuilder interface (a propos)
 
 02.03.2010
    - Olivier Delhomme <heraia@delhomme.org>
