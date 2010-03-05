@@ -1,4 +1,4 @@
-noinst_LTLIBRARIES = libheraia.la
+# noinst_LTLIBRARIES = libheraia.la
 
 headerfiles = 							\
 		include/libheraia.h 			\
@@ -14,16 +14,18 @@ headerfiles = 							\
 		include/plugin_list.h			\
 		include/log.h
 
-libheraia_la_CPPFLAGS = -I$(top_builddir) -DPLUGINS_DIR=\"$(plugins_dir)\"	 \
-						-I$(top_builddir)/libheraia/include $(GTKHEX_CFLAGS) \
-						$(GMODULE_CFLAGS) $(CFLAGS)	$(GTK2_CFLAGS) 			 \
-						$(GLIB2_CFLAGS)
+pkglib_LTLIBRARIES = libheraia.la
+
+libheraia_la_CFLAGS = -I$(top_builddir) -DPLUGINS_DIR=\"$(plugins_dir)\"	 \
+					  -I$(top_builddir)/libheraia/include $(GTKHEX_CFLAGS)   \
+					  $(GMODULE_CFLAGS) $(CFLAGS)	$(GTK2_CFLAGS) 			 \
+					  $(GLIB2_CFLAGS)
 
 AM_LDFLAGS = $(GTKHEX_LIBS) $(GMODULES_LIBS) $(GLIB2_LIBS) $(GTK2_LIBS)
 
 # include_HEADERS = $(headerfiles)
 
-# libheraiadir =$(libdir)/heraia
+libheraiadir =$(libdir)/heraia
 
 libheraia_la_SOURCES =  		\
 		decode.c				\

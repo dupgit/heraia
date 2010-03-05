@@ -537,7 +537,7 @@ static Options *init_options_struct(void)
  *   - --help
  *   - --tests
  */
-int main (int argc, char ** argv)
+int main(int argc, char **argv)
 {
     Options *opt; /**< A structure to manage the command line options  */
     gboolean exit_value = TRUE;

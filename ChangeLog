@@ -1,3 +1,6 @@
+05.03.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+
 02.03.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Reviewed the authors sections and added Aurélie DERAISME for her
@@ -9,7 +12,7 @@
 01.03.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Added an optionnal argument to 't, --tests' option (default test is the
-       coverage one.
+       coverage one).
 
 16.11.2009
    - Olivier Delhomme <heraia@delhomme.org>
