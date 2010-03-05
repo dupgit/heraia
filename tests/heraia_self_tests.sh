@@ -3,7 +3,7 @@
 #  heraia_self_tests.sh
 #  some self tests for heraia (coverage tests)
 #
-#  (C) Copyright 2007 - 2009 Olivier Delhomme
+#  (C) Copyright 2007 - 2010 Olivier Delhomme
 #  e-mail : heraia@delhomme.org
 #  URL    : http://heraia.tuxfamily.org
 #
@@ -21,6 +21,11 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-../src/heraia -t ../docs/zero_length_file
-../src/heraia -t ../docs/test_file
-../src/heraia -t ../docs/does_not_exists.file
+../src/heraia --tests=2 ../docs/zero_length_file
+../src/heraia --tests=2 ../docs/test_file
+../src/heraia --tests=2 ../docs/does_not_exists.file
+../src/heraia --tests=2 --a_false_param
+../src/heraia -v --tests=2
+../src/heraia -h --tests=2
+../src/heraia --tests=1
+../src/heraia ../src/heraia

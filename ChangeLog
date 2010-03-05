@@ -1,3 +1,11 @@
+02.03.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Reviewed the authors sections and added Aurélie DERAISME for her
+       contibution  to the logo.
+     * Wrote some basic tests for the proof of concept
+     * Added some interesting self tests in heraia_self_tests.sh in order that
+       code coverage will be good for at list heraia.c itself.
+
 01.03.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Added an optionnal argument to 't, --tests' option (default test is the

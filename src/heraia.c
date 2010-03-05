@@ -28,7 +28,8 @@
 /**
  * @author Olivier DELHOMME,
  *         Sébastien TRICAUD,
- *         Grégory AUDET
+ *         Grégory AUDET,
+ *         Aurélie DERAISME.
  * @version 0.1.1
  * @date 2005-2009
  */
@@ -101,7 +102,7 @@ static gboolean usage(int status)
   -t, --tests=TESTS\tRuns some tests.\n\
      TESTS might be :\n\
      %d for coverage tests\n\
-     %d for loading files tests", COVERAGE_TESTS, LOADING_TESTS);
+     %d for loading files tests\n", COVERAGE_TESTS, LOADING_TESTS);
             return TRUE;
         }
 }
@@ -322,11 +323,107 @@ static GList *init_heraia_location_list(void)
 
 /**
  * Does some self tests for code coverage in heraia
+ *
+ * This function does some calls to functions that are not called
+ * on a normal test procedure
+ *
  * @param main_struct : main structure (heraia_struct_t *)
  * @return gboolean as an exit value for the program
  */
 static gboolean do_heraia_coverage_tests(heraia_struct_t *main_struct)
 {
+    heraia_struct_t *tmp_struct;
+    gchar *ret_code = NULL;
+    gboolean exit_value = FALSE;
+
+    exit_value = version();
+    exit_value = usage(0);
+    exit_value = usage(1);
+
+    tmp_struct = get_main_struct();
+    if (tmp_struct != main_struct)
+        {
+            fprintf(stderr, "WARNING : tmp_struct is not equal to main_struct!\n");
+        }
+
+    ret_code = decode_8bits_signed(NULL, NULL);
+    if (ret_code != NULL)
+        {
+            fprintf(stderr, "WARNING : ret_code != NULL with decode_8bits_signed\n");
+        }
+
+    ret_code = decode_8bits_unsigned(NULL, NULL);
+    if (ret_code != NULL)
+        {
+            fprintf(stderr, "WARNING : ret_code != NULL with decode_8bits_unsigned\n");
+        }
+
+    ret_code = decode_16bits_signed(NULL, NULL);
+    if (ret_code != NULL)
+        {
+            fprintf(stderr, "WARNING : ret_code != NULL with decode_16bits_signed\n");
+        }
+
+    ret_code = decode_16bits_unsigned(NULL, NULL);
+    if (ret_code != NULL)
+        {
+            fprintf(stderr, "WARNING : ret_code != NULL with decode_16bits_unsigned\n");
+        }
+
+    ret_code = decode_32bits_signed(NULL, NULL);
+    if (ret_code != NULL)
+        {
+            fprintf(stderr, "WARNING : ret_code != NULL with decode_32bits_signed\n");
+        }
+
+    ret_code = decode_32bits_unsigned(NULL, NULL);
+    if (ret_code != NULL)
+        {
+            fprintf(stderr, "WARNING : ret_code != NULL with decode_32bits_unsigned\n");
+        }
+
+    ret_code = decode_64bits_signed(NULL, NULL);
+    if (ret_code != NULL)
+        {
+            fprintf(stderr, "WARNING : ret_code != NULL with decode_64bits_signed\n");
+        }
+
+    ret_code = decode_64bits_unsigned(NULL, NULL);
+    if (ret_code != NULL)
+        {
+            fprintf(stderr, "WARNING : ret_code != NULL with decode_64bits_unsigned\n");
+        }
+
+    ret_code = decode_64bits_unsigned(NULL, NULL);
+    if (ret_code != NULL)
+        {
+            fprintf(stderr, "WARNING : ret_code != NULL with decode_64bits_unsigned\n");
+        }
+
+    ret_code = decode_float_normal(NULL, NULL);
+    if (ret_code != NULL)
+        {
+            fprintf(stderr, "WARNING : ret_code != NULL with decode_float_normal\n");
+        }
+
+    ret_code = decode_float_scientific(NULL, NULL);
+    if (ret_code != NULL)
+        {
+            fprintf(stderr, "WARNING : ret_code != NULL with decode_float_scientific\n");
+        }
+
+
+    ret_code = decode_double_normal(NULL, NULL);
+    if (ret_code != NULL)
+        {
+            fprintf(stderr, "WARNING : ret_code != NULL with decode_double_normal\n");
+        }
+
+    ret_code = decode_double_scientific(NULL, NULL);
+    if (ret_code != NULL)
+        {
+            fprintf(stderr, "WARNING : ret_code != NULL with decode_double_scientific\n");
+        }
 
     return TRUE;
 }
