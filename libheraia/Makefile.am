@@ -12,7 +12,8 @@ headerfiles = 							\
 		include/heraia_errors.h			\
 		include/data_interpretor.h		\
 		include/plugin_list.h			\
-		include/log.h
+		include/log.h					\
+		include/tests.h
 
 pkglib_LTLIBRARIES = libheraia.la
 
@@ -23,7 +24,7 @@ libheraia_la_CFLAGS = -I$(top_builddir) -DPLUGINS_DIR=\"$(plugins_dir)\"	 \
 
 AM_LDFLAGS = $(GTKHEX_LIBS) $(GMODULES_LIBS) $(GLIB2_LIBS) $(GTK2_LIBS)
 
-# include_HEADERS = $(headerfiles)
+include_HEADERS = $(headerfiles)
 
 libheraiadir =$(libdir)/heraia
 
@@ -39,5 +40,6 @@ libheraia_la_SOURCES =  		\
 		heraia_io.c 			\
 		data_interpretor.c		\
 		plugin_list.c			\
+		tests.c					\
 		$(headerfiles)
 

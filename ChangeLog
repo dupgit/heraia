@@ -1,3 +1,7 @@
+06.03.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Added new files to group the tests (tests.[ch])
+
 05.03.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Now libheraia compiles as a library
@@ -33,7 +37,7 @@
 
 31.10.2009
    - Olivier Delhomme <heraia@delhomme.org>
-     * aranged autogen.sh. Message length is less than 80 characters now.
+     * arranged autogen.sh. Message length is less than 80 characters now.
      * Changed icon name in stat.glade
      * Passed everything from libglade to GtkBuilder !
      * Got rid of libglade's dependancy

@@ -31,7 +31,7 @@
  *         Grégory AUDET,
  *         Aurélie DERAISME.
  * @version 0.1.1
- * @date 2005-2009
+ * @date 2005-2010
  */
 
 #include "heraia_types.h"
@@ -333,7 +333,6 @@ static GList *init_heraia_location_list(void)
 static gboolean do_heraia_coverage_tests(heraia_struct_t *main_struct)
 {
     heraia_struct_t *tmp_struct;
-    gchar *ret_code = NULL;
     gboolean exit_value = FALSE;
 
     exit_value = version();
@@ -346,83 +345,10 @@ static gboolean do_heraia_coverage_tests(heraia_struct_t *main_struct)
             fprintf(stderr, "WARNING : tmp_struct is not equal to main_struct!\n");
         }
 
-    ret_code = decode_8bits_signed(NULL, NULL);
-    if (ret_code != NULL)
+    exit_value = test_decode_functions();
+    if (exit_value != TRUE)
         {
-            fprintf(stderr, "WARNING : ret_code != NULL with decode_8bits_signed\n");
-        }
-
-    ret_code = decode_8bits_unsigned(NULL, NULL);
-    if (ret_code != NULL)
-        {
-            fprintf(stderr, "WARNING : ret_code != NULL with decode_8bits_unsigned\n");
-        }
-
-    ret_code = decode_16bits_signed(NULL, NULL);
-    if (ret_code != NULL)
-        {
-            fprintf(stderr, "WARNING : ret_code != NULL with decode_16bits_signed\n");
-        }
-
-    ret_code = decode_16bits_unsigned(NULL, NULL);
-    if (ret_code != NULL)
-        {
-            fprintf(stderr, "WARNING : ret_code != NULL with decode_16bits_unsigned\n");
-        }
-
-    ret_code = decode_32bits_signed(NULL, NULL);
-    if (ret_code != NULL)
-        {
-            fprintf(stderr, "WARNING : ret_code != NULL with decode_32bits_signed\n");
-        }
-
-    ret_code = decode_32bits_unsigned(NULL, NULL);
-    if (ret_code != NULL)
-        {
-            fprintf(stderr, "WARNING : ret_code != NULL with decode_32bits_unsigned\n");
-        }
-
-    ret_code = decode_64bits_signed(NULL, NULL);
-    if (ret_code != NULL)
-        {
-            fprintf(stderr, "WARNING : ret_code != NULL with decode_64bits_signed\n");
-        }
-
-    ret_code = decode_64bits_unsigned(NULL, NULL);
-    if (ret_code != NULL)
-        {
-            fprintf(stderr, "WARNING : ret_code != NULL with decode_64bits_unsigned\n");
-        }
-
-    ret_code = decode_64bits_unsigned(NULL, NULL);
-    if (ret_code != NULL)
-        {
-            fprintf(stderr, "WARNING : ret_code != NULL with decode_64bits_unsigned\n");
-        }
-
-    ret_code = decode_float_normal(NULL, NULL);
-    if (ret_code != NULL)
-        {
-            fprintf(stderr, "WARNING : ret_code != NULL with decode_float_normal\n");
-        }
-
-    ret_code = decode_float_scientific(NULL, NULL);
-    if (ret_code != NULL)
-        {
-            fprintf(stderr, "WARNING : ret_code != NULL with decode_float_scientific\n");
-        }
-
-
-    ret_code = decode_double_normal(NULL, NULL);
-    if (ret_code != NULL)
-        {
-            fprintf(stderr, "WARNING : ret_code != NULL with decode_double_normal\n");
-        }
-
-    ret_code = decode_double_scientific(NULL, NULL);
-    if (ret_code != NULL)
-        {
-            fprintf(stderr, "WARNING : ret_code != NULL with decode_double_scientific\n");
+            fprintf(stderr, "WARNING : Error while testing decode functions\n");
         }
 
     return TRUE;

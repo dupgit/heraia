@@ -292,6 +292,7 @@ typedef struct
 #include "plugin.h"
 #include "plugin_list.h"
 #include "user_prefs.h"
+#include "tests.h"
 
 extern int libheraia_test(void);
 
