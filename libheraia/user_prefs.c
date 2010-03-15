@@ -35,10 +35,18 @@ static void save_window_preferences(GKeyFile *file, gchar *name, window_prop_t *
 static void save_mp_file_preferences_options(heraia_struct_t *main_struct);
 static void save_mp_display_preferences_options(heraia_struct_t *main_struct);
 
+static void save_di_preferences(heraia_struct_t *main_struct);
+
+static void save_mpwp_preferences(heraia_struct_t *main_struct);
+
+
 static void load_window_preferences(GKeyFile *file, gchar *name, window_prop_t *window_prop);
 
 static void load_mp_file_preferences_options(heraia_struct_t *main_struct);
 static void load_mp_display_preferences_options(heraia_struct_t *main_struct);
+
+static void load_di_preferences(heraia_struct_t *main_struct);
+
 
 
 /**
@@ -244,6 +252,34 @@ static void save_di_preferences(heraia_struct_t *main_struct)
     }
 }
 
+/**
+ * Saves main preferences window state and preferences
+ * @param main_struct : main structure
+ */
+static void save_mpwp_preferences(heraia_struct_t *main_struct)
+{
+    GtkNotebook *notebook = NULL;  /**< main preferences's notebook               */
+    gint selected_tab;             /**< Selected tab in data interpretor's window */
+    prefs_t *prefs = NULL;         /**< structure for preferences                 */
+
+    if (main_struct != NULL && main_struct->current_DW != NULL)
+    {
+        prefs = main_struct->prefs;
+
+        notebook = GTK_NOTEBOOK(heraia_get_widget(main_struct->xmls->main, "mp_first_notebook"));
+
+        if (notebook != NULL)
+        {
+            selected_tab = gtk_notebook_get_current_page(notebook);
+
+            if (selected_tab >= 0)
+            {
+                g_key_file_set_integer(prefs->file, GN_MPWP_PREFS, KN_MPWP_SELECTED_TAB, selected_tab);
+            }
+        }
+    }
+}
+
 
 /**
  * Save all preferences to the user preference file
@@ -261,6 +297,9 @@ void save_preferences(heraia_struct_t *main_struct)
 
         /* 3. Saving Data Interpretor Preferences */
         save_di_preferences(main_struct);
+
+        /* 4. Saving Main Preferences Window Preferences */
+        save_mpwp_preferences(main_struct);
 
         if (main_struct->prefs != NULL)
         {
@@ -390,6 +429,48 @@ static void load_di_preferences(heraia_struct_t *main_struct)
 
 
 /**
+ * Load main preferences window state and preferences
+ * @param main_struct : main structure
+ */
+static void load_mpwp_preferences(heraia_struct_t *main_struct)
+{
+    GtkNotebook *notebook = NULL;  /**< main preferences's notebook               */
+    GtkWidget *button = NULL;      /**< tool button from the toolbar              */
+    gint selected_tab;             /**< Selected tab in data interpretor's window */
+    prefs_t *prefs = NULL;         /**< structure for preferences                 */
+
+    if (main_struct != NULL && main_struct->current_DW != NULL && main_struct->xmls != NULL && main_struct->xmls->main != NULL)
+    {
+        notebook = GTK_NOTEBOOK(heraia_get_widget(main_struct->xmls->main, "mp_first_notebook"));
+        prefs = main_struct->prefs;
+
+        if (notebook != NULL)
+        {
+            selected_tab = g_key_file_get_integer(prefs->file, GN_MPWP_PREFS, KN_MPWP_SELECTED_TAB, NULL);
+
+            switch (selected_tab)
+            {
+                case 0:
+                    gtk_notebook_set_current_page(notebook, selected_tab);
+                    button = heraia_get_widget(main_struct->xmls->main, "mp_tb_fp_bt");
+                    gtk_toggle_tool_button_set_active(GTK_RADIO_TOOL_BUTTON(button), TRUE);
+                    break;
+
+                case 1:
+                    gtk_notebook_set_current_page(notebook, selected_tab);
+                    button = heraia_get_widget(main_struct->xmls->main, "mp_tb_display_bt");
+                    gtk_toggle_tool_button_set_active(GTK_RADIO_TOOL_BUTTON(button), TRUE);
+                    break;
+
+                default:
+                break;
+            }
+        }
+    }
+}
+
+
+/**
  *  Sets up the preferences as loaded in the preference file
  * @param main_struct the main structure
  */
@@ -397,13 +478,16 @@ void load_preferences(heraia_struct_t *main_struct)
 {
     if (main_struct != NULL)
     {
-        /* 1. Main Preferences */
+        /* 1. Loading Main Preferences */
         load_mp_file_preferences_options(main_struct);
 
-        /* 2. Display preferences */
+        /* 2. Loading Display preferences */
         load_mp_display_preferences_options(main_struct);
 
-        /* 3. Data Interpretor Preferences */
+        /* 3. Loading Data Interpretor Preferences */
         load_di_preferences(main_struct);
+
+        /* 4. Loading Main Preferences Window Preferences */
+        load_mpwp_preferences(main_struct);
     }
 }

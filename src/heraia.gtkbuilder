@@ -24,7 +24,6 @@
                 <property name="label" translatable="yes">Global Preferences</property>
                 <property name="stock_id">gtk-preferences</property>
                 <property name="active">True</property>
-                <property name="group">mp_tb_display_bt</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1284,6 +1283,6 @@ POSSIBILITY OF SUCH DAMAGES.
     <property name="upper">4096</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
-    <property name="page_size">10</property>
+    <property name="page_size">0</property>
   </object>
 </interface>

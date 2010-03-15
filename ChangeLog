@@ -1,7 +1,12 @@
 15.03.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Changed minimum GTK version in order to reflect that heraia is now full
-       GTKBuilder (GTK 2.12 minimum)
+       GTKBuilder (GTK 2.16 minimum)
+     * 2.16 is minimum as there is a GtkBuilder menu !
+     * Corrected one warning message about GtkRadioButton and one about
+       GtkSpinButton
+     * Added a new preference in the file in order to remember which tab was
+       last activated on main preferences window
 
 06.03.2010
    - Olivier Delhomme <heraia@delhomme.org>

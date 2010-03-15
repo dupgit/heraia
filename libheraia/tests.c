@@ -86,5 +86,4 @@ gboolean test_decode_functions(void)
     exit_value = exit_value && test_one_function(decode_double_scientific, "decode_double_scientific", NULL, NULL, NULL);
 
     return exit_value;
-
 }
