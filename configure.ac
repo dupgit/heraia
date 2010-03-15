@@ -27,7 +27,7 @@ dnl **************************************************
 dnl * Libraries requirements                         *
 dnl **************************************************
 GLIB2_VERSION=2.2.0
-GTK2_VERSION=2.2.0
+GTK2_VERSION=2.12.0
 GTKHEX_VERSION=1.0.0
 GMODULE_VERSION=2.0.0
 
