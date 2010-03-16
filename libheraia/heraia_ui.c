@@ -613,6 +613,32 @@ void on_DIMenu_activate(GtkWidget *widget, gpointer data)
 
 
 /**
+ * Called when tests submenu is activated
+ * @param widget : the widget that issued the signal
+ * @param data : user data MUST be heraia_struct_t *main_struct main structure
+ */
+void on_tests_menu_activate(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+    gboolean result = FALSE;
+
+    if (main_struct != NULL)
+        {
+            result = tests_ui(main_struct);
+
+            if (result == TRUE)
+                {
+                    log_message(main_struct, G_LOG_LEVEL_INFO, "All tests went Ok.");
+                }
+            else
+                {
+                    log_message(main_struct, G_LOG_LEVEL_WARNING, "Some tests failed.");
+                }
+        }
+}
+
+
+/**
  * @fn delete_main_struct_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
  *  When the user destroys or delete the main window
  * @param widget : calling widget
@@ -1042,53 +1068,57 @@ static void heraia_ui_connect_signals(heraia_struct_t *main_struct)
 {
 
     /* the data interpretor menu */
-    g_signal_connect (G_OBJECT (heraia_get_widget(main_struct->xmls->main, "DIMenu")), "activate",
-                      G_CALLBACK (on_DIMenu_activate), main_struct);
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "DIMenu")), "activate",
+                     G_CALLBACK(on_DIMenu_activate), main_struct);
 
     /* Quit, file menu */
-    g_signal_connect (G_OBJECT (heraia_get_widget(main_struct->xmls->main, "quit")), "activate",
-                      G_CALLBACK (on_quit_activate), main_struct);
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "quit")), "activate",
+                     G_CALLBACK(on_quit_activate), main_struct);
 
     /* New, file menu */
-    g_signal_connect (G_OBJECT (heraia_get_widget(main_struct->xmls->main, "new")), "activate",
-                      G_CALLBACK (on_new_activate), main_struct);
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "new")), "activate",
+                     G_CALLBACK(on_new_activate), main_struct);
 
     /* Open, file menu */
-    g_signal_connect (G_OBJECT (heraia_get_widget(main_struct->xmls->main, "open")), "activate",
-                      G_CALLBACK (on_open_activate), main_struct);
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "open")), "activate",
+                     G_CALLBACK(on_open_activate), main_struct);
 
     /* Save, file menu */
-    g_signal_connect (G_OBJECT (heraia_get_widget(main_struct->xmls->main, "save")), "activate",
-                      G_CALLBACK (on_save_activate), main_struct);
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "save")), "activate",
+                     G_CALLBACK(on_save_activate), main_struct);
 
     /* Save As, file menu */
-    g_signal_connect (G_OBJECT (heraia_get_widget(main_struct->xmls->main, "save_as")), "activate",
-                      G_CALLBACK (on_save_as_activate), main_struct);
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "save_as")), "activate",
+                     G_CALLBACK(on_save_as_activate), main_struct);
 
     /* Preferences, file menu ; See main_pref_window.c for main_pref_window's signals */
-    g_signal_connect (G_OBJECT (heraia_get_widget(main_struct->xmls->main, "preferences")), "activate",
-                      G_CALLBACK (on_preferences_activate), main_struct);
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "preferences")), "activate",
+                     G_CALLBACK(on_preferences_activate), main_struct);
 
     /* Cut, edit menu */
-    g_signal_connect (G_OBJECT (heraia_get_widget(main_struct->xmls->main, "cut")), "activate",
-                      G_CALLBACK (on_cut_activate), main_struct);
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "cut")), "activate",
+                     G_CALLBACK(on_cut_activate), main_struct);
 
     /* Copy, edit menu */
-    g_signal_connect (G_OBJECT (heraia_get_widget(main_struct->xmls->main, "copy")), "activate",
-                      G_CALLBACK (on_copy_activate), main_struct);
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "copy")), "activate",
+                     G_CALLBACK(on_copy_activate), main_struct);
 
     /* Paste, edit menu */
-    g_signal_connect (G_OBJECT (heraia_get_widget(main_struct->xmls->main, "paste")), "activate",
-                      G_CALLBACK (on_paste_activate), main_struct);
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "paste")), "activate",
+                     G_CALLBACK(on_paste_activate), main_struct);
 
     /* Delete, edit menu */
-    g_signal_connect (G_OBJECT (heraia_get_widget(main_struct->xmls->main, "delete")), "activate",
-                      G_CALLBACK (on_delete_activate), main_struct);
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "delete")), "activate",
+                     G_CALLBACK(on_delete_activate), main_struct);
+
+    /* Test, Help menu */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "tests_menu")), "activate",
+                     G_CALLBACK(on_tests_menu_activate), main_struct);
 
 
     /* about dialog box */
-    g_signal_connect (G_OBJECT(heraia_get_widget(main_struct->xmls->main, "a_propos")), "activate",
-                      G_CALLBACK(a_propos_activate), main_struct);
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "a_propos")), "activate",
+                     G_CALLBACK(a_propos_activate), main_struct);
 
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "about_dialog")), "close",
                      G_CALLBACK(a_propos_close), main_struct);
@@ -1099,14 +1129,15 @@ static void heraia_ui_connect_signals(heraia_struct_t *main_struct)
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "about_dialog")), "delete-event",
                      G_CALLBACK(a_propos_delete), main_struct);
 
+
     /* main notebook */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "file_notebook")),"switch-page",
                      G_CALLBACK(file_notebook_tab_changed), main_struct);
 
 
     /* main window killed or destroyed */
-    g_signal_connect (G_OBJECT (heraia_get_widget(main_struct->xmls->main, "main_window")), "delete-event",
-                      G_CALLBACK (delete_main_struct_event), main_struct);
+    g_signal_connect(G_OBJECT (heraia_get_widget(main_struct->xmls->main, "main_window")), "delete-event",
+                     G_CALLBACK(delete_main_struct_event), main_struct);
 }
 
 /** @fn int load_heraia_ui(heraia_struct_t *main_struct)

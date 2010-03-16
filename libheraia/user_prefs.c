@@ -471,7 +471,7 @@ static void load_mpwp_preferences(heraia_struct_t *main_struct)
 
 
 /**
- *  Sets up the preferences as loaded in the preference file
+ * Sets up the preferences as loaded in the preference file
  * @param main_struct the main structure
  */
 void load_preferences(heraia_struct_t *main_struct)

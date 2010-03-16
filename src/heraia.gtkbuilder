@@ -1077,6 +1077,20 @@ POSSIBILITY OF SUCH DAMAGES.
                         <signal name="activate" handler="on_a_propos1_activate"/>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separatormenuitem3">
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="tests_menu">
+                        <property name="label">gtk-dialog-question</property>
+                        <property name="visible">True</property>
+                        <property name="tooltip_text" translatable="yes">Does run some self tests</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
@@ -1283,6 +1297,5 @@ POSSIBILITY OF SUCH DAMAGES.
     <property name="upper">4096</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
-    <property name="page_size">0</property>
   </object>
 </interface>

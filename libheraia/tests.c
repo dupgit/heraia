@@ -60,7 +60,7 @@ static gboolean test_one_function(DecodeFunc a_function, gchar *function_name, g
 
 /**
  *  test decode functions
- *
+ *  No parameters
  */
 gboolean test_decode_functions(void)
 {
@@ -86,4 +86,16 @@ gboolean test_decode_functions(void)
     exit_value = exit_value && test_one_function(decode_double_scientific, "decode_double_scientific", NULL, NULL, NULL);
 
     return exit_value;
+}
+
+/**
+ * functions to tests heraia's UI
+ * @param main_struct : the main structure (the whole one)
+ */
+gboolean tests_ui(heraia_struct_t main_struct)
+{
+
+
+
+
 }
