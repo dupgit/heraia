@@ -2,6 +2,7 @@
    - Olivier Delhomme <heraia@delhomme.org>
      * Added a new submenu within the 'help one'. This should be used to do some
        UI tests.
+     * User preferences conforms now to "XDG Base Directory Specification"
 
 15.03.2010
    - Olivier Delhomme <heraia@delhomme.org>

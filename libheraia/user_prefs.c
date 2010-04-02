@@ -122,13 +122,15 @@ void verify_preference_file(gchar *pathname, gchar *filename)
 void init_preference_struct(heraia_struct_t *main_struct)
 {
     prefs_t *prefs = NULL;
+    gchar *user_config_path = NULL;
 
     if (main_struct->prefs == NULL)
     {
        main_struct->prefs = (prefs_t *) g_malloc0(sizeof(prefs_t));
        main_struct->prefs->file = g_key_file_new();
-       main_struct->prefs->pathname = g_strdup_printf("%s%c.%s", g_get_home_dir(), G_DIR_SEPARATOR, "heraia");
-       main_struct->prefs->filename = g_strdup_printf("%s%c%s", main_struct->prefs->pathname, G_DIR_SEPARATOR, "main_preferences");
+       user_config_path = g_strdup(g_get_user_config_dir());
+       main_struct->prefs->pathname = g_build_path(G_DIR_SEPARATOR_S, user_config_path, "heraia", NULL);
+       main_struct->prefs->filename = g_build_filename(main_struct->prefs->pathname, "main_preferences", NULL);
     }
     else
     {
@@ -453,13 +455,13 @@ static void load_mpwp_preferences(heraia_struct_t *main_struct)
                 case 0:
                     gtk_notebook_set_current_page(notebook, selected_tab);
                     button = heraia_get_widget(main_struct->xmls->main, "mp_tb_fp_bt");
-                    gtk_toggle_tool_button_set_active(GTK_RADIO_TOOL_BUTTON(button), TRUE);
+                    gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(button), TRUE);
                     break;
 
                 case 1:
                     gtk_notebook_set_current_page(notebook, selected_tab);
                     button = heraia_get_widget(main_struct->xmls->main, "mp_tb_display_bt");
-                    gtk_toggle_tool_button_set_active(GTK_RADIO_TOOL_BUTTON(button), TRUE);
+                    gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(button), TRUE);
                     break;
 
                 default:
