@@ -12,7 +12,7 @@ Now you can run the program (filename is a file of your own choice, for
 instance src/heraia :) :
  src/heraia filename
 
-If you have installed it : 
+If you have installed it :
  heraia filename
 
 Please note :
@@ -38,7 +38,7 @@ need to) and :
  lcov -c -o coverage.info --directory=./
  genhtml coverage.info
 
-open index.html generated file with your favorite web browser, and you're done. 
+open index.html generated file with your favorite web browser, and you're done.
 
 
 ***** Reminder for developpers *****
@@ -46,15 +46,15 @@ open index.html generated file with your favorite web browser, and you're done.
 For a release do not forget to :
 
  - change configure.ac version number
- - heraia.h version number and date,
+ - heraia.h version number and date
  - heraia.c doxygen comment version number
- - generate the doxygen documentation in the docs directory. Edit 
+ - generate the doxygen documentation in the docs directory. Edit
    heraia.doxygen file to reflect version number and directories (basicaly
    lines PROJECT_NUMBER and OUTPUT_DIRECTORY).
    Execute "doxygen heraia.doxygen"
    make a tar.gz available in the download directory (as for sources)
  - generate code coverage tests
-    
+
 
 DocBook : (Heraia uses JavaDoc Style with @ instead of \)
 

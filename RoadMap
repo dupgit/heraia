@@ -60,7 +60,7 @@ I let you imagine what I expect before I do a major release !!!
      . add a preference option where the user may be able to reset window
        properties (not necessary as one may only uncheck saving properties)
 
-. 0.1.1
+. 0.1.1 [05.04.2010]
    * rename main_window variable and heraia_window_t structure in
      main_struct variable and heraia_struct_t structure which
      will be less confusing.

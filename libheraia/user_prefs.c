@@ -117,6 +117,7 @@ void verify_preference_file(gchar *pathname, gchar *filename)
 /**
  * look out if the preference structure exists or not. If not
  * it creates it.
+ * @see http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
  * @param main_struct the main structure
  */
 void init_preference_struct(heraia_struct_t *main_struct)

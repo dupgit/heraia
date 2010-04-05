@@ -939,12 +939,7 @@ void set_notebook_tab_name(heraia_struct_t *main_struct)
            {
                 filename = g_filename_display_basename(whole_filename);
                 gtk_label_set_text(GTK_LABEL(label), filename);
-
-                /* gtk_widget_set_tooltip_text is available since gtk 2.12 */
-                if (GTK_MINOR_VERSION >= 12)
-                {
-                    gtk_widget_set_tooltip_text(label, g_filename_display_name(whole_filename));
-                }
+                gtk_widget_set_tooltip_text(label, g_filename_display_name(whole_filename));
            }
        }
 }

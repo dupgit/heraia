@@ -44,7 +44,7 @@
 #define HERAIA_AUTHORS "Olivier Delhomme, Sébastien TRICAUD, Grégory AUDET"
 #define HERAIA_DATE "20 02 2005"
 #define HERAIA_LICENSE "GPL v2 or later"
-#define HERAIA_VERSION "0.1.1 (00.00.0000)"
+#define HERAIA_VERSION "0.1.1 (05.04.2010)"
 
 
 

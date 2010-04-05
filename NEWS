@@ -1,3 +1,19 @@
+05.04.2010 New version 0.0.1 with major changes :
+            - requires GTK > 2.16 because everything is now passed to GtkBuilder
+            - added new option -t --tests to allow tests executions (for the
+              code itself).
+            - added a new submenu that will allow to test the UI (I hope)
+            - Aurelie DERAISME added transparency to the logo which is now
+              really fancier than it was (generated it at all sizes from 16x16
+              to 128x128)
+            - deleted all unused code (data_types and treatements...).
+            - modified the way the library is compiled in order to be able to
+              use it directly into python (added a first test in a sub-directory
+              to be sure that it works).
+            - code refactoring especially to add some coherence and avoid
+              variable names that may be confusing
+            - some code coverage has been done
+            - and of course numerous bug corrections
 
 07.11.2007 I tried to minimise McCabe's complexity measure results
            of every function. I would be very pleased if heraia
