@@ -256,9 +256,19 @@ typedef struct
 typedef struct
 {
     Heraia_Document *hex_doc;  /**< Document definition related to libHeraia_Hex */
-    GtkWidget *hex_widget;     /**< hexwidget corresponding to the document  */
+    GtkWidget *hex_widget;     /**< hexwidget corresponding to the document      */
 } doc_t;
 
+
+/**
+ * @struct selection_t
+ * A structure to manage a single selection
+ */
+typedef struct
+{
+    guint64 start;  /**< Starting position of the selection */
+    guint64 end;    /**< Ending position of the selection   */
+} selection_t;
 
 /**
  * @struct heraia_struct_t

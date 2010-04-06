@@ -87,7 +87,10 @@ void free_plugin(heraia_plugin_t *plugin)
     if (plugin != NULL)
         {
             if (plugin->handle != NULL)
-                g_module_close(plugin->handle);
+                {
+                    g_module_close(plugin->handle);
+                }
+
             if (plugin->info != NULL)
                 {
                     g_free(plugin->info->name);
@@ -98,11 +101,13 @@ void free_plugin(heraia_plugin_t *plugin)
                     g_free(plugin->info->homepage);
                     g_free(plugin->info);
                 }
+
             if (plugin->filter != NULL)
                 {
                     g_free(plugin->filter->extensions);
                     g_free(plugin->filter);
                 }
+
             g_free(plugin->path);
             g_free(plugin->filename);
             g_free(plugin->error);
@@ -192,7 +197,9 @@ static void init_plugin(heraia_struct_t *main_struct, heraia_plugin_t *plugin, c
             plugin->info->id = plugins_nb;
             main_struct->plugins_list = g_list_append(main_struct->plugins_list, plugin);
             log_message(main_struct, G_LOG_LEVEL_INFO, "plugin %s loaded.", filename);
+
             plugin->init_proc(main_struct);
+
             if (plugin->info->type == HERAIA_PLUGIN_ACTION)
                 {
                     add_entry_to_plugins_menu(main_struct, plugin);
@@ -259,7 +266,10 @@ void load_plugins(heraia_struct_t *main_struct)
         {
             while ((filename = g_dir_read_name(plugins_dir)) != NULL)
                 {
-                    load_one_plugin(main_struct, filename, ++plugins_nb);
+                    if (g_str_has_suffix(filename, "libheraia.so") == FALSE)
+                    {
+                        load_one_plugin(main_struct, filename, ++plugins_nb);
+                    }
                 }
             g_dir_close(plugins_dir);
         }

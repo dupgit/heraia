@@ -92,10 +92,10 @@ gboolean test_decode_functions(void)
  * functions to tests heraia's UI
  * @param main_struct : the main structure (the whole one)
  */
-gboolean tests_ui(heraia_struct_t main_struct)
+gboolean tests_ui(heraia_struct_t *main_struct)
 {
 
 
 
-
+    return TRUE;
 }

@@ -1,3 +1,13 @@
+06.04.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Changed the way paths were made for the locations list
+     * Corrected a warning that were displayed when openning a plugin window
+     * Avoid to try to load libheraia from itself !
+     * Avoid a double call to gtk_check_menu_item_get_active in stat.c "run"
+       function
+     * Corrected some doxygen docs that were false or wrong
+     * Work in progress for the selection positions
+
 05.04.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Supressed a test that is not necessary anymore (because GTK > 2.16 is

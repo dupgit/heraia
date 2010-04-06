@@ -174,15 +174,18 @@ void run(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data; /* the signal send the pointer to this structure */
     heraia_plugin_t *plugin = NULL;
+    gboolean menu_state = FALSE;
 
     /* first, know who we are ! */
     plugin = find_plugin_by_name(main_struct->plugins_list, PLUGIN_NAME);
 
     if (plugin != NULL)
         {
-            show_hide_widget(GTK_WIDGET(heraia_get_widget(plugin->xml, "stat_window")),
-                             gtk_check_menu_item_get_active(plugin->cmi_entry), plugin->win_prop);
-            if (gtk_check_menu_item_get_active(plugin->cmi_entry) == TRUE)
+            menu_state = gtk_check_menu_item_get_active(plugin->cmi_entry);
+
+            show_hide_widget(GTK_WIDGET(heraia_get_widget(plugin->xml, "stat_window")), menu_state, plugin->win_prop);
+
+            if (menu_state == TRUE)
                 {
                     plugin->state = PLUGIN_STATE_RUNNING;
                     realize_some_numerical_stat(main_struct, plugin);

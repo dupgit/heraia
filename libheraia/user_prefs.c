@@ -123,14 +123,12 @@ void verify_preference_file(gchar *pathname, gchar *filename)
 void init_preference_struct(heraia_struct_t *main_struct)
 {
     prefs_t *prefs = NULL;
-    gchar *user_config_path = NULL;
 
     if (main_struct->prefs == NULL)
     {
        main_struct->prefs = (prefs_t *) g_malloc0(sizeof(prefs_t));
        main_struct->prefs->file = g_key_file_new();
-       user_config_path = g_strdup(g_get_user_config_dir());
-       main_struct->prefs->pathname = g_build_path(G_DIR_SEPARATOR_S, user_config_path, "heraia", NULL);
+       main_struct->prefs->pathname = g_build_path(G_DIR_SEPARATOR_S, g_get_user_config_dir(), "heraia", NULL);
        main_struct->prefs->filename = g_build_filename(main_struct->prefs->pathname, "main_preferences", NULL);
     }
     else

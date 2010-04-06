@@ -290,8 +290,8 @@ gboolean ghex_get_data(GtkWidget *hex_widget, guint length, guint endianness, gu
 
 /**
  *  Returns the file size of an opened Heraia_Hex document.
- * @param gh : an opened Heraia_Hex document
- * @return resturns the file size of that document
+ * @param gh : the widget of a an opened Heraia_Hex document
+ * @return returns the file size of that document
  */
 guint64 ghex_file_size(Heraia_Hex *gh)
 {
@@ -305,9 +305,10 @@ guint64 ghex_file_size(Heraia_Hex *gh)
         }
 }
 
+
 /**
  *  Retrieves the cursor's position from the current hexwidget
- * @param data_window : data interpretor window structure
+ * @param hex_widget : the widget that displays the hex document
  * @return returns the cursor's position
  */
 guint64 ghex_get_cursor_position(GtkWidget *hex_widget)
@@ -321,6 +322,31 @@ guint64 ghex_get_cursor_position(GtkWidget *hex_widget)
     else
     {
           return 0;
+    }
+}
+
+
+/**
+ * Retrieves the selection made (if any) in the hex widget
+ * @param hex_widget : the widget that displays the hex document
+ * @return returns a filed selection_t structure
+ */
+selection_t *ghex_get_selection(GtkWidget *hex_widget)
+{
+    Heraia_Hex *gh = GTK_HEX(hex_widget);
+    selection_t *sel = NULL;
+
+    if (gh != NULL)
+    {
+        sel = (selection_t *) g_malloc0(sizeof(selection_t));
+        sel->start = gh->selection.start;
+        sel->end = gh->selection.end;
+
+        return sel;
+    }
+    else
+    {
+        return NULL;
     }
 }
 

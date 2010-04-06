@@ -135,12 +135,24 @@ void a_propos_activate(GtkWidget *widget, gpointer data)
  */
 void move_and_show_dialog_box(GtkWidget *dialog_box, window_prop_t *dialog_prop)
 {
-    if (dialog_prop->displayed == FALSE)
+    if (dialog_prop != NULL)
     {
-        gtk_window_move(GTK_WINDOW(dialog_box), dialog_prop->x, dialog_prop->y);
-        gtk_window_resize(GTK_WINDOW(dialog_box), dialog_prop->width, dialog_prop->height);
-        gtk_widget_show_all(dialog_box);
-        dialog_prop->displayed = TRUE;
+
+        if (dialog_prop->displayed == FALSE)
+        {
+            if (dialog_prop->x > 0 && dialog_prop->y > 0)
+            {
+                gtk_window_move(GTK_WINDOW(dialog_box), dialog_prop->x, dialog_prop->y);
+            }
+
+            if (dialog_prop->width > 0 && dialog_prop->height > 0)
+            {
+                gtk_window_resize(GTK_WINDOW(dialog_box), dialog_prop->width, dialog_prop->height);
+            }
+
+            gtk_widget_show_all(dialog_box);
+            dialog_prop->displayed = TRUE;
+        }
     }
 }
 

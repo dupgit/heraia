@@ -30,5 +30,6 @@
 #define _LIBHERAIA_TESTS_H_
 
 extern gboolean test_decode_functions(void);
+extern gboolean tests_ui(heraia_struct_t *main_struct);
 
 #endif /* _LIBHERAIA_TESTS_H_ */

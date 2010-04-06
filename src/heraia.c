@@ -277,44 +277,44 @@ static HERAIA_ERROR init_heraia_plugin_system(heraia_struct_t *main_struct)
 static GList *init_heraia_location_list(void)
 {
     gchar *path = NULL;
-    const gchar* const *system_data_dirs;
+    const gchar* const *system_dirs;
     guint i = 0;
     GList *location_list = NULL;
 
-    /* heraia's binary path */
-    path = g_strdup_printf("%s", g_get_current_dir());
+    /* Heraia's binary path */
+    path = g_get_current_dir();
     location_list = g_list_prepend(location_list, path);
 
     /* System data dirs */
-    system_data_dirs = g_get_system_data_dirs();
+    system_dirs = g_get_system_data_dirs();
     i = 0;
-    while(system_data_dirs[i] != NULL)
+    while(system_dirs[i] != NULL)
         {
-            path = g_strdup_printf("%s%c%s", system_data_dirs[i], G_DIR_SEPARATOR, "heraia");
+            path = g_build_path(G_DIR_SEPARATOR_S, system_dirs[i], "heraia", NULL);
             location_list = g_list_prepend(location_list, path);
             i++;
         }
 
     /* System config dirs */
-    system_data_dirs = g_get_system_config_dirs();
+    system_dirs = g_get_system_config_dirs();
     i = 0;
-    while(system_data_dirs[i] != NULL)
+    while(system_dirs[i] != NULL)
         {
-            path = g_strdup_printf("%s%c%s", system_data_dirs[i], G_DIR_SEPARATOR, "heraia");
+            path = g_build_path(G_DIR_SEPARATOR_S, system_dirs[i], "heraia", NULL);
             location_list = g_list_prepend(location_list, path);
             i++;
         }
 
-    /* the user path */
-    path =  g_strdup_printf("%s%c.%s", g_get_home_dir(), G_DIR_SEPARATOR, "heraia");
+    /* The user path */
+    path =  g_build_path(G_DIR_SEPARATOR_S, g_get_home_dir(), "heraia", NULL);
     location_list = g_list_prepend(location_list, path);
 
     /* A global user data path */
-    path = g_strdup_printf("%s%c%s", g_get_user_data_dir(), G_DIR_SEPARATOR, "heraia");
+    path = g_build_path(G_DIR_SEPARATOR_S, g_get_user_data_dir(), "heraia", NULL);
     location_list = g_list_prepend(location_list, path);
 
     /* A global config data path */
-    path = g_strdup_printf("%s%c%s", g_get_user_config_dir(), G_DIR_SEPARATOR, "heraia");
+    path = g_build_path(G_DIR_SEPARATOR_S, g_get_user_config_dir(), "heraia", NULL);
     location_list = g_list_prepend(location_list, path);
 
     return location_list;
