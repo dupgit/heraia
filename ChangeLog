@@ -1,3 +1,8 @@
+08.04.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Now we display de the selection start and end and also the selection size
+
+
 06.04.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Changed the way paths were made for the locations list
