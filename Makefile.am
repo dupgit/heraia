@@ -16,3 +16,4 @@ EXTRA_DIST =				\
 	RoadMap					\
 	heraia.iss				\
 	$(gnomemenufiles)
+

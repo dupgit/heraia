@@ -42,4 +42,3 @@ libheraia_la_SOURCES =  		\
 		plugin_list.c			\
 		tests.c					\
 		$(headerfiles)
-

@@ -1,7 +1,13 @@
+11.04.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Cleaned configure.ac with commented code that I will not use in the near
+       future ! Added a comment on gettext package discovery
+     * Modified .h inclusions in order to include gi18n library
+     * Added files to be translated in POTFILES.in
+
 08.04.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Now we display de the selection start and end and also the selection size
-
 
 06.04.2010
    - Olivier Delhomme <heraia@delhomme.org>

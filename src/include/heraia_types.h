@@ -21,7 +21,7 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
-/** @file heraia_types.h 
+/** @file heraia_types.h
  *  As there seems to be huge differences between the linux
  *  and the windows developpement platform such as that
  *  the included paths are correctly taken into account
@@ -32,12 +32,6 @@
  */
 #ifndef _HERAIA_TYPES_H_
 #define _HERAIA_TYPES_H_
-
-/* I have some problems under windows if #ifdef statement is activated */
-
-/* #ifdef HAVE_CONFIG_H */
-#include "config.h"
-/* #endif */  /* HAVE_CONFIG_H */
 
 #include <libheraia.h>
 

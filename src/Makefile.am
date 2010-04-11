@@ -31,4 +31,3 @@ AM_CPPFLAGS = 			\
 	$(GTKHEX_CFLAGS) 	\
 	$(GLIB2_CFLAGS) 	\
 	$(GKT2_CFLAGS)
-

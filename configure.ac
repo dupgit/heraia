@@ -4,7 +4,7 @@ AC_INIT([Heraia], [0.1.1],
         [Olivier Delhomme],
         [heraia])
 
-dnl AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([src/heraia.c])
 
 AM_INIT_AUTOMAKE([$PACKAGE_TARNAME], [$PACKAGE_VERSION])
@@ -107,16 +107,6 @@ dnl the line below does not work !!
 dnl AC_DEFINE_UNQUOTED(PLUGINS_DIR, "$plugins_dir", [Directory where the plugins are located])
 
 dnl **************************************************
-dnl * Check for Gtkdoc.                              *
-dnl * Commented out (we don't use this anyway)       *
-dnl **************************************************
-dnl AC_CHECK_PROG(GTKDOC, gtkdoc-mkdb, true, false)
-dnl AM_CONDITIONAL(HAVE_GTK_DOC, test -n $GTKDOC)
-dnl AC_SUBST(HAVE_GTK_DOC)
-dnl AC_ARG_ENABLE(gtk-doc, [  --enable-gtk-doc  Use gtk-doc to build documentation [default=no]], enable_gtk_doc="$enableval", enable_gtk_doc=no)
-dnl AM_CONDITIONAL(ENABLE_GTK_DOC, test x$enable_gtk_doc = xyes)
-
-dnl **************************************************
 dnl * languages                                      *
 dnl **************************************************
 ALL_LINGUAS="fr_FR"
@@ -124,10 +114,11 @@ ALL_LINGUAS="fr_FR"
 dnl **************************************************
 dnl * triggers gettext                               *
 dnl **************************************************
+AC_PROG_INTLTOOL([0.23])
 AM_GLIB_GNU_GETTEXT
 GETTEXT_PACKAGE=heraia
 AC_SUBST(GETTEXT_PACKAGE)
-AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [fix])
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [Gettext Package used])
 
 dnl **************************************************
 dnl * checking for glib                              *
@@ -154,7 +145,6 @@ AC_PROG_INSTALL
 CFLAGS="$CFLAGS -Wall -Wstrict-prototypes -Wmissing-declarations \
 -Wbad-function-cast -Wcast-qual -Wcast-align -Wnested-externs -Wunused \
 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE"
-
 
 dnl **************************************************
 dnl * checking OS                                    *

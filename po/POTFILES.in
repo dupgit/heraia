@@ -1,5 +1,20 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
-[encoding: UTF-8]
-src/heraia.glade 
+
+[encoding: UTF-8]src/heraia.gtkbuilder
+[encoding: UTF-8]src/heraia.c
+[encoding: UTF-8]libheraia/decode.c
+[encoding: UTF-8]libheraia/libheraia.c
+[encoding: UTF-8]libheraia/user_prefs.c
+[encoding: UTF-8]libheraia/main_pref_window.c
+[encoding: UTF-8]libheraia/heraia_ui.c
+[encoding: UTF-8]libheraia/log.c
+[encoding: UTF-8]libheraia/ghex_heraia_interface.c
+[encoding: UTF-8]libheraia/plugin.c
+[encoding: UTF-8]libheraia/heraia_io.c
+[encoding: UTF-8]libheraia/data_interpretor.c
+[encoding: UTF-8]libheraia/plugin_list.c
+[encoding: UTF-8]libheraia/tests.c
+[encoding: UTF-8]plugins/stat/stat.c
+[encoding: UTF-8]plugins/stat/stat.gtkbuilder
 

@@ -70,6 +70,8 @@ I let you imagine what I expect before I do a major release !!!
 
 . 0.1.2
    * have the selection positions added near the cursor's position
+   * add a function that will look if the document has been modified or not
+     before closing
 
 . 0.1.3
    * begin effort to make the whole project translatable
