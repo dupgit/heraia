@@ -1,3 +1,17 @@
+01.05.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Typo in the NEWS file (wrong version number!)
+     * Verified that all files are UTF-8 encoded
+     * Version number updated to 0.1.2 (still in progess)
+
+21.04.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Modified autogen to generate the po directory directly from there
+
+12.04.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Changes to bring translation to the front
+
 11.04.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Cleaned configure.ac with commented code that I will not use in the near
@@ -58,7 +72,7 @@
 
 02.03.2010
    - Olivier Delhomme <heraia@delhomme.org>
-     * Reviewed the authors sections and added Aurélie DERAISME for her
+     * Reviewed the authors sections and added AurÃ©lie DERAISME for her
        contibution  to the logo.
      * Wrote some basic tests for the proof of concept
      * Added some interesting self tests in heraia_self_tests.sh in order that
@@ -103,7 +117,7 @@
      * Corrected an alignment error
 
 07.10.2009
-   - Aurélie Deraisme <aureliederaisme@msn.com>
+   - AurÃ©lie Deraisme <aureliederaisme@msn.com>
      * added transparency to main logo
    - Olivier Delhomme <heraia@delhomme.org>
      * generated all logos from 16x16 to 128x128
@@ -562,7 +576,7 @@
 
 
 26.08.2008
-    - Sébastien Tricaud <toady@gscore.org>
+    - SÃ©bastien Tricaud <toady@gscore.org>
     * Added libheraia skeleton
 
     - Olivier Delhomme <heraia@delhomme.org>
@@ -1255,7 +1269,7 @@ O8.05.2005
       * logo creation
 
 16.02.2005
-    - Sébastien Tricaud <toady@gscore.org>
+    - SÃ©bastien Tricaud <toady@gscore.org>
       * project skeleton
 
     - Olivier Delhomme <heraia@delhomme.org>

@@ -4,7 +4,7 @@ DEFS = -I$(SRCDIR)  -I$(SRCDIR)/include	 		\
        -I$(top_builddir)/libheraia/include		\
 	   -DPLUGINS_DIR=\"$(plugins_dir)\"			\
 	   -DDATA_DIR=\"$(data_dir)\"				\
-	   $(Heraia_Hex_CFLAGS) 						\
+	   $(Heraia_Hex_CFLAGS) 					\
 	   $(GMODULE_CFLAGS) $(CFLAGS)				\
 	   $(GTK2_CFLAGS) $(GLIB2_CFLAGS)
 
@@ -30,4 +30,5 @@ AM_CPPFLAGS = 			\
 	$(GMODULE_CFLAGS) 	\
 	$(GTKHEX_CFLAGS) 	\
 	$(GLIB2_CFLAGS) 	\
-	$(GKT2_CFLAGS)
+	$(GKT2_CFLAGS)		\
+	-DPROGRAM_LOCALE_DIR=\"${PROGRAM_LOCALE_DIR}\"

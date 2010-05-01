@@ -1,6 +1,6 @@
 AC_PREREQ(2.59)
 
-AC_INIT([Heraia], [0.1.1],
+AC_INIT([Heraia], [0.1.2],
         [Olivier Delhomme],
         [heraia])
 
@@ -95,7 +95,7 @@ AC_SUBST(sysconfdir)
 AC_SUBST(prefix)
 
 dnl **************************************************
-dnl * plugins directory definition                   *
+dnl * directories definitions                        *
 dnl **************************************************
 plugins_dir=$libdir/heraia
 data_dir=$datadir/heraia
@@ -119,6 +119,10 @@ AM_GLIB_GNU_GETTEXT
 GETTEXT_PACKAGE=heraia
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [Gettext Package used])
+
+PROGRAM_LOCALE_DIR=[${datadir}/locale]
+AC_SUBST(PROGRAM_LOCALE_DIR)
+
 
 dnl **************************************************
 dnl * checking for glib                              *
@@ -236,6 +240,7 @@ AC_CONFIG_FILES([
 Makefile
 libheraia/Makefile
 src/Makefile
+po/Makefile.in
 plugins/Makefile
 plugins/stat/Makefile
 pixmaps/Makefile

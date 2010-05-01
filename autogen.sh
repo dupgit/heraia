@@ -1,9 +1,11 @@
 #!/bin/sh
 
-aclocal                         \
-&& libtoolize                   \
-&& automake --gnu --add-missing \
+aclocal                                \
+&& libtoolize                          \
+&& automake --gnu --add-missing --copy \
 && autoconf
+glib-gettextize --copy --force
+intltoolize --copy --force --automake
 
 if [ -e ./configure ]; then
     echo
