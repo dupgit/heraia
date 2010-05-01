@@ -3,7 +3,7 @@
   log.c
   log functions for heraia
 
-  (C) Copyright 2006 - 2009 Olivier Delhomme
+  (C) Copyright 2006 - 2010 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -33,6 +33,7 @@ static void log_window_connect_signals(heraia_struct_t *main_struct);
 static gboolean delete_log_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data );
 static void destroy_log_window(GtkWidget *widget, GdkEvent  *event, gpointer data);
 static void logw_close_clicked(GtkWidget *widget, gpointer data);
+
 
 /**
  * @fn print_message(const char *format, ...)
@@ -99,46 +100,46 @@ static void my_log(heraia_struct_t *main_struct, gchar *log_domain, GLogLevelFla
 
     switch (log_level)
         {
-        case G_LOG_FLAG_RECURSION:
-            display = g_strdup_printf("%s - RECURSION: %s\n%c", log_domain, str, '\0');
-            g_print("%s\n", display);
-            /* exit(log_level); */
-            break;
+            case G_LOG_FLAG_RECURSION:
+                display = g_strdup_printf("%s - RECURSION: %s\n%c", log_domain, str, '\0');
+                g_print("%s\n", display);
+                /* exit(log_level); */
+                break;
 
-        case G_LOG_FLAG_FATAL:
-            display = g_strdup_printf("%s - FATAL: %s\n%c", log_domain, str, '\0');
-            g_print("%s\n", display);
-            /* exit(log_level); */
-            break;
+            case G_LOG_FLAG_FATAL:
+                display = g_strdup_printf("%s - FATAL: %s\n%c", log_domain, str, '\0');
+                g_print("%s\n", display);
+                /* exit(log_level); */
+                break;
 
-        case G_LOG_LEVEL_ERROR:
-            display = g_strdup_printf("%s - ERROR: %s\n%c", log_domain, str, '\0');
-            g_print("%s\n", display);
-            /* exit(log_level); */
-            break;
+            case G_LOG_LEVEL_ERROR:
+                display = g_strdup_printf("%s - ERROR: %s\n%c", log_domain, str, '\0');
+                g_print("%s\n", display);
+                /* exit(log_level); */
+                break;
 
-        case G_LOG_LEVEL_CRITICAL:
-            display = g_strdup_printf("%s - CRITICAL: %s\n%c", log_domain, str, '\0');
-            break;
+            case G_LOG_LEVEL_CRITICAL:
+                display = g_strdup_printf("%s - CRITICAL: %s\n%c", log_domain, str, '\0');
+                break;
 
-        case G_LOG_LEVEL_WARNING:
-            display = g_strdup_printf("%s - WARNING: %s\n%c", log_domain, str, '\0');
-            break;
+            case G_LOG_LEVEL_WARNING:
+                display = g_strdup_printf("%s - WARNING: %s\n%c", log_domain, str, '\0');
+                break;
 
-        case G_LOG_LEVEL_MESSAGE:
-            display = g_strdup_printf("%s - MESSAGE: %s\n%c", log_domain, str, '\0');
-            break;
+            case G_LOG_LEVEL_MESSAGE:
+                display = g_strdup_printf("%s - MESSAGE: %s\n%c", log_domain, str, '\0');
+                break;
 
-        case G_LOG_LEVEL_INFO:
-            display = g_strdup_printf("%s - INFO: %s\n%c", log_domain, str, '\0');
-            break;
+            case G_LOG_LEVEL_INFO:
+                display = g_strdup_printf("%s - INFO: %s\n%c", log_domain, str, '\0');
+                break;
 
-        case G_LOG_LEVEL_DEBUG:
-            display = g_strdup_printf("%s - DEBUG: %s\n%c", log_domain, str, '\0');
-            break;
+            case G_LOG_LEVEL_DEBUG:
+                display = g_strdup_printf("%s - DEBUG: %s\n%c", log_domain, str, '\0');
+                break;
 
-        case G_LOG_LEVEL_MASK: /* To avoid a compilation warning */
-            break;
+            case G_LOG_LEVEL_MASK: /* To avoid a compilation warning */
+                break;
         }
 
     g_print("%s", display);
@@ -226,6 +227,7 @@ void log_message(heraia_struct_t *main_struct, GLogLevelFlags log_level, const c
         }
 }
 
+
 /**
  * @fn void show_hide_log_window(heraia_struct_t *main_struct, gboolean show, GtkCheckMenuItem *cmi)
  *  Shows and hides the log window
@@ -243,18 +245,19 @@ void show_hide_log_window(heraia_struct_t *main_struct, gboolean show, GtkCheckM
     log_dialog = heraia_get_widget(main_struct->xmls->main, "log_window");
 
     if (show == TRUE)
-       {
+        {
             move_and_show_dialog_box(log_dialog, log_box_prop);
-       }
+        }
     else
-      {
-          if (log_box_prop->displayed == TRUE)
-            {
-                gtk_check_menu_item_set_active(cmi, FALSE);
-                record_and_hide_dialog_box(log_dialog, log_box_prop);
-            }
-      }
+        {
+            if (log_box_prop->displayed == TRUE)
+                {
+                    gtk_check_menu_item_set_active(cmi, FALSE);
+                    record_and_hide_dialog_box(log_dialog, log_box_prop);
+                }
+        }
 }
+
 
 /**
  * @fn mw_cmi_show_logw_toggle(GtkWidget *widget, gpointer data)
@@ -273,7 +276,7 @@ void mw_cmi_show_logw_toggle(GtkWidget *widget, gpointer data)
 }
 
 
-/**** The Signals ****/
+/******************************** The Signals *********************************/
 
 /**
  * @fn gboolean delete_log_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data )
@@ -290,6 +293,7 @@ static gboolean delete_log_window_event(GtkWidget *widget, GdkEvent  *event, gpo
     return TRUE;
 }
 
+
 /**
  * @fn void destroy_log_window(GtkWidget *widget, GdkEvent  *event, gpointer data)
  * When the window is destroyed (Gtk's doc says that we may never get there)
@@ -301,6 +305,7 @@ static void destroy_log_window(GtkWidget *widget, GdkEvent  *event, gpointer dat
 {
     logw_close_clicked(widget, data);
 }
+
 
 /**
  * @fn  void logw_close_clicked(GtkWidget *widget, gpointer data)
@@ -314,10 +319,10 @@ static void logw_close_clicked(GtkWidget *widget, gpointer data)
     GtkWidget *cmi = NULL;
 
     if (main_struct != NULL && main_struct->xmls != NULL && main_struct->xmls->main != NULL)
-    {
-        cmi = heraia_get_widget(main_struct->xmls->main, "mw_cmi_show_logw");
-        show_hide_log_window(main_struct, FALSE, GTK_CHECK_MENU_ITEM(cmi));
-    }
+        {
+            cmi = heraia_get_widget(main_struct->xmls->main, "mw_cmi_show_logw");
+            show_hide_log_window(main_struct, FALSE, GTK_CHECK_MENU_ITEM(cmi));
+        }
 }
 
 
@@ -330,26 +335,25 @@ static void log_window_connect_signals(heraia_struct_t *main_struct)
 {
 
     if (main_struct != NULL && main_struct->xmls != NULL && main_struct->xmls->main != NULL)
-    {
+        {
 
-        g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "log_window")), "delete_event",
-                         G_CALLBACK(delete_log_window_event), main_struct);
+            g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "log_window")), "delete_event",
+                             G_CALLBACK(delete_log_window_event), main_struct);
 
-        g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "log_window")), "destroy",
-                         G_CALLBACK(destroy_log_window), main_struct);
+            g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "log_window")), "destroy",
+                             G_CALLBACK(destroy_log_window), main_struct);
 
-        /* Close Button */
-        g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "logw_close_b")), "clicked",
-                         G_CALLBACK(logw_close_clicked), main_struct);
+            /* Close Button */
+            g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "logw_close_b")), "clicked",
+                             G_CALLBACK(logw_close_clicked), main_struct);
 
-        /* the toogle button */
-        g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "mw_cmi_show_logw")), "toggled",
-                         G_CALLBACK(mw_cmi_show_logw_toggle), main_struct);
-    }
-
+            /* the toogle button */
+            g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "mw_cmi_show_logw")), "toggled",
+                             G_CALLBACK(mw_cmi_show_logw_toggle), main_struct);
+        }
 }
+/******************************** End Signals *********************************/
 
-/**** End Signals ****/
 
 /**
  * @fn log_window_init_interface(heraia_struct_t *main_struct)
@@ -365,17 +369,17 @@ void log_window_init_interface(heraia_struct_t *main_struct)
 
 
     if (main_struct != NULL)
-    {
-        /* Connecting signals */
-        log_window_connect_signals(main_struct);
-
-        /* Creating a "scroll" mark on the textview */
-        if (main_struct->xmls != NULL && main_struct->xmls->main != NULL)
         {
-            logw_textview = GTK_TEXT_VIEW(heraia_get_widget(main_struct->xmls->main, "logw_textview"));
-            tb = gtk_text_view_get_buffer(logw_textview);
-            gtk_text_buffer_get_end_iter(tb, &iStart);
-            gtk_text_buffer_create_mark (tb, "scroll", &iStart, TRUE);
+            /* Connecting signals */
+            log_window_connect_signals(main_struct);
+
+            /* Creating a "scroll" mark on the textview */
+            if (main_struct->xmls != NULL && main_struct->xmls->main != NULL)
+                {
+                    logw_textview = GTK_TEXT_VIEW(heraia_get_widget(main_struct->xmls->main, "logw_textview"));
+                    tb = gtk_text_view_get_buffer(logw_textview);
+                    gtk_text_buffer_get_end_iter(tb, &iStart);
+                    gtk_text_buffer_create_mark (tb, "scroll", &iStart, TRUE);
+                }
         }
-    }
 }

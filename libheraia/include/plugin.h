@@ -3,7 +3,7 @@
   plugin.h
   heraia - an hexadecimal file editor and analyser based on ghex
 
-  (C) Copyright 2007 Olivier Delhomme
+  (C) Copyright 2007 - 2010 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -47,6 +47,7 @@ typedef enum
     HERAIA_PLUGIN_ACTION = 1,     /**< Action plugin  */
 } PluginType;
 
+
 /**
  *  May indicate the plugin state
  */
@@ -59,6 +60,7 @@ typedef enum
     PLUGIN_STATE_EXITING,
     PLUGIN_STATE_NONE,
 } PluginState;
+
 
 /* plugins functions */
 typedef void (* InitProc)    (heraia_struct_t *);         /* Called once when the plugin is loaded              */
@@ -92,6 +94,7 @@ typedef int PluginPriority;
  */
 /* returns false on error when loading */
 typedef gboolean (* ImportFunction) (const gchar *filename, void *user_data);
+
 
 /* returns false on error when saving  */
 typedef gboolean (* ExportFunction) (const gchar *filename, void *user_data);
@@ -130,6 +133,7 @@ typedef struct
 
 } plugin_info_t;
 
+
 /**
  * @struct heraia_plugin_t
  *  Complete plugin structure.
@@ -154,7 +158,6 @@ typedef struct
     GtkBuilder *xml;             /**< Eventually the plugin's GtkBuilder XML interface                     */
     window_prop_t *win_prop;     /**< Stores the window's properties                                */
 } heraia_plugin_t;
-
 
 
 /* Usefull plugins related functions provided */

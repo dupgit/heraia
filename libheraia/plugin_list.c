@@ -3,7 +3,7 @@
  *  plugin_list.c
  *  manage the plugin_list_window window
  *
- *  (C) Copyright 2007 - 2009 Olivier Delhomme
+ *  (C) Copyright 2007 - 2010 Olivier Delhomme
  *  e-mail : heraia@delhomme.org
  *  URL    : http://heraia.tuxfamily.org
  *
@@ -46,7 +46,8 @@ static void print_plugin_info_structure(GtkTextView *textview, heraia_plugin_t *
 static void print_plugin_extra_structure(GtkTextView *textview, heraia_plugin_t *plugin);
 static void print_plugin_state(GtkTextView *textview, heraia_plugin_t *plugin);
 
-/*** call back function for the plugins_window ***/
+
+/*************** call back function for the plugins_window ********************/
 /**
  * @fn gboolean delete_plw_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
  *  Signal handler called when the user closes the window
@@ -62,6 +63,7 @@ static gboolean delete_plw_window_event(GtkWidget *widget, GdkEvent  *event, gpo
     return TRUE;
 }
 
+
 /**
  * @fn void destroy_plw_window(GtkWidget *widget, GdkEvent  *event, gpointer data)
  * When the window is destroyed (Gtk's doc says that we may never get there)
@@ -73,6 +75,7 @@ static void destroy_plw_window(GtkWidget *widget, GdkEvent  *event, gpointer dat
 {
     plw_close_clicked(widget, data);
 }
+
 
 /**
  * @fn void plw_close_clicked(GtkWidget *widget, gpointer data)
@@ -148,20 +151,20 @@ static void print_plugin_info_structure(GtkTextView *textview, heraia_plugin_t *
         {
             switch (plugin->info->type)
                 {
-                case HERAIA_PLUGIN_UNKNOWN:
-                    add_text_to_textview(textview, "Type        : Unknown\n");
-                    break;
+                    case HERAIA_PLUGIN_UNKNOWN:
+                        add_text_to_textview(textview, "Type        : Unknown\n");
+                        break;
 
-                case HERAIA_PLUGIN_FILTER:
-                    add_text_to_textview(textview, "Type        : Filter\n");
-                    break;
+                    case HERAIA_PLUGIN_FILTER:
+                        add_text_to_textview(textview, "Type        : Filter\n");
+                        break;
 
-                case HERAIA_PLUGIN_ACTION:
-                    add_text_to_textview(textview, "Type        : Action\n");
-                    break;
+                    case HERAIA_PLUGIN_ACTION:
+                        add_text_to_textview(textview, "Type        : Action\n");
+                        break;
 
-                default:
-                    add_text_to_textview(textview, "Type        : Unknown\n");
+                    default:
+                        add_text_to_textview(textview, "Type        : Unknown\n");
                 }
 
             add_text_to_textview(textview, "Priority    : %d\n", plugin->info->priority);
@@ -202,6 +205,7 @@ static void print_plugin_info_structure(GtkTextView *textview, heraia_plugin_t *
             add_text_to_textview(textview, "The 'info' structure is not initialized !\n");
         }
 }
+
 
 /**
  * @fn void print_plugin_functions(GtkTextView *textview, heraia_plugin_t *plugin)
@@ -245,6 +249,7 @@ static void print_plugin_functions(GtkTextView *textview, heraia_plugin_t *plugi
         }
 }
 
+
 /**
  * @fn void print_plugin_filter_structure(GtkTextView *textview, heraia_plugin_t *plugin)
  *  adds to the textview the relevant informations about the plugin filter structure !
@@ -281,6 +286,7 @@ static void print_plugin_filter_structure(GtkTextView *textview, heraia_plugin_t
         }
 }
 
+
 /**
  * @fn void print_plugin_interface(GtkTextView *textview, heraia_plugin_t *plugin)
  *  adds to the textview the relevant informations about the plugin interface (xml) !
@@ -309,6 +315,7 @@ static void print_plugin_interface(GtkTextView *textview, heraia_plugin_t *plugi
             add_text_to_textview(textview, "  - no xml interface.\n");
         }
 }
+
 
 /**
  * @fn void print_plugin_basics(GtkTextView *textview, heraia_plugin_t *plugin)
@@ -343,6 +350,7 @@ static void print_plugin_basics(GtkTextView *textview, heraia_plugin_t *plugin)
         }
 }
 
+
 /**
  * @fn void print_plugin_extra_structure(GtkTextView *textview, heraia_plugin_t *plugin)
  *  adds to the textview the relevant informations about the plugin extra structure !
@@ -364,6 +372,7 @@ static void print_plugin_extra_structure(GtkTextView *textview, heraia_plugin_t 
 
 }
 
+
 /**
  * @fn void print_plugin_state(GtkTextView *textview, heraia_plugin_t *plugin)
  *  adds to the textview the relevant informations about the plugin state !
@@ -376,33 +385,34 @@ static void print_plugin_state(GtkTextView *textview, heraia_plugin_t *plugin)
     add_text_to_textview(textview, "Plugin's state : ");
     switch (plugin->state)
         {
-        case PLUGIN_STATE_RUNNING:
-            add_text_to_textview(textview, "Running\n");
-            break;
+            case PLUGIN_STATE_RUNNING:
+                add_text_to_textview(textview, "Running\n");
+                break;
 
-        case PLUGIN_STATE_INITIALIZING:
-            add_text_to_textview(textview, "Initialiazing or initialized\n");
-            break;
-        case PLUGIN_STATE_LOADED:
-            add_text_to_textview(textview, "Loaded\n");
-            break;
+            case PLUGIN_STATE_INITIALIZING:
+                add_text_to_textview(textview, "Initialiazing or initialized\n");
+                break;
+            case PLUGIN_STATE_LOADED:
+                add_text_to_textview(textview, "Loaded\n");
+                break;
 
-        case PLUGIN_STATE_NEW:
-            add_text_to_textview(textview, "Creating itself\n");
-            break;
+            case PLUGIN_STATE_NEW:
+                add_text_to_textview(textview, "Creating itself\n");
+                break;
 
-        case PLUGIN_STATE_EXITING:
-            add_text_to_textview(textview, "Exiting\n");
-            break;
+            case PLUGIN_STATE_EXITING:
+                add_text_to_textview(textview, "Exiting\n");
+                break;
 
-        case PLUGIN_STATE_NONE:
-            add_text_to_textview(textview, "Waiting\n");
-            break;
+            case PLUGIN_STATE_NONE:
+                add_text_to_textview(textview, "Waiting\n");
+                break;
 
-        default:
-            add_text_to_textview(textview, "Unknown\n");
+            default:
+                add_text_to_textview(textview, "Unknown\n");
         }
 }
+
 
 /**
  * @fn void pn_treeview_selection_changed_cb(GtkTreeSelection *selection, gpointer data)
@@ -446,6 +456,7 @@ static void pn_treeview_selection_changed_cb(GtkTreeSelection *selection, gpoint
         }
 }
 
+
 /**
  * In case of a double click on a plugin name in the treeview
  * @param treeview : concerned treeview's widget
@@ -466,26 +477,24 @@ static void pn_treeview_double_click(GtkTreeView *treeview, GtkTreePath *path, G
     model = gtk_tree_view_get_model(treeview);
 
     if (gtk_tree_model_get_iter(model, &iter, path))
-    {
-        gtk_tree_model_get(model, &iter, PNTV_COLUMN_NAME, &plugin_name, -1);
-        plugin = find_plugin_by_name(main_struct->plugins_list, plugin_name);
-
-        if (plugin != NULL)
         {
-            active = gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(plugin->cmi_entry));
+            gtk_tree_model_get(model, &iter, PNTV_COLUMN_NAME, &plugin_name, -1);
+            plugin = find_plugin_by_name(main_struct->plugins_list, plugin_name);
 
-            if (active == FALSE)
+            if (plugin != NULL)
                 {
-                    gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(plugin->cmi_entry), TRUE);
-                    plugin->run_proc(GTK_WIDGET(treeview), main_struct);
+                    active = gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(plugin->cmi_entry));
+
+                    if (active == FALSE)
+                        {
+                            gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(plugin->cmi_entry), TRUE);
+                            plugin->run_proc(GTK_WIDGET(treeview), main_struct);
+                        }
                 }
         }
-    }
 }
+/********** End of callback functions that handle the plugins window **********/
 
-
-
-/*** End of callback functions that handle the plugins window ***/
 
 /**
  * @fn void plugin_list_window_connect_signals(heraia_struct_t *main_struct)
@@ -527,6 +536,7 @@ static void plugin_list_window_connect_signals(heraia_struct_t *main_struct)
                              G_CALLBACK(plw_refresh_clicked), main_struct);
         }
 }
+
 
 /**
  * @fn void init_plugin_name_tv(heraia_struct_t *main_struct)

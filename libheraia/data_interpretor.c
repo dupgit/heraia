@@ -3,7 +3,7 @@
   data_interpretor.c
   heraia - an hexadecimal file editor and analyser based on ghex
 
-  (C) Copyright 2005 - 2009 Olivier Delhomme
+  (C) Copyright 2005 - 2010 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -35,6 +35,7 @@ static void refresh_one_row(doc_t *doc, decode_generic_t *row,  guint nb_cols, d
 static void refresh_one_tab(doc_t *doc, data_window_t *dw, tab_t *tab, decode_parameters_t *decode_parameters);
 static void refresh_all_tabs(doc_t *doc, data_window_t *dw, decode_parameters_t *decode_parameters);
 static void add_default_tabs(heraia_struct_t *main_struct);
+
 
 /**
  * @fn guint which_endianness(heraia_struct_t *main_struct)
@@ -138,13 +139,14 @@ static void interpret(doc_t *doc, decode_t *decode_struct, decode_parameters_t *
     else
         {
             if (decode_struct->err_msg != NULL)
-            {
-                text = g_strdup_printf(decode_struct->err_msg, length);
-            }
+                {
+                    text = g_strdup_printf(decode_struct->err_msg, length);
+                }
             else
-            {
-                text = g_strdup_printf("Cannot interpret as a %d byte(s)", length);
-            }
+                {
+                    text = g_strdup_printf("Cannot interpret as a %d byte(s)", length);
+                }
+
             gtk_entry_set_text(GTK_ENTRY(decode_struct->entry), text);
         }
 
@@ -187,18 +189,19 @@ static void refresh_one_row(doc_t *doc, decode_generic_t *row,  guint nb_cols, d
     guint i = 0 ;
 
     while ( i < nb_cols)
-    {
-        decode = g_ptr_array_index(row->decode_array, i);
-
-        if (row->fixed_size == FALSE)
         {
-            row->data_size = decode_parameters->stream_size;
-        }
+            decode = g_ptr_array_index(row->decode_array, i);
 
-        interpret(doc, decode, decode_parameters, row->data_size);
-        i++;
-    }
+            if (row->fixed_size == FALSE)
+                {
+                    row->data_size = decode_parameters->stream_size;
+                }
+
+            interpret(doc, decode, decode_parameters, row->data_size);
+            i++;
+        }
 }
+
 
 /**
  * This function refreshes one entire tab (row by row)
@@ -213,12 +216,13 @@ static void refresh_one_tab(doc_t *doc, data_window_t *dw, tab_t *tab, decode_pa
     guint i = 0;
 
     while (i < tab->nb_rows)
-    {
-        row = g_ptr_array_index(tab->rows, i);
-        refresh_one_row(doc, row, tab->nb_cols-1, decode_parameters);
-        i++;
-    }
+        {
+            row = g_ptr_array_index(tab->rows, i);
+            refresh_one_row(doc, row, tab->nb_cols-1, decode_parameters);
+            i++;
+        }
 }
+
 
 /**
  * Refreshes all tabs
@@ -232,13 +236,14 @@ static void refresh_all_tabs(doc_t *doc, data_window_t *dw, decode_parameters_t 
     guint i = 0;
 
     while (i < dw->nb_tabs)
-    {
-        tab = g_ptr_array_index(dw->tabs, i);
-        refresh_one_tab(doc, dw, tab, decode_parameters);
-        i++;
-    }
+        {
+            tab = g_ptr_array_index(dw->tabs, i);
+            refresh_one_tab(doc, dw, tab, decode_parameters);
+            i++;
+        }
 
 }
+
 
 /**
  * @fn void refresh_data_interpretor_window(GtkWidget *widget, gpointer data)
@@ -306,6 +311,7 @@ static void connect_data_interpretor_signals(heraia_struct_t *main_struct)
 
 }
 
+
 /**
  * @fn void data_interpretor_init_interface(heraia_struct_t *main_struct)
  *  Inits the data interpretor structure and window with default values
@@ -331,6 +337,7 @@ void data_interpretor_init_interface(heraia_struct_t *main_struct)
                 }
         }
 }
+
 
 /**
  * Adds a new tab in the data interpretor window
@@ -360,13 +367,13 @@ tab_t *add_new_tab_in_data_interpretor(GtkNotebook *notebook, guint index, gchar
 
     va_start(args, nb_cols);
     for (i = 0 ; i < nb_cols ; i++)
-    {
-        col_label = (gchar *) va_arg(args, int);
-        vbox_label = gtk_label_new(col_label);
-        gtk_misc_set_padding(GTK_MISC(vbox_label), 3, 3);       /* properties for the labels */
-        gtk_misc_set_alignment(GTK_MISC(vbox_label), 0.5, 0.5);
-        g_ptr_array_add(col_labels, (gpointer) vbox_label);
-    }
+        {
+            col_label = (gchar *) va_arg(args, int);
+            vbox_label = gtk_label_new(col_label);
+            gtk_misc_set_padding(GTK_MISC(vbox_label), 3, 3);       /* properties for the labels */
+            gtk_misc_set_alignment(GTK_MISC(vbox_label), 0.5, 0.5);
+            g_ptr_array_add(col_labels, (gpointer) vbox_label);
+        }
     va_end(args);
 
     tab = (tab_t *) g_malloc0(sizeof(tab_t));
@@ -384,19 +391,19 @@ tab_t *add_new_tab_in_data_interpretor(GtkNotebook *notebook, guint index, gchar
 
     i++;
     while (i < nb_cols-1)
-    {
-        hpaned2 = gtk_hpaned_new();
-        gtk_container_set_border_width(GTK_CONTAINER(hpaned2), 2); /* properties for the hpaned */
-        gtk_paned_add2(GTK_PANED(hpaned), hpaned2);
-        hpaned = hpaned2;                  /* translation */
-        vbox = gtk_vbox_new(FALSE, 2);
-        gtk_box_set_homogeneous(GTK_BOX(vbox), FALSE);
-        g_ptr_array_add(vboxes, (gpointer) vbox);
-        gtk_paned_add1(GTK_PANED(hpaned), vbox);
-        vbox_label = g_ptr_array_index(col_labels, i);
-        gtk_box_pack_start(GTK_BOX(vbox), vbox_label, FALSE, FALSE, 3);
-        i++;
-    }
+        {
+            hpaned2 = gtk_hpaned_new();
+            gtk_container_set_border_width(GTK_CONTAINER(hpaned2), 2); /* properties for the hpaned */
+            gtk_paned_add2(GTK_PANED(hpaned), hpaned2);
+            hpaned = hpaned2;                  /* translation */
+            vbox = gtk_vbox_new(FALSE, 2);
+            gtk_box_set_homogeneous(GTK_BOX(vbox), FALSE);
+            g_ptr_array_add(vboxes, (gpointer) vbox);
+            gtk_paned_add1(GTK_PANED(hpaned), vbox);
+            vbox_label = g_ptr_array_index(col_labels, i);
+            gtk_box_pack_start(GTK_BOX(vbox), vbox_label, FALSE, FALSE, 3);
+            i++;
+        }
 
     vbox = gtk_vbox_new(FALSE, 2);
     g_ptr_array_add(vboxes, (gpointer) vbox);
@@ -421,6 +428,7 @@ tab_t *add_new_tab_in_data_interpretor(GtkNotebook *notebook, guint index, gchar
     return tab;
 }
 
+
 /**
  * Adds a row to a particular tab
  * @param tab : the tab to which we want to add the row
@@ -434,34 +442,35 @@ void add_new_row_to_tab(tab_t *tab, decode_generic_t *row)
     guint j = 0;
 
     if (tab != NULL && row != NULL)
-    {
-
-        if (tab->rows == NULL)
         {
-            tab->rows = g_ptr_array_new();
+
+            if (tab->rows == NULL)
+                {
+                    tab->rows = g_ptr_array_new();
+                }
+
+            g_ptr_array_add(tab->rows, (gpointer) row);
+            tab->nb_rows++;
+
+            /* label packing */
+            vbox = g_ptr_array_index(tab->vboxes, 0);
+            gtk_box_pack_start(GTK_BOX(vbox), row->label, FALSE, FALSE, 3);
+
+            j = 0;
+            i = 1;
+
+            while (i <  tab->nb_cols)
+                {
+                    vbox = g_ptr_array_index(tab->vboxes, i);
+                    couple = g_ptr_array_index(row->decode_array, j);
+                    gtk_box_pack_start(GTK_BOX(vbox), couple->entry, FALSE, FALSE, 1);
+                    gtk_widget_show(couple->entry);
+                    j++;
+                    i++;
+                }
         }
-
-        g_ptr_array_add(tab->rows, (gpointer) row);
-        tab->nb_rows++;
-
-        /* label packing */
-        vbox = g_ptr_array_index(tab->vboxes, 0);
-        gtk_box_pack_start(GTK_BOX(vbox), row->label, FALSE, FALSE, 3);
-
-        j = 0;
-        i = 1;
-
-        while (i <  tab->nb_cols)
-        {
-            vbox = g_ptr_array_index(tab->vboxes, i);
-            couple = g_ptr_array_index(row->decode_array, j);
-            gtk_box_pack_start(GTK_BOX(vbox), couple->entry, FALSE, FALSE, 1);
-            gtk_widget_show(couple->entry);
-            j++;
-            i++;
-        }
-    }
 }
+
 
 /**
  * Inits data interpretor with default tabs
@@ -484,61 +493,61 @@ static void add_default_tabs(heraia_struct_t *main_struct)
     tab = add_new_tab_in_data_interpretor(GTK_NOTEBOOK(notebook), 0, "Numbers", 3, "Length", "Value unsigned", "Value signed");
 
     if (tab != NULL)
-    {
-        g_ptr_array_add(dw->tabs, (gpointer) tab);
-        dw->nb_tabs++;
-        row = new_decode_generic_t("8 bits", 1, TRUE, "Can not interpret %d byte as a 8 bits number", 2,  decode_8bits_unsigned, decode_8bits_signed);
-        add_new_row_to_tab(tab, row);
-        row = new_decode_generic_t("16 bits", 2, TRUE, "Can not interpret %d bytes as a 16 bits number", 2, decode_16bits_unsigned, decode_16bits_signed);
-        add_new_row_to_tab(tab, row);
-        row = new_decode_generic_t("32 bits", 4, TRUE, "Can not interpret %d bytes as a 32 bits number", 2, decode_32bits_unsigned, decode_32bits_signed);
-        add_new_row_to_tab(tab, row);
-        row = new_decode_generic_t("64 bits", 8, TRUE, "Can not interpret %d bytes as a 64 bits number", 2, decode_64bits_unsigned, decode_64bits_signed);
-        add_new_row_to_tab(tab, row);
-    }
+        {
+            g_ptr_array_add(dw->tabs, (gpointer) tab);
+            dw->nb_tabs++;
+            row = new_decode_generic_t("8 bits", 1, TRUE, "Can not interpret %d byte as a 8 bits number", 2,  decode_8bits_unsigned, decode_8bits_signed);
+            add_new_row_to_tab(tab, row);
+            row = new_decode_generic_t("16 bits", 2, TRUE, "Can not interpret %d bytes as a 16 bits number", 2, decode_16bits_unsigned, decode_16bits_signed);
+            add_new_row_to_tab(tab, row);
+            row = new_decode_generic_t("32 bits", 4, TRUE, "Can not interpret %d bytes as a 32 bits number", 2, decode_32bits_unsigned, decode_32bits_signed);
+            add_new_row_to_tab(tab, row);
+            row = new_decode_generic_t("64 bits", 8, TRUE, "Can not interpret %d bytes as a 64 bits number", 2, decode_64bits_unsigned, decode_64bits_signed);
+            add_new_row_to_tab(tab, row);
+        }
 
     /** Adding a tab for floting numbers */
     tab = add_new_tab_in_data_interpretor(GTK_NOTEBOOK(notebook), 0, "Floats", 3, "Length", "Normal Notation", "Exponential notation");
 
     if (tab != NULL)
-    {
-        g_ptr_array_add(dw->tabs, (gpointer) tab);
-        dw->nb_tabs++;
-        row = new_decode_generic_t("Float (32 bits)", 4, TRUE, "Can not interpret %d bytes as a float number", 2, decode_float_normal, decode_float_scientific);
-        add_new_row_to_tab(tab, row);
-        row = new_decode_generic_t("Double (64 bits)", 8, TRUE, "Can not interpret %d bytes as a double number", 2, decode_double_normal, decode_double_scientific);
-        add_new_row_to_tab(tab, row);
-    }
+        {
+            g_ptr_array_add(dw->tabs, (gpointer) tab);
+            dw->nb_tabs++;
+            row = new_decode_generic_t("Float (32 bits)", 4, TRUE, "Can not interpret %d bytes as a float number", 2, decode_float_normal, decode_float_scientific);
+            add_new_row_to_tab(tab, row);
+            row = new_decode_generic_t("Double (64 bits)", 8, TRUE, "Can not interpret %d bytes as a double number", 2, decode_double_normal, decode_double_scientific);
+            add_new_row_to_tab(tab, row);
+        }
 
     /** Adding a tab for date and time */
     tab = add_new_tab_in_data_interpretor(GTK_NOTEBOOK(notebook), 2, "Dates and Times", 2, "Type", "Value");
 
     if (tab != NULL)
-    {
-        g_ptr_array_add(dw->tabs, (gpointer) tab);
-        dw->nb_tabs++;
-        row = new_decode_generic_t("MS-DOS", 4, TRUE, "Can not interpret %d bytes as a DOS date", 1, decode_dos_date);
-        add_new_row_to_tab(tab, row);
-        row = new_decode_generic_t("Filetime", 8, TRUE,  "Can not interpret %d bytes as a filetime date", 1, decode_filetime_date);
-        add_new_row_to_tab(tab, row);
-        row = new_decode_generic_t("C", 4, TRUE, "Can not interpret %d bytes as a C date", 1, decode_C_date);
-        add_new_row_to_tab(tab, row);
-        row = new_decode_generic_t("HFS", 4, TRUE, "Can not interpret %d bytes as a HFS date",  1, decode_HFS_date);
-        add_new_row_to_tab(tab, row);
-    }
+        {
+            g_ptr_array_add(dw->tabs, (gpointer) tab);
+            dw->nb_tabs++;
+            row = new_decode_generic_t("MS-DOS", 4, TRUE, "Can not interpret %d bytes as a DOS date", 1, decode_dos_date);
+            add_new_row_to_tab(tab, row);
+            row = new_decode_generic_t("Filetime", 8, TRUE,  "Can not interpret %d bytes as a filetime date", 1, decode_filetime_date);
+            add_new_row_to_tab(tab, row);
+            row = new_decode_generic_t("C", 4, TRUE, "Can not interpret %d bytes as a C date", 1, decode_C_date);
+            add_new_row_to_tab(tab, row);
+            row = new_decode_generic_t("HFS", 4, TRUE, "Can not interpret %d bytes as a HFS date",  1, decode_HFS_date);
+            add_new_row_to_tab(tab, row);
+        }
 
     /** Adding a tab for binary based conversions */
     tab = add_new_tab_in_data_interpretor(GTK_NOTEBOOK(notebook), 3, "Binary based", 2, "Type", "Value");
 
     if (tab != NULL)
-    {
-        g_ptr_array_add(dw->tabs, (gpointer) tab);
-        dw->nb_tabs++;
-        row = new_decode_generic_t("Bits", 1, FALSE, "Can not decode %d byte(s) to bits", 1, decode_to_bits);
-        add_new_row_to_tab(tab, row);
-        row = new_decode_generic_t("Packed BCD", 1, FALSE, "Can not interpret %d byte(s) as packed BCD string",  1, decode_packed_BCD);
-        add_new_row_to_tab(tab, row);
-    }
+        {
+            g_ptr_array_add(dw->tabs, (gpointer) tab);
+            dw->nb_tabs++;
+            row = new_decode_generic_t("Bits", 1, FALSE, "Can not decode %d byte(s) to bits", 1, decode_to_bits);
+            add_new_row_to_tab(tab, row);
+            row = new_decode_generic_t("Packed BCD", 1, FALSE, "Can not interpret %d byte(s) as packed BCD string",  1, decode_packed_BCD);
+            add_new_row_to_tab(tab, row);
+        }
 }
 
 

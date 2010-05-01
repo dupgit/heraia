@@ -4,7 +4,7 @@
   an heraia plugin to calculate some stats on the opened file
   done as an example
 
-  (C) Copyright 2007 - 2009 Olivier Delhomme
+  (C) Copyright 2007 - 2010 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -22,7 +22,10 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
-
+/**
+ * @file stat.h
+ * Contains everything needed from stat.c : structures and defines
+ */
 #ifndef _PLUGIN_STAT_H_
 #define _PLUGIN_STAT_H_
 

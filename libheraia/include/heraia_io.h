@@ -3,7 +3,7 @@
   heraia_io.h
   heraia_io.h - input and output functions for heraia
 
-  (C) Copyright 2005 - 2009 Olivier Delhomme
+  (C) Copyright 2005 - 2010 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 

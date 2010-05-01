@@ -3,7 +3,7 @@
  *  heraia.c
  *  heraia - an hexadecimal file editor and analyser based on ghex
  *
- *  (C) Copyright 2005 - 2009 Olivier Delhomme
+ *  (C) Copyright 2005 - 2010 Olivier Delhomme
  *  e-mail : heraia@delhomme.org
  *  URL    : http://heraia.tuxfamily.org
  *
@@ -34,7 +34,9 @@
  * @date 2005-2010
  */
 
+
 #include "heraia_types.h"
+
 
 static gboolean version(void);
 static gboolean usage(int status);
@@ -62,6 +64,7 @@ heraia_struct_t *get_main_struct(void)
 {
     return libheraia_main_struct;
 }
+
 
 /**
  *  prints program name, version, author, date and licence
@@ -237,7 +240,6 @@ static heraia_struct_t *heraia_init_main_struct(void)
 }
 
 
-
 /**
  *  Function that initializes the plugin system if any :
  *   - loads any plugin where expected to be found
@@ -267,6 +269,7 @@ static HERAIA_ERROR init_heraia_plugin_system(heraia_struct_t *main_struct)
             return HERAIA_NO_PLUGINS;
         }
 }
+
 
 /**
  *  Here we want to init the location list where we might look for
@@ -321,6 +324,7 @@ static GList *init_heraia_location_list(void)
     return location_list;
 }
 
+
 /**
  *  Inits internationalisation (don't know wether it works or not!)
  */
@@ -332,7 +336,6 @@ static void init_international_languages(void)
   bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
   textdomain(GETTEXT_PACKAGE);
 }
-
 
 
 /**
@@ -368,6 +371,7 @@ static gboolean do_heraia_coverage_tests(heraia_struct_t *main_struct)
     return TRUE;
 }
 
+
 /**
  * Does some loading tests in heraia
  * @param main_struct : main structure (heraia_struct_t *)
@@ -375,10 +379,8 @@ static gboolean do_heraia_coverage_tests(heraia_struct_t *main_struct)
  */
 static gboolean do_heraia_loading_tests(heraia_struct_t *main_struct)
 {
-
     return TRUE;
 }
-
 
 
 /**
@@ -400,42 +402,42 @@ static gboolean manage_command_line_options(Options *opt, int argc, char **argv)
         {
             switch (c)
                 {
-                case 0:         /* long options handler */
-                    break;
+                    case 0:         /* long options handler */
+                        break;
 
-                case 'v':
-                    exit_value = version();
-                    opt->usage = TRUE;  /* We do not want to continue after */
-                    break;
+                    case 'v':
+                        exit_value = version();
+                        opt->usage = TRUE;  /* We do not want to continue after */
+                        break;
 
-                case 'h':
-                    exit_value = usage(1);
-                    opt->usage = TRUE;
-                    break;
+                    case 'h':
+                        exit_value = usage(1);
+                        opt->usage = TRUE;
+                        break;
 
-                case 't':
-                    if (optarg)
-                        {
-                            if (sscanf(optarg, "%d", &tests) < 1)
-                                {
-                                    /* Tests done by default */
-                                    opt->tests = COVERAGE_TESTS;
-                                }
-                            else
-                                {
-                                    opt->tests = tests;
-                                }
-                        }
-                    else
-                        {
-                            opt->tests = COVERAGE_TESTS;
-                        }
-                     exit_value = TRUE;
-                    break;
+                    case 't':
+                        if (optarg)
+                            {
+                                if (sscanf(optarg, "%d", &tests) < 1)
+                                    {
+                                        /* Tests done by default */
+                                        opt->tests = COVERAGE_TESTS;
+                                    }
+                                else
+                                    {
+                                        opt->tests = tests;
+                                    }
+                            }
+                        else
+                            {
+                                opt->tests = COVERAGE_TESTS;
+                            }
+                         exit_value = TRUE;
+                        break;
 
-                default:
-                    exit_value = usage(0);
-                    opt->usage = TRUE;
+                    default:
+                        exit_value = usage(0);
+                        opt->usage = TRUE;
                 }
         }
 
@@ -449,6 +451,7 @@ static gboolean manage_command_line_options(Options *opt, int argc, char **argv)
 
     return exit_value;
 }
+
 
 /**
  * Inits the Options struct that contains all
@@ -469,6 +472,7 @@ static Options *init_options_struct(void)
 
     return opt;
 }
+
 
 /**
  *  main program
@@ -525,10 +529,10 @@ int main(int argc, char **argv)
                         {
                             list = g_list_first(opt->filenames);
                             while (list != NULL)
-                            {
-                                load_file_to_analyse(main_struct, list->data);
-                                list = g_list_next(list);
-                            }
+                                {
+                                    load_file_to_analyse(main_struct, list->data);
+                                    list = g_list_next(list);
+                                }
                         }
 
                     log_message(main_struct, G_LOG_LEVEL_DEBUG, "main_struct : %p", main_struct);

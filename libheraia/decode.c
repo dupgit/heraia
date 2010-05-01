@@ -3,7 +3,7 @@
   decode.c
   Heraia's library decode.c
 
-  (C) Copyright 2008 - 2009 Sébastien Tricaud, Olivier Delhomme
+  (C) Copyright 2008 - 2010 Sébastien Tricaud, Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -38,6 +38,7 @@ static void which_year_month_day(date_and_time_t *mydate, guint32 days, guint32 
 static void make_date_and_time(date_and_time_t *mydate, guchar *data, guint8 len, guint64 nbticks, guint32 base_year, guint base_month, guint8 base_day);
 static void transform_bcd_to_human(gchar *bcd, guint8 part, guint8 part_number);
 
+
 /**
  *  General purpose of this function is to take a 1 byte data stream
  *  and convert it as if it is an 8 bits signed number
@@ -47,17 +48,17 @@ static void transform_bcd_to_human(gchar *bcd, guint8 part, guint8 part_number);
  */
 gchar *decode_8bits_signed(guchar *data, gpointer data_struct)
 {
-	gint8 total = 0;
+    gint8 total = 0;
 
-	if (data == NULL)
-		{
-			return NULL;
-		}
-	else
-		{
-			memcpy(&total, data, sizeof (guchar));
-			return g_strdup_printf("%d", total);
-		}
+    if (data == NULL)
+        {
+            return NULL;
+        }
+    else
+        {
+            memcpy(&total, data, sizeof (guchar));
+            return g_strdup_printf("%d", total);
+        }
 }
 
 
@@ -70,19 +71,18 @@ gchar *decode_8bits_signed(guchar *data, gpointer data_struct)
 */
 gchar *decode_8bits_unsigned(guchar *data, gpointer data_struct)
 {
-	guint8 total = 0;
+    guint8 total = 0;
 
-	if (data == NULL)
-		{
-			return NULL;
-		}
-	else
-		{
-			memcpy(&total, data, sizeof (guchar));
-			return g_strdup_printf("%u", total);
-		}
+    if (data == NULL)
+        {
+            return NULL;
+        }
+    else
+        {
+            memcpy(&total, data, sizeof (guchar));
+            return g_strdup_printf("%u", total);
+        }
 }
-
 
 
 /**
@@ -94,17 +94,17 @@ gchar *decode_8bits_unsigned(guchar *data, gpointer data_struct)
  */
 gchar *decode_16bits_signed(guchar *data, gpointer data_struct)
 {
-	gint16 total = 0;
+    gint16 total = 0;
 
-	if (data == NULL)
-		{
-			return NULL;
-		}
-	else
-		{
-			memcpy(&total, data, 2 * sizeof (guchar));
-			return g_strdup_printf("%d", total);
-		}
+    if (data == NULL)
+        {
+            return NULL;
+        }
+    else
+        {
+            memcpy(&total, data, 2 * sizeof (guchar));
+            return g_strdup_printf("%d", total);
+        }
 }
 
 
@@ -117,17 +117,17 @@ gchar *decode_16bits_signed(guchar *data, gpointer data_struct)
  */
 gchar *decode_16bits_unsigned(guchar *data, gpointer data_struct)
 {
-	guint16 total = 0;
+    guint16 total = 0;
 
-	if (data == NULL)
-		{
-			return NULL;
-		}
-	else
-		{
-			memcpy(&total, data, 2 * sizeof (guchar));
-			return g_strdup_printf("%u", total);
-		}
+    if (data == NULL)
+        {
+            return NULL;
+        }
+    else
+        {
+            memcpy(&total, data, 2 * sizeof (guchar));
+            return g_strdup_printf("%u", total);
+        }
 }
 
 
@@ -140,17 +140,17 @@ gchar *decode_16bits_unsigned(guchar *data, gpointer data_struct)
 */
 gchar *decode_32bits_signed(guchar *data, gpointer data_struct)
 {
-	gint32 total = 0;
+    gint32 total = 0;
 
-	if (data == NULL)
-		{
-			return NULL;
-		}
-	else
-		{
-			memcpy(&total, data, 4 * sizeof (guchar));
-			return g_strdup_printf("%d", total);
-		}
+    if (data == NULL)
+        {
+            return NULL;
+        }
+    else
+        {
+            memcpy(&total, data, 4 * sizeof (guchar));
+            return g_strdup_printf("%d", total);
+        }
 }
 
 
@@ -163,18 +163,19 @@ gchar *decode_32bits_signed(guchar *data, gpointer data_struct)
 */
 gchar *decode_32bits_unsigned(guchar *data, gpointer data_struct)
 {
-	guint32 total = 0;
+    guint32 total = 0;
 
-	if (data == NULL)
-		{
-			return NULL;
-		}
-	else
-		{
-			memcpy(&total, data, 4 * sizeof (guchar));
-			return g_strdup_printf("%u", total);
-		}
+    if (data == NULL)
+        {
+            return NULL;
+        }
+    else
+        {
+            memcpy(&total, data, 4 * sizeof (guchar));
+            return g_strdup_printf("%u", total);
+        }
 }
+
 
 /**
  *  general purpose of this function is to take a 8 byte data stream
@@ -185,17 +186,17 @@ gchar *decode_32bits_unsigned(guchar *data, gpointer data_struct)
 */
 gchar *decode_64bits_signed(guchar *data, gpointer data_struct)
 {
-	gint64 total = 0;
+    gint64 total = 0;
 
-	if (data == NULL)
-		{
-			return NULL;
-		}
-	else
-		{
-			memcpy(&total, data, 8 * sizeof (guchar));
-			return g_strdup_printf("%lld", total);
-		}
+    if (data == NULL)
+        {
+            return NULL;
+        }
+    else
+        {
+            memcpy(&total, data, 8 * sizeof (guchar));
+            return g_strdup_printf("%lld", total);
+        }
 }
 
 
@@ -208,17 +209,17 @@ gchar *decode_64bits_signed(guchar *data, gpointer data_struct)
 */
 gchar *decode_64bits_unsigned(guchar *data, gpointer data_struct)
 {
-	guint64 total = 0;
+    guint64 total = 0;
 
-	if (data == NULL)
-		{
-			return NULL;
-		}
-	else
-		{
-			memcpy(&total, data, 8 * sizeof (guchar));
-			return g_strdup_printf("%llu", total);
-		}
+    if (data == NULL)
+        {
+            return NULL;
+        }
+    else
+        {
+            memcpy(&total, data, 8 * sizeof (guchar));
+            return g_strdup_printf("%llu", total);
+        }
 }
 
 
@@ -231,18 +232,19 @@ gchar *decode_64bits_unsigned(guchar *data, gpointer data_struct)
 */
 gchar *decode_float_normal(guchar *data, gpointer data_struct)
 {
-	gfloat total = 0.0;
+    gfloat total = 0.0;
 
-	if (data == NULL)
-		{
-			return NULL;
-		}
-	else
-		{
-			memcpy(&total, data, 4 * sizeof (guchar));
-			return g_strdup_printf("%f", total);
-		}
+    if (data == NULL)
+        {
+            return NULL;
+        }
+    else
+        {
+            memcpy(&total, data, 4 * sizeof (guchar));
+            return g_strdup_printf("%f", total);
+        }
 }
+
 
 /**
  *  general purpose of this function is to take a 4 byte data stream
@@ -253,18 +255,19 @@ gchar *decode_float_normal(guchar *data, gpointer data_struct)
 */
 gchar *decode_float_scientific(guchar *data, gpointer data_struct)
 {
-	gfloat total = 0.0;
+    gfloat total = 0.0;
 
-	if (data == NULL)
-		{
-			return NULL;
-		}
-	else
-		{
-			memcpy(&total, data, 4 * sizeof (guchar));
-			return g_strdup_printf("%g", total);
-		}
+    if (data == NULL)
+        {
+            return NULL;
+        }
+    else
+        {
+            memcpy(&total, data, 4 * sizeof (guchar));
+            return g_strdup_printf("%g", total);
+        }
 }
+
 
 /**
  *  general purpose of this function is to take a 8 byte data stream
@@ -275,18 +278,19 @@ gchar *decode_float_scientific(guchar *data, gpointer data_struct)
 */
 gchar *decode_double_normal(guchar *data, gpointer data_struct)
 {
-	gdouble total = 0.0;
+    gdouble total = 0.0;
 
-	if (data == NULL)
-		{
-			return NULL;
-		}
-	else
-		{
-			memcpy(&total, data, 8 * sizeof (guchar));
-			return g_strdup_printf("%f", total);
-		}
+    if (data == NULL)
+        {
+            return NULL;
+        }
+    else
+        {
+            memcpy(&total, data, 8 * sizeof (guchar));
+            return g_strdup_printf("%f", total);
+        }
 }
+
 
 /**
  *  general purpose of this function is to take a 8 byte data stream
@@ -297,19 +301,18 @@ gchar *decode_double_normal(guchar *data, gpointer data_struct)
 */
 gchar *decode_double_scientific(guchar *data, gpointer data_struct)
 {
-	gdouble total = 0.0;
+    gdouble total = 0.0;
 
-	if (data == NULL)
-		{
-			return NULL;
-		}
-	else
-		{
-			memcpy(&total, data, 8 * sizeof (guchar));
-			return g_strdup_printf("%g", total);
-		}
+    if (data == NULL)
+        {
+            return NULL;
+        }
+    else
+        {
+            memcpy(&total, data, 8 * sizeof (guchar));
+            return g_strdup_printf("%g", total);
+        }
 }
-
 
 
 /**
@@ -319,28 +322,28 @@ gchar *decode_double_scientific(guchar *data, gpointer data_struct)
  */
 static gboolean bissextile_year(guint32 year)
 {
-	if ((year % 4) == 0)
-		{
-			if ((year % 100) == 0)
-				{
-					if ((year % 400) == 0)
-						{
-							return TRUE;
-						}
-					else
-						{
-							return FALSE;
-						}
-				}
-			else
-				{
-					return TRUE;
-				}
-		}
-	else
-		{
-			return FALSE;
-		}
+    if ((year % 4) == 0)
+        {
+            if ((year % 100) == 0)
+                {
+                    if ((year % 400) == 0)
+                        {
+                            return TRUE;
+                        }
+                    else
+                        {
+                            return FALSE;
+                        }
+                }
+            else
+                {
+                    return TRUE;
+                }
+        }
+    else
+        {
+            return FALSE;
+        }
 }
 
 
@@ -348,29 +351,30 @@ static gboolean bissextile_year(guint32 year)
  *  Says, from a number of days (eg 154), which month it is (eg  may)
  *  and which day in the corresponding month (eg 2 (leap year) or 3)
  *  @param[out] mydate : Filled date structure
- *	@param day : guint32 representing the number of day in the year (1..365/366)
+ *  @param day : guint32 representing the number of day in the year (1..365/366)
  *  @param tab_ns_months : an array filled with the cumulative number of days for each month (31 to 365/366)
  */
 static void calc_which_month_day(date_and_time_t *mydate, guint32 day, guint tab_ns_months[12])
 {
-	gushort i = 0;
+    gushort i = 0;
 
-	while (i<12 && day > tab_ns_months[i])
-		{
-			i++;
-		}
+    while (i<12 && day > tab_ns_months[i])
+        {
+            i++;
+        }
 
-	mydate->month = i + 1;
+    mydate->month = i + 1;
 
-	if (i == 0)
-		{
-			mydate->day = 1 + day;
-		}
-	else
-		{
-			mydate->day = (1 + day) - tab_ns_months[i-1];
-		}
+    if (i == 0)
+        {
+            mydate->day = 1 + day;
+        }
+    else
+        {
+            mydate->day = (1 + day) - tab_ns_months[i-1];
+        }
 }
+
 
 /**
  *  Front end function for the calc_which_month_day function !
@@ -381,33 +385,34 @@ static void calc_which_month_day(date_and_time_t *mydate, guint32 day, guint tab
 static void which_month_day(date_and_time_t *mydate, guint32 day, gboolean bi)
 {
 
-	if (bi == TRUE)
-		{
-			if (day <= 366)
-				{
-					guint tab_ns_months[12] = { 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366 } ;
-					calc_which_month_day(mydate, day, tab_ns_months);
-				}
-			else
-				{
-					mydate->day = 0;
-					mydate->month = 0;
-				}
-		}
-	else
-		{
-			if (day <= 365)
-				{
-					guint tab_ns_months[12] = { 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
-					calc_which_month_day(mydate, day, tab_ns_months);
-				}
-			else
-				{
-					mydate->day = 0;
-					mydate->month = 0;
-				}
-		}
+    if (bi == TRUE)
+        {
+            if (day <= 366)
+                {
+                    guint tab_ns_months[12] = { 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366 } ;
+                    calc_which_month_day(mydate, day, tab_ns_months);
+                }
+            else
+                {
+                    mydate->day = 0;
+                    mydate->month = 0;
+                }
+        }
+    else
+        {
+            if (day <= 365)
+                {
+                    guint tab_ns_months[12] = { 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
+                    calc_which_month_day(mydate, day, tab_ns_months);
+                }
+            else
+                {
+                    mydate->day = 0;
+                    mydate->month = 0;
+                }
+        }
 }
+
 
 /**
  *  Returns the number of days since 01/01/base_year
@@ -419,59 +424,58 @@ static void which_month_day(date_and_time_t *mydate, guint32 day, gboolean bi)
  */
 static guint32 remove_days_from_first_january(guint32 base_year, guint8 base_month, guint8 base_day)
 {
-	guint tab_ns_months[11];
+    guint tab_ns_months[11];
 
-	if (base_day > 0 && base_day < 32)
-		{
-			base_day -= 1;
-		}
-	else
-		{
-			return 0;  /* Obviously something might be wrong if we fall here */
-		}
+    if (base_day > 0 && base_day < 32)
+        {
+            base_day -= 1;
+        }
+    else
+        {
+            return 0;  /* Obviously something might be wrong if we fall here */
+        }
 
-	tab_ns_months[0] = 31;
-	if (bissextile_year(base_year))
-		{
-			tab_ns_months[1] = 60;
-			tab_ns_months[2] = 91;
-			tab_ns_months[3] = 121;
-			tab_ns_months[4] = 152;
-			tab_ns_months[5] = 182;
-			tab_ns_months[6] = 213;
-			tab_ns_months[7] = 244;
-			tab_ns_months[8] = 274;
-			tab_ns_months[9] = 305;
-			tab_ns_months[10] = 335;
-		}
-	else
-		{
-			tab_ns_months[1] = 59;
-			tab_ns_months[2] = 90;
-			tab_ns_months[3] = 120;
-			tab_ns_months[4] = 151;
-			tab_ns_months[5] = 181;
-			tab_ns_months[6] = 212;
-			tab_ns_months[7] = 243;
-			tab_ns_months[8] = 273;
-			tab_ns_months[9] = 304;
-			tab_ns_months[10] = 334;
-		}
+    tab_ns_months[0] = 31;
+    if (bissextile_year(base_year))
+        {
+            tab_ns_months[1] = 60;
+            tab_ns_months[2] = 91;
+            tab_ns_months[3] = 121;
+            tab_ns_months[4] = 152;
+            tab_ns_months[5] = 182;
+            tab_ns_months[6] = 213;
+            tab_ns_months[7] = 244;
+            tab_ns_months[8] = 274;
+            tab_ns_months[9] = 305;
+            tab_ns_months[10] = 335;
+        }
+    else
+        {
+            tab_ns_months[1] = 59;
+            tab_ns_months[2] = 90;
+            tab_ns_months[3] = 120;
+            tab_ns_months[4] = 151;
+            tab_ns_months[5] = 181;
+            tab_ns_months[6] = 212;
+            tab_ns_months[7] = 243;
+            tab_ns_months[8] = 273;
+            tab_ns_months[9] = 304;
+            tab_ns_months[10] = 334;
+        }
 
-	if (base_month > 1 && base_month < 13)
-		{
-			return (tab_ns_months[base_month-2] + base_day);
-		}
-	else if (base_month == 1)
-		{
-			return base_day;
-		}
-	else
-		{
-			return 0;
-		}
+    if (base_month > 1 && base_month < 13)
+        {
+            return (tab_ns_months[base_month-2] + base_day);
+        }
+    else if (base_month == 1)
+        {
+            return base_day;
+        }
+    else
+        {
+            return 0;
+        }
 }
-
 
 
 /**
@@ -493,42 +497,42 @@ static guint32 remove_days_from_first_january(guint32 base_year, guint8 base_mon
 */
 static void which_year_month_day(date_and_time_t *mydate, guint32 days, guint32 base_year, guint base_month, guint8 base_day)
 {
-	guint32 modulus = 0;
-	guint32 reste = 0;
-	guint32 nbdays = 0;
+    guint32 modulus = 0;
+    guint32 reste = 0;
+    guint32 nbdays = 0;
 
-	days -= remove_days_from_first_january(base_year, base_month, base_day);
+    days -= remove_days_from_first_january(base_year, base_month, base_day);
 
-	if (days > 146100)
-		{
-			modulus = days / 146100;
-			mydate->year = modulus * 400;
-			reste = modulus * 3;     /* To add centuries in the 400 years modulus */
-			days = days % 146100;
-		}
+    if (days > 146100)
+        {
+            modulus = days / 146100;
+            mydate->year = modulus * 400;
+            reste = modulus * 3;     /* To add centuries in the 400 years modulus */
+            days = days % 146100;
+        }
 
-	modulus = days / 1461;
-	mydate->year += modulus * 4;
-	reste += (modulus*4) / 100;    /* To add centuries */
-	reste += days % 1461;
+    modulus = days / 1461;
+    mydate->year += modulus * 4;
+    reste += (modulus*4) / 100;    /* To add centuries */
+    reste += days % 1461;
 
-	mydate->year += base_year;
-	if (bissextile_year(mydate->year))
-		nbdays = 366;
-	else
-		nbdays = 365;
+    mydate->year += base_year;
+    if (bissextile_year(mydate->year))
+        nbdays = 366;
+    else
+        nbdays = 365;
 
-	while (reste > nbdays)
-		{
-			reste -= nbdays;
-			mydate->year += 1;
-			if (bissextile_year(mydate->year))
-				nbdays = 366;
-			else
-				nbdays = 365;
-		}
+    while (reste > nbdays)
+        {
+            reste -= nbdays;
+            mydate->year += 1;
+            if (bissextile_year(mydate->year))
+                nbdays = 366;
+            else
+                nbdays = 365;
+        }
 
-	which_month_day(mydate, reste, bissextile_year(mydate->year));
+    which_month_day(mydate, reste, bissextile_year(mydate->year));
 }
 
 
@@ -544,7 +548,7 @@ static void which_year_month_day(date_and_time_t *mydate, guint32 days, guint32 
  */
 static gchar *date_printf(date_and_time_t *mydate)
 {
-	return g_strdup_printf("%02u/%02u/%04u - %02u:%02u:%02u", mydate->day, mydate->month, mydate->year, mydate->hour, mydate->minutes, mydate->seconds);
+    return g_strdup_printf("%02u/%02u/%04u - %02u:%02u:%02u", mydate->day, mydate->month, mydate->year, mydate->hour, mydate->minutes, mydate->seconds);
 }
 
 
@@ -560,27 +564,27 @@ gchar *decode_dos_date(guchar *data, gpointer data_struct)
 {
     date_and_time_t *mydate = NULL;  /**< date resulting of interpretation               */
     gchar *interpreted_date =  NULL; /**< text that is the result of date interpretation */
-	
-	if (data == NULL)
-		{
-			return NULL;
-		}
-	else
-		{
-			mydate = (date_and_time_t *) g_malloc0 (sizeof(date_and_time_t));
-			
-			mydate->year = (data[3] >> 1) + 1980;
-			mydate->month = ((data[3] & 0x01) << 3) + (data[2] >> 5);
-			mydate->day = data[2] & 0x1F;
-			mydate->hour = (data[1] & 0xF8) >> 3;
-			mydate->minutes = ((data[1] & 0x07) << 3) + ((data[0] & 0xE0) >> 5);
-			mydate->seconds = (data[0] & 0x1F) << 1;
-			
-			interpreted_date = date_printf(mydate);
-			g_free(mydate);
-			
-			return interpreted_date;
-		}
+
+    if (data == NULL)
+        {
+            return NULL;
+        }
+    else
+        {
+            mydate = (date_and_time_t *) g_malloc0 (sizeof(date_and_time_t));
+
+            mydate->year = (data[3] >> 1) + 1980;
+            mydate->month = ((data[3] & 0x01) << 3) + (data[2] >> 5);
+            mydate->day = data[2] & 0x1F;
+            mydate->hour = (data[1] & 0xF8) >> 3;
+            mydate->minutes = ((data[1] & 0x07) << 3) + ((data[0] & 0xE0) >> 5);
+            mydate->seconds = (data[0] & 0x1F) << 1;
+
+            interpreted_date = date_printf(mydate);
+            g_free(mydate);
+
+            return interpreted_date;
+        }
 }
 
 
@@ -597,19 +601,19 @@ gchar *decode_dos_date(guchar *data, gpointer data_struct)
 */
 static void make_date_and_time(date_and_time_t *mydate, guchar *data, guint8 len, guint64 nbticks, guint32 base_year, guint base_month, guint8 base_day)
 {
-	guint64 total = 0;
-	guint32 days = 0;
+    guint64 total = 0;
+    guint32 days = 0;
 
-	memcpy(&total, data, len * sizeof (guchar));
+    memcpy(&total, data, len * sizeof (guchar));
 
-	total = (total / nbticks);         /* 1 seconds represents nbticks */
-	days = (guint32) (total / 86400);  /* 86400 seconds a day          */;
+    total = (total / nbticks);         /* 1 seconds represents nbticks */
+    days = (guint32) (total / 86400);  /* 86400 seconds a day          */;
 
-	which_year_month_day(mydate, days, base_year, base_month, base_day);
+    which_year_month_day(mydate, days, base_year, base_month, base_day);
 
-	mydate->hour = ((total % 86400) / 3600);  /* 3600 seconds is one hour out of one day */
-	mydate->minutes = ((total % 3600) / 60);  /* 60 seconds is one minute out of one hour */
-	mydate->seconds = (total % 60);
+    mydate->hour = ((total % 86400) / 3600);  /* 3600 seconds is one hour out of one day */
+    mydate->minutes = ((total % 3600) / 60);  /* 60 seconds is one minute out of one hour */
+    mydate->seconds = (total % 60);
 }
 
 
@@ -623,24 +627,24 @@ static void make_date_and_time(date_and_time_t *mydate, guchar *data, guint8 len
 */
 gchar *decode_filetime_date(guchar *data, gpointer data_struct)
 {
-	date_and_time_t *mydate = NULL;  /**< date resulting of interpretation               */
+    date_and_time_t *mydate = NULL;  /**< date resulting of interpretation               */
     gchar *interpreted_date =  NULL; /**< text that is the result of date interpretation */
-	
-	if (data == NULL)
-		{
-			return NULL;
-		}
-	else
-		{
-			mydate = (date_and_time_t *) g_malloc0 (sizeof(date_and_time_t));
-			
-			make_date_and_time(mydate, data, 8, 10000000, 1601, 1, 1);
-			
-			interpreted_date = date_printf(mydate);
-			g_free(mydate);
-			
-			return interpreted_date;
-		}
+
+    if (data == NULL)
+        {
+            return NULL;
+        }
+    else
+        {
+            mydate = (date_and_time_t *) g_malloc0 (sizeof(date_and_time_t));
+
+            make_date_and_time(mydate, data, 8, 10000000, 1601, 1, 1);
+
+            interpreted_date = date_printf(mydate);
+            g_free(mydate);
+
+            return interpreted_date;
+        }
 }
 
 
@@ -654,25 +658,26 @@ gchar *decode_filetime_date(guchar *data, gpointer data_struct)
 */
 gchar *decode_C_date(guchar *data, gpointer data_struct)
 {
-	date_and_time_t *mydate = NULL;  /**< date resulting of interpretation               */
+    date_and_time_t *mydate = NULL;  /**< date resulting of interpretation               */
     gchar *interpreted_date =  NULL; /**< text that is the result of date interpretation */
-	
-	if (data == NULL)
-		{
-			return NULL;
-		}
-	else
-		{
-			mydate = (date_and_time_t *) g_malloc0 (sizeof(date_and_time_t));
-			
-			make_date_and_time(mydate, data, 4, 1, 1970, 1, 1);
-			
-			interpreted_date = date_printf(mydate);
-			g_free(mydate);
-			
-			return interpreted_date;	
-		}
+
+    if (data == NULL)
+        {
+            return NULL;
+        }
+    else
+        {
+            mydate = (date_and_time_t *) g_malloc0 (sizeof(date_and_time_t));
+
+            make_date_and_time(mydate, data, 4, 1, 1970, 1, 1);
+
+            interpreted_date = date_printf(mydate);
+            g_free(mydate);
+
+            return interpreted_date;
+        }
 }
+
 
 /**
  *  general purpose of this function is to take a 4 byte data stream
@@ -684,26 +689,43 @@ gchar *decode_C_date(guchar *data, gpointer data_struct)
 */
 gchar *decode_HFS_date(guchar *data, gpointer data_struct)
 {
-	date_and_time_t *mydate = NULL;  /**< date resulting of interpretation               */
+    date_and_time_t *mydate = NULL;  /**< date resulting of interpretation               */
     gchar *interpreted_date =  NULL; /**< text that is the result of date interpretation */
-	
-	if (data == NULL)
-		{
-			return NULL;
-		}
-	else
-		{
-			mydate = (date_and_time_t *) g_malloc0 (sizeof(date_and_time_t));
-			
-			make_date_and_time(mydate, data, 4, 1, 1904, 1, 1);
-			
-			interpreted_date = date_printf(mydate);
-			g_free(mydate);
-			
-			return interpreted_date;	
-		}
+
+    if (data == NULL)
+        {
+            return NULL;
+        }
+    else
+        {
+            mydate = (date_and_time_t *) g_malloc0 (sizeof(date_and_time_t));
+
+            make_date_and_time(mydate, data, 4, 1, 1904, 1, 1);
+
+            interpreted_date = date_printf(mydate);
+            g_free(mydate);
+
+            return interpreted_date;
+        }
 }
 
+
+/**
+ * Returns a guchar that is 1 or 0 respectiveky if data is > 0 or not
+ * @param data : a value to analyse
+ * @return : 1 or 0 f data is > 0 or not
+ */
+static guchar data_to_one_bit(guchar data)
+{
+    if (data > 0)
+        {
+            return '1';
+        }
+    else
+        {
+            return '0';
+        }
+}
 
 
 /**
@@ -711,122 +733,64 @@ gchar *decode_HFS_date(guchar *data, gpointer data_struct)
  *  string containing eight 0 or 1 (Little Endian style)
  *  @param data : 1 guchar
  *  @param data_struct a pointer to a user defined data structure
- *  @return n*9 gchars that are either '1' or '0' or ' ' (as a separator), the 
+ *  @return n*9 gchars that are either '1' or '0' or ' ' (as a separator), the
  *          string may be freed when no longer needed
  */
 gchar *decode_to_bits(guchar *data, gpointer data_struct)
 {
-	gchar *bits = NULL;
-	guint i = 0;
-	guint j = 0;
-	decode_parameters_t *decode_parameters = (decode_parameters_t *) data_struct;
+    gchar *bits = NULL;
+    guint i = 0;
+    guint j = 0;
+    decode_parameters_t *decode_parameters = (decode_parameters_t *) data_struct;
 
-	if (data == NULL)
-		{
-			return NULL;
-		}
-	else
-		{
-			bits = (gchar *) g_malloc0 (decode_parameters->stream_size*10*(sizeof(gchar))+1);
-			
-			j = 0;
-			for (i = 0 ; i <  decode_parameters->stream_size ; i++)
-			{
-				if ((data[i] & 0x80) > 0)
-				{
-					bits[j] = '1';
-				}
-				else
-				{
-					bits[j] = '0';
-				}
-				j++;
-				
-				if ((data[i] & 0x40) > 0)
-				{
-					bits[j] = '1';
-				}
-				else
-				{
-					bits[j] = '0';
-				}
-				j++;
-				
-				if ((data[i] & 0x20) > 0)
-				{
-					bits[j] = '1';
-				}
-				else
-				{
-					bits[j] = '0';
-				}
-				j++;
-				
-				if ((data[i] & 0x10) > 0)
-				{
-					bits[j] = '1';
-				}
-				else
-				{
-					bits[j] = '0';
-				}
-				j++;
-				
-				
-				bits[j] = ' ';
-				j++;
-				
-				if ((data[i] & 0x08) > 0)
-				{
-					bits[j] = '1';
-				}
-				else
-				{
-					bits[j] = '0';
-				}
-				j++;
-				
-				if ((data[i] & 0x04) > 0)
-				{
-					bits[j] = '1';
-				}
-				else
-				{
-					bits[j] = '0';
-				}
-				j++;
-				
-				if ((data[i] & 0x02) > 0)
-				{
-					bits[j] = '1';
-				}
-				else
-				{
-					bits[j] = '0';
-				}
-				j++;
-				
-				if ((data[i] & 0x01) > 0)
-				{
-					bits[j] = '1';
-				}
-				else
-				{
-					bits[j] = '0';
-				}
-				j++;
-				
-				bits[j] = ' ';
-				j++;
-				
-			}
-			
-			j--;
-			bits[j] = (gchar) 0;
-			
-			return bits;
-			
-		}
+    if (data == NULL)
+        {
+            return NULL;
+        }
+    else
+        {
+            bits = (gchar *) g_malloc0(decode_parameters->stream_size * 10 * (sizeof(gchar)) + 1);
+
+            j = 0;
+            for (i = 0 ; i <  decode_parameters->stream_size ; i++)
+                {
+                    bits[j] = data_to_one_bit(data[i] & 0x80);
+                    j++;
+
+                    bits[j] = data_to_one_bit(data[i] & 0x40);
+                    j++;
+
+                    bits[j] = data_to_one_bit(data[i] & 0x20);
+                    j++;
+
+                    bits[j] = data_to_one_bit(data[i] & 0x10);
+                    j++;
+
+                    bits[j] = ' ';
+                    j++;
+
+                    bits[j] = data_to_one_bit(data[i] & 0x08);
+                    j++;
+
+                    bits[j] = data_to_one_bit(data[i] & 0x04);
+                    j++;
+
+                    bits[j] = data_to_one_bit(data[i] & 0x02);
+                    j++;
+
+                    bits[j] = data_to_one_bit(data[i] & 0x01);
+                    j++;
+
+                    bits[j] = ' ';
+                    j++;
+                }
+
+            j--;
+            bits[j] = (gchar) 0;
+
+            return bits;
+
+        }
 }
 
 
@@ -840,60 +804,60 @@ gchar *decode_to_bits(guchar *data, gpointer data_struct)
  */
 static void transform_bcd_to_human(gchar *bcd, guint8 part, guint8 part_number)
 {
-	switch (part)
-		{
-		case 0 :
-			bcd[part_number] = '0';
-			break;
-		case 1 :
-			bcd[part_number] = '1';
-			break;
-		case 2 :
-			bcd[part_number] = '2';
-			break;
-		case 3 :
-			bcd[part_number] = '3';
-			break;
-		case 4 :
-			bcd[part_number] = '4';
-			break;
-		case 5 :
-			bcd[part_number] = '5';
-			break;
-		case 6 :
-			bcd[part_number] = '6';
-			break;
-		case 7 :
-			bcd[part_number] = '7';
-			break;
-		case 8 :
-			bcd[part_number] = '8';
-			break;
-		case 9 :
-			bcd[part_number] = '9';
-			break;
-		case 10 :
-			bcd[part_number] = '*';
-			break;
-		case 11 :
-			bcd[part_number] = '#';
-			break;
-		case 12 :
-			bcd[part_number] = 'a';
-			break;
-		case 13 :
-			bcd[part_number] = 'b';
-			break;
-		case 14 :
-			bcd[part_number] = 'c';
-			break;
-		case 15 :
-			bcd[part_number] = ' ';  /* Endmark */
-			break;
-		default :
-			bcd[part_number] = '?';  /* This default case should never happen */
-			break;
-		}
+    switch (part)
+        {
+            case 0 :
+                bcd[part_number] = '0';
+                break;
+            case 1 :
+                bcd[part_number] = '1';
+                break;
+            case 2 :
+                bcd[part_number] = '2';
+                break;
+            case 3 :
+                bcd[part_number] = '3';
+                break;
+            case 4 :
+                bcd[part_number] = '4';
+                break;
+            case 5 :
+                bcd[part_number] = '5';
+                break;
+            case 6 :
+                bcd[part_number] = '6';
+                break;
+            case 7 :
+                bcd[part_number] = '7';
+                break;
+            case 8 :
+                bcd[part_number] = '8';
+                break;
+            case 9 :
+                bcd[part_number] = '9';
+                break;
+            case 10 :
+                bcd[part_number] = '*';
+                break;
+            case 11 :
+                bcd[part_number] = '#';
+                break;
+            case 12 :
+                bcd[part_number] = 'a';
+                break;
+            case 13 :
+                bcd[part_number] = 'b';
+                break;
+            case 14 :
+                bcd[part_number] = 'c';
+                break;
+            case 15 :
+                bcd[part_number] = ' ';  /* Endmark */
+                break;
+            default :
+                bcd[part_number] = '?';  /* This default case should never happen */
+                break;
+        }
 }
 
 
@@ -907,38 +871,39 @@ static void transform_bcd_to_human(gchar *bcd, guint8 part, guint8 part_number)
  */
 gchar *decode_packed_BCD(guchar *data, gpointer data_struct)
 {
-	guint8 total = 0;
-	guint i = 0;
-	guint j = 0;
-	gchar *bcd = NULL;
-	decode_parameters_t *decode_parameters = (decode_parameters_t *) data_struct;
+    guint8 total = 0;
+    guint i = 0;
+    guint j = 0;
+    gchar *bcd = NULL;
+    decode_parameters_t *decode_parameters = (decode_parameters_t *) data_struct;
 
-	if (data == NULL)
-		{
-			return NULL;
-		}
-	else
-		{
-			i = 0;
-			j = 0;
-			bcd = (gchar *) g_malloc0((2*decode_parameters->stream_size+1) * sizeof(gchar));
-			while (i < decode_parameters->stream_size)
-			{
-				memcpy(&total, data + i, sizeof(guchar));
-				transform_bcd_to_human(bcd + j, (total & 0x0F), 0);
-				transform_bcd_to_human(bcd + j, ((total & 0xF0)>>4), 1);
-				i++;
-				j = j + 2;
-			}
-			bcd[j+1] = '\0';
+    if (data == NULL)
+        {
+            return NULL;
+        }
+    else
+        {
+            i = 0;
+            j = 0;
+            bcd = (gchar *) g_malloc0((2*decode_parameters->stream_size+1) * sizeof(gchar));
+            while (i < decode_parameters->stream_size)
+                {
+                    memcpy(&total, data + i, sizeof(guchar));
+                    transform_bcd_to_human(bcd + j, (total & 0x0F), 0);
+                    transform_bcd_to_human(bcd + j, ((total & 0xF0)>>4), 1);
+                    i++;
+                    j = j + 2;
+                }
+            bcd[j+1] = '\0';
 
-			return bcd;
-		}
+            return bcd;
+        }
 }
+
 
 /**
  *  Swap bytes from the buffer to_swap
- *  @warning recursive function !! Call with first = 0 and last = last byte 
+ *  @warning recursive function !! Call with first = 0 and last = last byte
  *  of buffer to swap
  *  @param[in,out] to_swap : buffer to swap
  *  @param first : first byte in the buffer to swap
@@ -947,20 +912,21 @@ gchar *decode_packed_BCD(guchar *data, gpointer data_struct)
  */
 gboolean swap_bytes(guchar *to_swap, guint first, guint last)
 {
-	guchar aux;
+    guchar aux;
 
-	if (first >= last)
-		{
-			return TRUE;
-		}
-	else
-		{
-			aux = to_swap[first];
-			to_swap[first] = to_swap[last];
-			to_swap[last] = aux;
-			return swap_bytes(to_swap, ++first, --last);
-		}
+    if (first >= last)
+        {
+            return TRUE;
+        }
+    else
+        {
+            aux = to_swap[first];
+            to_swap[first] = to_swap[last];
+            to_swap[last] = aux;
+            return swap_bytes(to_swap, ++first, --last);
+        }
 }
+
 
 /**
  *  Reverse the byte order LSB -> MSB in MSB -> LSB
@@ -969,19 +935,19 @@ gboolean swap_bytes(guchar *to_swap, guint first, guint last)
  */
 void reverse_byte_order(guchar *to_reverse)
 {
-	guint8 car = (guint8) to_reverse[0];
-	guint8 aux = 0;
+    guint8 car = (guint8) to_reverse[0];
+    guint8 aux = 0;
 
-	aux = ((car & 0x80) >> 7);
-	aux += ((car & 0x40) >> 5);
-	aux += ((car & 0x20) >> 3);
-	aux += ((car & 0x10) >> 1);
-	aux += ((car & 0x08) << 1);
-	aux += ((car & 0x04) << 3);
-	aux += ((car & 0x02) << 5);
-	aux += ((car & 0x01) << 7);
+    aux = ((car & 0x80) >> 7);
+    aux += ((car & 0x40) >> 5);
+    aux += ((car & 0x20) >> 3);
+    aux += ((car & 0x10) >> 1);
+    aux += ((car & 0x08) << 1);
+    aux += ((car & 0x04) << 3);
+    aux += ((car & 0x02) << 5);
+    aux += ((car & 0x01) << 7);
 
-	to_reverse[0] = (guchar) aux;
+    to_reverse[0] = (guchar) aux;
 }
 
 
@@ -989,25 +955,25 @@ void reverse_byte_order(guchar *to_reverse)
  * Make an new decode_parameters_t in order to pass to the functions
  * @param endianness : endianness as setup in data interpertor's window
  * @param stream_size : stream size as setup with the spin button
- * @return returns a newly allocated decode_parameters_t structure which may be 
+ * @return returns a newly allocated decode_parameters_t structure which may be
  *         freed when no longer needed
  */
 decode_parameters_t *new_decode_parameters_t(guint endianness, guint stream_size)
 {
-	decode_parameters_t *decode_parameters = NULL;
-	
-	decode_parameters = (decode_parameters_t *) g_malloc0(sizeof(decode_parameters_t));
-	
-	decode_parameters->endianness = endianness;
-	decode_parameters->stream_size = stream_size;
-	
-	return decode_parameters;
+    decode_parameters_t *decode_parameters = NULL;
+
+    decode_parameters = (decode_parameters_t *) g_malloc0(sizeof(decode_parameters_t));
+
+    decode_parameters->endianness = endianness;
+    decode_parameters->stream_size = stream_size;
+
+    return decode_parameters;
 }
 
 
 /**
  * Make a new decode_t structure
- * @param decode_func : pointer to a function that may decode a stream 
+ * @param decode_func : pointer to a function that may decode a stream
  *                      this function must follow DecodeFunc prototype
  * @param entry : A GtkWidget entry that will receive the result of the
  *                decoding function
@@ -1016,22 +982,23 @@ decode_parameters_t *new_decode_parameters_t(guint endianness, guint stream_size
  */
 decode_t *new_decode_t(DecodeFunc decode_func, GtkWidget *entry, const gchar *err_msg)
 {
-	decode_t *decode_struct = NULL;
-	
-	if (decode_func != NULL && entry != NULL)
-	{
-		decode_struct = (decode_t *) g_malloc0(sizeof(decode_t));
-		decode_struct->func = decode_func;
-		decode_struct->entry = entry;
-		decode_struct->err_msg = g_strdup(err_msg);
-		
-		return decode_struct;
-	}
-	else
-	{
-		return NULL;
-	}
+    decode_t *decode_struct = NULL;
+
+    if (decode_func != NULL && entry != NULL)
+        {
+            decode_struct = (decode_t *) g_malloc0(sizeof(decode_t));
+            decode_struct->func = decode_func;
+            decode_struct->entry = entry;
+            decode_struct->err_msg = g_strdup(err_msg);
+
+            return decode_struct;
+        }
+    else
+        {
+            return NULL;
+        }
 }
+
 
 /**
  * Make a new decode_generic_t structure and creates the associated widgets
@@ -1039,46 +1006,46 @@ decode_t *new_decode_t(DecodeFunc decode_func, GtkWidget *entry, const gchar *er
  * @param data_size : a default data_size
  * @param fixed_size : TRUE if the size is fixed and should not be updated,
  *                     FALSE otherwise
- * @param err_msg : an error message to be displayed if dcoding can not be 
+ * @param err_msg : an error message to be displayed if dcoding can not be
  *                  processed
  * @param nb_cols : number of decoding columns we want
  * @param ... : va_list of functions to fill in the columns (you MUST have the
- *              same number of columns and functions you passes here as 
+ *              same number of columns and functions you passes here as
  *              arguments)
- * @return returns a newly allocated decode_generic_t structure filled with the 
+ * @return returns a newly allocated decode_generic_t structure filled with the
  *         right parameters
  */
 decode_generic_t *new_decode_generic_t(gchar *label, guint data_size, gboolean fixed_size, const gchar *err_msg, guint nb_cols, ...)
 {
-    va_list args;                       /**< va_list arguments : decoding function names */ 
-	decode_generic_t *my_struct = NULL; /** structure to be initialized and returned     */
-	decode_t *decode;                   /** Entry and associated function                */
-	guint i = 0;
-	DecodeFunc decode_it;               /**< one decoding function                       */
-	GtkWidget *entry = NULL;            /**< entry associated to the decoding function   */
-	GPtrArray *decode_array;            /**< To keep track of those couples              */
-	
-	decode_array = g_ptr_array_new();
-	
-	my_struct = (decode_generic_t *) g_malloc0(sizeof(decode_generic_t));
-					
-	va_start(args, nb_cols);
-	for (i = 0 ; i < nb_cols ; i++)
-	{
-		decode_it = (DecodeFunc) va_arg(args, DecodeFunc);
-		entry = gtk_entry_new();
-		gtk_entry_set_editable(GTK_ENTRY(entry), FALSE);
-		decode = new_decode_t(decode_it, entry, err_msg);
-		g_ptr_array_add(decode_array, (gpointer) decode);	
-	}
-	va_end(args);
-	
-	my_struct->decode_array = decode_array;
-	my_struct->label = gtk_label_new(label);
-	gtk_misc_set_padding(GTK_MISC(my_struct->label), 3, 3);
-	gtk_misc_set_alignment(GTK_MISC(my_struct->label), 0.5, 0.5);
-	my_struct->data_size = data_size;
-	my_struct->fixed_size = fixed_size; 
-			
-	return my_struct;
+    va_list args;                       /**< va_list arguments : decoding function names */
+    decode_generic_t *my_struct = NULL; /** structure to be initialized and returned     */
+    decode_t *decode;                   /** Entry and associated function                */
+    guint i = 0;
+    DecodeFunc decode_it;               /**< one decoding function                       */
+    GtkWidget *entry = NULL;            /**< entry associated to the decoding function   */
+    GPtrArray *decode_array;            /**< To keep track of those couples              */
+
+    decode_array = g_ptr_array_new();
+
+    my_struct = (decode_generic_t *) g_malloc0(sizeof(decode_generic_t));
+
+    va_start(args, nb_cols);
+    for (i = 0 ; i < nb_cols ; i++)
+        {
+            decode_it = (DecodeFunc) va_arg(args, DecodeFunc);
+            entry = gtk_entry_new();
+            gtk_entry_set_editable(GTK_ENTRY(entry), FALSE);
+            decode = new_decode_t(decode_it, entry, err_msg);
+            g_ptr_array_add(decode_array, (gpointer) decode);
+        }
+    va_end(args);
+
+    my_struct->decode_array = decode_array;
+    my_struct->label = gtk_label_new(label);
+    gtk_misc_set_padding(GTK_MISC(my_struct->label), 3, 3);
+    gtk_misc_set_alignment(GTK_MISC(my_struct->label), 0.5, 0.5);
+    my_struct->data_size = data_size;
+    my_struct->fixed_size = fixed_size;
+
+    return my_struct;
 }

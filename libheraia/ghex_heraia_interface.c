@@ -3,7 +3,7 @@
   ghex_heraia_interface.c
   heraia - an hexadecimal file editor and analyser based on ghex
 
-  (C) Copyright 2005 - 2009 Olivier Delhomme
+  (C) Copyright 2005 - 2010 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -26,6 +26,7 @@
  */
 #include <libheraia.h>
 
+
 /**
  * @fn HERAIA_ERROR heraia_hex_document_new(heraia_struct_t *main_struct, char *filename)
  *  Removes the old document if it exists and adds a new one
@@ -45,25 +46,25 @@ doc_t *heraia_hex_document_new(heraia_struct_t *main_struct, char *filename)
     hex_doc = hex_document_new_from_file(filename);
 
     if (hex_doc != NULL)
-     {
-        /* creating a new view to this new document */
-        hex_widget = hex_document_add_view(hex_doc);
+        {
+            /* creating a new view to this new document */
+            hex_widget = hex_document_add_view(hex_doc);
 
-        /* joining those two new structures in one */
-        doc = new_doc_t(hex_doc, hex_widget);
+            /* joining those two new structures in one */
+            doc = new_doc_t(hex_doc, hex_widget);
 
-        /* Adding this new doc to the list of docs (here a GPtrArray) */
-        g_ptr_array_add(main_struct->documents, doc);
+            /* Adding this new doc to the list of docs (here a GPtrArray) */
+            g_ptr_array_add(main_struct->documents, doc);
 
-        /* signal connection on cursor moves */
-        connect_cursor_moved_signal(main_struct, hex_widget);
+            /* signal connection on cursor moves */
+            connect_cursor_moved_signal(main_struct, hex_widget);
 
-        return doc;
-     }
+            return doc;
+         }
      else
-     {
-         return NULL;
-     }
+         {
+             return NULL;
+         }
 }
 
 
@@ -75,14 +76,15 @@ doc_t *heraia_hex_document_new(heraia_struct_t *main_struct, char *filename)
 gchar *heraia_hex_document_get_filename(Heraia_Document *hex_doc)
 {
     if (hex_doc != NULL)
-    {
-        return hex_doc->file_name;
-    }
+        {
+            return hex_doc->file_name;
+        }
     else
-    {
-        return NULL;
-    }
+        {
+            return NULL;
+        }
 }
+
 
 /**
  * Retrieves from a doc_t * document it's filename, which ever it is
@@ -92,15 +94,14 @@ gchar *heraia_hex_document_get_filename(Heraia_Document *hex_doc)
 gchar *doc_t_document_get_filename(doc_t *doc)
 {
     if (doc != NULL)
-    {
-        return heraia_hex_document_get_filename(doc->hex_doc);
-    }
+        {
+            return heraia_hex_document_get_filename(doc->hex_doc);
+        }
     else
-    {
-        return NULL;
-    }
+        {
+            return NULL;
+        }
 }
-
 
 
 /**
@@ -114,22 +115,23 @@ HERAIA_ERROR heraia_hex_document_save(doc_t *current_doc)
     gint return_value = FALSE;
 
     if (current_doc != NULL)
-    {
-        if (current_doc->hex_doc != NULL)
         {
-            return_value = hex_document_write(current_doc->hex_doc);
+            if (current_doc->hex_doc != NULL)
+                {
+                    return_value = hex_document_write(current_doc->hex_doc);
+                }
         }
-    }
 
     if (return_value != FALSE)
-    {
-        return HERAIA_NOERR;
-    }
+        {
+            return HERAIA_NOERR;
+        }
     else
-    {
-        return HERAIA_FILE_ERROR;
-    }
+        {
+            return HERAIA_FILE_ERROR;
+        }
 }
+
 
 /**
  * Saves an opened and edited document to a new file
@@ -148,32 +150,37 @@ HERAIA_ERROR heraia_hex_document_save_as(doc_t *current_doc, gchar *filename)
        {
             fp = fopen(filename, "w");
             if (fp != NULL)
-            {
-                return_value = hex_document_write_to_file(current_doc->hex_doc, fp);
-                fclose(fp);
+                {
+                    return_value = hex_document_write_to_file(current_doc->hex_doc, fp);
+                    fclose(fp);
 
-                /* path_end stuff from ghex-window.c from ghex project !!! */
-                for(i = strlen(current_doc->hex_doc->file_name);
-                        (i >= 0) && (current_doc->hex_doc->file_name[i] != '/');
-                        i--);
-                if (current_doc->hex_doc->file_name[i] == '/')
-                    path_end = &current_doc->hex_doc->file_name[i+1];
-                else
-                    path_end = current_doc->hex_doc->file_name;
+                    /* path_end stuff from ghex-window.c from ghex project !!! */
+                    for(i = strlen(current_doc->hex_doc->file_name);
+                            (i >= 0) && (current_doc->hex_doc->file_name[i] != '/');
+                            i--);
+                    if (current_doc->hex_doc->file_name[i] == '/')
+                        {
+                            path_end = &current_doc->hex_doc->file_name[i+1];
+                        }
+                    else
+                        {
+                            path_end = current_doc->hex_doc->file_name;
+                        }
 
-                current_doc->hex_doc->path_end = g_filename_to_utf8(path_end, -1, NULL, NULL, NULL);
-            }
+                    current_doc->hex_doc->path_end = g_filename_to_utf8(path_end, -1, NULL, NULL, NULL);
+                }
         }
 
     if (return_value != FALSE)
-    {
-        return HERAIA_NOERR;
-    }
+        {
+            return HERAIA_NOERR;
+        }
     else
-    {
-        return HERAIA_FILE_ERROR;
-    }
+        {
+            return HERAIA_FILE_ERROR;
+        }
 }
+
 
 /**
  *  Deals with the endianness of 'len' bytes located in 'result'
@@ -257,7 +264,6 @@ gboolean ghex_memcpy(Heraia_Hex *gh, guint pos, guint len, guint endianness, guc
 }
 
 
-
 /**
  *  Gets the data from the hexwidget, a wrapper to the ghex_memcpy
  *  function.
@@ -316,13 +322,13 @@ guint64 ghex_get_cursor_position(GtkWidget *hex_widget)
     Heraia_Hex *gh = GTK_HEX(hex_widget);
 
     if (gh != NULL)
-    {
-          return gtk_hex_get_cursor(gh);
-    }
+        {
+              return gtk_hex_get_cursor(gh);
+        }
     else
-    {
-          return 0;
-    }
+        {
+              return 0;
+        }
 }
 
 
@@ -337,17 +343,17 @@ selection_t *ghex_get_selection(GtkWidget *hex_widget)
     selection_t *sel = NULL;
 
     if (gh != NULL)
-    {
-        sel = (selection_t *) g_malloc0(sizeof(selection_t));
-        sel->start = gh->selection.start;
-        sel->end = gh->selection.end;
+        {
+            sel = (selection_t *) g_malloc0(sizeof(selection_t));
+            sel->start = gh->selection.start;
+            sel->end = gh->selection.end;
 
-        return sel;
-    }
+            return sel;
+        }
     else
-    {
-        return NULL;
-    }
+        {
+            return NULL;
+        }
 }
 
 

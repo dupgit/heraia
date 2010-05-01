@@ -3,7 +3,7 @@
   heraia_io.c
   heraia_io.c - input and output functions for heraia
 
-  (C) Copyright 2005 - 2008 Olivier Delhomme
+  (C) Copyright 2005 - 2010 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -27,6 +27,7 @@
 #include <libheraia.h>
 
 static GtkBuilder *load_xml_if_it_exists(char *file_to_load);
+
 
 /**
  *  Loads the file 'filename' to analyse and populates the
@@ -56,27 +57,27 @@ gboolean load_file_to_analyse(heraia_struct_t *main_struct, gchar *filename)
             doc = heraia_hex_document_new(main_struct, filename); /* removes the old hexdocument and adds a new one */
 
             if (doc != NULL)
-            {
-                add_new_tab_in_main_struct(main_struct, doc);
+                {
+                    add_new_tab_in_main_struct(main_struct, doc);
 
-                log_message(main_struct, G_LOG_LEVEL_DEBUG, "Hexwidget : %p", doc->hex_widget);
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, "Hexwidget : %p", doc->hex_widget);
 
-                success = TRUE;
+                    success = TRUE;
 
-                /* updating the window name and tab's name */
-                update_main_struct_name(main_struct);
-                set_notebook_tab_name(main_struct);
+                    /* updating the window name and tab's name */
+                    update_main_struct_name(main_struct);
+                    set_notebook_tab_name(main_struct);
 
-                /* Showing all the widgets */
-                grey_main_widgets(main_struct->xmls->main, FALSE);
+                    /* Showing all the widgets */
+                    grey_main_widgets(main_struct->xmls->main, FALSE);
 
-                log_message(main_struct, G_LOG_LEVEL_DEBUG, "file %s loaded !", filename);
-            }
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, "file %s loaded !", filename);
+                }
             else
-            {
-                log_message(main_struct, G_LOG_LEVEL_ERROR, "Error while trying to load file %s", filename);
-                success = FALSE;
-            }
+                {
+                    log_message(main_struct, G_LOG_LEVEL_ERROR, "Error while trying to load file %s", filename);
+                    success = FALSE;
+                }
 
         }
     else
@@ -134,6 +135,7 @@ static GtkBuilder *load_xml_if_it_exists(gchar *file_to_load)
     return xml;
 }
 
+
 /**
  * @fn GtkBuilder *load_xml_file(GList *location_list, gchar *filename)
  *  loads the GtkBuilder xml file ('filename') that describes an interface,
@@ -175,13 +177,13 @@ GtkBuilder *load_xml_file(GList *location_list, gchar *filename)
 gboolean load_preference_file(heraia_struct_t *main_struct)
 {
     if (main_struct != NULL && main_struct->prefs != NULL)
-    {
-        return g_key_file_load_from_file(main_struct->prefs->file, main_struct->prefs->filename,  G_KEY_FILE_KEEP_COMMENTS & G_KEY_FILE_KEEP_TRANSLATIONS, NULL);
-    }
+        {
+            return g_key_file_load_from_file(main_struct->prefs->file, main_struct->prefs->filename,  G_KEY_FILE_KEEP_COMMENTS & G_KEY_FILE_KEEP_TRANSLATIONS, NULL);
+        }
     else
-    {
-        return FALSE;
-    }
+        {
+            return FALSE;
+        }
 }
 
 
@@ -198,11 +200,11 @@ gboolean save_preferences_to_file(prefs_t *prefs)
     gboolean result = FALSE;
 
     if (prefs != NULL && prefs->file != NULL && prefs->filename != NULL)
-    {
-        contents = g_key_file_to_data(prefs->file, &length, NULL);
-        result = g_file_set_contents(prefs->filename, contents, length, NULL);
-        g_free(contents);
-    }
+        {
+            contents = g_key_file_to_data(prefs->file, &length, NULL);
+            result = g_file_set_contents(prefs->filename, contents, length, NULL);
+            g_free(contents);
+        }
 
     return result;
 }

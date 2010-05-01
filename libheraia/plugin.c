@@ -3,7 +3,7 @@
  *  plugin.c
  *  heraia - an hexadecimal file editor and analyser based on ghex
  *
- *  (C) Copyright 2007 - 2009 Olivier Delhomme
+ *  (C) Copyright 2007 - 2010 Olivier Delhomme
  *  e-mail : heraia@delhomme.org
  *  URL    : http://heraia.tuxfamily.org
  *
@@ -34,6 +34,7 @@ static heraia_plugin_t *get_plugin_init_symbol(heraia_struct_t *main_struct, her
 static void init_plugin(heraia_struct_t *main_struct, heraia_plugin_t *plugin, const gchar *filename, guint plugins_nb);
 static void load_one_plugin(heraia_struct_t *main_struct, const gchar *filename, guint plugins_nb);
 
+
 /**
  * @fn gboolean plugin_capable(void)
  * Says whether the system can handle plugins (or not)
@@ -43,6 +44,7 @@ gboolean plugin_capable(void)
 {
     return g_module_supported();
 }
+
 
 /**
  * @fn new_plugin(void)
@@ -76,6 +78,7 @@ heraia_plugin_t *new_plugin(void)
     return new;
 
 }
+
 
 /**
  * @fn free_plugin(heraia_plugin_t *plugin)
@@ -117,6 +120,7 @@ void free_plugin(heraia_plugin_t *plugin)
         }
 }
 
+
 /**
  * @fn heraia_plugin_t *get_plugin_handle(heraia_struct_t *main_struct, heraia_plugin_t *plugin, const gchar *full_filename, const gchar *filename)
  *  Here we try to get a handle for the Gmodule referenced by full_filename
@@ -144,6 +148,7 @@ static heraia_plugin_t *get_plugin_handle(heraia_struct_t *main_struct, heraia_p
 
     return plugin;
 }
+
 
 /**
  * @fn heraia_plugin_t *get_plugin_init_symbol(heraia_struct_t *main_struct, heraia_plugin_t *plugin)
@@ -181,6 +186,7 @@ static heraia_plugin_t *get_plugin_init_symbol(heraia_struct_t *main_struct, her
         }
 }
 
+
 /**
  * @fn void init_plugin(heraia_struct_t *main_struct, heraia_plugin_t *plugin, const gchar *filename, guint plugins_nb)
  *  finalising initialisation : if everything went fine, the plugin is added to the
@@ -207,6 +213,7 @@ static void init_plugin(heraia_struct_t *main_struct, heraia_plugin_t *plugin, c
 
         }
  }
+
 
 /**
  * @fn void load_one_plugin(heraia_struct_t *main_struct, const gchar *filename, guint plugins_nb)
@@ -275,6 +282,7 @@ void load_plugins(heraia_struct_t *main_struct)
         }
 }
 
+
 /**
  * @fn add_entry_to_plugins_menu(heraia_struct_t *main_struct, heraia_plugin_t *plugin)
  *  adds a menu entry to the plugin menu
@@ -285,20 +293,21 @@ void load_plugins(heraia_struct_t *main_struct)
 void add_entry_to_plugins_menu(heraia_struct_t *main_struct, heraia_plugin_t *plugin)
 {
     if (plugin != NULL && plugin->info != NULL && plugin->info->name != NULL)
-    {
-        /* Creates the menu entry (a GtkCheckMenuItem) */
-        plugin->cmi_entry = GTK_CHECK_MENU_ITEM(gtk_check_menu_item_new_with_label(plugin->info->name));
+        {
+            /* Creates the menu entry (a GtkCheckMenuItem) */
+            plugin->cmi_entry = GTK_CHECK_MENU_ITEM(gtk_check_menu_item_new_with_label(plugin->info->name));
 
-        /* Append this menu entry to the menu */
-        gtk_menu_shell_append(GTK_MENU_SHELL(heraia_get_widget(main_struct->xmls->main, "plugins_menu")), GTK_WIDGET(plugin->cmi_entry));
+            /* Append this menu entry to the menu */
+            gtk_menu_shell_append(GTK_MENU_SHELL(heraia_get_widget(main_struct->xmls->main, "plugins_menu")), GTK_WIDGET(plugin->cmi_entry));
 
-        /* Connect the menu entry toggled signal to the run_proc function of the plugin */
-        g_signal_connect(G_OBJECT(plugin->cmi_entry), "toggled", G_CALLBACK(plugin->run_proc), main_struct);
+            /* Connect the menu entry toggled signal to the run_proc function of the plugin */
+            g_signal_connect(G_OBJECT(plugin->cmi_entry), "toggled", G_CALLBACK(plugin->run_proc), main_struct);
 
-        /* Shows the menu entry (so we may toggle it!) */
-        gtk_widget_show(GTK_WIDGET(plugin->cmi_entry));
-    }
+            /* Shows the menu entry (so we may toggle it!) */
+            gtk_widget_show(GTK_WIDGET(plugin->cmi_entry));
+        }
 }
+
 
 /**
  * @fn heraia_plugin_t *find_plugin_by_name(GList *plugins_list, gchar *name)
@@ -374,9 +383,9 @@ void refresh_all_plugins(heraia_struct_t *main_struct)
             plugin = (heraia_plugin_t *) list->data;
 
             if (plugin != NULL && plugin->refresh_proc != NULL)
-            { /* Beware : here a tricky thing that works ! */
-                plugin->refresh_proc(main_struct, list->data);
-            }
+                { /* Beware : here a tricky thing that works ! */
+                    plugin->refresh_proc(main_struct, list->data);
+                }
 
             list = list->next;
         }

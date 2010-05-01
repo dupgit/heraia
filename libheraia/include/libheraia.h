@@ -3,7 +3,7 @@
   libheraia.h
   Heraia's library header
 
-  (C) Copyright 2008 - 2009 Sébastien Tricaud, Olivier Delhomme
+  (C) Copyright 2008 - 2010 Sébastien Tricaud, Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -278,6 +278,7 @@ typedef struct
     guint64 end;    /**< Ending position of the selection   */
 } selection_t;
 
+
 /**
  * @struct heraia_struct_t
  *  This is the main structure (mainly named main_struct due to historycal reasons)
@@ -313,7 +314,6 @@ typedef struct
 #include "tests.h"
 
 extern int libheraia_test(void);
-
 
 /**
  * Python specific

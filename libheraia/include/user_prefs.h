@@ -3,7 +3,7 @@
   user_prefs.h
   heraia - an hexadecimal file editor and analyser based on ghex
 
-  (C) Copyright 2008 - 2009 Olivier Delhomme
+  (C) Copyright 2008 - 2010 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -58,7 +58,5 @@ extern void init_preference_struct(heraia_struct_t *main_struct);
 
 extern void save_preferences(heraia_struct_t *main_struct);
 extern void load_preferences(heraia_struct_t *main_struct);
-
-
 
 #endif /* _LIBHERAIA_USER_PREFS_H_ */

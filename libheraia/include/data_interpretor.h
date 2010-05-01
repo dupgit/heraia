@@ -3,7 +3,7 @@
   data_interpretor.h
   heraia - an hexadecimal file editor and analyser based on ghex
 
-  (C) Copyright 2005 - 2007 Olivier Delhomme
+  (C) Copyright 2005 - 2010 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 

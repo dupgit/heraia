@@ -4,7 +4,7 @@
   Heraia's library decode.c
 
   (C) Copyright 2008 Sébastien Tricaud        e-mail : toady@gscore.org
-  (C) Copyright 2008 - 2009 Olivier Delhomme  e-mail : heraia@delhomme.org
+  (C) Copyright 2008 - 2010 Olivier Delhomme  e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
   This program is free software; you can redistribute it and/or modify
@@ -55,13 +55,13 @@ extern gchar *decode_HFS_date(guchar *data, gpointer data_struct);
 
 /* bcd */
 extern gchar *decode_packed_BCD(guchar *data, gpointer data_struct);
- 
-/*-- Non decoding functions --*/ 
+
+/*-- Non decoding functions --*/
 /* Utils */
 extern gboolean swap_bytes(guchar *to_swap, guint first, guint last);
 extern void reverse_byte_order(guchar *to_reverse);
 extern decode_parameters_t *new_decode_parameters_t(guint endianness, guint stream_size);
-extern decode_t * new_decode_t(DecodeFunc decode_func, GtkWidget *entry, const gchar *err_msg); 
+extern decode_t * new_decode_t(DecodeFunc decode_func, GtkWidget *entry, const gchar *err_msg);
 extern decode_generic_t *new_decode_generic_t(gchar *label, guint data_size, gboolean fixed_size, const gchar *err_msg, guint nb_cols, ...);
 
 #endif /* _LIBHERAIA_DECODE_H_ */

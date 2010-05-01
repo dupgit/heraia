@@ -3,7 +3,7 @@
  *  main_pref_window.c
  *  heraia - an hexadecimal file editor and analyser based on ghex
  *
- *  (C) Copyright 2008 - 2009 Olivier Delhomme
+ *  (C) Copyright 2008 - 2010 Olivier Delhomme
  *  e-mail : heraia@delhomme.org
  *  URL    : http://heraia.tuxfamily.org
  *
@@ -39,7 +39,7 @@ static void on_mp_tb_display_bt_toggled(GtkToggleToolButton *toolbutton, gpointe
 static void on_mp_thousand_bt_toggled(GtkToggleButton *togglebutton, gpointer data);
 
 
-/**** The Signals ****/
+/******************************** The Signals *********************************/
 
 /**
  * @fn gboolean pref_window_delete(GtkWidget *widget, GdkEvent *event, gpointer data)
@@ -55,14 +55,15 @@ static gboolean pref_window_delete(GtkWidget *widget, GdkEvent *event, gpointer 
     GtkWidget *pref_window = NULL;
 
     if (main_struct != NULL && main_struct->win_prop != NULL && main_struct->win_prop->main_pref_window != NULL)
-    {
-        pref_window = heraia_get_widget(main_struct->xmls->main, "main_preferences_window");
-        save_preferences(main_struct);
-        record_and_hide_dialog_box(pref_window, main_struct->win_prop->main_pref_window);
-    }
+        {
+            pref_window = heraia_get_widget(main_struct->xmls->main, "main_preferences_window");
+            save_preferences(main_struct);
+            record_and_hide_dialog_box(pref_window, main_struct->win_prop->main_pref_window);
+        }
 
     return TRUE;
 }
+
 
 /**
  * @fn void main_pref_window_connect_signals(heraia_struct_t *main_struct)
@@ -93,7 +94,6 @@ static void main_pref_window_connect_signals(heraia_struct_t *main_struct)
  * Tool buttons
  */
 
-
 /**
  * @fn void on_mp_tb_fp_bt_toggled(GtkToolButton *toolbutton, gpointer data)
  *  Main Preferences, ToolBar, File Preference Button
@@ -106,10 +106,10 @@ static void on_mp_tb_fp_bt_toggled(GtkToggleToolButton *toolbutton, gpointer dat
     GtkWidget *notebook = NULL;  /* Main Preference Window's Notebook */
 
     if (main_struct != NULL && main_struct->xmls != NULL && main_struct->xmls->main != NULL)
-    {
-        notebook = heraia_get_widget(main_struct->xmls->main, "mp_first_notebook");
-        gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 0);
-    }
+        {
+            notebook = heraia_get_widget(main_struct->xmls->main, "mp_first_notebook");
+            gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 0);
+        }
 }
 
 
@@ -125,12 +125,13 @@ static void on_mp_tb_display_bt_toggled(GtkToggleToolButton *toolbutton, gpointe
     GtkWidget *notebook = NULL;  /* Main Preference Window's Notebook */
 
     if (main_struct != NULL && main_struct->xmls != NULL && main_struct->xmls->main != NULL)
-    {
+        {
 
-        notebook = heraia_get_widget(main_struct->xmls->main, "mp_first_notebook");
-        gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 1);
-    }
+            notebook = heraia_get_widget(main_struct->xmls->main, "mp_first_notebook");
+            gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 1);
+        }
 }
+
 
 /**
  * @fn void on_mp_thousand_bt_toggled(GtkToggleButton *togglebutton, gpointer data)
@@ -145,7 +146,7 @@ static void on_mp_thousand_bt_toggled(GtkToggleButton *togglebutton, gpointer da
     refresh_file_labels(main_struct);
 }
 
-/**** End Signals ****/
+/******************************** End Signals *********************************/
 
 
 /**

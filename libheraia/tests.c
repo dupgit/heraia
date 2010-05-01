@@ -30,6 +30,7 @@
 
 static gboolean test_one_function(DecodeFunc a_function, gchar *function_name, guchar *data, gpointer data_struct, gchar *expected_result);
 
+
 /**
  *  test one decoding function from the decode.c module
  *  @param a_function : a decoding function that responds to the DecodeFunc template
@@ -88,14 +89,13 @@ gboolean test_decode_functions(void)
     return exit_value;
 }
 
+
 /**
  * functions to tests heraia's UI
  * @param main_struct : the main structure (the whole one)
  */
 gboolean tests_ui(heraia_struct_t *main_struct)
 {
-
-
 
     return TRUE;
 }

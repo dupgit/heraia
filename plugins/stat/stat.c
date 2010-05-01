@@ -3,7 +3,7 @@
   stat.c
   an heraia plugin to calculate some stats on the opened file
 
-  (C) Copyright 2007 - 2009 Olivier Delhomme
+  (C) Copyright 2007 - 2010 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -108,6 +108,7 @@ heraia_plugin_t *heraia_plugin_init(heraia_plugin_t *plugin)
     return plugin;
 }
 
+
 /* the plugin interface functions */
 /**
  *  The real init function of the plugin (called at init time)
@@ -126,30 +127,29 @@ void init(heraia_struct_t *main_struct)
             /* load the xml interface */
             log_message(main_struct, G_LOG_LEVEL_INFO, "Plugin from %s found !", plugin->info->author);
             if (load_plugin_xml(main_struct, plugin) == TRUE)
-            {
-                log_message(main_struct, G_LOG_LEVEL_INFO, "%s xml interface loaded.", plugin->info->name);
-            }
+                {
+                    log_message(main_struct, G_LOG_LEVEL_INFO, "%s xml interface loaded.", plugin->info->name);
+                }
             else
-            {
-                log_message(main_struct, G_LOG_LEVEL_WARNING, "Unable to load %s xml interface.", plugin->info->name);
-            }
+                {
+                    log_message(main_struct, G_LOG_LEVEL_WARNING, "Unable to load %s xml interface.", plugin->info->name);
+                }
 
             /* greyed save as button and others */
             set_statw_button_state(plugin->xml, FALSE);
 
             /* shows or hide the interface (hides it at first as all windows shows up) */
             if (plugin->win_prop->displayed == FALSE)
-            {
-                gtk_widget_hide(GTK_WIDGET(heraia_get_widget(plugin->xml, "stat_window")));
-            }
+                {
+                    gtk_widget_hide(GTK_WIDGET(heraia_get_widget(plugin->xml, "stat_window")));
+                }
             else
-            {
-                gtk_check_menu_item_set_active(plugin->cmi_entry, TRUE);
-            }
+                {
+                    gtk_check_menu_item_set_active(plugin->cmi_entry, TRUE);
+                }
 
             /* connect some signals handlers */
             stat_window_connect_signals(plugin);
-
         }
 }
 
@@ -235,8 +235,8 @@ void refresh(heraia_struct_t *main_struct, void *data)
                 }
         }
 }
-
 /* end of the plugin interface functions */
+
 
 /**
  *  Usefull functions for the stat plugin
@@ -318,6 +318,7 @@ static void statw_save_as_clicked(GtkWidget *widget, gpointer data)
         }
 }
 
+
 /**
  *  Selecting the file filename where to save the file
  * @param window_text : text to be displayed in the selection window
@@ -342,37 +343,38 @@ static gchar *stat_select_file_to_save(gchar *window_text, stat_t *extra)
 
     /* If it exists define a new directory name */
     if (extra != NULL && extra->dirname != NULL)
-    {
-        gtk_file_chooser_set_current_folder(file_chooser, extra->dirname);
-    }
+        {
+            gtk_file_chooser_set_current_folder(file_chooser, extra->dirname);
+        }
 
     response_id = gtk_dialog_run(GTK_DIALOG(file_chooser));
 
     switch (response_id)
         {
-        case GTK_RESPONSE_OK:
-            filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(file_chooser));
+            case GTK_RESPONSE_OK:
+                filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(file_chooser));
 
-            /* Saving directory name in order to use it at a later call */
-            if (filename != NULL)
-            {
-                if (extra->dirname != NULL)
-                {
-                    g_free(extra->dirname);
-                }
-                extra->dirname = g_path_get_dirname(filename);
-            }
+                /* Saving directory name in order to use it at a later call */
+                if (filename != NULL)
+                    {
+                        if (extra->dirname != NULL)
+                            {
+                                g_free(extra->dirname);
+                            }
+                        extra->dirname = g_path_get_dirname(filename);
+                    }
 
-            break;
-        case GTK_RESPONSE_CANCEL:
-        default:
-            filename = NULL;
-            break;
+                break;
+            case GTK_RESPONSE_CANCEL:
+            default:
+                filename = NULL;
+                break;
         }
 
     gtk_widget_destroy(GTK_WIDGET(file_chooser));
     return filename;
 }
+
 
 /**
  * What to do when "export to csv" button is clicked
@@ -395,51 +397,53 @@ static void statw_export_to_csv_clicked(GtkWidget *widget, gpointer data)
             filename = stat_select_file_to_save("Enter filename to export data as CSV to", extra);
 
             if (filename != NULL)
-            {
-                fp = g_fopen(filename, "w+");
-            }
+                {
+                    fp = g_fopen(filename, "w+");
+                }
 
             if (fp != NULL && extra != NULL)
-            {
-                if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(heraia_get_widget(plugin->xml, "rb_1D"))) == TRUE)
                 {
-                    /* 1D display */
-                    fprintf(fp, "\"Byte\";\"Count\"\n");
-
-                    for (i=0; i<=255; i++)
-                    {
-                        fprintf(fp, "%d;%Ld\n", i, extra->histo1D[i]);
-                    }
-
-                }
-                else
-                {
-                    /* 2D display */
-                    fprintf(fp, "\"Byte/Byte\";");
-                    for (j=0; j<255; j++)
-                    {
-                        fprintf(fp, "\"%d\";", j);
-                    }
-                    fprintf(fp, "\"%d\"\n", 255);
-
-                    for (i=0; i<=255; i++)
-                    {
-                        fprintf(fp, "\"%d\";", i);
-                        for (j=0 ; j<255; j++)
+                    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(heraia_get_widget(plugin->xml, "rb_1D"))) == TRUE)
                         {
-                            fprintf(fp, "\"%Ld\";", extra->histo2D[i][j]);
+                            /* 1D display */
+                            fprintf(fp, "\"Byte\";\"Count\"\n");
+
+                            for (i=0; i<=255; i++)
+                                {
+                                    fprintf(fp, "%d;%Ld\n", i, extra->histo1D[i]);
+                                }
+
                         }
-                        fprintf(fp, "\"%Ld\"\n", extra->histo2D[i][255]);
+                    else
+                    {
+                        /* 2D display */
+                        fprintf(fp, "\"Byte/Byte\";");
+                        for (j=0; j<255; j++)
+                            {
+                                fprintf(fp, "\"%d\";", j);
+                            }
+                        fprintf(fp, "\"%d\"\n", 255);
+
+                        for (i=0; i<=255; i++)
+                            {
+                                fprintf(fp, "\"%d\";", i);
+                                for (j=0 ; j<255; j++)
+                                    {
+                                        fprintf(fp, "\"%Ld\";", extra->histo2D[i][j]);
+                                    }
+                                fprintf(fp, "\"%Ld\"\n", extra->histo2D[i][255]);
+                            }
                     }
+                    fclose(fp);
                 }
-                fclose(fp);
-            }
+
             if (filename != NULL)
-            {
-                g_free(filename);
-            }
+                {
+                    g_free(filename);
+                }
         }
 }
+
 
 /**
  * What to do when "export to gnuplot" button is clicked
@@ -462,62 +466,63 @@ static void statw_export_to_gnuplot_clicked(GtkWidget *widget, gpointer data)
             filename = stat_select_file_to_save("Enter filename to export data as gnuplot to", extra);
 
             if (filename != NULL)
-            {
-                fp = g_fopen(filename, "w+");
-            }
+                {
+                    fp = g_fopen(filename, "w+");
+                }
 
             if (fp != NULL && extra != NULL)
-            {
-                /* common settings */
-                fprintf(fp, "set terminal png transparent nocrop enhanced small size 1280,960\n");
-                fprintf(fp, "set output '%s.png'\n", g_path_get_basename(filename));
-                fprintf(fp, "set xrange [-10:265]\n");
-                fprintf(fp, "set xlabel 'Bytes'\n");
-
-                if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(heraia_get_widget(plugin->xml, "rb_1D"))) == TRUE)
                 {
-                    /* 1D display */
-                    fprintf(fp, "set title 'Classical histogram'\n");  /**< @todo we might add here the name of the file being edited */
-                    fprintf(fp, "set ylabel 'Count'\n");
-                    fprintf(fp, "plot '-' title 'Byte count' with impulses\n");
+                    /* common settings */
+                    fprintf(fp, "set terminal png transparent nocrop enhanced small size 1280,960\n");
+                    fprintf(fp, "set output '%s.png'\n", g_path_get_basename(filename));
+                    fprintf(fp, "set xrange [-10:265]\n");
+                    fprintf(fp, "set xlabel 'Bytes'\n");
 
-                    for (i=0; i<=255; i++)
-                    {
-                        fprintf(fp, "%Ld\n", extra->histo1D[i]);
-                    }
-                    fprintf(fp, "e\n");
-                }
-                else
-                {
-                    /* 2D display */
-                    fprintf(fp, "set title 'Heatmap histogram'\n");  /**< @todo we might add here the name of the file being edited */
-                    fprintf(fp, "set bar 1.000000\n");
-                    fprintf(fp, "set style rectangle back fc lt -3 fillstyle solid 1.00 border -1\n");
-                    fprintf(fp, "unset key\n");
-                    fprintf(fp, "set view map\n");
-                    fprintf(fp, "set yrange [-10:265]\n");
-                    fprintf(fp, "set ylabel 'Bytes'\n");
-                    fprintf(fp, "set palette rgbformulae 36, 13, 15\n");
-                    fprintf(fp, "splot '-' matrix with image\n");
-
-                    for (i=0; i<=255; i++)
-                    {
-                        for (j=0; j<=255; j++)
+                    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(heraia_get_widget(plugin->xml, "rb_1D"))) == TRUE)
                         {
-                            fprintf(fp, "%Ld ", extra->histo2D[i][j]);
-                        }
-                        fprintf(fp, "\n");
-                    }
+                            /* 1D display */
+                            fprintf(fp, "set title 'Classical histogram'\n");  /**< @todo we might add here the name of the file being edited */
+                            fprintf(fp, "set ylabel 'Count'\n");
+                            fprintf(fp, "plot '-' title 'Byte count' with impulses\n");
 
-                    fprintf(fp, "e\n");
-                    fprintf(fp, "e\n");
+                            for (i=0; i<=255; i++)
+                                {
+                                    fprintf(fp, "%Ld\n", extra->histo1D[i]);
+                                }
+                            fprintf(fp, "e\n");
+                        }
+                    else
+                        {
+                            /* 2D display */
+                            fprintf(fp, "set title 'Heatmap histogram'\n");  /**< @todo we might add here the name of the file being edited */
+                            fprintf(fp, "set bar 1.000000\n");
+                            fprintf(fp, "set style rectangle back fc lt -3 fillstyle solid 1.00 border -1\n");
+                            fprintf(fp, "unset key\n");
+                            fprintf(fp, "set view map\n");
+                            fprintf(fp, "set yrange [-10:265]\n");
+                            fprintf(fp, "set ylabel 'Bytes'\n");
+                            fprintf(fp, "set palette rgbformulae 36, 13, 15\n");
+                            fprintf(fp, "splot '-' matrix with image\n");
+
+                            for (i=0; i<=255; i++)
+                                {
+                                    for (j=0; j<=255; j++)
+                                        {
+                                            fprintf(fp, "%Ld ", extra->histo2D[i][j]);
+                                        }
+                                    fprintf(fp, "\n");
+                                }
+
+                            fprintf(fp, "e\n");
+                            fprintf(fp, "e\n");
+                        }
+                    fclose(fp);
                 }
-                fclose(fp);
-            }
+
             if (filename != NULL)
-            {
-                g_free(filename);
-            }
+                {
+                    g_free(filename);
+                }
         }
 }
 
@@ -542,79 +547,79 @@ static void statw_export_to_pcv_clicked(GtkWidget *widget, gpointer data)
             filename = stat_select_file_to_save("Enter filename to export data as PCV to", extra);
 
             if (filename != NULL)
-            {
-                fp = g_fopen(filename, "w+");
-            }
+                {
+                    fp = g_fopen(filename, "w+");
+                }
 
             if (fp != NULL && extra != NULL)
-            {
-                if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(heraia_get_widget(plugin->xml, "rb_1D"))) == TRUE)
                 {
-                    /* 1D display */
-                    fprintf(fp, "header {\n");
-                    fprintf(fp, "\theight = \"960\";\n");
-                    fprintf(fp, "\twidth = \"1280\";\n");
-                    fprintf(fp, "\ttitle = \"Classical histogram\";\n");
-                    fprintf(fp, "}\n");
-                    fprintf(fp, "axes {\n");
-                    fprintf(fp, "\tinteger b [label=\"Bytes\"];\n");
-                    fprintf(fp, "\tinteger c [label=\"Byte count\"];\n");
-                    fprintf(fp, "}\n");
-                    fprintf(fp, "data {\n");
-
-                    for (i=0; i<=255; i++)
-                    {
-                        fprintf(fp, "\tb=\"%d\", c=\"%Ld\";\n", i, extra->histo1D[i]);
-                    }
-                    fprintf(fp, "}\n");
-                }
-                else
-                {
-                    /* 2D display */
-                    fprintf(fp, "header {\n");
-                    fprintf(fp, "\theight = \"960\";\n");
-                    fprintf(fp, "\twidth = \"1280\";\n");
-                    fprintf(fp, "\ttitle = \"Classical histogram\";\n");
-                    fprintf(fp, "}\n");
-                    fprintf(fp, "axes {\n");
-                    fprintf(fp, "\tchar a [label=\"Bytes\"];\n");
-                    fprintf(fp, "\tport c [label=\"Byte count\"];\n");
-                    fprintf(fp, "\tchar b [label=\"Bytes\"];\n");
-                    fprintf(fp, "}\n");
-                    fprintf(fp, "data {\n");
-
-                    for (i=0; i<=255; i++)
-                    {
-                        for (j=0; j<=255; j++)
+                    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(heraia_get_widget(plugin->xml, "rb_1D"))) == TRUE)
                         {
-                            if (extra->histo2D[i][j] == extra->infos_2D->max)
+                            /* 1D display */
+                            fprintf(fp, "header {\n");
+                            fprintf(fp, "\theight = \"960\";\n");
+                            fprintf(fp, "\twidth = \"1280\";\n");
+                            fprintf(fp, "\ttitle = \"Classical histogram\";\n");
+                            fprintf(fp, "}\n");
+                            fprintf(fp, "axes {\n");
+                            fprintf(fp, "\tinteger b [label=\"Bytes\"];\n");
+                            fprintf(fp, "\tinteger c [label=\"Byte count\"];\n");
+                            fprintf(fp, "}\n");
+                            fprintf(fp, "data {\n");
+
+                            for (i=0; i<=255; i++)
                                 {
-                                    fprintf(fp, "\ta=\"%d\", c=\"%Ld\", b=\"%d\" [color=\"red\"];\n", i, extra->histo2D[i][j], j);
+                                    fprintf(fp, "\tb=\"%d\", c=\"%Ld\";\n", i, extra->histo1D[i]);
                                 }
-                                else
-                                {
-                                    if (extra->histo2D[i][j] == extra->infos_2D->min)
-                                        {
-                                            fprintf(fp, "\ta=\"%d\", c=\"%Ld\", b=\"%d\" [color=\"green\"];\n", i, extra->histo2D[i][j], j);
-                                        }
-                                        else
-                                        {
-                                            fprintf(fp, "\ta=\"%d\", c=\"%Ld\", b=\"%d\";\n", i, extra->histo2D[i][j], j);
-                                        }
-                                }
+                            fprintf(fp, "}\n");
                         }
-                    }
-                    fprintf(fp, "}\n");
+                    else
+                        {
+                            /* 2D display */
+                            fprintf(fp, "header {\n");
+                            fprintf(fp, "\theight = \"960\";\n");
+                            fprintf(fp, "\twidth = \"1280\";\n");
+                            fprintf(fp, "\ttitle = \"Classical histogram\";\n");
+                            fprintf(fp, "}\n");
+                            fprintf(fp, "axes {\n");
+                            fprintf(fp, "\tchar a [label=\"Bytes\"];\n");
+                            fprintf(fp, "\tport c [label=\"Byte count\"];\n");
+                            fprintf(fp, "\tchar b [label=\"Bytes\"];\n");
+                            fprintf(fp, "}\n");
+                            fprintf(fp, "data {\n");
+
+                            for (i=0; i<=255; i++)
+                                {
+                                    for (j=0; j<=255; j++)
+                                        {
+                                            if (extra->histo2D[i][j] == extra->infos_2D->max)
+                                                {
+                                                    fprintf(fp, "\ta=\"%d\", c=\"%Ld\", b=\"%d\" [color=\"red\"];\n", i, extra->histo2D[i][j], j);
+                                                }
+                                            else
+                                                {
+                                                    if (extra->histo2D[i][j] == extra->infos_2D->min)
+                                                        {
+                                                            fprintf(fp, "\ta=\"%d\", c=\"%Ld\", b=\"%d\" [color=\"green\"];\n", i, extra->histo2D[i][j], j);
+                                                        }
+                                                    else
+                                                        {
+                                                            fprintf(fp, "\ta=\"%d\", c=\"%Ld\", b=\"%d\";\n", i, extra->histo2D[i][j], j);
+                                                        }
+                                                }
+                                        }
+                                }
+                            fprintf(fp, "}\n");
+                        }
+                    fclose(fp);
                 }
-                fclose(fp);
-            }
+
             if (filename != NULL)
-            {
-                g_free(filename);
-            }
+                {
+                    g_free(filename);
+                }
         }
 }
-
 
 
 /**
@@ -632,11 +637,15 @@ static void histo_radiobutton_toggled(GtkWidget *widget, gpointer data)
             stat_t *extra = (stat_t *) plugin->extra;
 
             if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(heraia_get_widget(plugin->xml, "rb_1D"))) == TRUE)
-                gtk_image_set_from_pixbuf(image, extra->pixbuf_1D);
+                {
+                    gtk_image_set_from_pixbuf(image, extra->pixbuf_1D);
+                }
             else
                 {
                     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(heraia_get_widget(plugin->xml, "rb_2D"))) == TRUE)
-                        gtk_image_set_from_pixbuf(image, extra->pixbuf_2D);
+                        {
+                            gtk_image_set_from_pixbuf(image, extra->pixbuf_2D);
+                        }
                 }
         }
 }
@@ -700,9 +709,9 @@ static void realize_some_numerical_stat(heraia_struct_t *main_struct, heraia_plu
     GtkTextView *textview = GTK_TEXT_VIEW(heraia_get_widget(plugin->xml, "statw_textview"));
 
     if (main_struct != NULL && main_struct->current_doc != NULL)
-    {
-        filename = doc_t_document_get_filename(main_struct->current_doc);
-    }
+        {
+            filename = doc_t_document_get_filename(main_struct->current_doc);
+        }
 
     if (filename != NULL)
         {
@@ -794,10 +803,16 @@ static void populate_stats_histos(heraia_struct_t *main_struct, heraia_plugin_t 
     make_pixbufs_from_histos(extra);
 
     if (gtk_toggle_button_get_active(rb_1D) == TRUE)
-        gtk_image_set_from_pixbuf(image, extra->pixbuf_1D);
+        {
+            gtk_image_set_from_pixbuf(image, extra->pixbuf_1D);
+        }
     else
-        if (gtk_toggle_button_get_active(rb_2D) == TRUE)
-            gtk_image_set_from_pixbuf(image, extra->pixbuf_2D);
+        {
+            if (gtk_toggle_button_get_active(rb_2D) == TRUE)
+                {
+                    gtk_image_set_from_pixbuf(image, extra->pixbuf_2D);
+                }
+        }
 }
 
 
@@ -912,9 +927,14 @@ static void make_pixbufs_from_histos(stat_t *extra)
     calc_infos_histo_2D(extra);
 
     if (extra->infos_1D->max > 0)
-        do_pixbuf_1D_from_histo1D(extra);
+        {
+            do_pixbuf_1D_from_histo1D(extra);
+        }
+
     if (extra->infos_2D->max > 0)
-        do_pixbuf_2D_from_histo2D(extra, extra->infos_2D->max);
+        {
+            do_pixbuf_2D_from_histo2D(extra, extra->infos_2D->max);
+        }
 }
 
 
@@ -1023,50 +1043,50 @@ static void do_pixbuf_2D_from_histo2D(stat_t *extra, guint max_2D)
     ceill = (guchar) 200;
 
     for (i=0; i<=255; i++)
-    {
+        {
             for (j=0; j<=255; j++)
-            {
+                {
                     height = extra->histo2D[i][j];  /* min .. max */
 
-                if (height > 0)
-                {
+                    if (height > 0)
+                        {
 
-                    if (height >= min && height <= threshold1)
-                    {
-                        red = floor;
-                        green = floor;
-                        blue = (guchar) (height - min)*(ceill-floor) / threshold1;
-                        /*
-                         * height = (gdouble) (height*255) / (gdouble) extra->infos_2D->max;
-                         * red = (guchar)  height;
-                         * green = (guchar) 255 - (height);
-                         * blue = (guchar) height/2;
-                         */
-                        plot_in_pixbuf(extra->pixbuf_2D, i, 255-j, red, green, blue, (guchar) 255);
-                    }
-                    else if (height > threshold1 && height <= threshold2)
-                    {
-                        red = (guchar) floor;
-                        green = (guchar) (height - threshold1)*(ceill-floor) / (threshold2 - threshold1);
-                        blue = (guchar) floor; /* ceill - green;*/
-                        plot_in_pixbuf(extra->pixbuf_2D, i, 255-j, red, green, blue, (guchar) 255);
-                    }
-                    else if (height > threshold2 && height <= max)
-                    {
-                        red = (guchar) (height - threshold2)*(ceill-floor) / (max - threshold2);
-                        green = floor; /* ceill - red; */
-                        blue = floor;
-                        /*
-                         * height = (gdouble) height*255 / (gdouble) extra->infos_2D->max;
-                         * red = (guchar)  255 - (height);
-                         * green = (guchar) height/2;
-                         * blue = (guchar) height;
-                         */
-                        plot_in_pixbuf(extra->pixbuf_2D, i, 255-j, red, green, blue, (guchar) 255);
-                    }
+                            if (height >= min && height <= threshold1)
+                                {
+                                    red = floor;
+                                    green = floor;
+                                    blue = (guchar) (height - min)*(ceill-floor) / threshold1;
+                                    /*
+                                     * height = (gdouble) (height*255) / (gdouble) extra->infos_2D->max;
+                                     * red = (guchar)  height;
+                                     * green = (guchar) 255 - (height);
+                                     * blue = (guchar) height/2;
+                                     */
+                                    plot_in_pixbuf(extra->pixbuf_2D, i, 255-j, red, green, blue, (guchar) 255);
+                                }
+                            else if (height > threshold1 && height <= threshold2)
+                                {
+                                    red = (guchar) floor;
+                                    green = (guchar) (height - threshold1)*(ceill-floor) / (threshold2 - threshold1);
+                                    blue = (guchar) floor; /* ceill - green;*/
+                                    plot_in_pixbuf(extra->pixbuf_2D, i, 255-j, red, green, blue, (guchar) 255);
+                                }
+                            else if (height > threshold2 && height <= max)
+                                {
+                                    red = (guchar) (height - threshold2)*(ceill-floor) / (max - threshold2);
+                                    green = floor; /* ceill - red; */
+                                    blue = floor;
+                                    /*
+                                     * height = (gdouble) height*255 / (gdouble) extra->infos_2D->max;
+                                     * red = (guchar)  255 - (height);
+                                     * green = (guchar) height/2;
+                                     * blue = (guchar) height;
+                                     */
+                                    plot_in_pixbuf(extra->pixbuf_2D, i, 255-j, red, green, blue, (guchar) 255);
+                                }
+                        }
                 }
-            }
-    }
+        }
 }
 
 

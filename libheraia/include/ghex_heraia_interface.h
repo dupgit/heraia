@@ -1,9 +1,9 @@
-/* -*- Mode: C; tab-width: 3; indent-tabs-mode: t; c-basic-offset: 3 -*- */
+/* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
   ghex_heraia_interface.h
   heraia - an hexadecimal file editor and analyser based on ghex
 
-  (C) Copyright 2005 - 2009 Olivier Delhomme
+  (C) Copyright 2005 - 2010 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 

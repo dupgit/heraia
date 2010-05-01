@@ -3,7 +3,7 @@
   types.h
   types.h - all data types and pieces of common declarations
 
-  (C) Copyright 2006 - 2009 Olivier Delhomme
+  (C) Copyright 2006 - 2010 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 

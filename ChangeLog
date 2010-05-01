@@ -3,6 +3,10 @@
      * Typo in the NEWS file (wrong version number!)
      * Verified that all files are UTF-8 encoded
      * Version number updated to 0.1.2 (still in progess)
+     * Dates on header files 2009 -> 2010
+     * Refactoring code :
+       . 2 spaces  between functions
+       . 4 space before brackets (if, while, switch statements)
 
 21.04.2010
    - Olivier Delhomme <heraia@delhomme.org>
