@@ -58,7 +58,6 @@ doc_t *heraia_hex_document_new(heraia_struct_t *main_struct, char *filename)
 
             /* signal connection on cursor moves */
             connect_cursor_moved_signal(main_struct, hex_widget);
-            connect_data_changed_signal(main_struct, hex_widget);
 
             return doc;
          }
@@ -346,8 +345,17 @@ selection_t *ghex_get_selection(GtkWidget *hex_widget)
     if (gh != NULL)
         {
             sel = (selection_t *) g_malloc0(sizeof(selection_t));
-            sel->start = gh->selection.start;
-            sel->end = gh->selection.end;
+
+            if (gh->selection.start < gh->selection.end)
+                {
+                    sel->start = gh->selection.start;
+                    sel->end = gh->selection.end;
+                }
+            else
+                {
+                    sel->end = gh->selection.start;
+                    sel->start = gh->selection.end;
+                }
 
             return sel;
         }
@@ -373,6 +381,7 @@ doc_t *new_doc_t(Heraia_Document *hex_doc, GtkWidget *hex_widget)
 
     new_doc->hex_doc = hex_doc;
     new_doc->hex_widget = hex_widget;
+    new_doc->modified = hex_doc->changed; /**@todo do a function to access this value **/
 
     return new_doc;
 }

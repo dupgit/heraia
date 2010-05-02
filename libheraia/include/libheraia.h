@@ -265,6 +265,9 @@ typedef struct
 {
     Heraia_Document *hex_doc;  /**< Document definition related to libHeraia_Hex */
     GtkWidget *hex_widget;     /**< hexwidget corresponding to the document      */
+    gboolean modified;         /**< If hex_doc->changed <> modified then the
+                                    document has something changed that may need
+                                    an upate                                     */
 } doc_t;
 
 

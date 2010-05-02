@@ -382,10 +382,10 @@ void on_paste_activate(GtkWidget *widget, gpointer data)
 
 
 /**
- * @fn void refresh_file_labels(heraia_struct_t *main_struct)
  *  This function is refreshing the labels on the main
  *  window in order to reflect cursor position, selected
- *  positions and total selected size
+ *  positions and total selected size.
+ *  It is also used to refresh the file label on the tab.
  * @param main_struct : main structure
  */
 void refresh_file_labels(heraia_struct_t *main_struct)
@@ -443,6 +443,14 @@ void refresh_file_labels(heraia_struct_t *main_struct)
                     g_free(file_sel_text);
                     g_free(file_sel_size_text);
                     g_free(sel);
+
+                    /* refreshing the tab filename itself if necessary only ! */
+                    if (main_struct->current_doc->modified != main_struct->current_doc->hex_doc->changed)
+                        {
+                            main_struct->current_doc->modified = main_struct->current_doc->hex_doc->changed;
+                            set_notebook_tab_label_color(main_struct, main_struct->current_doc->hex_doc->changed);
+                        }
+
                 }
             else
                 {
@@ -481,23 +489,6 @@ void refresh_event_handler(GtkWidget *widget, gpointer data)
             refresh_file_labels(main_struct);
 
             main_struct->event = HERAIA_REFRESH_NOTHING;
-        }
-}
-
-
-/**
- * This function is called when data was changed in the ghex interface
- * @param widget :
- * @param change_data : HexChangeData from Ghex structure
- * @param data : user data MUST be heraia_struct_t *main_struct main structure
- */
-void data_has_changed(GtkWidget *widget, gpointer data)
-{
-    heraia_struct_t *main_struct = (heraia_struct_t *) data;
-
-    if (main_struct != NULL)
-        {
-            set_notebook_tab_label_color(main_struct);
         }
 }
 
@@ -564,6 +555,10 @@ void on_save_activate(GtkWidget *widget, gpointer data)
                     filename = doc_t_document_get_filename(main_struct->current_doc);
                     log_message(main_struct, G_LOG_LEVEL_ERROR, "Error while saving file %s !", filename);
                 }
+            else
+                {
+                     main_struct->current_doc->modified = FALSE; /* document has just been saved (thus it is not modified !) */
+                }
         }
 }
 
@@ -609,6 +604,7 @@ void on_save_as_activate(GtkWidget *widget, gpointer data)
                     /* updating the window name and tab's name */
                     update_main_struct_name(main_struct);
                     set_notebook_tab_name(main_struct);
+                    main_struct->current_doc->modified = FALSE; /* document has just been saved (thus it is not modified !) */
                     log_message(main_struct, G_LOG_LEVEL_DEBUG, "File %s saved and now edited.", doc_t_document_get_filename(main_struct->current_doc));
                 }
         }
@@ -1004,9 +1000,12 @@ void set_notebook_tab_name(heraia_struct_t *main_struct)
 
 
 /**
- * Sets the color for the file when it was modified
+ * Set the style for the label
+ * @param main_struct : main structure
+ * @param color : If color is TRUE sets the color for the file tab's label
+ *                If not, then sets it to default
  */
-void set_notebook_tab_label_color(heraia_struct_t *main_struct)
+void set_notebook_tab_label_color(heraia_struct_t *main_struct, gboolean color)
 {
     GtkWidget *notebook = NULL; /* file notebook in main window       */
     GtkWidget *page = NULL;     /* Current page for the file notebook */
@@ -1022,7 +1021,18 @@ void set_notebook_tab_label_color(heraia_struct_t *main_struct)
             page = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), current);
             label = gtk_notebook_get_tab_label(GTK_NOTEBOOK(notebook), page);
 
-            markup = g_markup_printf_escaped("<span fgcolor=#AAAA00>%s</span>", text);
+            text = g_strdup(gtk_label_get_text(GTK_LABEL(label)));
+
+            if (color == TRUE)
+                {
+                    markup = g_markup_printf_escaped("<span foreground=\"blue\">%s</span>", text);
+                }
+            else
+                {
+                    markup = g_markup_printf_escaped("%s", text);
+                }
+
+            log_message(main_struct, G_LOG_LEVEL_DEBUG, "Changing color for filename %s in tab : %d", markup, current);
             gtk_label_set_markup(GTK_LABEL(label), markup);
             g_free(markup);
             g_free(text);
@@ -1135,19 +1145,6 @@ void connect_cursor_moved_signal(heraia_struct_t *main_struct, GtkWidget *hex_wi
 {
     g_signal_connect(G_OBJECT(hex_widget), "cursor_moved",
                      G_CALLBACK(refresh_event_handler), main_struct);
-}
-
-
-/**
- * Connects the signal that the data in the document has changed to the function
- * named data_has_changed
- * @param main_struct : main structure
- * @param hex_widget : the hex_widget we want to connect the signal to
- */
-void connect_data_changed_signal(heraia_struct_t *main_struct, GtkWidget *hex_widget)
-{
-    g_signal_connect(G_OBJECT(hex_widget), "data_changed",
-                     G_CALLBACK(data_has_changed), main_struct);
 }
 
 

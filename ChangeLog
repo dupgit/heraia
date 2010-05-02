@@ -1,6 +1,9 @@
 02.05.2010
    - Olivier Delhomme <heraia@delhomme.org>
-     * Trying to connect the data_changed signal from GtkHex
+     * Connection a signal for changed data could not be made. Getting things
+       done with a boolean comparing the one in the structure and the one in
+       Ghex hex document.
+     * Corrected a bug that made selection inverted (start after end)
 
 01.05.2010
    - Olivier Delhomme <heraia@delhomme.org>
