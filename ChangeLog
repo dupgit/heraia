@@ -1,3 +1,7 @@
+02.05.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Trying to connect the data_changed signal from GtkHex
+
 01.05.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Typo in the NEWS file (wrong version number!)

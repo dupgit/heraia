@@ -64,6 +64,8 @@ extern void grey_main_widgets(GtkBuilder *main, gboolean greyed);
 extern void refresh_event_handler(GtkWidget *widget, gpointer data);
 extern void refresh_file_labels(heraia_struct_t *main_struct);
 extern void connect_cursor_moved_signal(heraia_struct_t *main_struct, GtkWidget *hex_widget);
+extern void connect_data_changed_signal(heraia_struct_t *main_struct, GtkWidget *hex_widget);
+extern void data_has_changed(GtkWidget *widget, gpointer data);
 
 /* window positionning system */
 extern void record_dialog_box_position(GtkWidget *dialog_box, window_prop_t *dialog_prop);
@@ -96,5 +98,6 @@ extern void update_main_struct_name(heraia_struct_t *main_struct);
 /* NoteBook */
 extern void set_notebook_tab_name(heraia_struct_t *main_struct);
 extern void add_new_tab_in_main_struct(heraia_struct_t *main_struct, doc_t *doc);
+extern void set_notebook_tab_label_color(heraia_struct_t *main_struct);
 
 #endif /* _LIBHERAIA_HERAIA_UI_H_ */

@@ -456,7 +456,6 @@ void refresh_file_labels(heraia_struct_t *main_struct)
 
 
 /**
- * @fn void refresh_event_handler(GtkWidget *widget, gpointer data)
  *  This function is here to ensure that everything will be
  *  refreshed upon a signal event.
  * @warning This function is not thread safe (do not use in a thread)
@@ -487,7 +486,23 @@ void refresh_event_handler(GtkWidget *widget, gpointer data)
 
 
 /**
- * @fn void on_open_activate(GtkWidget *widget, gpointer data)
+ * This function is called when data was changed in the ghex interface
+ * @param widget :
+ * @param change_data : HexChangeData from Ghex structure
+ * @param data : user data MUST be heraia_struct_t *main_struct main structure
+ */
+void data_has_changed(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+
+    if (main_struct != NULL)
+        {
+            set_notebook_tab_label_color(main_struct);
+        }
+}
+
+
+/**
  *  This handles the menuitem "Ouvrir" to open a file
  * @warning This function is not thread safe (do not use in a thread)
  * @todo try to put some mutexes on main_struct->event to make this
@@ -951,7 +966,6 @@ void update_main_struct_name(heraia_struct_t *main_struct)
 
 
 /**
- * @fn void set_notebook_tab_name(heraia_struct_t *main_struct)
  *  Sets notebook's tab's name. This function should only be called
  *  when a new filename was set (open and save as functions)
  * @param main_struct : main structure
@@ -964,7 +978,8 @@ void set_notebook_tab_name(heraia_struct_t *main_struct)
     doc_t *doc = NULL;          /* corresponding tab's document       */
     gchar *filename = NULL;
     gchar *whole_filename;
-    gint current = 0;
+    gint current = 0;           /* index of the current tab displayed */
+     gchar *markup= NULL;       /* markup text                        */
 
     if (main_struct != NULL && main_struct->current_doc != NULL)
        {
@@ -979,10 +994,39 @@ void set_notebook_tab_name(heraia_struct_t *main_struct)
            if (whole_filename != NULL)
                {
                     filename = g_filename_display_basename(whole_filename);
-                    gtk_label_set_text(GTK_LABEL(label), filename);
+                    markup =  g_markup_printf_escaped("%s", filename);
+                    gtk_label_set_markup(GTK_LABEL(label), markup);
                     gtk_widget_set_tooltip_text(label, g_filename_display_name(whole_filename));
+                    g_free(markup);
                }
        }
+}
+
+
+/**
+ * Sets the color for the file when it was modified
+ */
+void set_notebook_tab_label_color(heraia_struct_t *main_struct)
+{
+    GtkWidget *notebook = NULL; /* file notebook in main window       */
+    GtkWidget *page = NULL;     /* Current page for the file notebook */
+    GtkWidget *label = NULL;    /* tab's label                        */
+    gint current = 0;           /* index of the current tab displayed */
+    gchar *markup= NULL;        /* markup text                        */
+    gchar *text = NULL;         /* label's text                       */
+
+    if (main_struct != NULL && main_struct->current_doc != NULL)
+        {
+            notebook = heraia_get_widget(main_struct->xmls->main, "file_notebook");
+            current = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
+            page = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), current);
+            label = gtk_notebook_get_tab_label(GTK_NOTEBOOK(notebook), page);
+
+            markup = g_markup_printf_escaped("<span fgcolor=#AAAA00>%s</span>", text);
+            gtk_label_set_markup(GTK_LABEL(label), markup);
+            g_free(markup);
+            g_free(text);
+        }
 }
 
 
@@ -1018,7 +1062,6 @@ void grey_main_widgets(GtkBuilder *main, gboolean greyed)
 
 
 /**
- * @fn init_heraia_interface(heraia_struct_t *main_struct)
  *  Here we might init some call backs and menu options
  *  and display the interface (main && sub-windows)
  *  This function should be called only once at main program's
@@ -1048,7 +1091,6 @@ void init_heraia_interface(heraia_struct_t *main_struct)
 
 
 /**
- * @fn gboolean load_heraia_xml(heraia_struct_t *main_struct)
  *  Loads the GtkBuilder xml files that describes the heraia project
  *  tries the following paths in that order :
  *  - /etc/heraia/heraia.gtkbuilder
@@ -1084,10 +1126,10 @@ static gboolean load_heraia_xml(heraia_struct_t *main_struct)
 
 
 /**
- * @fn connect_cursor_moved_signal(heraia_struct_t *main_struct)
  *  Connects the signal that the cursor has moved to
  *  the refreshing function
  * @param main_struct : main structure
+ * @param hex_widget : the hex_widget we want to connect the signal to
  */
 void connect_cursor_moved_signal(heraia_struct_t *main_struct, GtkWidget *hex_widget)
 {
@@ -1097,7 +1139,19 @@ void connect_cursor_moved_signal(heraia_struct_t *main_struct, GtkWidget *hex_wi
 
 
 /**
- * @fn void heraia_ui_connect_signals(heraia_struct_t *main_struct)
+ * Connects the signal that the data in the document has changed to the function
+ * named data_has_changed
+ * @param main_struct : main structure
+ * @param hex_widget : the hex_widget we want to connect the signal to
+ */
+void connect_data_changed_signal(heraia_struct_t *main_struct, GtkWidget *hex_widget)
+{
+    g_signal_connect(G_OBJECT(hex_widget), "data_changed",
+                     G_CALLBACK(data_has_changed), main_struct);
+}
+
+
+/**
  *  Connect the signals at the interface
  * @param main_struct : main structure
  */
