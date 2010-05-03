@@ -9,6 +9,8 @@ AC_CONFIG_SRCDIR([src/heraia.c])
 
 AM_INIT_AUTOMAKE([$PACKAGE_TARNAME], [$PACKAGE_VERSION])
 
+AC_PROG_INTLTOOL([0.23])
+
 dnl **************************************************
 dnl * Directory requirements                         *
 dnl **************************************************
@@ -109,19 +111,17 @@ dnl AC_DEFINE_UNQUOTED(PLUGINS_DIR, "$plugins_dir", [Directory where the plugins
 dnl **************************************************
 dnl * languages                                      *
 dnl **************************************************
-ALL_LINGUAS="fr_FR"
+ALL_LINGUAS="fr"
 
 dnl **************************************************
 dnl * triggers gettext                               *
 dnl **************************************************
-AC_PROG_INTLTOOL([0.23])
-AM_GLIB_GNU_GETTEXT
 GETTEXT_PACKAGE=heraia
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [Gettext Package used])
-
-PROGRAM_LOCALE_DIR=[${datadir}/locale]
-AC_SUBST(PROGRAM_LOCALE_DIR)
+AM_GLIB_GNU_GETTEXT
+LOCALEDIR=[${datadir}/locale]
+AC_SUBST(LOCALEDIR)
 
 
 dnl **************************************************
@@ -266,16 +266,16 @@ echo
 echo "    - Build For OS             : $build_os"
 echo "    - Compiler                 : ${CC}"
 echo "    - Options                  :"
-echo "      . Generate documentation : $enable_gtk_doc"
 echo "      . is code profiling on ? : $gprof"
 echo "      . Code coverage is on ?  : $gcov"
 echo "      . debbuging is on ?      : $debug"
 echo "    - Prefix                   : $prefix"
-echo "    - Exec prefix              : $exec_prefix"
-echo "    - Src dir                  : $srcdir"
-echo "    - Data root dir            : $datarootdir"
-echo "    - Data dir                 : $datadir"
-echo "    - Plugins dir              : $plugins_dir"
+echo "    - Exec prefix              : ${exec_prefix}"
+echo "    - Src dir                  : ${srcdir}"
+echo "    - Data root dir            : ${datarootdir}"
+echo "    - Data dir                 : ${datadir}"
+echo "    - Plugins dir              : ${plugins_dir}"
+echo "    - Locale dir               : ${LOCALEDIR}"
 echo
 echo "    You can now run 'make' to compile heraia"
 echo

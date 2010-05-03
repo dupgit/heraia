@@ -76,6 +76,10 @@ I let you imagine what I expect before I do a major release !!!
 . 0.1.3
    * begin effort to make the whole project translatable
 
+. 0.1.4
+   * undo/redo features
+   * copy/cut/paste features
+
 . 0.1.5
    * have the ability to open more than one file at a time
    * have the ability to close openned files

@@ -6,7 +6,8 @@ DEFS = -I$(SRCDIR)  -I$(SRCDIR)/include	 		\
 	   -DDATA_DIR=\"$(data_dir)\"				\
 	   $(Heraia_Hex_CFLAGS) 					\
 	   $(GMODULE_CFLAGS) $(CFLAGS)				\
-	   $(GTK2_CFLAGS) $(GLIB2_CFLAGS)
+	   $(GTK2_CFLAGS) $(GLIB2_CFLAGS)			\
+	   -DLOCALEDIR=\"${LOCALEDIR}\"
 
 bin_PROGRAMS = heraia
 heraia_LDFLAGS = $(LDFLAGS)
@@ -31,4 +32,4 @@ AM_CPPFLAGS = 			\
 	$(GTKHEX_CFLAGS) 	\
 	$(GLIB2_CFLAGS) 	\
 	$(GKT2_CFLAGS)		\
-	-DPROGRAM_LOCALE_DIR=\"${PROGRAM_LOCALE_DIR}\"
+	-DLOCALEDIR=\"${LOCALEDIR}\"

@@ -332,7 +332,7 @@ static void init_international_languages(void)
 {
   gchar *result = NULL;
 
-  result = bindtextdomain(GETTEXT_PACKAGE, PROGRAM_LOCALE_DIR);
+  result = bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR);
   bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
   textdomain(GETTEXT_PACKAGE);
 }

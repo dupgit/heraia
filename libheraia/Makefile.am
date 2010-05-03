@@ -20,7 +20,7 @@ pkglib_LTLIBRARIES = libheraia.la
 libheraia_la_CFLAGS = -I$(top_builddir) -DPLUGINS_DIR=\"$(plugins_dir)\"	 \
 					  -I$(top_builddir)/libheraia/include $(GTKHEX_CFLAGS)   \
 					  $(GMODULE_CFLAGS) $(CFLAGS)	$(GTK2_CFLAGS) 			 \
-					  $(GLIB2_CFLAGS) -DPROGRAM_LOCALE_DIR=\"${PROGRAM_LOCALE_DIR}\"
+					  $(GLIB2_CFLAGS) -DLOCALEDIR=\"${LOCALEDIR}\"
 
 AM_LDFLAGS = $(GTKHEX_LIBS) $(GMODULES_LIBS) $(GLIB2_LIBS) $(GTK2_LIBS)
 

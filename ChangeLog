@@ -1,3 +1,9 @@
+03.05.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * added things to do in the roadmap ! Add features for copy/cut/paste and
+       undo/redo.
+     * Some work on translation
+
 02.05.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Connection a signal for changed data could not be made. Getting things
