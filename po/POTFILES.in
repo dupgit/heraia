@@ -1,19 +1,19 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
-src/heraia.gtkbuilder
-src/heraia.c
-libheraia/decode.c
-libheraia/libheraia.c
-libheraia/user_prefs.c
-libheraia/main_pref_window.c
-libheraia/heraia_ui.c
-libheraia/log.c
-libheraia/ghex_heraia_interface.c
-libheraia/plugin.c
-libheraia/heraia_io.c
-libheraia/data_interpretor.c
-libheraia/plugin_list.c
-libheraia/tests.c
-plugins/stat/stat.c
-plugins/stat/stat.gtkbuilder
+../src/heraia.gtkbuilder
+../src/heraia.c
+../libheraia/decode.c
+../libheraia/libheraia.c
+../libheraia/user_prefs.c
+../libheraia/main_pref_window.c
+../libheraia/heraia_ui.c
+../libheraia/log.c
+../libheraia/ghex_heraia_interface.c
+../libheraia/plugin.c
+../libheraia/heraia_io.c
+../libheraia/data_interpretor.c
+../libheraia/plugin_list.c
+../libheraia/tests.c
+../plugins/stat/stat.c
+../plugins/stat/stat.gtkbuilder
 

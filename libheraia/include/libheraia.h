@@ -302,7 +302,6 @@ typedef struct
 } heraia_struct_t;
 
 
-#include "config.h"
 #include "data_interpretor.h"
 #include "decode.h"
 #include "ghex_heraia_interface.h"
@@ -315,6 +314,7 @@ typedef struct
 #include "plugin_list.h"
 #include "user_prefs.h"
 #include "tests.h"
+
 
 extern int libheraia_test(void);
 

@@ -72,7 +72,7 @@ heraia_struct_t *get_main_struct(void)
  */
 static gboolean version(void)
 {
-    fprintf (stdout, "heraia, %s - %s - Version %s - License %s\n", HERAIA_AUTHORS, HERAIA_DATE, HERAIA_VERSION, HERAIA_LICENSE);
+    fprintf (stdout, Q_("heraia written by %s\n   %s - Version %s\n   License %s\n"), HERAIA_AUTHORS, HERAIA_DATE, HERAIA_VERSION, HERAIA_LICENSE);
     return TRUE;
 }
 
@@ -90,22 +90,22 @@ static gboolean usage(int status)
 {
     if (status == 0)
         {
-            fprintf (stderr, _("Try `heraia --help' for more information.\n"));
+            fprintf (stderr, Q_("Try `heraia --help' for more information.\n"));
 
             return FALSE;
         }
     else
         {
             version();
-            fprintf(stdout, "\nheraia is a simple hexadecimal file editor and file analyser");
-            fprintf(stdout, "\nUsage :\n  heraia [options] filename(s)\n");
-            fprintf(stdout, "\nOptions :\n");
-            fprintf(stdout, "  -h, --help\tThis help.\n");
-            fprintf(stdout, "  -v, --version\tProgram version information.\n");
-            fprintf(stdout, "  -t, --tests=TESTS\tRuns some tests.\n");
-            fprintf(stdout, "     TESTS might be :\n");
-            fprintf(stdout, "     %d for coverage tests\n", COVERAGE_TESTS);
-            fprintf(stdout, "     %d for loading files tests\n", LOADING_TESTS);
+            fprintf(stdout, Q_("\nheraia is a simple hexadecimal file editor and file analyser"));
+            fprintf(stdout, Q_("\nUsage :\n  heraia [options] filename(s)\n"));
+            fprintf(stdout, Q_("\nOptions :\n"));
+            fprintf(stdout, Q_("  -h, --help\tThis help.\n"));
+            fprintf(stdout, Q_("  -v, --version\tProgram version information.\n"));
+            fprintf(stdout, Q_("  -t, --tests=TESTS\tRuns some tests.\n"));
+            fprintf(stdout, Q_("     TESTS might be :\n"));
+            fprintf(stdout, Q_("     %d for coverage tests\n"), COVERAGE_TESTS);
+            fprintf(stdout, Q_("     %d for loading files tests\n"), LOADING_TESTS);
 
             return TRUE;
         }
@@ -196,8 +196,8 @@ static heraia_struct_t *heraia_init_main_struct(void)
 
     if (!herwin)
         {
-            fprintf(stderr, "Main structure could not be initialiazed !");
-            fprintf(stderr, "Do you have a memory problem ?\n");
+            fprintf(stderr, Q_("Main structure could not be initialiazed !"));
+            fprintf(stderr, Q_("Do you have a memory problem ?\n"));
             return NULL;
         }
 
@@ -330,11 +330,18 @@ static GList *init_heraia_location_list(void)
  */
 static void init_international_languages(void)
 {
-  gchar *result = NULL;
+    gchar *result = NULL;
 
-  result = bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR);
-  bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
-  textdomain(GETTEXT_PACKAGE);
+    result = bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR);
+
+    if (ENABLE_DEBUG == TRUE)
+        {
+            fprintf(stdout, "Gettext package : %s\n", GETTEXT_PACKAGE);
+            fprintf(stdout, "Locale dir : %s\n", LOCALEDIR);
+            fprintf(stdout, "Bindtextdomain : %s\n", result);
+        }
+    bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+    textdomain(GETTEXT_PACKAGE);
 }
 
 

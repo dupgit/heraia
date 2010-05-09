@@ -1,0 +1,93 @@
+# Heraia's French Translation .po file.
+# Copyright (C) 2010 - Olivier DELHOMME
+# This file is distributed under the same license as the heraia package.
+# Olivier DELHOMME <olivier.delhomme@free.fr>, 2010.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Heraia 0.1.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-05-09 21:40+0200\n"
+"PO-Revision-Date: 2010-05-09 21:54+0200\n"
+"Last-Translator: Olivier DELHOMME <olivier.delhomme@free.fr>\n"
+"Language-Team: French  <olivier.delhomme@free.fr>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/heraia.c:75
+#, c-format
+msgid ""
+"heraia written by %s\n"
+"   %s - Version %s\n"
+"   License %s\n"
+msgstr ""
+"heraia écrit par %s\n"
+"   %s - Version %s\n"
+"   Licence %s\n"
+
+#: ../src/heraia.c:93
+msgid "Try `heraia --help' for more information.\n"
+msgstr "Essayer heraia --help pour plus d'information\n"
+
+#: ../src/heraia.c:100
+msgid ""
+"\n"
+"heraia is a simple hexadecimal file editor and file analyser"
+msgstr ""
+"\n"
+"heraia est un éditeur et un analyseur hexadecimal de fichiers"
+
+#: ../src/heraia.c:101
+msgid ""
+"\n"
+"Usage :\n"
+"  heraia [options] filename(s)\n"
+msgstr ""
+"\n"
+"Usage :\n"
+"  heraia [options] fichier(s)\n"
+
+#: ../src/heraia.c:102
+msgid ""
+"\n"
+"Options :\n"
+msgstr ""
+"\n"
+"Options :\n"
+
+
+#: ../src/heraia.c:103
+msgid "  -h, --help\tThis help.\n"
+msgstr "  -h, --help\tCette aide.\n"
+
+#: ../src/heraia.c:104
+msgid "  -v, --version\tProgram version information.\n"
+msgstr "  -v, --version\tDonne la version du programme.\n"
+
+#: ../src/heraia.c:105
+msgid "  -t, --tests=TESTS\tRuns some tests.\n"
+msgstr "  -t, --tests=TESTS\tExecute certains tests.\n"
+
+#: ../src/heraia.c:106
+msgid "     TESTS might be :\n"
+msgstr "      Les TESTS peuvent être :\n"
+
+#: ../src/heraia.c:107
+#, c-format
+msgid "     %d for coverage tests\n"
+msgstr "     %d pour les tests de couverture\n"
+
+#: ../src/heraia.c:108
+#, c-format
+msgid "     %d for loading files tests\n"
+msgstr "     %d pour les tests de chargement de fichiers\n"
+
+#: ../src/heraia.c:199
+msgid "Main structure could not be initialiazed !"
+msgstr "La structure principale n'a pu être initialisée !"
+
+#: ../src/heraia.c:200
+msgid "Do you have a memory problem ?\n"
+msgstr "Avez vous un problème mémoire ?\n"
