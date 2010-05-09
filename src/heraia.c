@@ -332,6 +332,7 @@ static void init_international_languages(void)
 {
     gchar *result = NULL;
 
+    setlocale(LC_ALL, "");
     result = bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR);
 
     if (ENABLE_DEBUG == TRUE)
