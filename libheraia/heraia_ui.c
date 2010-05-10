@@ -34,7 +34,8 @@ static void set_a_propos_properties(GtkWidget *about_dialog);
 static gboolean load_heraia_xml(heraia_struct_t *main_struct);
 static void heraia_ui_connect_signals(heraia_struct_t *main_struct);
 static void record_and_hide_about_box(heraia_struct_t *main_struct);
-static void close_heraia(heraia_struct_t *main_struct);
+static gboolean unsaved_documents(heraia_struct_t *main_struct);
+static gboolean close_heraia(heraia_struct_t *main_struct);
 
 
 /**
@@ -46,9 +47,14 @@ static void close_heraia(heraia_struct_t *main_struct);
 void on_quit_activate(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
+    gboolean quit_heraia = FALSE;
 
-    close_heraia(main_struct);
-    gtk_main_quit();
+    quit_heraia = close_heraia(main_struct);
+
+    if (quit_heraia == TRUE)
+        {
+            gtk_main_quit();
+        }
 }
 
 
@@ -557,7 +563,8 @@ void on_save_activate(GtkWidget *widget, gpointer data)
                 }
             else
                 {
-                     main_struct->current_doc->modified = FALSE; /* document has just been saved (thus it is not modified !) */
+                    set_notebook_tab_label_color(main_struct, FALSE);
+                    main_struct->current_doc->modified = FALSE; /* document has just been saved (thus it is not modified !) */
                 }
         }
 }
@@ -1489,19 +1496,93 @@ void destroy_a_single_widget(GtkWidget *widget)
         }
 }
 
+
+/**
+ * Verify if we can safely close everything
+ * @param main_struct : main structure
+ * @return a boolean which is TRUE if unsaved documents still exists and FALSE
+ *         otherwise
+ */
+static gboolean unsaved_documents(heraia_struct_t *main_struct)
+{
+    doc_t *current_doc = NULL;
+    gboolean result = FALSE;
+    guint i = 0;
+
+    if (main_struct != NULL && main_struct->documents != NULL)
+        {
+            for(i = 0; i < main_struct->documents->len; i++)
+                {
+                    current_doc =  g_ptr_array_index(main_struct->documents, i);
+                    result = result | current_doc->modified;
+                }
+
+            return result;
+        }
+
+    return result;
+}
+
+
 /**
  * @fn void close_heraia(heraia_struct_t *main_struct)
  * Before closing heraia we need to do few things
  * @param main_struct : main_struct
+ * @return TRUE if we can safely quit heraia, FALSE otherwise
  */
-static void close_heraia(heraia_struct_t *main_struct)
+static gboolean close_heraia(heraia_struct_t *main_struct)
 {
-    /* recording window's position */
-    record_all_dialog_box_positions(main_struct);
+    gboolean unsaved = FALSE;    /* if there is any unsaved documents */
+    gboolean quit_heraia = TRUE; /* By default we want to quit        */
+    GtkWidget *dialog = NULL;
+    GtkWidget *label = NULL;
+    GtkWidget *content_area = NULL;
+    GtkWidget *parent = NULL;
+    gint result = 0;
 
-    /* . Saving preferences */
-    save_preferences(main_struct);
+    unsaved = unsaved_documents(main_struct);
+
+    if (unsaved == TRUE)
+        {
+            /* Displays a dialog box that let the user choose what to do */
+            parent = heraia_get_widget(main_struct->xmls->main, "main_window");
+            dialog = gtk_dialog_new_with_buttons(Q_("Unsaved document(s) remains."), GTK_WINDOW(parent), GTK_DIALOG_DESTROY_WITH_PARENT,
+                                                 GTK_STOCK_YES, GTK_RESPONSE_YES,
+                                                 GTK_STOCK_NO, GTK_RESPONSE_NO, NULL);
+            content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+            gtk_container_set_border_width(GTK_CONTAINER(content_area), 4);
+            label = gtk_label_new(Q_("Do you want to quit without saving ?"));
+            gtk_container_add(GTK_CONTAINER(content_area), label);
+            gtk_widget_show_all(dialog);
+
+            gint result = gtk_dialog_run(GTK_DIALOG(dialog));
+
+            switch (result)
+                {
+                    case GTK_RESPONSE_YES:
+                        quit_heraia = TRUE;
+                    break;
+
+                    default:
+                        quit_heraia = FALSE;
+                    break;
+                }
+
+            gtk_widget_destroy(dialog);
+        }
+
+    if ( quit_heraia == TRUE)
+        {
+            /* recording window's position */
+            record_all_dialog_box_positions(main_struct);
+
+            /* . Saving preferences */
+            save_preferences(main_struct);
+        }
+
+    return quit_heraia;
 }
+
 
 /**
  * @fn void init_one_cmi_window_state(GtkWidget *dialog_box, GtkWidget *cmi, window_prop_t *dialog_prop)

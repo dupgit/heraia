@@ -2,6 +2,9 @@
    - Olivier Delhomme <heraia@delhomme.org>
      * Added -I m4 to aclocal invocation. Apparently, this helps under windows
        and MSYS, MINGW environement
+     * Testing if unsaved documents still remains. Ask the user and then leave
+       heraia or not
+     * Saving a newly modified document turns it's name from blue to black
 
 09.05.2010
    - Olivier Delhomme <heraia@delhomme.org>
