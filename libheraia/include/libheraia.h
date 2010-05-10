@@ -47,8 +47,8 @@
 #include <getopt.h>
 
 #include <glib.h>
-#include <glib/gi18n-lib.h>
 #include <glib/gstdio.h>
+#include <glib/gi18n-lib.h>
 #include <gmodule.h>
 
 #include <gtkhex/gtkhex.h>

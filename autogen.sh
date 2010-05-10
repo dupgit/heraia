@@ -1,6 +1,6 @@
 #!/bin/sh
 
-aclocal                                \
+aclocal -I m4                          \
 && libtoolize                          \
 && automake --gnu --add-missing --copy \
 && autoconf

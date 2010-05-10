@@ -1,3 +1,8 @@
+10.05.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Added -I m4 to aclocal invocation. Apparently, this helps under windows
+       and MSYS, MINGW environement
+
 09.05.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Still working on internationalisation
