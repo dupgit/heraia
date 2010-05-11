@@ -68,7 +68,7 @@ I let you imagine what I expect before I do a major release !!!
    * review code with coherence in mind and replace 'GtkHex' by 'Heraia_Hex'
      for example
 
-. 0.1.2
+. 0.1.2 [11.05.2010]
    * have the selection positions added near the cursor's position
    * add a function that will look if the document has been modified or not
      before closing
