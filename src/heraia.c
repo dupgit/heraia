@@ -30,7 +30,7 @@
  *         Sébastien TRICAUD,
  *         Grégory AUDET,
  *         Aurélie DERAISME.
- * @version 0.1.2
+ * @version 0.1.3
  * @date 2005-2010
  */
 
