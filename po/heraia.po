@@ -1,0 +1,82 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-05-09 21:40+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/heraia.c:75
+#, c-format
+msgid ""
+"heraia written by %s\n"
+"   %s - Version %s\n"
+"   License %s\n"
+msgstr ""
+
+#: ../src/heraia.c:93
+msgid "Try `heraia --help' for more information.\n"
+msgstr ""
+
+#: ../src/heraia.c:100
+msgid ""
+"\n"
+"heraia is a simple hexadecimal file editor and file analyser"
+msgstr ""
+
+#: ../src/heraia.c:101
+msgid ""
+"\n"
+"Usage :\n"
+"  heraia [options] filename(s)\n"
+msgstr ""
+
+#: ../src/heraia.c:102
+msgid ""
+"\n"
+"Options :\n"
+msgstr ""
+
+#: ../src/heraia.c:103
+msgid "  -h, --help\tThis help.\n"
+msgstr ""
+
+#: ../src/heraia.c:104
+msgid "  -v, --version\tProgram version information.\n"
+msgstr ""
+
+#: ../src/heraia.c:105
+msgid "  -t, --tests=TESTS\tRuns some tests.\n"
+msgstr ""
+
+#: ../src/heraia.c:106
+msgid "     TESTS might be :\n"
+msgstr ""
+
+#: ../src/heraia.c:107
+#, c-format
+msgid "     %d for coverage tests\n"
+msgstr ""
+
+#: ../src/heraia.c:108
+#, c-format
+msgid "     %d for loading files tests\n"
+msgstr ""
+
+#: ../src/heraia.c:199
+msgid "Main structure could not be initialiazed !"
+msgstr ""
+
+#: ../src/heraia.c:200
+msgid "Do you have a memory problem ?\n"
+msgstr ""

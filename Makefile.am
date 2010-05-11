@@ -9,7 +9,7 @@ dist_gnomemenu_DATA = $(gnomemenufiles)
 
 ACLOCAL_AMFLAGS = -I m4
 
-EXTRA_DIST = config.rpath 				\
+EXTRA_DIST =  				\
 	HISTORY					\
 	autogen.sh				\
 	autoclean.sh			\
