@@ -49,7 +49,7 @@ gboolean load_file_to_analyse(heraia_struct_t *main_struct, gchar *filename)
     stat_buf = (struct stat *) g_malloc0 (sizeof(struct stat));
     stat(filename, stat_buf);
 
-    log_message(main_struct, G_LOG_LEVEL_DEBUG, "filename to load : %s", filename);
+    log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("filename to load : %s"), filename);
 
     if (S_ISREG(stat_buf->st_mode) && stat_buf->st_size>0)
         {
@@ -60,7 +60,7 @@ gboolean load_file_to_analyse(heraia_struct_t *main_struct, gchar *filename)
                 {
                     add_new_tab_in_main_struct(main_struct, doc);
 
-                    log_message(main_struct, G_LOG_LEVEL_DEBUG, "Hexwidget : %p", doc->hex_widget);
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Hexwidget : %p"), doc->hex_widget);
 
                     success = TRUE;
 
@@ -71,11 +71,11 @@ gboolean load_file_to_analyse(heraia_struct_t *main_struct, gchar *filename)
                     /* Showing all the widgets */
                     grey_main_widgets(main_struct->xmls->main, FALSE);
 
-                    log_message(main_struct, G_LOG_LEVEL_DEBUG, "file %s loaded !", filename);
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("file %s loaded !"), filename);
                 }
             else
                 {
-                    log_message(main_struct, G_LOG_LEVEL_ERROR, "Error while trying to load file %s", filename);
+                    log_message(main_struct, G_LOG_LEVEL_ERROR, Q_("Error while trying to load file %s"), filename);
                     success = FALSE;
                 }
 
@@ -84,11 +84,11 @@ gboolean load_file_to_analyse(heraia_struct_t *main_struct, gchar *filename)
         {
             if (S_ISREG(stat_buf->st_mode))
                 {
-                    log_message(main_struct, G_LOG_LEVEL_WARNING, "The file %s is empty !", filename);
+                    log_message(main_struct, G_LOG_LEVEL_WARNING, Q_("The file %s is empty !"), filename);
                 }
             else
                 {
-                    log_message(main_struct, G_LOG_LEVEL_WARNING, "The file %s does not exist !", filename);
+                    log_message(main_struct, G_LOG_LEVEL_WARNING, Q_("The file %s does not exist !"), filename);
                 }
             success = FALSE;
         }
@@ -121,7 +121,7 @@ static GtkBuilder *load_xml_if_it_exists(gchar *file_to_load)
 
             if (!gtk_builder_add_from_file(xml, file_to_load, &error))
                 {
-                    g_warning ("Couldn't load builder file: %s", error->message);
+                    g_warning (Q_("Couldn't load builder file: %s"), error->message);
                     g_error_free (error);
                 }
         }

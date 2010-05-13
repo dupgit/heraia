@@ -37,9 +37,10 @@
 #define PLUGIN_NAME "stat"
 #define PLUGIN_VERSION "1.1"
 #define PLUGIN_SUMMARY "stat"
-#define PLUGIN_DESCRIPTION "Does some stats on the opened file"
+#define PLUGIN_DESCRIPTION N_("Does some stats on the opened file")
 #define PLUGIN_AUTHOR "Olivier Delhomme <heraia@delhomme.org>"
 #define PLUGIN_HOMEPAGE "http://heraia.tuxfamily.org/"
+
 
 typedef struct
 {

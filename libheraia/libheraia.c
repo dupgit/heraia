@@ -52,7 +52,7 @@
 
 int libheraia_test(void)
 {
-    fprintf(stdout, "Libheraia library test OK\n");
+    fprintf(stdout, Q_("Libheraia library test OK\n"));
     return 0;
 }
 

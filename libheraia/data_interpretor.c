@@ -1,4 +1,4 @@
-/* -*- Mode: C; tab-width: 3; indent-tabs-mode: t; c-basic-offset: 3 -*- */
+/* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
   data_interpretor.c
   heraia - an hexadecimal file editor and analyser based on ghex
@@ -132,7 +132,7 @@ static void interpret(doc_t *doc, decode_t *decode_struct, decode_parameters_t *
                 }
             else
                 {
-                    text = g_strdup_printf("Something's wrong!");
+                    text = g_strdup_printf(Q_("Something's wrong!"));
                     gtk_entry_set_text(GTK_ENTRY(decode_struct->entry), text);
                 }
         }
@@ -144,7 +144,7 @@ static void interpret(doc_t *doc, decode_t *decode_struct, decode_parameters_t *
                 }
             else
                 {
-                    text = g_strdup_printf("Cannot interpret as a %d byte(s)", length);
+                    text = g_strdup_printf(Q_("Cannot interpret as a %d byte(s)"), length);
                 }
 
             gtk_entry_set_text(GTK_ENTRY(decode_struct->entry), text);
@@ -218,7 +218,7 @@ static void refresh_one_tab(doc_t *doc, data_window_t *dw, tab_t *tab, decode_pa
     while (i < tab->nb_rows)
         {
             row = g_ptr_array_index(tab->rows, i);
-            refresh_one_row(doc, row, tab->nb_cols-1, decode_parameters);
+            refresh_one_row(doc, row, tab->nb_cols - 1, decode_parameters);
             i++;
         }
 }
@@ -490,62 +490,62 @@ static void add_default_tabs(heraia_struct_t *main_struct)
     dw->tabs = g_ptr_array_new();
 
     /** Adding a tab for numbers */
-    tab = add_new_tab_in_data_interpretor(GTK_NOTEBOOK(notebook), 0, "Numbers", 3, "Length", "Value unsigned", "Value signed");
+    tab = add_new_tab_in_data_interpretor(GTK_NOTEBOOK(notebook), 0, Q_("Numbers"), 3, Q_("Length"), Q_("Value unsigned"), Q_("Value signed"));
 
     if (tab != NULL)
         {
             g_ptr_array_add(dw->tabs, (gpointer) tab);
             dw->nb_tabs++;
-            row = new_decode_generic_t("8 bits", 1, TRUE, "Can not interpret %d byte as a 8 bits number", 2,  decode_8bits_unsigned, decode_8bits_signed);
+            row = new_decode_generic_t("8 bits", 1, TRUE, Q_("Can not interpret %d byte as a 8 bits number"), 2,  decode_8bits_unsigned, decode_8bits_signed);
             add_new_row_to_tab(tab, row);
-            row = new_decode_generic_t("16 bits", 2, TRUE, "Can not interpret %d bytes as a 16 bits number", 2, decode_16bits_unsigned, decode_16bits_signed);
+            row = new_decode_generic_t("16 bits", 2, TRUE, Q_("Can not interpret %d bytes as a 16 bits number"), 2, decode_16bits_unsigned, decode_16bits_signed);
             add_new_row_to_tab(tab, row);
-            row = new_decode_generic_t("32 bits", 4, TRUE, "Can not interpret %d bytes as a 32 bits number", 2, decode_32bits_unsigned, decode_32bits_signed);
+            row = new_decode_generic_t("32 bits", 4, TRUE, Q_("Can not interpret %d bytes as a 32 bits number"), 2, decode_32bits_unsigned, decode_32bits_signed);
             add_new_row_to_tab(tab, row);
-            row = new_decode_generic_t("64 bits", 8, TRUE, "Can not interpret %d bytes as a 64 bits number", 2, decode_64bits_unsigned, decode_64bits_signed);
+            row = new_decode_generic_t("64 bits", 8, TRUE, Q_("Can not interpret %d bytes as a 64 bits number"), 2, decode_64bits_unsigned, decode_64bits_signed);
             add_new_row_to_tab(tab, row);
         }
 
     /** Adding a tab for floting numbers */
-    tab = add_new_tab_in_data_interpretor(GTK_NOTEBOOK(notebook), 0, "Floats", 3, "Length", "Normal Notation", "Exponential notation");
+    tab = add_new_tab_in_data_interpretor(GTK_NOTEBOOK(notebook), 0, Q_("Floats"), 3, Q_("Length"), Q_("Normal Notation"), Q_("Exponential notation"));
 
     if (tab != NULL)
         {
             g_ptr_array_add(dw->tabs, (gpointer) tab);
             dw->nb_tabs++;
-            row = new_decode_generic_t("Float (32 bits)", 4, TRUE, "Can not interpret %d bytes as a float number", 2, decode_float_normal, decode_float_scientific);
+            row = new_decode_generic_t(Q_("Float (32 bits)"), 4, TRUE, Q_("Can not interpret %d bytes as a float number"), 2, decode_float_normal, decode_float_scientific);
             add_new_row_to_tab(tab, row);
-            row = new_decode_generic_t("Double (64 bits)", 8, TRUE, "Can not interpret %d bytes as a double number", 2, decode_double_normal, decode_double_scientific);
+            row = new_decode_generic_t(Q_("Double (64 bits)"), 8, TRUE, Q_("Can not interpret %d bytes as a double number"), 2, decode_double_normal, decode_double_scientific);
             add_new_row_to_tab(tab, row);
         }
 
     /** Adding a tab for date and time */
-    tab = add_new_tab_in_data_interpretor(GTK_NOTEBOOK(notebook), 2, "Dates and Times", 2, "Type", "Value");
+    tab = add_new_tab_in_data_interpretor(GTK_NOTEBOOK(notebook), 2, Q_("Dates and Times"), 2, Q_("Type"), Q_("Value"));
 
     if (tab != NULL)
         {
             g_ptr_array_add(dw->tabs, (gpointer) tab);
             dw->nb_tabs++;
-            row = new_decode_generic_t("MS-DOS", 4, TRUE, "Can not interpret %d bytes as a DOS date", 1, decode_dos_date);
+            row = new_decode_generic_t("MS-DOS", 4, TRUE, Q_("Can not interpret %d bytes as a DOS date"), 1, decode_dos_date);
             add_new_row_to_tab(tab, row);
-            row = new_decode_generic_t("Filetime", 8, TRUE,  "Can not interpret %d bytes as a filetime date", 1, decode_filetime_date);
+            row = new_decode_generic_t("Filetime", 8, TRUE,  Q_("Can not interpret %d bytes as a filetime date"), 1, decode_filetime_date);
             add_new_row_to_tab(tab, row);
-            row = new_decode_generic_t("C", 4, TRUE, "Can not interpret %d bytes as a C date", 1, decode_C_date);
+            row = new_decode_generic_t("C", 4, TRUE, Q_("Can not interpret %d bytes as a C date"), 1, decode_C_date);
             add_new_row_to_tab(tab, row);
-            row = new_decode_generic_t("HFS", 4, TRUE, "Can not interpret %d bytes as a HFS date",  1, decode_HFS_date);
+            row = new_decode_generic_t("HFS", 4, TRUE, Q_("Can not interpret %d bytes as a HFS date"),  1, decode_HFS_date);
             add_new_row_to_tab(tab, row);
         }
 
     /** Adding a tab for binary based conversions */
-    tab = add_new_tab_in_data_interpretor(GTK_NOTEBOOK(notebook), 3, "Binary based", 2, "Type", "Value");
+    tab = add_new_tab_in_data_interpretor(GTK_NOTEBOOK(notebook), 3, Q_("Binary based"), 2, Q_("Type"), Q_("Value"));
 
     if (tab != NULL)
         {
             g_ptr_array_add(dw->tabs, (gpointer) tab);
             dw->nb_tabs++;
-            row = new_decode_generic_t("Bits", 1, FALSE, "Can not decode %d byte(s) to bits", 1, decode_to_bits);
+            row = new_decode_generic_t("Bits", 1, FALSE, Q_("Can not decode %d byte(s) to bits"), 1, decode_to_bits);
             add_new_row_to_tab(tab, row);
-            row = new_decode_generic_t("Packed BCD", 1, FALSE, "Can not interpret %d byte(s) as packed BCD string",  1, decode_packed_BCD);
+            row = new_decode_generic_t(Q_("Packed BCD"), 1, FALSE, Q_("Can not interpret %d byte(s) as packed BCD string"),  1, decode_packed_BCD);
             add_new_row_to_tab(tab, row);
         }
 }

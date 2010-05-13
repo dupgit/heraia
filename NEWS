@@ -6,7 +6,6 @@
               returns to black when saved
             - internationalisation is in progress
 
-
 05.04.2010 New version 0.1.1 with major changes :
             - requires GTK > 2.16 because everything is now passed to GtkBuilder
             - added new option -t --tests to allow tests executions (for the

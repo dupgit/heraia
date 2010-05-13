@@ -6,7 +6,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Heraia 0.1.2\n"
+"Project-Id-Version: Heraia 0.1.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-09 21:40+0200\n"
 "PO-Revision-Date: 2010-05-09 21:54+0200\n"
@@ -91,3 +91,809 @@ msgstr "La structure principale n'a pu être initialisée !"
 #: ../src/heraia.c:200
 msgid "Do you have a memory problem ?\n"
 msgstr "Avez vous un problème mémoire ?\n"
+
+#: ../src/heraia.c:257
+msgid "Enabling plugins"
+msgstr "Mise en route des greffons"
+
+#. the plugin_list_window (here the plugins may be loaded !)
+#: ../src/heraia.c:261
+msgid "Inits the plugin list window"
+msgstr "Initialisation de la fenêtre listant les greffons"
+
+#: ../src/heraia.c:268
+msgid "Plugins will be disabled"
+msgstr "Les greffons ne seront pas disponibles"
+
+#: ../src/heraia.c:340
+#, c-format
+msgid "Gettext package : %s\n"
+msgstr "Paquet gettext : %s\n"
+
+#: ../src/heraia.c:341
+#, c-format
+msgid "Locale dir : %s\n"
+msgstr "Locale dir : %s\n"
+
+#: ../src/heraia.c:342
+#, c-format
+msgid "Bindtextdomain : %s\n"
+msgstr "Bindtextdomain : %s\n"
+
+#: ../src/heraia.c:370
+msgid "WARNING : tmp_struct is not equal to main_struct!\n"
+msgstr "Avertissement : tmp_struct n'est pas égale à main_struct\n"
+
+#: ../src/heraia.c:376
+msgid "WARNING : Error while testing decode functions\n"
+msgstr "Avertissement : Erreur lors des tests des fonctions de décodage\n"
+
+#: ../src/heraia.c:510
+msgid "Main struct initialized !\n"
+msgstr "Main struct initialisée !\n"
+
+#: ../src/heraia.c:520
+msgid "Beginning things\n"
+msgstr "Le début des choses\n"
+
+#: ../src/heraia.c:530
+msgid "Main interface loaded"
+msgstr "Interface principale chargée"
+
+#: ../src/heraia.c:531
+#, c-format
+msgid "Preference file is %s"
+msgstr "Le fichier des préférences est : %s"
+
+#: ../src/heraia.c:532
+#, c-format
+msgid "data interpretor's tab is %d"
+msgstr "L'onglet de l'interpréteur de données est %d"
+
+#: ../src/heraia.c:546
+#, c-format
+msgid "main_struct : %p"
+msgstr "main_struct : %p"
+
+#: ../src/heraia.c:569
+msgid "File heraia.gtkbuilder not found !\n"
+msgstr "Le fichier heraia.gtkbuilder n'a pas été trouvé !\n"
+
+#: ../libheraia/libheraia.c:55
+msgid "Libheraia library test OK\n"
+msgstr "Test de la bibliothèque libheraia OK\n"
+
+#: ../libheraia/user_prefs.c:87
+#, c-format
+msgid "Unable to open and create the main preference file %s\n"
+msgstr "Impossible d'ouvrir et créer le fichier des préférences principales nommé %s\n"
+
+#: ../libheraia/user_prefs.c:91
+#, c-format
+msgid "Main preference file %s created successfully\n"
+msgstr "Fichier des préférences principal %s crée avec succès\n"
+
+#: ../libheraia/heraia_ui.c:71 ../libheraia/heraia_ui.c:338
+#: ../libheraia/heraia_ui.c:354 ../libheraia/heraia_ui.c:370
+#: ../libheraia/heraia_ui.c:386
+msgid "Not implemented Yet (Please contribute !)"
+msgstr "Fonction non encore implémentée (Contribuez s'il vous plaît !)"
+
+#: ../libheraia/heraia_ui.c:562
+#, c-format
+msgid "Error while saving file %s !"
+msgstr "Erreur pendant l'enregistrement du fichier %s !"
+
+#: ../libheraia/heraia_ui.c:602
+msgid "Saving file as... : operation cancelled."
+msgstr "Enregister sous... : opération annulée."
+
+#: ../libheraia/heraia_ui.c:606
+#, c-format
+msgid "Error while saving file as %s"
+msgstr "Erreur pendant l'enregistrement du fichier sous le nom %s"
+
+#. document has just been saved (thus it is not modified !)
+#: ../libheraia/heraia_ui.c:615
+#, c-format
+msgid "File %s saved and now edited."
+msgstr "Fichier %s enregistré et maintenant édité."
+
+#: ../libheraia/heraia_ui.c:688
+msgid "All tests went Ok."
+msgstr "Tous les test se sont bien déroulés."
+
+#: ../libheraia/heraia_ui.c:692
+msgid "Some tests failed."
+msgstr "Quelques tests on échoués."
+
+#: ../libheraia/heraia_ui.c:853
+msgid "Select a file to analyse"
+msgstr "Sélectionnez un fichier à analyser"
+
+#. Selection a name to the file to save
+#: ../libheraia/heraia_ui.c:912
+msgid "Save As..."
+msgstr "Enregistrer sous..."
+
+#: ../libheraia/heraia_ui.c:1042
+#, c-format
+msgid "Changing color for filename %s in tab : %d"
+msgstr "Changement de la couleur pour le fichier nommé %s dans l'onglet n° %d"
+
+#: ../libheraia/heraia_ui.c:1262
+msgid "Connecting heraia_ui signals     "
+msgstr "Connexion des signaux d'heraia_ui                          "
+
+#: ../libheraia/heraia_ui.c:1269 ../libheraia/heraia_ui.c:1282
+#: ../libheraia/heraia_ui.c:1295 ../libheraia/heraia_ui.c:1309
+#: ../libheraia/heraia_ui.c:1323 ../libheraia/heraia_ui.c:1326
+msgid " [Done]\n"
+msgstr " [Fait]\n"
+
+#: ../libheraia/heraia_ui.c:1275
+msgid "log window init interface        "
+msgstr "Initialisationn de l'interface de la fenêtre de log        "
+
+#: ../libheraia/heraia_ui.c:1288
+msgid "preferences window init interface"
+msgstr "Initialisation de l'interface de la fenêtre des préférences"
+
+#: ../libheraia/heraia_ui.c:1302
+msgid "data interpretor init interface  "
+msgstr "Initialisation de l'interface de l'interpréteur des données"
+
+#. preferences file
+#: ../libheraia/heraia_ui.c:1315
+msgid "Loading heraia preference file   "
+msgstr "Chargement des préférences d'Heraia                        "
+
+#: ../libheraia/heraia_ui.c:1319
+msgid " [FAILED]\n"
+msgstr " [ECHEC]\n"
+
+#: ../libheraia/heraia_ui.c:1324
+msgid "Setting up preferences           "
+msgstr "Mise en place des préférences                              "
+
+#: ../libheraia/heraia_ui.c:1549
+msgid "Unsaved document(s) remains."
+msgstr "Il reste des documents non enregsitrés"
+
+#: ../libheraia/heraia_ui.c:1554
+msgid "Do you want to quit without saving ?"
+msgstr "Voulez vous quitter sans les enregsitrer ?"
+
+#: ../libheraia/log.c:66
+#, c-format
+msgid "Can't convert output to the locale: %s\n"
+msgstr "Impossible de convertir la sotie à la locale : %s\n"
+
+#: ../libheraia/log.c:104
+#, c-format
+msgid ""
+"%s - RECURSION: %s\n"
+"%c"
+msgstr ""
+"%s - RÉCURSION : %s\n"
+"%c"
+
+#: ../libheraia/log.c:110
+#, c-format
+msgid ""
+"%s - FATAL: %s\n"
+"%c"
+msgstr ""
+"%s - FATAL : %s\n"
+"%c"
+
+#: ../libheraia/log.c:116
+#, c-format
+msgid ""
+"%s - ERROR: %s\n"
+"%c"
+msgstr ""
+"%s - ERREUR : %s\n"
+"%c"
+
+#: ../libheraia/log.c:122
+#, c-format
+msgid ""
+"%s - CRITICAL: %s\n"
+"%c"
+msgstr ""
+"%s - CRITIQUE : %s\n"
+"%c"
+
+#: ../libheraia/log.c:126
+#, c-format
+msgid ""
+"%s - WARNING: %s\n"
+"%c"
+msgstr ""
+"%s - AVERTISSEMENT : %s\n"
+"%c"
+
+#: ../libheraia/log.c:130
+#, c-format
+msgid ""
+"%s - MESSAGE: %s\n"
+"%c"
+msgstr ""
+"%s - MESSAGE : %s\n"
+"%c"
+
+#: ../libheraia/log.c:134
+#, c-format
+msgid ""
+"%s - INFO: %s\n"
+"%c"
+msgstr ""
+"%s - INFO : %s\n"
+"%c"
+
+#: ../libheraia/log.c:138
+#, c-format
+msgid ""
+"%s - DEBUG: %s\n"
+"%c"
+msgstr ""
+"%s - DÉBOGAGE : %s\n"
+"%c"
+
+#: ../libheraia/plugin.c:145
+#, c-format
+msgid "Could not open plugin %s - %s"
+msgstr "Impossible d'ouvrir le greffron %s - %s"
+
+#: ../libheraia/plugin.c:205
+#, c-format
+msgid "plugin %s loaded."
+msgstr "Greffon %s chargé"
+
+#: ../libheraia/heraia_io.c:52
+#, c-format
+msgid "filename to load : %s"
+msgstr "Fichier à charger : %s"
+
+#: ../libheraia/heraia_io.c:63
+#, c-format
+msgid "Hexwidget : %p"
+msgstr "Hexwidget : %p"
+
+#: ../libheraia/heraia_io.c:74
+#, c-format
+msgid "file %s loaded !"
+msgstr "Fichier %s chargé !"
+
+#: ../libheraia/heraia_io.c:78
+#, c-format
+msgid "Error while trying to load file %s"
+msgstr "Erreur pendant le chargement du fichier %s"
+
+#: ../libheraia/heraia_io.c:87
+#, c-format
+msgid "The file %s is empty !"
+msgstr "Le fichier %s est vide !"
+
+#: ../libheraia/heraia_io.c:91
+#, c-format
+msgid "The file %s does not exist !"
+msgstr "Le fichier %s n'existe pas !"
+
+#: ../libheraia/heraia_io.c:124
+#, c-format
+msgid "Couldn't load builder file: %s"
+msgstr "Impossible de charger le fichier builder : %s"
+
+#: ../libheraia/data_interpretor.c:135
+msgid "Something's wrong!"
+msgstr "Quelque chose ne va pas !"
+
+#: ../libheraia/data_interpretor.c:147
+#, c-format
+msgid "Cannot interpret as a %d byte(s)"
+msgstr "Impossible d'interpréter comme %d Octet(s)"
+
+#. * Adding a tab for numbers
+#: ../libheraia/data_interpretor.c:493
+msgid "Numbers"
+msgstr "Nombres"
+
+#: ../libheraia/data_interpretor.c:493 ../libheraia/data_interpretor.c:510
+msgid "Length"
+msgstr "Taille"
+
+#: ../libheraia/data_interpretor.c:493
+msgid "Value unsigned"
+msgstr "Valeur non signée"
+
+#: ../libheraia/data_interpretor.c:493
+msgid "Value signed"
+msgstr "Valeur signée"
+
+#: ../libheraia/data_interpretor.c:499
+#, c-format
+msgid "Can not interpret %d byte as a 8 bits number"
+msgstr "Impossible d'interpréter %d octet comme un nombre sur 8 bits"
+
+#: ../libheraia/data_interpretor.c:501
+#, c-format
+msgid "Can not interpret %d bytes as a 16 bits number"
+msgstr "Impossible d'interpréter %d octet comme un nombre sur 16 bits"
+
+#: ../libheraia/data_interpretor.c:503
+#, c-format
+msgid "Can not interpret %d bytes as a 32 bits number"
+msgstr "Impossible d'interpréter %d octet comme un nombre sur 32 bits"
+
+#: ../libheraia/data_interpretor.c:505
+#, c-format
+msgid "Can not interpret %d bytes as a 64 bits number"
+msgstr "Impossible d'interpréter %d octet comme un nombre sur 64 bits"
+
+#. * Adding a tab for floting numbers
+#: ../libheraia/data_interpretor.c:510
+msgid "Floats"
+msgstr "Flottants"
+
+#: ../libheraia/data_interpretor.c:510
+msgid "Normal Notation"
+msgstr "Notation normale"
+
+#: ../libheraia/data_interpretor.c:510
+msgid "Exponential notation"
+msgstr "Notation exponentielle"
+
+#: ../libheraia/data_interpretor.c:516
+msgid "Float (32 bits)"
+msgstr "Flottant (32 bits)"
+
+#: ../libheraia/data_interpretor.c:516
+#, c-format
+msgid "Can not interpret %d bytes as a float number"
+msgstr "Impossible d'interpréter %d octets comme un nombre flottant"
+
+#: ../libheraia/data_interpretor.c:518
+msgid "Double (64 bits)"
+msgstr "Double (64 bits)"
+
+#: ../libheraia/data_interpretor.c:518
+#, c-format
+msgid "Can not interpret %d bytes as a double number"
+msgstr "Impossible d'interpréter %d octets comme un double"
+
+#. * Adding a tab for date and time
+#: ../libheraia/data_interpretor.c:523
+msgid "Dates and Times"
+msgstr "Dates et heures"
+
+#: ../libheraia/data_interpretor.c:523 ../libheraia/data_interpretor.c:540
+msgid "Type"
+msgstr "Type"
+
+#: ../libheraia/data_interpretor.c:523 ../libheraia/data_interpretor.c:540
+msgid "Value"
+msgstr "Valeur"
+
+#: ../libheraia/data_interpretor.c:529
+#, c-format
+msgid "Can not interpret %d bytes as a DOS date"
+msgstr "Impossible d'interpréter %d octets comme une date de type DOS"
+
+#: ../libheraia/data_interpretor.c:531
+#, c-format
+msgid "Can not interpret %d bytes as a filetime date"
+msgstr "Impossible d'interpréter %d octets comme une date de type FILETIME"
+
+#: ../libheraia/data_interpretor.c:533
+#, c-format
+msgid "Can not interpret %d bytes as a C date"
+msgstr "Impossible d'interpréter %d octets comme une date de type C"
+
+#: ../libheraia/data_interpretor.c:535
+#, c-format
+msgid "Can not interpret %d bytes as a HFS date"
+msgstr "Impossible d'interpréter %d octets comme une date de type HFS"
+
+#. * Adding a tab for binary based conversions
+#: ../libheraia/data_interpretor.c:540
+msgid "Binary based"
+msgstr "Binaires"
+
+#: ../libheraia/data_interpretor.c:546
+#, c-format
+msgid "Can not decode %d byte(s) to bits"
+msgstr "Impossible de décoder %d octets en bits"
+
+#: ../libheraia/data_interpretor.c:548
+msgid "Packed BCD"
+msgstr "BCD compressé"
+
+#: ../libheraia/data_interpretor.c:548
+#, c-format
+msgid "Can not interpret %d byte(s) as packed BCD string"
+msgstr "Impossible d'interpréter %d octets comme une chaine de type BCD compressé"
+
+#: ../libheraia/plugin_list.c:155 ../libheraia/plugin_list.c:167
+msgid "Type        : Unknown\n"
+msgstr "Type        : Inconnu\n"
+
+#: ../libheraia/plugin_list.c:159
+msgid "Type        : Filter\n"
+msgstr "Type        : Filtre\n"
+
+#: ../libheraia/plugin_list.c:163
+msgid "Type        : Action\n"
+msgstr "Type        : Action\n"
+
+#: ../libheraia/plugin_list.c:170
+#, c-format
+msgid "Priority    : %d\n"
+msgstr "Priorité    : %d\n"
+
+#: ../libheraia/plugin_list.c:171
+#, c-format
+msgid "Id          : %d\n"
+msgstr "Id          : %d\n"
+
+#: ../libheraia/plugin_list.c:175
+#, c-format
+msgid "Name        : %s\n"
+msgstr "Nom         : %s\n"
+
+#: ../libheraia/plugin_list.c:185
+#, c-format
+msgid "Summary     : %s\n"
+msgstr "Résumé      : %s\n"
+
+#: ../libheraia/plugin_list.c:190
+#, c-format
+msgid "Description : %s\n"
+msgstr "Description : %s\n"
+
+#: ../libheraia/plugin_list.c:195
+#, c-format
+msgid "Author      : %s\n"
+msgstr "Auteur      : %s\n"
+
+#: ../libheraia/plugin_list.c:200
+#, c-format
+msgid "Web site    : %s\n"
+msgstr "Site web    : %s\n"
+
+#: ../libheraia/plugin_list.c:205
+msgid "The 'info' structure is not initialized !\n"
+msgstr "La structure 'info' n'est pas initialisée !\n"
+
+#: ../libheraia/plugin_list.c:224
+msgid ""
+"\n"
+"Plugin's defined functions :\n"
+msgstr ""
+"\n"
+"Fonctions du greffon       :\n"
+
+#: ../libheraia/plugin_list.c:228
+#, c-format
+msgid "    - Initialization function : %p\n"
+msgstr "    - Fonction d'initialisation    : %p\n"
+
+#: ../libheraia/plugin_list.c:233
+#, c-format
+msgid "    - Main function           : %p\n"
+msgstr "    - Fonction principale          : %p\n"
+
+#: ../libheraia/plugin_list.c:238
+#, c-format
+msgid "    - Exit function           : %p\n"
+msgstr "    - Fonction de sortie           : %p\n"
+
+#: ../libheraia/plugin_list.c:243
+#, c-format
+msgid "    - Refresh function        : %p\n"
+msgstr "    - Fonction de rafraichissement : %p\n"
+
+#: ../libheraia/plugin_list.c:248
+msgid ""
+"\n"
+"This plugin does not provide any function !!\n"
+msgstr ""
+"\n"
+"Ce greffon ne fournit aucune fonction !!\n"
+
+#: ../libheraia/plugin_list.c:266
+msgid ""
+"\n"
+"Filter functions :\n"
+msgstr ""
+"\n"
+"Fonction de filtres :\n"
+
+#: ../libheraia/plugin_list.c:270
+#, c-format
+msgid "    - Import function : %p\n"
+msgstr "    - Fonction d'import : %p\n"
+
+#: ../libheraia/plugin_list.c:275
+#, c-format
+msgid "    - Export function : %p\n"
+msgstr "    - Fonction d'export : %p\n"
+
+#: ../libheraia/plugin_list.c:280
+msgid ""
+"\n"
+"This plugin does not provide any filter function\n"
+msgstr ""
+"\n"
+"Ce greffon ne fournit aucune fonction de filtre\n"
+
+#: ../libheraia/plugin_list.c:285
+msgid ""
+"\n"
+"The structure 'filter' is not initialized !"
+msgstr ""
+"\n"
+"La structure 'filter' n'est pas initialisée !"
+
+#: ../libheraia/plugin_list.c:298
+msgid ""
+"\n"
+"This plugin provides :\n"
+msgstr ""
+"\n"
+"Ce greffon fournit :\n"
+
+#: ../libheraia/plugin_list.c:302
+msgid "  - a menu entry in the plugins menu.\n"
+msgstr "  - Une entrée de menu dans le menu des greffons.\n"
+
+#: ../libheraia/plugin_list.c:306
+msgid "  - no menu entry.\n"
+msgstr "  - Aucune entrée de menu.\n"
+
+#: ../libheraia/plugin_list.c:311
+msgid "  - an xml interface.\n"
+msgstr "  - Une interface xml.\n"
+
+#: ../libheraia/plugin_list.c:315
+msgid "  - no xml interface.\n"
+msgstr "  - Pas d'interface xml.\n"
+
+#: ../libheraia/plugin_list.c:330
+#, c-format
+msgid "API version : %d\n"
+msgstr "Version de l'API : %d\n"
+
+#: ../libheraia/plugin_list.c:335
+#, c-format
+msgid "File        : %s\n"
+msgstr "Fichier          : %s\n"
+
+#: ../libheraia/plugin_list.c:340
+#, c-format
+msgid "Directory  : %s\n"
+msgstr "Dossier         : %s\n"
+
+#: ../libheraia/plugin_list.c:345
+#, c-format
+msgid "Handle      : %p\n"
+msgstr "Handle           : %p\n"
+
+#: ../libheraia/plugin_list.c:349
+msgid "Handle      : NONE <-- Is there anything normal ?\n"
+msgstr "Handle           : AUCUN <-- Y a t'il quelque chose de normal ?\n"
+
+#: ../libheraia/plugin_list.c:365
+#, c-format
+msgid ""
+"\n"
+"This plugin has an additionnal 'extra' structure (%p) sized %d bytes.\n"
+msgstr ""
+"\n"
+"Le greffon possède une structure aditionnelle 'extra' (%p) d'une taille de %d octets.\n"
+
+#: ../libheraia/plugin_list.c:370
+msgid ""
+"\n"
+"This plugin does not have any additionnal structure.\n"
+msgstr ""
+"\n"
+"Ce greffon n'a pas de structure aditionnelle.\n"
+
+
+#: ../libheraia/plugin_list.c:385
+msgid "Plugin's state : "
+msgstr "État du greffon :"
+
+#: ../libheraia/plugin_list.c:389
+msgid "Running\n"
+msgstr "En marche\n"
+
+#: ../libheraia/plugin_list.c:393
+msgid "Initialiazing or initialized\n"
+msgstr "En cours d'initialisation ou initialisé\n"
+
+#: ../libheraia/plugin_list.c:396
+msgid "Loaded\n"
+msgstr "Chargé\n"
+
+#: ../libheraia/plugin_list.c:400
+msgid "Creating itself\n"
+msgstr "Se créeant lui même\n"
+
+#: ../libheraia/plugin_list.c:404
+msgid "Exiting\n"
+msgstr "En train de quitter\n"
+
+#: ../libheraia/plugin_list.c:408
+msgid "Waiting\n"
+msgstr "En attente\n"
+
+#: ../libheraia/plugin_list.c:412
+msgid "Unknown\n"
+msgstr "Inconnu\n"
+
+#: ../libheraia/tests.c:56
+#, c-format
+msgid "WARNING : expected result was not good with %s\n"
+msgstr "AVERTISSEMENT : le résultat attendu n'est pas le bon avec %s\n"
+
+#: ../plugins/stat/stat.c:121
+#, c-format
+msgid "Initializing plugin %s"
+msgstr "Initialisation du greffon %s"
+
+#. load the xml interface
+#: ../plugins/stat/stat.c:128
+#, c-format
+msgid "Plugin from %s found !"
+msgstr "Greffon de %s trouvé !"
+
+#: ../plugins/stat/stat.c:131
+#, c-format
+msgid "%s xml interface loaded."
+msgstr "Interface xml %s chargée."
+
+#: ../plugins/stat/stat.c:135
+#, c-format
+msgid "Unable to load %s xml interface."
+msgstr "Impossible de charger l'interface xml %s"
+
+#: ../plugins/stat/stat.c:163
+#, c-format
+msgid "Quitting %s\n"
+msgstr "Sortie de %s\n"
+
+#: ../plugins/stat/stat.c:313
+msgid "Enter filename's to save the image to"
+msgstr "Entrez le nom du fichier où enregistrer l'image"
+
+#: ../plugins/stat/stat.c:398
+msgid "Enter filename to export data as CSV to"
+msgstr "Entrez le nom du fichier où exporter les données au format CSV"
+
+#. 1D display
+#: ../plugins/stat/stat.c:410
+msgid "\"Byte\";\"Count\"\n"
+msgstr "\"Octet\";\"Nombre\"\n"
+
+#. 2D display
+#: ../plugins/stat/stat.c:421
+msgid "\"Byte/Byte\";"
+msgstr "\"Octet/Octet\";"
+
+#: ../plugins/stat/stat.c:467
+msgid "Enter filename to export data as gnuplot to"
+msgstr "Entrez le nom du fichier où exporter les données au format gnuplot"
+
+#. 1D display
+#: ../plugins/stat/stat.c:485
+msgid "set title 'Classical histogram'\n"
+msgstr "set title 'Histogramme classique'\n"
+
+#: ../plugins/stat/stat.c:487
+msgid "plot '-' title 'Byte count' with impulses\n"
+msgstr "plot '-' title 'Nombre d octets' with impulses\n"
+
+#. 2D display
+#: ../plugins/stat/stat.c:498
+msgid "set title 'Heatmap histogram'\n"
+msgstr "set title 'Thermogramme'\n"
+
+#: ../plugins/stat/stat.c:549
+msgid "Enter filename to export data as PCV to"
+msgstr "Entrez le nom du fichier où exporter les données au format PCV"
+
+#: ../plugins/stat/stat.c:564 ../plugins/stat/stat.c:584
+msgid "\ttitle = \"Classical histogram\";\n"
+msgstr "\ttitle = \"Histogramme classique\";\n"
+
+#: ../plugins/stat/stat.c:567
+msgid "\tinteger b [label=\"Bytes\"];\n"
+msgstr "\tinteger b [label=\"Octets\"];\n"
+
+#: ../plugins/stat/stat.c:568
+msgid "\tinteger c [label=\"Byte count\"];\n"
+msgstr "\tinteger c [label=\"Nombre d'octets\"];\n"
+
+#: ../plugins/stat/stat.c:587
+msgid "\tchar a [label=\"Bytes\"];\n"
+msgstr "\tchar a [label=\"Octets\"];\n"
+
+#: ../plugins/stat/stat.c:588
+msgid "\tport c [label=\"Byte count\"];\n"
+msgstr "\tport c [label=\"Nombre d'octets\"];\n"
+
+#: ../plugins/stat/stat.c:589
+msgid "\tchar b [label=\"Bytes\"];\n"
+msgstr "\tchar b [label=\"Octets\"];\n"
+
+#: ../plugins/stat/stat.c:720
+#, c-format
+msgid "Calculating stats on %s"
+msgstr "Calcul des statistiques sur %s"
+
+#: ../plugins/stat/stat.c:727
+#, c-format
+msgid ""
+"File size : %Ld bytes\n"
+"\n"
+msgstr ""
+"Taille du fichier : %Ld octets\n"
+"\n"
+
+#: ../plugins/stat/stat.c:729
+#, c-format
+msgid "Last intern modification : %s"
+msgstr "Dernière modification interne : %s"
+
+#: ../plugins/stat/stat.c:731
+#, c-format
+msgid "Last acces to the file   : %s"
+msgstr "Dernier accès au fichier      : %s"
+
+#: ../plugins/stat/stat.c:733
+#, c-format
+msgid "Last extern modification : %s"
+msgstr "Dernière modification externe : %s"
+
+#: ../plugins/stat/stat.c:739
+msgid ""
+"\n"
+"1D histogram statistics :\n"
+msgstr ""
+"\n"
+"Statistiques de l'histogramme 1D :\n"
+
+#: ../plugins/stat/stat.c:740 ../plugins/stat/stat.c:745
+#, c-format
+msgid "     . minimum          : %lld\n"
+msgstr "     . minimum           : %lld\n"
+
+#: ../plugins/stat/stat.c:741 ../plugins/stat/stat.c:746
+#, c-format
+msgid "     . maximum          : %lld\n"
+msgstr "     . maximum           : %lld\n"
+
+#: ../plugins/stat/stat.c:742 ../plugins/stat/stat.c:747
+#, c-format
+msgid "     . mean             : %lld\n"
+msgstr "     . moyenne           : %lld\n"
+
+#: ../plugins/stat/stat.c:743 ../plugins/stat/stat.c:748
+#, c-format
+msgid "     . number of values : %lld\n"
+msgstr "     . nombre de valeurs : %lld\n"
+
+#: ../plugins/stat/stat.c:744
+msgid ""
+"\n"
+"2D histogram statistics :\n"
+msgstr ""
+"\n"
+"Statistiques de l'histogramme 2D :\n"
+
+#: ../plugins/stat/stat.c:749
+msgid "Histos calculated !"
+msgstr "Histogrammes calculés !"

@@ -68,7 +68,7 @@ void on_new_activate(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
 
-    log_message(main_struct, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
+    log_message(main_struct, G_LOG_LEVEL_WARNING, Q_("Not implemented Yet (Please contribute !)"));
 }
 
 
@@ -335,7 +335,7 @@ void on_delete_activate(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
 
-    log_message(main_struct, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
+    log_message(main_struct, G_LOG_LEVEL_WARNING, Q_("Not implemented Yet (Please contribute !)"));
 }
 
 
@@ -351,7 +351,7 @@ void on_cut_activate(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
 
-    log_message(main_struct, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
+    log_message(main_struct, G_LOG_LEVEL_WARNING, Q_("Not implemented Yet (Please contribute !)"));
 }
 
 
@@ -367,7 +367,7 @@ void on_copy_activate(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
 
-    log_message(main_struct, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
+    log_message(main_struct, G_LOG_LEVEL_WARNING, Q_("Not implemented Yet (Please contribute !)"));
 }
 
 
@@ -383,7 +383,7 @@ void on_paste_activate(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
 
-    log_message(main_struct, G_LOG_LEVEL_WARNING, "Not implemented Yet (Please contribute !)");
+    log_message(main_struct, G_LOG_LEVEL_WARNING, Q_("Not implemented Yet (Please contribute !)"));
 }
 
 
@@ -559,7 +559,7 @@ void on_save_activate(GtkWidget *widget, gpointer data)
             if (erreur != HERAIA_NOERR)
                 {
                     filename = doc_t_document_get_filename(main_struct->current_doc);
-                    log_message(main_struct, G_LOG_LEVEL_ERROR, "Error while saving file %s !", filename);
+                    log_message(main_struct, G_LOG_LEVEL_ERROR, Q_("Error while saving file %s !"), filename);
                 }
             else
                 {
@@ -599,11 +599,11 @@ void on_save_as_activate(GtkWidget *widget, gpointer data)
                 {
                     if (erreur == HERAIA_CANCELLED)
                         {
-                            log_message(main_struct, G_LOG_LEVEL_DEBUG, "Saving file as... : operation cancelled.");
+                            log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Saving file as... : operation cancelled."));
                         }
                     else
                         {
-                            log_message(main_struct, G_LOG_LEVEL_ERROR, "Error while saving file as %s", doc_t_document_get_filename(main_struct->current_doc));
+                            log_message(main_struct, G_LOG_LEVEL_ERROR, Q_("Error while saving file as %s"), doc_t_document_get_filename(main_struct->current_doc));
                         }
                 }
             else
@@ -612,7 +612,7 @@ void on_save_as_activate(GtkWidget *widget, gpointer data)
                     update_main_struct_name(main_struct);
                     set_notebook_tab_name(main_struct);
                     main_struct->current_doc->modified = FALSE; /* document has just been saved (thus it is not modified !) */
-                    log_message(main_struct, G_LOG_LEVEL_DEBUG, "File %s saved and now edited.", doc_t_document_get_filename(main_struct->current_doc));
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("File %s saved and now edited."), doc_t_document_get_filename(main_struct->current_doc));
                 }
         }
 }
@@ -685,11 +685,11 @@ void on_tests_menu_activate(GtkWidget *widget, gpointer data)
 
             if (result == TRUE)
                 {
-                    log_message(main_struct, G_LOG_LEVEL_INFO, "All tests went Ok.");
+                    log_message(main_struct, G_LOG_LEVEL_INFO, Q_("All tests went Ok."));
                 }
             else
                 {
-                    log_message(main_struct, G_LOG_LEVEL_WARNING, "Some tests failed.");
+                    log_message(main_struct, G_LOG_LEVEL_WARNING, Q_("Some tests failed."));
                 }
         }
 }
@@ -850,7 +850,7 @@ GSList *select_file_to_load(heraia_struct_t *main_struct)
 
     parent = heraia_get_widget(main_struct->xmls->main, "main_window");
 
-    file_chooser = GTK_FILE_CHOOSER(gtk_file_chooser_dialog_new("Select a file to analyse",
+    file_chooser = GTK_FILE_CHOOSER(gtk_file_chooser_dialog_new(Q_("Select a file to analyse"),
                                                                 GTK_WINDOW(parent),
                                                                 GTK_FILE_CHOOSER_ACTION_OPEN,
                                                                 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -909,7 +909,7 @@ gchar *select_a_file_to_save(heraia_struct_t *main_struct)
     parent = heraia_get_widget(main_struct->xmls->main, "main_window");
 
     /* Selection a name to the file to save */
-    fcd = GTK_FILE_CHOOSER(gtk_file_chooser_dialog_new("Save As...",
+    fcd = GTK_FILE_CHOOSER(gtk_file_chooser_dialog_new(Q_("Save As..."),
                                                        GTK_WINDOW(parent),
                                                        GTK_FILE_CHOOSER_ACTION_SAVE,
                                                        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -1039,7 +1039,7 @@ void set_notebook_tab_label_color(heraia_struct_t *main_struct, gboolean color)
                     markup = g_markup_printf_escaped("%s", text);
                 }
 
-            log_message(main_struct, G_LOG_LEVEL_DEBUG, "Changing color for filename %s in tab : %d", markup, current);
+            log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Changing color for filename %s in tab : %d"), markup, current);
             gtk_label_set_markup(GTK_LABEL(label), markup);
             g_free(markup);
             g_free(text);
@@ -1259,71 +1259,71 @@ int load_heraia_ui(heraia_struct_t *main_struct)
             /* Heraia UI signals */
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, "Connecting heraia_ui signals     ");
+                    fprintf(stdout, Q_("Connecting heraia_ui signals     "));
                 }
 
             heraia_ui_connect_signals(main_struct);
 
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, " [Done]\n");
+                    fprintf(stdout, Q_(" [Done]\n"));
                 }
 
             /* The Log window */
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, "log window init interface        ");
+                    fprintf(stdout, Q_("log window init interface        "));
                 }
 
             log_window_init_interface(main_struct);
 
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, " [Done]\n");
+                    fprintf(stdout, Q_(" [Done]\n"));
                 }
 
             /* Preferences window */
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, "preferences window init interface");
+                    fprintf(stdout, Q_("preferences window init interface"));
                 }
 
             main_pref_window_init_interface(main_struct);
 
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, " [Done]\n");
+                    fprintf(stdout, Q_(" [Done]\n"));
                 }
 
 
             /* The data interpretor window */
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, "data interpretor init interface  ");
+                    fprintf(stdout, Q_("data interpretor init interface  "));
                 }
 
             data_interpretor_init_interface(main_struct);
 
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, " [Done]\n");
+                    fprintf(stdout, Q_(" [Done]\n"));
                 }
 
 
             /* preferences file */
 
-            fprintf(stdout, "Loading heraia preference file   ");
+            fprintf(stdout, Q_("Loading heraia preference file   "));
 
             if (load_preference_file(main_struct) != TRUE)
                 {
-                    fprintf(stdout, " [FAILED]\n");
+                    fprintf(stdout, Q_(" [FAILED]\n"));
                 }
             else /* Setting up preferences */
                 {
-                    fprintf(stdout, " [Done]\n");
-                    fprintf(stdout, "Setting up preferences           ");
+                    fprintf(stdout, Q_(" [Done]\n"));
+                    fprintf(stdout, Q_("Setting up preferences           "));
                     load_preferences(main_struct);
-                    fprintf(stdout, " [Done]\n");
+                    fprintf(stdout, Q_(" [Done]\n"));
                 }
         }
 

@@ -53,7 +53,7 @@ static gboolean test_one_function(DecodeFunc a_function, gchar *function_name, g
         }
     else
         {
-            fprintf(stderr, "WARNING : expected result was not good with %s\n", function_name);
+            fprintf(stderr, Q_("WARNING : expected result was not good with %s\n"), function_name);
             return FALSE;
         }
 }

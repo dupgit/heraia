@@ -1,3 +1,14 @@
+13 May 2010
+    Ok, I'm not very serious and forgot to write here...
+    Now libheraia is a real library and thus this is possible to have bindings
+    for python...
+
+    I'm trying to change the user's experience by adding some classical
+    functions such as warning when leaving without saving, copy/cut undo/redo
+    and so on...
+
+    Translation is in progress. I hope that this will be achieved soon.
+
 16 August 2008
     I forgot to write here for a while !
     I recently added a roadmap file in order to know where to go. This is
@@ -14,61 +25,61 @@
     one soon.
 
 08 January 2007
-	The heraia program has now a new plugin interface. It has been proved
-	that this interface is fully functionnal. It lacks already a number
-	of features that may be interesting in the future :
-		- ability to configure a plugin within the Plugin list window
-		- some functions to use filtering easyly
-		- some functions to import / export files (templates files)
-		- a safe multithreaded interface (there is many things that
+    The heraia program has now a new plugin interface. It has been proved
+    that this interface is fully functionnal. It lacks already a number
+    of features that may be interesting in the future :
+        - ability to configure a plugin within the Plugin list window
+        - some functions to use filtering easyly
+        - some functions to import / export files (templates files)
+        - a safe multithreaded interface (there is many things that
                   renders plugin multithreading unusable or unsafe at least)
-		- add command lines options to disable some plugins
+        - add command lines options to disable some plugins
 
-	Since one year there is few changes in the main interface :
-		- added a log window
-		- added a plugin system
+    Since one year there is few changes in the main interface :
+        - added a log window
+        - added a plugin system
 
-	But there has been a lot of changes in the code itself in order to
-	bring back coherence (if there was any before !!).
+    But there has been a lot of changes in the code itself in order to
+    bring back coherence (if there was any before !!).
 
-	There is many still many things to do and the most important one is
-	probably the GtkHexWidget replacement as it contains too many
-	limitations :
-		- Size of files that may be openned : < 2Go
-		- Does not use a cache system. The openned file is opened
-		  entirely (this is very long for a 650Mo iso file for
-		  example).
+    There is many still many things to do and the most important one is
+    probably the GtkHexWidget replacement as it contains too many
+    limitations :
+        - Size of files that may be openned : < 2Go
+        - Does not use a cache system. The openned file is opened
+          entirely (this is very long for a 650Mo iso file for
+          example).
 
-	We may also add the following :
-		- ability to open more than one file at a time
-		- ability to filter a selection (select a compressed zone
-		  send it to the right decompressor and edit the new stream
-		  for exemple)
-		- add a search tool (that may search for templates)
-		- add a template creator
-		- multi - system compilation (windows, mac os, hp-ux, ...)
-		- ...
+    We may also add the following :
+        - ability to open more than one file at a time
+        - ability to filter a selection (select a compressed zone
+          send it to the right decompressor and edit the new stream
+          for exemple)
+        - add a search tool (that may search for templates)
+        - add a template creator
+        - multi - system compilation (windows, mac os, hp-ux, ...)
+        - ...
 
-	This is only the beginning guys ... come on, help the heraia project
-	by :
-		- coding something of the above
-		- writing help, translating the application
-		- coding a plugin (which may (or not) be usefull)
-		- coding import / export filters
-		- codind stream filters
-		- using the product and saying your opinion about it,
-		  the features you may want to see added, ...
+    This is only the beginning guys ... come on, help the heraia project
+    by :
+        - coding something of the above
+        - writing help, translating the application
+        - coding a plugin (which may (or not) be usefull)
+        - coding import / export filters
+        - codind stream filters
+        - using the product and saying your opinion about it,
+          the features you may want to see added, ...
 
 14 May 2005
-	Héraia is not meant to be an hexadecimal document creator thus it is
-	not possible to call heraia from the command line with a file that does
+    Héraia is not meant to be an hexadecimal document creator thus it is
+    not possible to call heraia from the command line with a file that does
     not exists or that has a length of 0 byte.
 
 29 January 2005
-	Project creation
-	Name of the project comes from
-	http://www.educnet.education.fr/musagora/manuel/sequence4/tradHeraia.htm
-	(french)
-	This is my first project in gtk+ so there might be surprising things for
+    Project creation
+    Name of the project comes from
+    http://www.educnet.education.fr/musagora/manuel/sequence4/tradHeraia.htm
+    (french)
+    This is my first project in gtk+ so there might be surprising things for
     one used to it. Please report anything that seems strange to you.
 

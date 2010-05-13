@@ -152,57 +152,57 @@ static void print_plugin_info_structure(GtkTextView *textview, heraia_plugin_t *
             switch (plugin->info->type)
                 {
                     case HERAIA_PLUGIN_UNKNOWN:
-                        add_text_to_textview(textview, "Type        : Unknown\n");
+                        add_text_to_textview(textview, Q_("Type        : Unknown\n"));
                         break;
 
                     case HERAIA_PLUGIN_FILTER:
-                        add_text_to_textview(textview, "Type        : Filter\n");
+                        add_text_to_textview(textview, Q_("Type        : Filter\n"));
                         break;
 
                     case HERAIA_PLUGIN_ACTION:
-                        add_text_to_textview(textview, "Type        : Action\n");
+                        add_text_to_textview(textview, Q_("Type        : Action\n"));
                         break;
 
                     default:
-                        add_text_to_textview(textview, "Type        : Unknown\n");
+                        add_text_to_textview(textview, Q_("Type        : Unknown\n"));
                 }
 
-            add_text_to_textview(textview, "Priority    : %d\n", plugin->info->priority);
-            add_text_to_textview(textview, "Id          : %d\n", plugin->info->id);
+            add_text_to_textview(textview, Q_("Priority    : %d\n"), plugin->info->priority);
+            add_text_to_textview(textview, Q_("Id          : %d\n"), plugin->info->id);
 
             if (plugin->info->name != NULL)
                 {
-                    add_text_to_textview(textview, "Name        : %s\n", plugin->info->name);
+                    add_text_to_textview(textview, Q_("Name        : %s\n"), plugin->info->name);
                 }
 
             if (plugin->info->version != NULL)
                 {
-                    add_text_to_textview(textview, "Version     : %s\n", plugin->info->version);
+                    add_text_to_textview(textview, Q_("Version     : %s\n"), plugin->info->version);
                 }
 
             if (plugin->info->summary != NULL)
                 {
-                    add_text_to_textview(textview, "Summary     : %s\n", plugin->info->summary);
+                    add_text_to_textview(textview, Q_("Summary     : %s\n"), plugin->info->summary);
                 }
 
             if (plugin->info->description != NULL)
                 {
-                    add_text_to_textview(textview, "Description : %s\n", plugin->info->description);
+                    add_text_to_textview(textview, Q_("Description : %s\n"), plugin->info->description);
                 }
 
             if (plugin->info->author != NULL)
                 {
-                    add_text_to_textview(textview, "Author      : %s\n", plugin->info->author);
+                    add_text_to_textview(textview, Q_("Author      : %s\n"), plugin->info->author);
                 }
 
             if (plugin->info->homepage != NULL)
                 {
-                    add_text_to_textview(textview, "Web site    : %s\n", plugin->info->homepage);
+                    add_text_to_textview(textview, Q_("Web site    : %s\n"), plugin->info->homepage);
                 }
         }
     else
         {
-            add_text_to_textview(textview, "The 'info' structure is not initialized !\n");
+            add_text_to_textview(textview, Q_("The 'info' structure is not initialized !\n"));
         }
 }
 
@@ -221,31 +221,31 @@ static void print_plugin_functions(GtkTextView *textview, heraia_plugin_t *plugi
         plugin->quit_proc != NULL ||
         plugin->refresh_proc != NULL)
         {
-            add_text_to_textview(textview, "\nPlugin's defined functions :\n");
+            add_text_to_textview(textview, Q_("\nPlugin's defined functions :\n"));
 
             if (plugin->init_proc != NULL)
                 {
-                    add_text_to_textview(textview, "    - Initialization function : %p\n", plugin->init_proc);
+                    add_text_to_textview(textview, Q_("    - Initialization function : %p\n"), plugin->init_proc);
                 }
 
             if (plugin->run_proc != NULL)
                 {
-                    add_text_to_textview(textview, "    - Main function           : %p\n", plugin->run_proc);
+                    add_text_to_textview(textview, Q_("    - Main function           : %p\n"), plugin->run_proc);
                 }
 
             if (plugin->quit_proc != NULL)
                 {
-                    add_text_to_textview(textview, "    - Exit function           : %p\n", plugin->quit_proc);
+                    add_text_to_textview(textview, Q_("    - Exit function           : %p\n"), plugin->quit_proc);
                 }
 
             if (plugin->refresh_proc != NULL)
                 {
-                    add_text_to_textview(textview, "    - Refresh function        : %p\n", plugin->refresh_proc);
+                    add_text_to_textview(textview, Q_("    - Refresh function        : %p\n"), plugin->refresh_proc);
                 }
         }
     else
         {
-            add_text_to_textview(textview, "\nThis plugin does not provide any function !!\n");
+            add_text_to_textview(textview, Q_("\nThis plugin does not provide any function !!\n"));
         }
 }
 
@@ -263,26 +263,26 @@ static void print_plugin_filter_structure(GtkTextView *textview, heraia_plugin_t
             if (plugin->filter->import != NULL ||
                 plugin->filter->export != NULL)
                 {
-                    add_text_to_textview(textview, "\nFilter functions :\n");
+                    add_text_to_textview(textview, Q_("\nFilter functions :\n"));
 
                     if (plugin->filter->import != NULL)
                         {
-                            add_text_to_textview(textview, "    - Import function : %p\n", plugin->filter->import);
+                            add_text_to_textview(textview, Q_("    - Import function : %p\n"), plugin->filter->import);
                         }
 
                     if (plugin->filter->export != NULL)
                         {
-                            add_text_to_textview(textview, "    - Export function : %p\n", plugin->filter->export);
+                            add_text_to_textview(textview, Q_("    - Export function : %p\n"), plugin->filter->export);
                         }
                 }
             else
                 {
-                    add_text_to_textview(textview, "\nThis plugin does not provide any filter function\n");
+                    add_text_to_textview(textview, Q_("\nThis plugin does not provide any filter function\n"));
                 }
         }
     else
         {
-            add_text_to_textview(textview, "\nThe structure 'filter' is not initialized !");
+            add_text_to_textview(textview, Q_("\nThe structure 'filter' is not initialized !"));
         }
 }
 
@@ -295,24 +295,24 @@ static void print_plugin_filter_structure(GtkTextView *textview, heraia_plugin_t
  */
 static void print_plugin_interface(GtkTextView *textview, heraia_plugin_t *plugin)
 {
-    add_text_to_textview(textview, "\nThis plugin provides :\n");
+    add_text_to_textview(textview, Q_("\nThis plugin provides :\n"));
 
     if (plugin->cmi_entry != NULL)
         {
-            add_text_to_textview(textview, "  - a menu entry in the plugins menu.\n");
+            add_text_to_textview(textview, Q_("  - a menu entry in the plugins menu.\n"));
         }
     else
         {
-            add_text_to_textview(textview, "  - no menu entry.\n");
+            add_text_to_textview(textview, Q_("  - no menu entry.\n"));
         }
 
     if (plugin->xml != NULL)
         {
-            add_text_to_textview(textview, "  - an xml interface.\n");
+            add_text_to_textview(textview, Q_("  - an xml interface.\n"));
         }
     else
         {
-            add_text_to_textview(textview, "  - no xml interface.\n");
+            add_text_to_textview(textview, Q_("  - no xml interface.\n"));
         }
 }
 
@@ -327,26 +327,26 @@ static void print_plugin_basics(GtkTextView *textview, heraia_plugin_t *plugin)
 {
     if (plugin->info != NULL)
         {
-            add_text_to_textview(textview, "API version : %d\n", plugin->info->api_version);
+            add_text_to_textview(textview, Q_("API version : %d\n"), plugin->info->api_version);
         }
 
     if (plugin->filename != NULL)
         {
-            add_text_to_textview(textview, "File        : %s\n", plugin->filename);
+            add_text_to_textview(textview, Q_("File        : %s\n"), plugin->filename);
         }
 
     if (plugin->path != NULL)
         {
-            add_text_to_textview(textview, "Directory  : %s\n", plugin->path);
+            add_text_to_textview(textview, Q_("Directory  : %s\n"), plugin->path);
         }
 
     if (plugin->handle != NULL)
         {
-            add_text_to_textview(textview, "Handle      : %p\n", plugin->handle);
+            add_text_to_textview(textview, Q_("Handle      : %p\n"), plugin->handle);
         }
     else
         {
-            add_text_to_textview(textview, "Handle      : NONE <-- Is there anything normal ?\n");
+            add_text_to_textview(textview, Q_("Handle      : NONE <-- Is there anything normal ?\n"));
         }
 }
 
@@ -362,12 +362,12 @@ static void print_plugin_extra_structure(GtkTextView *textview, heraia_plugin_t 
 
     if (plugin->extra != NULL)
         {
-            add_text_to_textview(textview, "\nThis plugin has an additionnal 'extra' structure (%p) sized %d bytes.\n",
+            add_text_to_textview(textview, Q_("\nThis plugin has an additionnal 'extra' structure (%p) sized %d bytes.\n"),
                                  plugin->extra, sizeof(*(plugin->extra)));
         }
     else
         {
-            add_text_to_textview(textview, "\nThis plugin does not have any additionnal structure.\n");
+            add_text_to_textview(textview, Q_("\nThis plugin does not have any additionnal structure.\n"));
         }
 
 }
@@ -382,34 +382,34 @@ static void print_plugin_extra_structure(GtkTextView *textview, heraia_plugin_t 
 static void print_plugin_state(GtkTextView *textview, heraia_plugin_t *plugin)
 {
 
-    add_text_to_textview(textview, "Plugin's state : ");
+    add_text_to_textview(textview, Q_("Plugin's state : "));
     switch (plugin->state)
         {
             case PLUGIN_STATE_RUNNING:
-                add_text_to_textview(textview, "Running\n");
+                add_text_to_textview(textview, Q_("Running\n"));
                 break;
 
             case PLUGIN_STATE_INITIALIZING:
-                add_text_to_textview(textview, "Initialiazing or initialized\n");
+                add_text_to_textview(textview, Q_("Initialiazing or initialized\n"));
                 break;
             case PLUGIN_STATE_LOADED:
-                add_text_to_textview(textview, "Loaded\n");
+                add_text_to_textview(textview, Q_("Loaded\n"));
                 break;
 
             case PLUGIN_STATE_NEW:
-                add_text_to_textview(textview, "Creating itself\n");
+                add_text_to_textview(textview, Q_("Creating itself\n"));
                 break;
 
             case PLUGIN_STATE_EXITING:
-                add_text_to_textview(textview, "Exiting\n");
+                add_text_to_textview(textview, Q_("Exiting\n"));
                 break;
 
             case PLUGIN_STATE_NONE:
-                add_text_to_textview(textview, "Waiting\n");
+                add_text_to_textview(textview, Q_("Waiting\n"));
                 break;
 
             default:
-                add_text_to_textview(textview, "Unknown\n");
+                add_text_to_textview(textview, Q_("Unknown\n"));
         }
 }
 

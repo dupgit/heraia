@@ -118,21 +118,21 @@ void init(heraia_struct_t *main_struct)
 {
     heraia_plugin_t *plugin = NULL;
 
-    log_message(main_struct, G_LOG_LEVEL_INFO, "Initializing plugin %s", PLUGIN_NAME);
+    log_message(main_struct, G_LOG_LEVEL_INFO, Q_("Initializing plugin %s"), PLUGIN_NAME);
     /* first, know who we are ! */
     plugin = find_plugin_by_name(main_struct->plugins_list, PLUGIN_NAME);
 
     if (plugin != NULL)
         {
             /* load the xml interface */
-            log_message(main_struct, G_LOG_LEVEL_INFO, "Plugin from %s found !", plugin->info->author);
+            log_message(main_struct, G_LOG_LEVEL_INFO, Q_("Plugin from %s found !"), plugin->info->author);
             if (load_plugin_xml(main_struct, plugin) == TRUE)
                 {
-                    log_message(main_struct, G_LOG_LEVEL_INFO, "%s xml interface loaded.", plugin->info->name);
+                    log_message(main_struct, G_LOG_LEVEL_INFO, Q_("%s xml interface loaded."), plugin->info->name);
                 }
             else
                 {
-                    log_message(main_struct, G_LOG_LEVEL_WARNING, "Unable to load %s xml interface.", plugin->info->name);
+                    log_message(main_struct, G_LOG_LEVEL_WARNING, Q_("Unable to load %s xml interface."), plugin->info->name);
                 }
 
             /* greyed save as button and others */
@@ -160,7 +160,7 @@ void init(heraia_struct_t *main_struct)
  */
 void quit(void)
 {
-    g_print("Quitting %s\n", PLUGIN_NAME);
+    g_print(Q_("Quitting %s\n"), PLUGIN_NAME);
 }
 
 
@@ -213,6 +213,7 @@ static void set_statw_button_state(GtkBuilder *xml, gboolean sensitive)
         gtk_widget_set_sensitive(heraia_get_widget(xml, "statw_export_to_pcv"), sensitive);
     }
 }
+
 
 /**
  *  The refresh function is called when a new file is loaded or when the cursor is moved
@@ -309,7 +310,7 @@ static void statw_save_as_clicked(GtkWidget *widget, gpointer data)
             image = GTK_IMAGE(heraia_get_widget(plugin->xml, "histo_image"));
             pixbuf = gtk_image_get_pixbuf(image);
 
-            filename = stat_select_file_to_save("Enter filename's to save the image to", extra);
+            filename = stat_select_file_to_save(Q_("Enter filename's to save the image to"), extra);
             if (filename != NULL)
             {
                 gdk_pixbuf_save(pixbuf, filename, "png", error, "compression", "9", NULL);
@@ -394,7 +395,7 @@ static void statw_export_to_csv_clicked(GtkWidget *widget, gpointer data)
         {
             extra = (stat_t *) plugin->extra;
 
-            filename = stat_select_file_to_save("Enter filename to export data as CSV to", extra);
+            filename = stat_select_file_to_save(Q_("Enter filename to export data as CSV to"), extra);
 
             if (filename != NULL)
                 {
@@ -406,7 +407,7 @@ static void statw_export_to_csv_clicked(GtkWidget *widget, gpointer data)
                     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(heraia_get_widget(plugin->xml, "rb_1D"))) == TRUE)
                         {
                             /* 1D display */
-                            fprintf(fp, "\"Byte\";\"Count\"\n");
+                            fprintf(fp, Q_("\"Byte\";\"Count\"\n"));
 
                             for (i=0; i<=255; i++)
                                 {
@@ -417,7 +418,7 @@ static void statw_export_to_csv_clicked(GtkWidget *widget, gpointer data)
                     else
                     {
                         /* 2D display */
-                        fprintf(fp, "\"Byte/Byte\";");
+                        fprintf(fp, Q_("\"Byte/Byte\";"));
                         for (j=0; j<255; j++)
                             {
                                 fprintf(fp, "\"%d\";", j);
@@ -463,7 +464,7 @@ static void statw_export_to_gnuplot_clicked(GtkWidget *widget, gpointer data)
         {
             extra = (stat_t *) plugin->extra;
 
-            filename = stat_select_file_to_save("Enter filename to export data as gnuplot to", extra);
+            filename = stat_select_file_to_save(Q_("Enter filename to export data as gnuplot to"), extra);
 
             if (filename != NULL)
                 {
@@ -481,9 +482,9 @@ static void statw_export_to_gnuplot_clicked(GtkWidget *widget, gpointer data)
                     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(heraia_get_widget(plugin->xml, "rb_1D"))) == TRUE)
                         {
                             /* 1D display */
-                            fprintf(fp, "set title 'Classical histogram'\n");  /**< @todo we might add here the name of the file being edited */
+                            fprintf(fp, Q_("set title 'Classical histogram'\n"));  /**< @todo we might add here the name of the file being edited */
                             fprintf(fp, "set ylabel 'Count'\n");
-                            fprintf(fp, "plot '-' title 'Byte count' with impulses\n");
+                            fprintf(fp, Q_("plot '-' title 'Byte count' with impulses\n")); /* plot and set are gnuplot commands please do not translate them ! */
 
                             for (i=0; i<=255; i++)
                                 {
@@ -494,7 +495,7 @@ static void statw_export_to_gnuplot_clicked(GtkWidget *widget, gpointer data)
                     else
                         {
                             /* 2D display */
-                            fprintf(fp, "set title 'Heatmap histogram'\n");  /**< @todo we might add here the name of the file being edited */
+                            fprintf(fp, Q_("set title 'Heatmap histogram'\n"));  /**< @todo we might add here the name of the file being edited */
                             fprintf(fp, "set bar 1.000000\n");
                             fprintf(fp, "set style rectangle back fc lt -3 fillstyle solid 1.00 border -1\n");
                             fprintf(fp, "unset key\n");
@@ -526,6 +527,7 @@ static void statw_export_to_gnuplot_clicked(GtkWidget *widget, gpointer data)
         }
 }
 
+
 /**
  * What to do when "export to pcv" button is clicked
  * @param widget : the widget which called this function
@@ -544,7 +546,7 @@ static void statw_export_to_pcv_clicked(GtkWidget *widget, gpointer data)
         {
             extra = (stat_t *) plugin->extra;
 
-            filename = stat_select_file_to_save("Enter filename to export data as PCV to", extra);
+            filename = stat_select_file_to_save(Q_("Enter filename to export data as PCV to"), extra);
 
             if (filename != NULL)
                 {
@@ -559,11 +561,11 @@ static void statw_export_to_pcv_clicked(GtkWidget *widget, gpointer data)
                             fprintf(fp, "header {\n");
                             fprintf(fp, "\theight = \"960\";\n");
                             fprintf(fp, "\twidth = \"1280\";\n");
-                            fprintf(fp, "\ttitle = \"Classical histogram\";\n");
+                            fprintf(fp, Q_("\ttitle = \"Classical histogram\";\n"));
                             fprintf(fp, "}\n");
                             fprintf(fp, "axes {\n");
-                            fprintf(fp, "\tinteger b [label=\"Bytes\"];\n");
-                            fprintf(fp, "\tinteger c [label=\"Byte count\"];\n");
+                            fprintf(fp, Q_("\tinteger b [label=\"Bytes\"];\n"));
+                            fprintf(fp, Q_("\tinteger c [label=\"Byte count\"];\n"));
                             fprintf(fp, "}\n");
                             fprintf(fp, "data {\n");
 
@@ -579,12 +581,12 @@ static void statw_export_to_pcv_clicked(GtkWidget *widget, gpointer data)
                             fprintf(fp, "header {\n");
                             fprintf(fp, "\theight = \"960\";\n");
                             fprintf(fp, "\twidth = \"1280\";\n");
-                            fprintf(fp, "\ttitle = \"Classical histogram\";\n");
+                            fprintf(fp, Q_("\ttitle = \"Classical histogram\";\n"));
                             fprintf(fp, "}\n");
                             fprintf(fp, "axes {\n");
-                            fprintf(fp, "\tchar a [label=\"Bytes\"];\n");
-                            fprintf(fp, "\tport c [label=\"Byte count\"];\n");
-                            fprintf(fp, "\tchar b [label=\"Bytes\"];\n");
+                            fprintf(fp, Q_("\tchar a [label=\"Bytes\"];\n"));
+                            fprintf(fp, Q_("\tport c [label=\"Byte count\"];\n"));
+                            fprintf(fp, Q_("\tchar b [label=\"Bytes\"];\n"));
                             fprintf(fp, "}\n");
                             fprintf(fp, "data {\n");
 
@@ -715,36 +717,36 @@ static void realize_some_numerical_stat(heraia_struct_t *main_struct, heraia_plu
 
     if (filename != NULL)
         {
-            log_message(main_struct, G_LOG_LEVEL_INFO, "Calculating stats on %s",  filename);
+            log_message(main_struct, G_LOG_LEVEL_INFO, Q_("Calculating stats on %s"),  filename);
 
             stat_buf = (struct stat *) g_malloc0 (sizeof(struct stat));
             g_lstat(filename, stat_buf);
             if (S_ISREG(stat_buf->st_mode))
                 {
                     kill_text_from_textview(textview);
-                    add_text_to_textview(textview, "File size : %Ld bytes\n\n", stat_buf->st_size);
+                    add_text_to_textview(textview, Q_("File size : %Ld bytes\n\n"), stat_buf->st_size);
                     ctime_r(&(stat_buf->st_mtime), buf);
-                    add_text_to_textview(textview, "Last intern modification : %s", buf);
+                    add_text_to_textview(textview, Q_("Last intern modification : %s"), buf);
                     ctime_r(&(stat_buf->st_atime), buf);
-                    add_text_to_textview(textview, "Last acces to the file   : %s", buf);
+                    add_text_to_textview(textview, Q_("Last acces to the file   : %s"), buf);
                     ctime_r(&(stat_buf->st_ctime), buf);
-                    add_text_to_textview(textview, "Last extern modification : %s", buf);
+                    add_text_to_textview(textview, Q_("Last extern modification : %s"), buf);
 
                     populate_stats_histos(main_struct, plugin);
 
                     extra = (stat_t *) plugin->extra;
 
-                    add_text_to_textview(textview, "\n1D histogram statistics :\n");
-                    add_text_to_textview(textview, "     . minimum          : %lld\n", extra->infos_1D->min);
-                    add_text_to_textview(textview, "     . maximum          : %lld\n", extra->infos_1D->max);
-                    add_text_to_textview(textview, "     . mean             : %lld\n", extra->infos_1D->mean);
-                    add_text_to_textview(textview, "     . number of values : %lld\n", extra->infos_1D->nb_val);
-                    add_text_to_textview(textview, "\n2D histogram statistics :\n");
-                    add_text_to_textview(textview, "     . minimum          : %lld\n", extra->infos_2D->min);
-                    add_text_to_textview(textview, "     . maximum          : %lld\n", extra->infos_2D->max);
-                    add_text_to_textview(textview, "     . mean             : %lld\n", extra->infos_2D->mean);
-                    add_text_to_textview(textview, "     . number of values : %lld\n", extra->infos_2D->nb_val);
-                    log_message(main_struct, G_LOG_LEVEL_INFO, "Histos calculated !");
+                    add_text_to_textview(textview, Q_("\n1D histogram statistics :\n"));
+                    add_text_to_textview(textview, Q_("     . minimum          : %lld\n"), extra->infos_1D->min);
+                    add_text_to_textview(textview, Q_("     . maximum          : %lld\n"), extra->infos_1D->max);
+                    add_text_to_textview(textview, Q_("     . mean             : %lld\n"), extra->infos_1D->mean);
+                    add_text_to_textview(textview, Q_("     . number of values : %lld\n"), extra->infos_1D->nb_val);
+                    add_text_to_textview(textview, Q_("\n2D histogram statistics :\n"));
+                    add_text_to_textview(textview, Q_("     . minimum          : %lld\n"), extra->infos_2D->min);
+                    add_text_to_textview(textview, Q_("     . maximum          : %lld\n"), extra->infos_2D->max);
+                    add_text_to_textview(textview, Q_("     . mean             : %lld\n"), extra->infos_2D->mean);
+                    add_text_to_textview(textview, Q_("     . number of values : %lld\n"), extra->infos_2D->nb_val);
+                    log_message(main_struct, G_LOG_LEVEL_INFO, Q_("Histos calculated !"));
                 }
         }
 }

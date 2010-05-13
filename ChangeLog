@@ -1,3 +1,9 @@
+13.05.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Adding Q_() and N_() functions to the strings that needs translation.
+     * Normalize C mode tab width to 4 spaces
+     * French translation !
+
 11.05.2010 [release 0.1.2]
    - Olivier Delhomme <heraia@delhomme.org>
      * Version numbers

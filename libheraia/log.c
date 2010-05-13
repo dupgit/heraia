@@ -63,7 +63,7 @@ void print_message(const char *format, ...)
         }
     else
         {
-            fprintf(stderr, "Can't convert output to the locale: %s\n", err->message);
+            fprintf(stderr, Q_("Can't convert output to the locale: %s\n"), err->message);
             fputs(str, stderr);
             g_error_free(err);
         }
@@ -101,41 +101,41 @@ static void my_log(heraia_struct_t *main_struct, gchar *log_domain, GLogLevelFla
     switch (log_level)
         {
             case G_LOG_FLAG_RECURSION:
-                display = g_strdup_printf("%s - RECURSION: %s\n%c", log_domain, str, '\0');
+                display = g_strdup_printf(Q_("%s - RECURSION: %s\n%c"), log_domain, str, '\0');
                 g_print("%s\n", display);
                 /* exit(log_level); */
                 break;
 
             case G_LOG_FLAG_FATAL:
-                display = g_strdup_printf("%s - FATAL: %s\n%c", log_domain, str, '\0');
+                display = g_strdup_printf(Q_("%s - FATAL: %s\n%c"), log_domain, str, '\0');
                 g_print("%s\n", display);
                 /* exit(log_level); */
                 break;
 
             case G_LOG_LEVEL_ERROR:
-                display = g_strdup_printf("%s - ERROR: %s\n%c", log_domain, str, '\0');
+                display = g_strdup_printf(Q_("%s - ERROR: %s\n%c"), log_domain, str, '\0');
                 g_print("%s\n", display);
                 /* exit(log_level); */
                 break;
 
             case G_LOG_LEVEL_CRITICAL:
-                display = g_strdup_printf("%s - CRITICAL: %s\n%c", log_domain, str, '\0');
+                display = g_strdup_printf(Q_("%s - CRITICAL: %s\n%c"), log_domain, str, '\0');
                 break;
 
             case G_LOG_LEVEL_WARNING:
-                display = g_strdup_printf("%s - WARNING: %s\n%c", log_domain, str, '\0');
+                display = g_strdup_printf(Q_("%s - WARNING: %s\n%c"), log_domain, str, '\0');
                 break;
 
             case G_LOG_LEVEL_MESSAGE:
-                display = g_strdup_printf("%s - MESSAGE: %s\n%c", log_domain, str, '\0');
+                display = g_strdup_printf(Q_("%s - MESSAGE: %s\n%c"), log_domain, str, '\0');
                 break;
 
             case G_LOG_LEVEL_INFO:
-                display = g_strdup_printf("%s - INFO: %s\n%c", log_domain, str, '\0');
+                display = g_strdup_printf(Q_("%s - INFO: %s\n%c"), log_domain, str, '\0');
                 break;
 
             case G_LOG_LEVEL_DEBUG:
-                display = g_strdup_printf("%s - DEBUG: %s\n%c", log_domain, str, '\0');
+                display = g_strdup_printf(Q_("%s - DEBUG: %s\n%c"), log_domain, str, '\0');
                 break;
 
             case G_LOG_LEVEL_MASK: /* To avoid a compilation warning */
@@ -148,10 +148,10 @@ static void my_log(heraia_struct_t *main_struct, gchar *log_domain, GLogLevelFla
     gtk_text_buffer_insert(tb, &iStart, display, -1);
 
     /* Scrolling down to the new line */
-    gtk_text_iter_set_line_offset (&iStart, 0);
-    mark = gtk_text_buffer_get_mark (tb, "scroll");
-    gtk_text_buffer_move_mark (tb, mark, &iStart);
-    gtk_text_view_scroll_mark_onscreen (logw_textview, mark);
+    gtk_text_iter_set_line_offset(&iStart, 0);
+    mark = gtk_text_buffer_get_mark(tb, "scroll");
+    gtk_text_buffer_move_mark(tb, mark, &iStart);
+    gtk_text_view_scroll_mark_onscreen(logw_textview, mark);
 
     g_free(str);
     g_free(display);

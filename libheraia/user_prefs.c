@@ -84,11 +84,11 @@ static void verify_preference_file_name_presence(gchar *filename)
             fp = g_fopen(filename, "w");
             if (fp == NULL)
                 {
-                    fprintf(stderr, "Unable to open and create the main preference file %s\n", filename);
+                    fprintf(stderr, Q_("Unable to open and create the main preference file %s\n"), filename);
                 }
             else
                 {
-                    fprintf(stderr, "Main preference file %s created successfully\n", filename);
+                    fprintf(stderr, Q_("Main preference file %s created successfully\n"), filename);
                     fclose(fp);
                 }
         }

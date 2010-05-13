@@ -254,18 +254,18 @@ static HERAIA_ERROR init_heraia_plugin_system(heraia_struct_t *main_struct)
     /* Checking for plugins */
     if (plugin_capable() == TRUE)
         {
-            log_message(main_struct, G_LOG_LEVEL_INFO, "Enabling plugins");
+            log_message(main_struct, G_LOG_LEVEL_INFO, Q_("Enabling plugins"));
             load_plugins(main_struct);
 
             /* the plugin_list_window (here the plugins may be loaded !) */
-            log_message(main_struct, G_LOG_LEVEL_DEBUG, "Inits the plugin list window");
+            log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Inits the plugin list window"));
             plugin_list_window_init_interface(main_struct);
 
             return HERAIA_NOERR;
         }
     else
         {
-            log_message(main_struct, G_LOG_LEVEL_WARNING, "Plugins will be disabled");
+            log_message(main_struct, G_LOG_LEVEL_WARNING, Q_("Plugins will be disabled"));
             return HERAIA_NO_PLUGINS;
         }
 }
@@ -337,9 +337,9 @@ static void init_international_languages(void)
 
     if (ENABLE_DEBUG == TRUE)
         {
-            fprintf(stdout, "Gettext package : %s\n", GETTEXT_PACKAGE);
-            fprintf(stdout, "Locale dir : %s\n", LOCALEDIR);
-            fprintf(stdout, "Bindtextdomain : %s\n", result);
+            fprintf(stdout, Q_("Gettext package : %s\n"), GETTEXT_PACKAGE);
+            fprintf(stdout, Q_("Locale dir : %s\n"), LOCALEDIR);
+            fprintf(stdout, Q_("Bindtextdomain : %s\n"), result);
         }
     bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
     textdomain(GETTEXT_PACKAGE);
@@ -367,13 +367,13 @@ static gboolean do_heraia_coverage_tests(heraia_struct_t *main_struct)
     tmp_struct = get_main_struct();
     if (tmp_struct != main_struct)
         {
-            fprintf(stderr, "WARNING : tmp_struct is not equal to main_struct!\n");
+            fprintf(stderr, Q_("WARNING : tmp_struct is not equal to main_struct!\n"));
         }
 
     exit_value = test_decode_functions();
     if (exit_value != TRUE)
         {
-            fprintf(stderr, "WARNING : Error while testing decode functions\n");
+            fprintf(stderr, Q_("WARNING : Error while testing decode functions\n"));
         }
 
     return TRUE;
@@ -507,7 +507,7 @@ int main(int argc, char **argv)
 
     if (main_struct->debug == TRUE)
         {
-            fprintf(stdout, "Main struct initialized !\n");
+            fprintf(stdout, Q_("Main struct initialized !\n"));
         }
 
     /* Command line options evaluation */
@@ -517,7 +517,7 @@ int main(int argc, char **argv)
         {
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stderr, "Beginning things\n");
+                    fprintf(stderr, Q_("Beginning things\n"));
                     libheraia_test(); /* testing libheraia */
                 }
 
@@ -527,9 +527,9 @@ int main(int argc, char **argv)
             if (load_heraia_ui(main_struct) == TRUE)
                 {
 
-                    log_message(main_struct, G_LOG_LEVEL_INFO, "Main interface loaded");
-                    log_message(main_struct, G_LOG_LEVEL_DEBUG, "Preference file is %s", main_struct->prefs->filename);
-                    log_message(main_struct, G_LOG_LEVEL_DEBUG, "data interpretor's tab is %d", main_struct->current_DW->tab_displayed);
+                    log_message(main_struct, G_LOG_LEVEL_INFO, Q_("Main interface loaded"));
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Preference file is %s"), main_struct->prefs->filename);
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("data interpretor's tab is %d"), main_struct->current_DW->tab_displayed);
 
                     init_heraia_plugin_system(main_struct);
 
@@ -543,7 +543,7 @@ int main(int argc, char **argv)
                                 }
                         }
 
-                    log_message(main_struct, G_LOG_LEVEL_DEBUG, "main_struct : %p", main_struct);
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("main_struct : %p"), main_struct);
 
                     init_heraia_interface(main_struct);
 
@@ -566,7 +566,7 @@ int main(int argc, char **argv)
                 }
             else
                 {
-                    fprintf(stderr, "File heraia.gtkbuilder not found !\n");
+                    fprintf(stderr, Q_("File heraia.gtkbuilder not found !\n"));
                 }
         }
 

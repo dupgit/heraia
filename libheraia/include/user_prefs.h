@@ -32,6 +32,7 @@
  *  GN == Group Name
  *  KN == Key Name
  *  Thoses variables are the ones to use in the main preference file
+ *  Please do not translate them !
  */
 #define GN_GLOBAL_PREFS "Global Preferences"
 #define GN_DISPLAY_PREFS "Display Preferences"

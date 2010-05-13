@@ -142,7 +142,7 @@ static heraia_plugin_t *get_plugin_handle(heraia_struct_t *main_struct, heraia_p
 
             if (plugin->handle == NULL)
                 {
-                    log_message(main_struct, G_LOG_LEVEL_WARNING, "Could not open plugin %s - %s", filename, g_module_error());
+                    log_message(main_struct, G_LOG_LEVEL_WARNING, Q_("Could not open plugin %s - %s"), filename, g_module_error());
                 }
         }
 
@@ -202,7 +202,7 @@ static void init_plugin(heraia_struct_t *main_struct, heraia_plugin_t *plugin, c
         {
             plugin->info->id = plugins_nb;
             main_struct->plugins_list = g_list_append(main_struct->plugins_list, plugin);
-            log_message(main_struct, G_LOG_LEVEL_INFO, "plugin %s loaded.", filename);
+            log_message(main_struct, G_LOG_LEVEL_INFO, Q_("plugin %s loaded."), filename);
 
             plugin->init_proc(main_struct);
 
