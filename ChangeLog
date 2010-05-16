@@ -1,3 +1,8 @@
+16.05.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Added a test in autogen.sh to create the m4 sub-directory in case it does
+       not already exists in the trunk directory.
+
 13.05.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Adding Q_() and N_() functions to the strings that needs translation.

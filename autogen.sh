@@ -1,5 +1,11 @@
 #!/bin/sh
 
+if [ -d m4 ]; then
+    echo -n ""
+else
+    mkdir m4;
+fi;
+
 aclocal -I m4                          \
 && libtoolize                          \
 && automake --gnu --add-missing --copy \
