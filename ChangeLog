@@ -1,3 +1,8 @@
+17.05.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Heraia now gets it's gtkbuilder file even if it is not installed in a
+       system directory.
+
 16.05.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Added a test in autogen.sh to create the m4 sub-directory in case it does

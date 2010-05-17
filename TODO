@@ -5,7 +5,7 @@
  * write a data analyser (perhaps some statistic GNU projects could do the job)
  * find documentation on SQL DATE
 
-03.04.2005 add the translation (.po) and other stuff in the po/ directory
+
 20.06.2005 add a command line option to hide the data interpretor window
 09.04.2006 change all the functions to have a good "C" return status :
            0 == sucess else errno
@@ -23,21 +23,25 @@
 
 [Done List]
 19.03.2005 add a way to decode in big-endian or little-endian (Done 05.04.2005)
-15.03.2005 add the patch from Gregory Audet : new web site menu. (Done 05.05.2005)
+15.03.2005 add the patch from Gregory Audet : new web site menu. (Done
+           05.05.2005)
 07.07.2005 verify that the make install command does install properly the
            program and its datas. Do it if necessary. (Done 05.01.2007)
 19.11.2005 add and improve a clean make install procedure
            It seems Ok ! (Done 05.01.2007)
 05.01.2007 find the way to transmit nicely the -D flags (Done 05.01.2007)
-06.01.2007 in io.c add a generic function to load GladeXML files (Done 14.01.2007)
+06.01.2007 in io.c add a generic function to load GladeXML files (Done
+           14.01.2007)
 31.07.2006 add "module" or "plugin" capacities to the program (Done 17.01.2007)
-06.01.2007 suppress the graph_analysis structure and .c, .h source files. (Done 20.01.2007)
+06.01.2007 suppress the graph_analysis structure and .c, .h source files. (Done
+           20.01.2007)
 06.01.2007 get rid of the DataInterpretor structure and replace the
            DataInterpretor window by a plugin with notebooks (Done 24.10.2007)
 07.07.2005 review the heraia_window_t struct (add a new struct to manage the
            window itself). (Done 08.08.2008 )
 12.11.2008 Add options to separate thousands when displaying numbers (in the
-           main program and another in the data interpretor window) (Done 18.01.2009)
+           main program and another in the data interpretor window) (Done
+           18.01.2009)
 17.01.2009 Add the height and weight to the windows properties (Done 16.02.2009)
 26.03.2005 add a configuration file that will record data_interpretor display
            preferences.
@@ -50,4 +54,5 @@
              to be more coherent with the structure (filename) (Done 04.05.2009)
 12.11.2005 add some abstraction layer to the GHex Widget (and modify the
            #include directives) (Done can't remember when!)
-
+03.04.2005 add the translation (.po) and other stuff in the po/ directory (Done
+           13.05.2010)

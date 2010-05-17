@@ -42,9 +42,9 @@ static gboolean version(void);
 static gboolean usage(int status);
 static window_prop_t *init_window_properties(gint x, gint y, guint height, guint width, gboolean displayed);
 static heraia_struct_t *init_window_property_struct(heraia_struct_t *main_struct);
-static heraia_struct_t *heraia_init_main_struct(void);
+static heraia_struct_t *heraia_init_main_struct(gchar *heraia_path);
 static HERAIA_ERROR init_heraia_plugin_system(heraia_struct_t *main_struct);
-static GList *init_heraia_location_list(void);
+static GList *init_heraia_location_list(gchar *heraia_path);
 static gboolean manage_command_line_options(Options *opt, int argc, char **argv);
 
 /**
@@ -185,9 +185,11 @@ static heraia_struct_t *init_window_property_struct(heraia_struct_t *main_struct
 
 /**
  * Initialize the main structure (main_struct)
+ * @param heraia_path is the path used to invoke heraia : '/usr/bin/heraia'
+ *        invocation would lead to '/usr/bin'
  * @return a pointer to a newly initialized main structure
  */
-static heraia_struct_t *heraia_init_main_struct(void)
+static heraia_struct_t *heraia_init_main_struct(gchar *heraia_path)
 {
     heraia_struct_t *herwin = NULL;
     xml_t *xmls = NULL;
@@ -215,7 +217,7 @@ static heraia_struct_t *heraia_init_main_struct(void)
 
     herwin->current_doc = NULL;
     herwin->plugins_list = NULL;
-    herwin->location_list = init_heraia_location_list(); /* location list initilization */
+    herwin->location_list = init_heraia_location_list(heraia_path); /* location list initilization */
 
     /* xml_t structure initialisation */
     xmls = (xml_t *) g_malloc0(sizeof(xml_t));
@@ -278,7 +280,7 @@ static HERAIA_ERROR init_heraia_plugin_system(heraia_struct_t *main_struct)
              prepended list in reverse order.
  *  @return a new allocatde GList containing all locations
  */
-static GList *init_heraia_location_list(void)
+static GList *init_heraia_location_list(gchar *heraia_path)
 {
     gchar *path = NULL;
     const gchar* const *system_dirs;
@@ -319,6 +321,10 @@ static GList *init_heraia_location_list(void)
 
     /* A global config data path */
     path = g_build_path(G_DIR_SEPARATOR_S, g_get_user_config_dir(), "heraia", NULL);
+    location_list = g_list_prepend(location_list, path);
+
+    /* An absolute path (from where is executed heraia itself) */
+    path = g_build_path(G_DIR_SEPARATOR_S, heraia_path, "..", "share", "heraia", NULL);
     location_list = g_list_prepend(location_list, path);
 
     return location_list;
@@ -495,13 +501,24 @@ int main(int argc, char **argv)
     gboolean exit_value = TRUE;
     heraia_struct_t *main_struct = NULL;
     GList *list = NULL;
+    gchar *heraia_path = NULL;
 
+    if (argv != NULL && argv[0] != NULL)
+        {
+            heraia_path = g_path_get_dirname(argv[0]);
+        }
+    else
+        {
+            return -1;
+        }
 
     init_international_languages();
 
     opt = init_options_struct();
 
-    main_struct = heraia_init_main_struct();
+
+
+    main_struct = heraia_init_main_struct(heraia_path);
 
     libheraia_initialize();
 
@@ -567,6 +584,17 @@ int main(int argc, char **argv)
             else
                 {
                     fprintf(stderr, Q_("File heraia.gtkbuilder not found !\n"));
+                    if (main_struct->debug == TRUE)
+                        {
+                            list = main_struct->location_list;
+                            while (list)
+                                {
+                                    /* here heraia_path is used only as a normal gchar*  */
+                                    heraia_path = (gchar *) list->data;
+                                    fprintf(stdout, "\t%s\n", heraia_path);
+                                    list = g_list_next(list);
+                                }
+                        }
                 }
         }
 
