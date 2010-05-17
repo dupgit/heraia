@@ -4,6 +4,11 @@
        system directory.
      * Code normalization : everywhere the main structure is named main_struct
        herwin was a bit confusing.
+     * Modifying things to generate heraia.po file because xgettext is unbale to
+       see that my .gtkbuilder files are glade ones (feature request for
+       inclusion in xgettext has been asked :
+       http://savannah.gnu.org/bugs/index.php?29900 )
+     * heraia.po and fr.po now includes strings from the gtkbuilder's interface
 
 16.05.2010
    - Olivier Delhomme <heraia@delhomme.org>

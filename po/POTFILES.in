@@ -1,6 +1,5 @@
 # List of source files containing translatable strings.
-# Please keep this file sorted alphabetically.
-../src/heraia.gtkbuilder
+# Please keep this file sorted in this order.
 ../src/heraia.c
 ../libheraia/decode.c
 ../libheraia/libheraia.c
@@ -15,5 +14,6 @@
 ../libheraia/plugin_list.c
 ../libheraia/tests.c
 ../plugins/stat/stat.c
-../plugins/stat/stat.gtkbuilder
+# ../src/heraia.gtkbuilder # This is commented out because of xgettext
+# ../plugins/stat/stat.gtkbuilder
 
