@@ -191,12 +191,12 @@ static heraia_struct_t *init_window_property_struct(heraia_struct_t *main_struct
  */
 static heraia_struct_t *heraia_init_main_struct(gchar *heraia_path)
 {
-    heraia_struct_t *herwin = NULL;
+    heraia_struct_t *main_struct = NULL;
     xml_t *xmls = NULL;
 
-    herwin = (heraia_struct_t *) g_malloc0(sizeof(heraia_struct_t));
+    main_struct = (heraia_struct_t *) g_malloc0(sizeof(heraia_struct_t));
 
-    if (!herwin)
+    if (main_struct == NULL)
         {
             fprintf(stderr, Q_("Main structure could not be initialiazed !"));
             fprintf(stderr, Q_("Do you have a memory problem ?\n"));
@@ -204,41 +204,40 @@ static heraia_struct_t *heraia_init_main_struct(gchar *heraia_path)
         }
 
     /* preference file name initialisation */
-    herwin->prefs = NULL;
-    init_preference_struct(herwin);
-    verify_preference_file(herwin->prefs->pathname, herwin->prefs->filename);
+    main_struct->prefs = NULL;
+    init_preference_struct(main_struct);
+    verify_preference_file(main_struct->prefs->pathname, main_struct->prefs->filename);
 
     /**
      * First, in this early stage of the development we want to toggle debugging
      *  mode ON which is enabled by default in the configure.ac file !
      */
-    herwin->debug = ENABLE_DEBUG;
-    /* herwin->filename = NULL; */
+    main_struct->debug = ENABLE_DEBUG;
 
-    herwin->current_doc = NULL;
-    herwin->plugins_list = NULL;
-    herwin->location_list = init_heraia_location_list(heraia_path); /* location list initilization */
+    main_struct->current_doc = NULL;
+    main_struct->plugins_list = NULL;
+    main_struct->location_list = init_heraia_location_list(heraia_path); /* location list initilization */
 
     /* xml_t structure initialisation */
     xmls = (xml_t *) g_malloc0(sizeof(xml_t));
     xmls->main = NULL;
-    herwin->xmls = xmls;
+    main_struct->xmls = xmls;
 
     /* data interpretor structure initialization */
-    herwin->current_DW = (data_window_t *) g_malloc0 (sizeof(data_window_t));
-    herwin->current_DW->diw = NULL;
-    herwin->current_DW->tab_displayed = 0;  /* the first tab */
+    main_struct->current_DW = (data_window_t *) g_malloc0 (sizeof(data_window_t));
+    main_struct->current_DW->diw = NULL;
+    main_struct->current_DW->tab_displayed = 0;  /* the first tab */
 
     /* init window property structure */
-    herwin = init_window_property_struct(herwin);
+    main_struct = init_window_property_struct(main_struct);
 
     /* documents */
-    herwin->documents = g_ptr_array_new();
+    main_struct->documents = g_ptr_array_new();
 
     /* init global variable for the library */
-    libheraia_main_struct = herwin;
+    libheraia_main_struct = main_struct;
 
-    return herwin;
+    return main_struct;
 }
 
 

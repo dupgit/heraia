@@ -2,6 +2,8 @@
    - Olivier Delhomme <heraia@delhomme.org>
      * Heraia now gets it's gtkbuilder file even if it is not installed in a
        system directory.
+     * Code normalization : everywhere the main structure is named main_struct
+       herwin was a bit confusing.
 
 16.05.2010
    - Olivier Delhomme <heraia@delhomme.org>
