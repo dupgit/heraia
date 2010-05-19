@@ -201,7 +201,7 @@ msgstr "Fichier %s enregistré et maintenant édité."
 
 #: ../libheraia/heraia_ui.c:688
 msgid "All tests went Ok."
-msgstr "Tous les test se sont bien déroulés."
+msgstr "Tous les tests se sont bien déroulés."
 
 #: ../libheraia/heraia_ui.c:692
 msgid "Some tests failed."
