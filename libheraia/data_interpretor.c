@@ -353,7 +353,7 @@ tab_t *add_new_tab_in_data_interpretor(GtkNotebook *notebook, guint index, gchar
     tab_t *tab = NULL;            /**< tab structure that will remember everything !                     */
     va_list args;                 /**< va_list arguments passed to create a new tab with those columns   */
     guint i = 0;
-    gchar *col_label = NULL;      /**< used to fetch atguments                                           */
+    gchar *va_label = NULL;       /**< used to fetch arguments                                           */
     GPtrArray *col_labels = NULL; /**< used to remember the columns labels (the arguments in GtkWidgets) */
     GPtrArray *vboxes = NULL;     /**< used to remember vboxes (in order to be able to pack things later */
     GtkWidget *child = NULL;      /**< notebook tab's child container                                    */
@@ -368,11 +368,13 @@ tab_t *add_new_tab_in_data_interpretor(GtkNotebook *notebook, guint index, gchar
     va_start(args, nb_cols);
     for (i = 0 ; i < nb_cols ; i++)
         {
-            col_label = (gchar *) va_arg(args, int);
-            vbox_label = gtk_label_new(col_label);
+            fprintf(stdout, "%d\n", i);
+            va_label = (gchar *) va_arg(args, int);
+            fprintf(stdout, "%s\n", va_label);
+            vbox_label = gtk_label_new(va_label);
             gtk_misc_set_padding(GTK_MISC(vbox_label), 3, 3);       /* properties for the labels */
             gtk_misc_set_alignment(GTK_MISC(vbox_label), 0.5, 0.5);
-            g_ptr_array_add(col_labels, (gpointer) vbox_label);
+            g_ptr_array_add(col_labels, (gpointer) vbox_label);     /* Keeping a pointer to the label */
         }
     va_end(args);
 
@@ -507,7 +509,7 @@ static void add_default_tabs(heraia_struct_t *main_struct)
         }
 
     /** Adding a tab for floting numbers */
-    tab = add_new_tab_in_data_interpretor(GTK_NOTEBOOK(notebook), 0, Q_("Floats"), 3, Q_("Length"), Q_("Normal Notation"), Q_("Exponential notation"));
+    tab = add_new_tab_in_data_interpretor(GTK_NOTEBOOK(notebook), 1, Q_("Floats"), 3, Q_("Length"), Q_("Normal Notation"), Q_("Exponential notation"));
 
     if (tab != NULL)
         {
