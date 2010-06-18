@@ -195,7 +195,7 @@ gchar *decode_64bits_signed(guchar *data, gpointer data_struct)
     else
         {
             memcpy(&total, data, 8 * sizeof (guchar));
-            return g_strdup_printf("%lld", total);
+            return g_strdup_printf("%ld", total);
         }
 }
 
@@ -218,7 +218,7 @@ gchar *decode_64bits_unsigned(guchar *data, gpointer data_struct)
     else
         {
             memcpy(&total, data, 8 * sizeof (guchar));
-            return g_strdup_printf("%llu", total);
+            return g_strdup_printf("%lu", total);
         }
 }
 
@@ -885,7 +885,7 @@ gchar *decode_packed_BCD(guchar *data, gpointer data_struct)
         {
             i = 0;
             j = 0;
-            bcd = (gchar *) g_malloc0((2*decode_parameters->stream_size+1) * sizeof(gchar));
+            bcd = (gchar *) g_malloc0((2 * decode_parameters->stream_size + 1) * sizeof(gchar));
             while (i < decode_parameters->stream_size)
                 {
                     memcpy(&total, data + i, sizeof(guchar));
@@ -1015,7 +1015,7 @@ decode_t *new_decode_t(DecodeFunc decode_func, GtkWidget *entry, const gchar *er
  * @return returns a newly allocated decode_generic_t structure filled with the
  *         right parameters
  */
-decode_generic_t *new_decode_generic_t(gchar *label, guint data_size, gboolean fixed_size, const gchar *err_msg, guint nb_cols, ...)
+decode_generic_t *new_decode_generic_t(const gchar *label, guint data_size, gboolean fixed_size, const gchar *err_msg, guint nb_cols, ...)
 {
     va_list args;                       /**< va_list arguments : decoding function names */
     decode_generic_t *my_struct = NULL; /** structure to be initialized and returned     */

@@ -84,6 +84,7 @@ extern void kill_text_from_textview(GtkTextView *textview);
 /* RadioButton */
 extern GtkWidget *gtk_radio_button_get_active(GSList *group);
 extern GtkWidget *gtk_radio_button_get_active_from_widget(GtkRadioButton *radio_group_member);
+extern void gtk_radio_button_set_active(GtkRadioButton *radio_button);
 
 /* CheckMenuItem */
 extern gboolean is_cmi_checked(GtkWidget *check_menu_item);

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-17 22:57+0200\n"
+"POT-Creation-Date: 2010-06-17 19:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -73,78 +73,78 @@ msgstr ""
 msgid "     %d for loading files tests\n"
 msgstr ""
 
-#: ../src/heraia.c:199
+#: ../src/heraia.c:199 ../src/heraia.c:201
 msgid "Main structure could not be initialiazed !"
 msgstr ""
 
-#: ../src/heraia.c:200
+#: ../src/heraia.c:200 ../src/heraia.c:202
 msgid "Do you have a memory problem ?\n"
 msgstr ""
 
-#: ../src/heraia.c:257
+#: ../src/heraia.c:257 ../src/heraia.c:258
 msgid "Enabling plugins"
 msgstr ""
 
 #. the plugin_list_window (here the plugins may be loaded !)
-#: ../src/heraia.c:261
+#: ../src/heraia.c:261 ../src/heraia.c:262
 msgid "Inits the plugin list window"
 msgstr ""
 
-#: ../src/heraia.c:268
+#: ../src/heraia.c:268 ../src/heraia.c:269
 msgid "Plugins will be disabled"
 msgstr ""
 
-#: ../src/heraia.c:340
+#: ../src/heraia.c:340 ../src/heraia.c:345
 #, c-format
 msgid "Gettext package : %s\n"
 msgstr ""
 
-#: ../src/heraia.c:341
+#: ../src/heraia.c:341 ../src/heraia.c:346
 #, c-format
 msgid "Locale dir : %s\n"
 msgstr ""
 
-#: ../src/heraia.c:342
+#: ../src/heraia.c:342 ../src/heraia.c:347
 #, c-format
 msgid "Bindtextdomain : %s\n"
 msgstr ""
 
-#: ../src/heraia.c:370
+#: ../src/heraia.c:370 ../src/heraia.c:375
 msgid "WARNING : tmp_struct is not equal to main_struct!\n"
 msgstr ""
 
-#: ../src/heraia.c:376
+#: ../src/heraia.c:376 ../src/heraia.c:381
 msgid "WARNING : Error while testing decode functions\n"
 msgstr ""
 
-#: ../src/heraia.c:510
+#: ../src/heraia.c:510 ../src/heraia.c:526
 msgid "Main struct initialized !\n"
 msgstr ""
 
-#: ../src/heraia.c:520
+#: ../src/heraia.c:520 ../src/heraia.c:536
 msgid "Beginning things\n"
 msgstr ""
 
-#: ../src/heraia.c:530
+#: ../src/heraia.c:530 ../src/heraia.c:546
 msgid "Main interface loaded"
 msgstr ""
 
-#: ../src/heraia.c:531
+#: ../src/heraia.c:531 ../src/heraia.c:547
 #, c-format
 msgid "Preference file is %s"
 msgstr ""
 
-#: ../src/heraia.c:532
+#: ../src/heraia.c:532 ../src/heraia.c:548
 #, c-format
 msgid "data interpretor's tab is %d"
 msgstr ""
 
-#: ../src/heraia.c:546
+#: ../src/heraia.c:546 ../src/heraia.c:562
 #, c-format
 msgid "main_struct : %p"
 msgstr ""
 
-#: ../src/heraia.c:569
+#: ../src/heraia.c:569 ../src/heraia.c:585
 msgid "File heraia.gtkbuilder not found !\n"
 msgstr ""
 
@@ -245,11 +245,11 @@ msgstr ""
 msgid "Setting up preferences           "
 msgstr ""
 
-#: ../libheraia/heraia_ui.c:1549
+#: ../libheraia/heraia_ui.c:1549 ../libheraia/heraia_ui.c:1581
 msgid "Unsaved document(s) remains."
 msgstr ""
 
-#: ../libheraia/heraia_ui.c:1554
+#: ../libheraia/heraia_ui.c:1554 ../libheraia/heraia_ui.c:1586
 msgid "Do you want to quit without saving ?"
 msgstr ""
 
@@ -359,131 +359,134 @@ msgstr ""
 msgid "Couldn't load builder file: %s"
 msgstr ""
 
-#: ../libheraia/data_interpretor.c:135
+#: ../libheraia/data_interpretor.c:135 ../libheraia/data_interpretor.c:122
 msgid "Something's wrong!"
 msgstr ""
 
-#: ../libheraia/data_interpretor.c:147
+#: ../libheraia/data_interpretor.c:147 ../libheraia/data_interpretor.c:134
 #, c-format
 msgid "Cannot interpret as a %d byte(s)"
 msgstr ""
 
 #. * Adding a tab for numbers
-#: ../libheraia/data_interpretor.c:493
+#: ../libheraia/data_interpretor.c:493 ../libheraia/data_interpretor.c:465
 msgid "Numbers"
 msgstr ""
 
 #: ../libheraia/data_interpretor.c:493 ../libheraia/data_interpretor.c:510
+#: ../libheraia/data_interpretor.c:465 ../libheraia/data_interpretor.c:482
 msgid "Length"
 msgstr ""
 
-#: ../libheraia/data_interpretor.c:493
+#: ../libheraia/data_interpretor.c:493 ../libheraia/data_interpretor.c:465
 msgid "Value unsigned"
 msgstr ""
 
-#: ../libheraia/data_interpretor.c:493
+#: ../libheraia/data_interpretor.c:493 ../libheraia/data_interpretor.c:465
 msgid "Value signed"
 msgstr ""
 
-#: ../libheraia/data_interpretor.c:499
+#: ../libheraia/data_interpretor.c:499 ../libheraia/data_interpretor.c:471
 #, c-format
 msgid "Can not interpret %d byte as a 8 bits number"
 msgstr ""
 
-#: ../libheraia/data_interpretor.c:501
+#: ../libheraia/data_interpretor.c:501 ../libheraia/data_interpretor.c:473
 #, c-format
 msgid "Can not interpret %d bytes as a 16 bits number"
 msgstr ""
 
-#: ../libheraia/data_interpretor.c:503
+#: ../libheraia/data_interpretor.c:503 ../libheraia/data_interpretor.c:475
 #, c-format
 msgid "Can not interpret %d bytes as a 32 bits number"
 msgstr ""
 
-#: ../libheraia/data_interpretor.c:505
+#: ../libheraia/data_interpretor.c:505 ../libheraia/data_interpretor.c:477
 #, c-format
 msgid "Can not interpret %d bytes as a 64 bits number"
 msgstr ""
 
 #. * Adding a tab for floting numbers
-#: ../libheraia/data_interpretor.c:510
+#: ../libheraia/data_interpretor.c:510 ../libheraia/data_interpretor.c:482
 msgid "Floats"
 msgstr ""
 
-#: ../libheraia/data_interpretor.c:510
+#: ../libheraia/data_interpretor.c:510 ../libheraia/data_interpretor.c:482
 msgid "Normal Notation"
 msgstr ""
 
-#: ../libheraia/data_interpretor.c:510
+#: ../libheraia/data_interpretor.c:510 ../libheraia/data_interpretor.c:482
 msgid "Exponential notation"
 msgstr ""
 
-#: ../libheraia/data_interpretor.c:516
+#: ../libheraia/data_interpretor.c:516 ../libheraia/data_interpretor.c:488
 msgid "Float (32 bits)"
 msgstr ""
 
-#: ../libheraia/data_interpretor.c:516
+#: ../libheraia/data_interpretor.c:516 ../libheraia/data_interpretor.c:488
 #, c-format
 msgid "Can not interpret %d bytes as a float number"
 msgstr ""
 
-#: ../libheraia/data_interpretor.c:518
+#: ../libheraia/data_interpretor.c:518 ../libheraia/data_interpretor.c:490
 msgid "Double (64 bits)"
 msgstr ""
 
-#: ../libheraia/data_interpretor.c:518
+#: ../libheraia/data_interpretor.c:518 ../libheraia/data_interpretor.c:490
 #, c-format
 msgid "Can not interpret %d bytes as a double number"
 msgstr ""
 
 #. * Adding a tab for date and time
-#: ../libheraia/data_interpretor.c:523
+#: ../libheraia/data_interpretor.c:523 ../libheraia/data_interpretor.c:495
 msgid "Dates and Times"
 msgstr ""
 
 #: ../libheraia/data_interpretor.c:523 ../libheraia/data_interpretor.c:540
+#: ../libheraia/data_interpretor.c:495 ../libheraia/data_interpretor.c:512
 msgid "Type"
 msgstr ""
 
 #: ../libheraia/data_interpretor.c:523 ../libheraia/data_interpretor.c:540
+#: ../libheraia/data_interpretor.c:495 ../libheraia/data_interpretor.c:512
 msgid "Value"
 msgstr ""
 
-#: ../libheraia/data_interpretor.c:529
+#: ../libheraia/data_interpretor.c:529 ../libheraia/data_interpretor.c:501
 #, c-format
 msgid "Can not interpret %d bytes as a DOS date"
 msgstr ""
 
-#: ../libheraia/data_interpretor.c:531
+#: ../libheraia/data_interpretor.c:531 ../libheraia/data_interpretor.c:503
 #, c-format
 msgid "Can not interpret %d bytes as a filetime date"
 msgstr ""
 
-#: ../libheraia/data_interpretor.c:533
+#: ../libheraia/data_interpretor.c:533 ../libheraia/data_interpretor.c:505
 #, c-format
 msgid "Can not interpret %d bytes as a C date"
 msgstr ""
 
-#: ../libheraia/data_interpretor.c:535
+#: ../libheraia/data_interpretor.c:535 ../libheraia/data_interpretor.c:507
 #, c-format
 msgid "Can not interpret %d bytes as a HFS date"
 msgstr ""
 
 #. * Adding a tab for binary based conversions
-#: ../libheraia/data_interpretor.c:540
+#: ../libheraia/data_interpretor.c:540 ../libheraia/data_interpretor.c:512
 msgid "Binary based"
 msgstr ""
 
-#: ../libheraia/data_interpretor.c:546
+#: ../libheraia/data_interpretor.c:546 ../libheraia/data_interpretor.c:518
 #, c-format
 msgid "Can not decode %d byte(s) to bits"
 msgstr ""
 
-#: ../libheraia/data_interpretor.c:548
+#: ../libheraia/data_interpretor.c:548 ../libheraia/data_interpretor.c:520
 msgid "Packed BCD"
 msgstr ""
 
-#: ../libheraia/data_interpretor.c:548
+#: ../libheraia/data_interpretor.c:548 ../libheraia/data_interpretor.c:520
 #, c-format
 msgid "Can not interpret %d byte(s) as packed BCD string"
 msgstr ""
@@ -785,12 +788,12 @@ msgstr ""
 msgid "\tchar b [label=\"Bytes\"];\n"
 msgstr ""
 
-#: ../plugins/stat/stat.c:720
+#: ../plugins/stat/stat.c:720 ../plugins/stat/stat.c:748
 #, c-format
 msgid "Calculating stats on %s"
 msgstr ""
 
-#: ../plugins/stat/stat.c:727
+#: ../plugins/stat/stat.c:727 ../plugins/stat/stat.c:755
 #, c-format
 msgid ""
 "File size : %Ld bytes\n"
@@ -812,39 +815,43 @@ msgstr ""
 msgid "Last extern modification : %s"
 msgstr ""
 
-#: ../plugins/stat/stat.c:739
+#: ../plugins/stat/stat.c:739 ../plugins/stat/stat.c:783
 msgid ""
 "\n"
 "1D histogram statistics :\n"
 msgstr ""
 
 #: ../plugins/stat/stat.c:740 ../plugins/stat/stat.c:745
+#: ../plugins/stat/stat.c:784 ../plugins/stat/stat.c:789
 #, c-format
 msgid "     . minimum          : %lld\n"
 msgstr ""
 
 #: ../plugins/stat/stat.c:741 ../plugins/stat/stat.c:746
+#: ../plugins/stat/stat.c:785 ../plugins/stat/stat.c:790
 #, c-format
 msgid "     . maximum          : %lld\n"
 msgstr ""
 
 #: ../plugins/stat/stat.c:742 ../plugins/stat/stat.c:747
+#: ../plugins/stat/stat.c:786 ../plugins/stat/stat.c:791
 #, c-format
 msgid "     . mean             : %lld\n"
 msgstr ""
 
 #: ../plugins/stat/stat.c:743 ../plugins/stat/stat.c:748
+#: ../plugins/stat/stat.c:787 ../plugins/stat/stat.c:792
 #, c-format
 msgid "     . number of values : %lld\n"
 msgstr ""
 
-#: ../plugins/stat/stat.c:744
+#: ../plugins/stat/stat.c:744 ../plugins/stat/stat.c:788
 msgid ""
 "\n"
 "2D histogram statistics :\n"
 msgstr ""
 
-#: ../plugins/stat/stat.c:749
+#: ../plugins/stat/stat.c:749 ../plugins/stat/stat.c:793
 msgid "Histos calculated !"
 msgstr ""
 
@@ -1260,4 +1267,28 @@ msgstr ""
 
 #: ../plugins/stat/stat.gtkbuilder:276
 msgid "Histograms"
+msgstr ""
+
+#: ../libheraia/plugin_list.c:180
+#, c-format
+msgid "Version     : %s\n"
+msgstr ""
+
+#: ../plugins/stat/stat.c:760
+#, c-format
+msgid "Last intern modification : %s\n"
+msgstr ""
+
+#: ../plugins/stat/stat.c:767
+#, c-format
+msgid "Last acces to the file   : %s\n"
+msgstr ""
+
+#: ../plugins/stat/stat.c:774
+#, c-format
+msgid "Last extern modification : %s\n"
+msgstr ""
+
+#: ../src/heraia.gtkbuilder:793
+msgid "French : Olivier Delhomme "
 msgstr ""

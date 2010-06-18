@@ -1,6 +1,6 @@
 AC_PREREQ(2.59)
 
-AC_INIT([Heraia], [0.1.3],
+AC_INIT([Heraia], [0.1.4],
         [Olivier Delhomme],
         [heraia])
 
@@ -69,7 +69,7 @@ dnl * Checks for library functions                   *
 dnl **************************************************
 dnl AC_TYPE_SIGNAL
 dnl AC_FUNC_VPRINTF
-dnl AC_CHECK_FUNCS(gettimeofday select socket strdup strerror strstr)
+dnl AC_CHECK_FUNCS(strftime gmtime)
 
 dnl **************************************************
 dnl * Checks dynamic libraries capabilities          *

@@ -426,17 +426,17 @@ void refresh_file_labels(heraia_struct_t *main_struct)
                     /* To translators : do not translate <small> and such         */
                     if (is_toggle_button_activated(main_struct->xmls->main, "mp_thousand_bt") == TRUE)
                         {
-                            position_text = g_strdup_printf("<small>%'lld</small>", position + 1);
-                            file_size_text = g_strdup_printf("<small>%'lld</small>", file_size);
-                            file_sel_text = g_strdup_printf("<small>%'lld -> %'lld</small>", sel->start + 1, sel->end + 1);
-                            file_sel_size_text = g_strdup_printf("<small>%'lld</small>", (sel->end - sel->start) + 1);
+                            position_text = g_strdup_printf("<small>%'lu</small>", position + 1);
+                            file_size_text = g_strdup_printf("<small>%'lu</small>", file_size);
+                            file_sel_text = g_strdup_printf("<small>%'lu -> %'lu</small>", sel->start + 1, sel->end + 1);
+                            file_sel_size_text = g_strdup_printf("<small>%'li</small>", (sel->end - sel->start) + 1);
                         }
                     else
                         {
-                            position_text = g_strdup_printf("<small>%lld</small>", position + 1);
-                            file_size_text = g_strdup_printf("<small>%lld</small>", file_size);
-                            file_sel_text = g_strdup_printf("<small>%lld - %lld</small>", sel->start, sel->end);
-                            file_sel_size_text = g_strdup_printf("<small>%lld</small>", (sel->end - sel->start));
+                            position_text = g_strdup_printf("<small>%lu</small>", position + 1);
+                            file_size_text = g_strdup_printf("<small>%lu</small>", file_size);
+                            file_sel_text = g_strdup_printf("<small>%lu - %lu</small>", sel->start + 1, sel->end + 1);
+                            file_sel_size_text = g_strdup_printf("<small>%li</small>", (sel->end - sel->start) + 1);
                         }
 
                     gtk_label_set_markup(GTK_LABEL(position_label), position_text);
@@ -1386,14 +1386,18 @@ void kill_text_from_textview(GtkTextView *textview)
 GtkWidget *gtk_radio_button_get_active(GSList *group)
 {
     GSList *tmp_slist = group;
+    GtkToggleButton *toggle_button = NULL;
 
     while (tmp_slist)
         {
-            if (GTK_TOGGLE_BUTTON (tmp_slist->data)->active)
+            toggle_button = tmp_slist->data;
+
+            if (gtk_toggle_button_get_active(toggle_button))
                 {
-                    return GTK_WIDGET (tmp_slist->data);
+                    return GTK_WIDGET(toggle_button);
                 }
-            tmp_slist = tmp_slist->next;
+
+            tmp_slist = g_slist_next(tmp_slist);
         }
 
     return NULL;
@@ -1403,19 +1407,48 @@ GtkWidget *gtk_radio_button_get_active(GSList *group)
 /**
  * @fn GtkWidget *gtk_radio_button_get_active_from_widget(GtkRadioButton *radio_group_member)
  * gets the active radio button from a radio group
- * @param radio_group_member : widget to get radio group from
+ * @param radio_button : GtkRadioButton to get radio group from
  * @returns the active GtkRadioButton within the group from
- *          radio_group_member
+ *          radio_button
  **/
-GtkWidget *gtk_radio_button_get_active_from_widget(GtkRadioButton *radio_group_member)
+GtkWidget *gtk_radio_button_get_active_from_widget(GtkRadioButton *radio_button)
 {
-    if (radio_group_member)
+    if (radio_button != NULL)
         {
-            return gtk_radio_button_get_active(radio_group_member->group);
+            return gtk_radio_button_get_active(gtk_radio_button_get_group(radio_button));
         }
     else
         {
             return NULL;
+        }
+}
+
+
+/**
+ * Sets the radio button active
+ * @param radio_button : The GtkRadioButton to be active within it's group
+ */
+void gtk_radio_button_set_active(GtkRadioButton *radio_button)
+{
+    GSList *group = NULL;
+    GtkToggleButton *toggle_button = NULL;
+
+    group = gtk_radio_button_get_group(radio_button);
+
+    while (group)
+        {
+            toggle_button = group->data;
+
+            if (toggle_button == radio_button)
+                {
+                   gtk_toggle_button_set_active(toggle_button, TRUE);
+                }
+            else
+                {
+                    gtk_toggle_button_set_active(toggle_button, FALSE);
+                }
+
+            group = g_slist_next(group);
         }
 }
 
@@ -1538,7 +1571,6 @@ static gboolean close_heraia(heraia_struct_t *main_struct)
     GtkWidget *label = NULL;
     GtkWidget *content_area = NULL;
     GtkWidget *parent = NULL;
-    gint result = 0;
 
     unsaved = unsaved_documents(main_struct);
 

@@ -113,7 +113,7 @@ void verify_preference_file(gchar *pathname, gchar *filename)
 
 
 /**
- * look out if the preference structure exists or not. If not
+ * Look out if the preference structure exists or not. If not
  * it creates it.
  * @see http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
  * @param main_struct the main structure
@@ -231,24 +231,31 @@ static void save_mp_display_preferences_options(heraia_struct_t *main_struct)
  */
 static void save_di_preferences(heraia_struct_t *main_struct)
 {
-    GtkNotebook *notebook = NULL;  /**< data interpretor's notebook               */
-    gint selected_tab;             /**< Selected tab in data interpretor's window */
-    prefs_t *prefs = NULL;         /**< structure for preferences                 */
+    gint selected_tab = -1; /**< Selected tab in data interpretor's window */
+    gint stream_size = -1;  /**< Stream size in data interpretor's window  */
+    gint endianness = -1;   /**< Endianness in data interpretor's window   */
+    prefs_t *prefs = NULL;  /**< structure for preferences                 */
 
     if (main_struct != NULL && main_struct->current_DW != NULL)
         {
             prefs = main_struct->prefs;
 
-            notebook = GTK_NOTEBOOK(heraia_get_widget(main_struct->xmls->main, "diw_notebook"));
-
-            if (notebook != NULL)
+            selected_tab = di_get_selected_tab(main_struct);
+            if (selected_tab >= 0)
                 {
-                    selected_tab = gtk_notebook_get_current_page(notebook);
+                    g_key_file_set_integer(prefs->file, GN_DI_PREFS, KN_DI_SELECTED_TAB, selected_tab);
+                }
 
-                    if (selected_tab >= 0)
-                        {
-                            g_key_file_set_integer(prefs->file, GN_DI_PREFS, KN_DI_SELECTED_TAB, selected_tab);
-                        }
+            stream_size = di_get_stream_size(main_struct);
+            if (stream_size >= 0)
+                {
+                    g_key_file_set_integer(prefs->file, GN_DI_PREFS, KN_DI_STREAM_SIZE, stream_size);
+                }
+
+            endianness = di_get_endianness(main_struct);
+            if (endianness >= 0)
+                {
+                     g_key_file_set_integer(prefs->file, GN_DI_PREFS, KN_DI_ENDIANNESS, endianness);
                 }
         }
 }
@@ -260,9 +267,9 @@ static void save_di_preferences(heraia_struct_t *main_struct)
  */
 static void save_mpwp_preferences(heraia_struct_t *main_struct)
 {
-    GtkNotebook *notebook = NULL;  /**< main preferences's notebook               */
-    gint selected_tab;             /**< Selected tab in data interpretor's window */
-    prefs_t *prefs = NULL;         /**< structure for preferences                 */
+    GtkNotebook *notebook = NULL; /**< main preferences's notebook               */
+    gint selected_tab = -1;       /**< Selected tab in data interpretor's window */
+    prefs_t *prefs = NULL;        /**< structure for preferences                 */
 
     if (main_struct != NULL && main_struct->current_DW != NULL)
         {
@@ -408,24 +415,23 @@ static void load_mp_display_preferences_options(heraia_struct_t *main_struct)
 static void load_di_preferences(heraia_struct_t *main_struct)
 {
     GtkNotebook *notebook = NULL;  /**< data interpretor's notebook               */
-    gint selected_tab;             /**< Selected tab in data interpretor's window */
+    gint selected_tab = -1;        /**< Selected tab in data interpretor's window */
+    gint stream_size = -1;         /**< Stream size in data interpretor's window  */
+    gint endianness = -1;          /**< Endianness in data interpretor's window   */
     prefs_t *prefs = NULL;         /**< structure for preferences                 */
 
     if (main_struct != NULL && main_struct->current_DW != NULL && main_struct->xmls != NULL && main_struct->xmls->main != NULL)
         {
-            notebook = GTK_NOTEBOOK(heraia_get_widget(main_struct->xmls->main, "diw_notebook"));
+
             prefs = main_struct->prefs;
 
-            if (notebook != NULL)
-                {
-                    selected_tab = g_key_file_get_integer(prefs->file, GN_DI_PREFS, KN_DI_SELECTED_TAB, NULL);
+            selected_tab = g_key_file_get_integer(prefs->file, GN_DI_PREFS, KN_DI_SELECTED_TAB, NULL);
+            stream_size = g_key_file_get_integer(prefs->file, GN_DI_PREFS, KN_DI_STREAM_SIZE, NULL);
+            endianness = g_key_file_get_integer(prefs->file, GN_DI_PREFS, KN_DI_ENDIANNESS, NULL);
 
-                    if (selected_tab >= 0)
-                        {
-                            gtk_notebook_set_current_page(notebook, selected_tab);
-                            main_struct->current_DW->tab_displayed = selected_tab;
-                        }
-                }
+            di_set_selected_tab(main_struct, selected_tab);
+            di_set_stream_size(main_struct, stream_size);
+            di_set_endianness(main_struct, endianness);
         }
 }
 

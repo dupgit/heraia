@@ -63,7 +63,16 @@ extern void refresh_data_interpretor_window(GtkWidget *hexwidget, gpointer data)
  * Testing things
  */
 extern void add_tab_in_data_interpretor(GtkNotebook *notebook, tab_t *tab);
-extern tab_t *add_new_tab_in_data_interpretor(GtkNotebook *notebook, guint index, gchar *label, guint num_cols, ...);
+extern tab_t *add_new_tab_in_data_interpretor(GtkNotebook *notebook, guint index, const gchar *label, guint num_cols, ...);
 extern void add_new_row_to_tab(tab_t *tab, decode_generic_t *row);
+
+extern gint di_get_selected_tab(heraia_struct_t *main_struct);
+extern void di_set_selected_tab(heraia_struct_t *main_struct, gint selected_tab);
+
+extern gint di_get_stream_size(heraia_struct_t *main_struct);
+extern void di_set_stream_size(heraia_struct_t *main_struct, gint stream_size);
+
+extern gint di_get_endianness(heraia_struct_t *main_struct);
+extern void di_set_endianness(heraia_struct_t *main_struct, gint endianness);
 
 #endif /* _DATA_INTERPRETOR_H_ */

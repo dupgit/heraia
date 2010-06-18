@@ -39,7 +39,7 @@ static void statw_export_to_csv_clicked(GtkWidget *widget, gpointer data);
 static void statw_export_to_gnuplot_clicked(GtkWidget *widget, gpointer data);
 static void statw_export_to_pcv_clicked(GtkWidget *widget, gpointer data);
 
-static gchar *stat_select_file_to_save(gchar *window_text, stat_t *extra);
+static gchar *stat_select_file_to_save(const gchar *window_text, stat_t *extra);
 static void histo_radiobutton_toggled(GtkWidget *widget, gpointer data);
 static gboolean delete_stat_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data );
 static void realize_some_numerical_stat(heraia_struct_t *main_struct, heraia_plugin_t *plugin);
@@ -165,7 +165,7 @@ void quit(void)
 
 
 /**
- *  This function is called via a signal handler when the menu entry is toggled
+ * This function is called via a signal handler when the menu entry is toggled
  * @param widget : widget which called the function (unused)
  * @param data : user data for the plugin, here MUST be heraia_struct_t * main
  *        structure
@@ -325,7 +325,7 @@ static void statw_save_as_clicked(GtkWidget *widget, gpointer data)
  * @param window_text : text to be displayed in the selection window
  * @return returns the new filename where to save a file
  */
-static gchar *stat_select_file_to_save(gchar *window_text, stat_t *extra)
+static gchar *stat_select_file_to_save(const gchar *window_text, stat_t *extra)
 {
     GtkFileChooser *file_chooser = NULL;
     gint response_id = 0;
@@ -411,7 +411,7 @@ static void statw_export_to_csv_clicked(GtkWidget *widget, gpointer data)
 
                             for (i=0; i<=255; i++)
                                 {
-                                    fprintf(fp, "%d;%Ld\n", i, extra->histo1D[i]);
+                                    fprintf(fp, "%d;%lu\n", i, extra->histo1D[i]);
                                 }
 
                         }
@@ -430,9 +430,9 @@ static void statw_export_to_csv_clicked(GtkWidget *widget, gpointer data)
                                 fprintf(fp, "\"%d\";", i);
                                 for (j=0 ; j<255; j++)
                                     {
-                                        fprintf(fp, "\"%Ld\";", extra->histo2D[i][j]);
+                                        fprintf(fp, "\"%lu\";", extra->histo2D[i][j]);
                                     }
-                                fprintf(fp, "\"%Ld\"\n", extra->histo2D[i][255]);
+                                fprintf(fp, "\"%lu\"\n", extra->histo2D[i][255]);
                             }
                     }
                     fclose(fp);
@@ -488,7 +488,7 @@ static void statw_export_to_gnuplot_clicked(GtkWidget *widget, gpointer data)
 
                             for (i=0; i<=255; i++)
                                 {
-                                    fprintf(fp, "%Ld\n", extra->histo1D[i]);
+                                    fprintf(fp, "%lu\n", extra->histo1D[i]);
                                 }
                             fprintf(fp, "e\n");
                         }
@@ -509,7 +509,7 @@ static void statw_export_to_gnuplot_clicked(GtkWidget *widget, gpointer data)
                                 {
                                     for (j=0; j<=255; j++)
                                         {
-                                            fprintf(fp, "%Ld ", extra->histo2D[i][j]);
+                                            fprintf(fp, "%lu ", extra->histo2D[i][j]);
                                         }
                                     fprintf(fp, "\n");
                                 }
@@ -571,7 +571,7 @@ static void statw_export_to_pcv_clicked(GtkWidget *widget, gpointer data)
 
                             for (i=0; i<=255; i++)
                                 {
-                                    fprintf(fp, "\tb=\"%d\", c=\"%Ld\";\n", i, extra->histo1D[i]);
+                                    fprintf(fp, "\tb=\"%d\", c=\"%lu\";\n", i, extra->histo1D[i]);
                                 }
                             fprintf(fp, "}\n");
                         }
@@ -596,17 +596,17 @@ static void statw_export_to_pcv_clicked(GtkWidget *widget, gpointer data)
                                         {
                                             if (extra->histo2D[i][j] == extra->infos_2D->max)
                                                 {
-                                                    fprintf(fp, "\ta=\"%d\", c=\"%Ld\", b=\"%d\" [color=\"red\"];\n", i, extra->histo2D[i][j], j);
+                                                    fprintf(fp, "\ta=\"%d\", c=\"%lu\", b=\"%d\" [color=\"red\"];\n", i, extra->histo2D[i][j], j);
                                                 }
                                             else
                                                 {
                                                     if (extra->histo2D[i][j] == extra->infos_2D->min)
                                                         {
-                                                            fprintf(fp, "\ta=\"%d\", c=\"%Ld\", b=\"%d\" [color=\"green\"];\n", i, extra->histo2D[i][j], j);
+                                                            fprintf(fp, "\ta=\"%d\", c=\"%lu\", b=\"%d\" [color=\"green\"];\n", i, extra->histo2D[i][j], j);
                                                         }
                                                     else
                                                         {
-                                                            fprintf(fp, "\ta=\"%d\", c=\"%Ld\", b=\"%d\";\n", i, extra->histo2D[i][j], j);
+                                                            fprintf(fp, "\ta=\"%d\", c=\"%lu\", b=\"%d\";\n", i, extra->histo2D[i][j], j);
                                                         }
                                                 }
                                         }
@@ -698,6 +698,34 @@ static void stat_window_connect_signals(heraia_plugin_t *plugin)
 
 
 /**
+ * Do format a date form a time_t value
+ * @param time_t value
+ * @return a gchar which represents the value as a date
+ */
+static gchar *transform_time_t_to_gchar(time_t *a_time)
+{
+    gchar *buf = NULL;
+    struct tm *tm = NULL;
+    size_t char_size = 0;
+
+    buf = (gchar *) g_malloc0(22*sizeof(gchar));
+
+    tm = gmtime(a_time);
+
+    char_size = strftime(buf, 22, "%x %X", tm);
+
+    if (char_size <= 0)
+        {
+            return NULL;
+        }
+    else
+        {
+            return buf;
+        }
+}
+
+
+/**
  * Do some stats on the selected file (entire file is used)
  * @param main_struct : main structure from heraia
  * @param plugin : main plugin structure (the plugin itself in fact)
@@ -705,7 +733,7 @@ static void stat_window_connect_signals(heraia_plugin_t *plugin)
 static void realize_some_numerical_stat(heraia_struct_t *main_struct, heraia_plugin_t *plugin)
 {
     struct stat *stat_buf;
-    gchar buf[42];           /**< used for date printing */
+    gchar *buf = NULL;           /**< used for date printing */
     gchar *filename = NULL;
     stat_t *extra = NULL;
     GtkTextView *textview = GTK_TEXT_VIEW(heraia_get_widget(plugin->xml, "statw_textview"));
@@ -725,12 +753,28 @@ static void realize_some_numerical_stat(heraia_struct_t *main_struct, heraia_plu
                 {
                     kill_text_from_textview(textview);
                     add_text_to_textview(textview, Q_("File size : %Ld bytes\n\n"), stat_buf->st_size);
-                    ctime_r(&(stat_buf->st_mtime), buf);
-                    add_text_to_textview(textview, Q_("Last intern modification : %s"), buf);
-                    ctime_r(&(stat_buf->st_atime), buf);
-                    add_text_to_textview(textview, Q_("Last acces to the file   : %s"), buf);
-                    ctime_r(&(stat_buf->st_ctime), buf);
-                    add_text_to_textview(textview, Q_("Last extern modification : %s"), buf);
+
+                    buf = transform_time_t_to_gchar(&(stat_buf->st_mtime));
+                    if (buf != NULL)
+                        {
+                            add_text_to_textview(textview, Q_("Last intern modification : %s\n"), buf);
+                            g_free(buf);
+                        }
+
+                    buf = transform_time_t_to_gchar(&(stat_buf->st_atime));
+                    if (buf != NULL)
+                        {
+                            add_text_to_textview(textview, Q_("Last acces to the file   : %s\n"), buf);
+                            g_free(buf);
+                        }
+
+                    buf = transform_time_t_to_gchar(&(stat_buf->st_ctime));
+                    if (buf != NULL)
+                        {
+                            add_text_to_textview(textview, Q_("Last extern modification : %s\n"), buf);
+                            g_free(buf);
+                        }
+
 
                     populate_stats_histos(main_struct, plugin);
 

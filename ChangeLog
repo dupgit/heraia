@@ -1,3 +1,47 @@
+17.06.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * New script to help extract translatable strings
+
+16.06.2010 [release 0.1.3]
+   - Olivier Delhomme <heraia@delhomme.org>
+     * This release will be collector (I have no internet connexion since 4
+       weeks - thanks to thoses ISP that can not talk to each other !). So I may
+       not put this release over internet ever !
+     * Minor roadmap changes
+     * Now going for 0.1.4
+
+15.06.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Corrected minor errors on printf for long unsigned int for guint64 and
+       not long long unsigned int !
+     * Added hability to save the endianness position
+
+13.06.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Cleanning code in datainterpretor.c
+     * get rid of ctime_r (obsoleted by POSIX.1-2008)
+     * sanitized a bit configure.ac (We were testing things not used !)
+
+31.05.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Little modifications in the roadmap for release 0.1.3 and 0.1.4
+     * Now saves the data interpretor's stream size
+
+25.05.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Using gtk functions to search the group of a radio button
+     * Changed "gtk_widget_get_name" by "gtk_buildable_get_name". This corrects
+       the bug on endianness.
+
+23.05.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Problem solved. Used "gchar *" instead of "int" and a cast in va_arg call
+       in function 'add_new_tab_in_data_interpretor'.
+     * Corrected a bug that occured when displaying the selection and selection
+       size without the thousand's blank separator.
+     * Corrected some outputs that were not good (%Ld to %lu)
+     * Found a bug with Endianness !
+
 20.05.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Identified a problem in 'add_new_tab_in_data_interpretor' function when

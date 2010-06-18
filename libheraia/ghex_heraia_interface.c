@@ -59,6 +59,9 @@ doc_t *heraia_hex_document_new(heraia_struct_t *main_struct, char *filename)
             /* signal connection on cursor moves */
             connect_cursor_moved_signal(main_struct, hex_widget);
 
+            /* Show offsets test */
+            gtk_hex_show_offsets(hex_widget, TRUE);
+
             return doc;
          }
      else

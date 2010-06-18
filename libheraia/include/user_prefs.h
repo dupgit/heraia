@@ -51,6 +51,8 @@
 #define KN_DISP_THOUSAND "Thousand"
 
 #define KN_DI_SELECTED_TAB "Selected Tab"
+#define KN_DI_STREAM_SIZE "Stream Size"
+#define KN_DI_ENDIANNESS "Endianness"
 
 #define KN_MPWP_SELECTED_TAB "Selected Tab"
 

@@ -29,7 +29,6 @@
 static guint which_endianness(heraia_struct_t *main_struct);
 static guint which_stream_size(heraia_struct_t *main_struct);
 static void interpret(doc_t *doc, decode_t *decode_struct, decode_parameters_t *decode_parameters, guint length);
-static void close_data_interpretor_window(GtkWidget *widget, gpointer data);
 static void connect_data_interpretor_signals(heraia_struct_t *main_struct);
 static void refresh_one_row(doc_t *doc, decode_generic_t *row,  guint nb_cols, decode_parameters_t *decode_parameters);
 static void refresh_one_tab(doc_t *doc, data_window_t *dw, tab_t *tab, decode_parameters_t *decode_parameters);
@@ -49,27 +48,18 @@ static void add_default_tabs(heraia_struct_t *main_struct);
  */
 static guint which_endianness(heraia_struct_t *main_struct)
 {
-    GtkRadioButton *rb = GTK_RADIO_BUTTON(heraia_get_widget(main_struct->xmls->main, "diw_rb_little_endian"));
-    GtkWidget *activated = NULL;
-    const gchar *widget_name = NULL;
+    gint endianness = -1;
 
-    activated = gtk_radio_button_get_active_from_widget(rb);
-    widget_name = gtk_widget_get_name(activated);
+    endianness  = di_get_endianness(main_struct);
 
-    if (g_ascii_strcasecmp(widget_name, "diw_rb_little_endian") == 0)
+    if (endianness > 0)
         {
-            return H_DI_LITTLE_ENDIAN;
-        }
-    else if (g_ascii_strcasecmp(widget_name, "diw_rb_big_endian") == 0)
-        {
-            return H_DI_BIG_ENDIAN;
-        }
-    else if (g_ascii_strcasecmp(widget_name, "diw_rb_middle_endian") == 0)
-        {
-            return H_DI_MIDDLE_ENDIAN;
+            return endianness;           /* Here everything went ok */
         }
     else
-        return H_DI_LITTLE_ENDIAN;  /* default interpretation case */
+        {
+            return H_DI_LITTLE_ENDIAN;   /* default interpretation case */
+        }
 }
 
 
@@ -80,12 +70,9 @@ static guint which_endianness(heraia_struct_t *main_struct)
  */
 static guint which_stream_size(heraia_struct_t *main_struct)
 {
-    GtkWidget *spin_button = NULL;
     guint stream_size = 1;
 
-    spin_button = heraia_get_widget(main_struct->xmls->main, "stream_size_spin_button");
-
-    stream_size = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spin_button));
+    stream_size = di_get_stream_size(main_struct);
 
     if (stream_size >= 1)
         {
@@ -93,7 +80,7 @@ static guint which_stream_size(heraia_struct_t *main_struct)
         }
     else
         {
-            return 1;
+            return 1;   /* Minimum stream_size */
         }
 }
 
@@ -152,25 +139,6 @@ static void interpret(doc_t *doc, decode_t *decode_struct, decode_parameters_t *
 
     g_free(c);
     g_free(text);
-}
-
-
-/**
- * @fn void close_data_interpretor_window(GtkWidget *widget, gpointer data)
- *  "Emulates" the user click on the main window menu entry called DIMenu
- *  whose aim is to display or hide the data interpretor window
- * @param widget : the widget caller (may be NULL here)
- * @param data : a gpointer to the main structure : main_struct, this must NOT
- *        be NULL !
- */
-static void close_data_interpretor_window(GtkWidget *widget, gpointer data)
-{
-    heraia_struct_t *main_struct = (heraia_struct_t *) data;
-
-    if (main_struct != NULL && main_struct->xmls != NULL  && main_struct->xmls->main)
-        {
-            g_signal_emit_by_name(heraia_get_widget(main_struct->xmls->main, "DIMenu"), "activate");
-        }
 }
 
 
@@ -308,7 +276,6 @@ static void connect_data_interpretor_signals(heraia_struct_t *main_struct)
     /* Spin button */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "stream_size_spin_button")), "value-changed",
                      G_CALLBACK(refresh_data_interpretor_window), main_struct);
-
 }
 
 
@@ -347,8 +314,10 @@ void data_interpretor_init_interface(heraia_struct_t *main_struct)
  * @param label : label of the tab
  * @param nb_cols : number of columns (including the first column of labels)
  * @param ... : nb_cols arguments that will be the labels of the columns
+ * @return a newly malloced tab_t variable that remember everything about that
+ *         new tab.
  */
-tab_t *add_new_tab_in_data_interpretor(GtkNotebook *notebook, guint index, gchar *label, guint nb_cols, ...)
+tab_t *add_new_tab_in_data_interpretor(GtkNotebook *notebook, guint index, const gchar *label, guint nb_cols, ...)
 {
     tab_t *tab = NULL;            /**< tab structure that will remember everything !                     */
     va_list args;                 /**< va_list arguments passed to create a new tab with those columns   */
@@ -368,13 +337,14 @@ tab_t *add_new_tab_in_data_interpretor(GtkNotebook *notebook, guint index, gchar
     va_start(args, nb_cols);
     for (i = 0 ; i < nb_cols ; i++)
         {
-            fprintf(stdout, "%d\n", i);
-            va_label = (gchar *) va_arg(args, int);
-            fprintf(stdout, "%s\n", va_label);
-            vbox_label = gtk_label_new(va_label);
-            gtk_misc_set_padding(GTK_MISC(vbox_label), 3, 3);       /* properties for the labels */
-            gtk_misc_set_alignment(GTK_MISC(vbox_label), 0.5, 0.5);
-            g_ptr_array_add(col_labels, (gpointer) vbox_label);     /* Keeping a pointer to the label */
+            va_label = va_arg(args, gchar *);
+            if (va_label != NULL)
+                {
+                    vbox_label = gtk_label_new(va_label);
+                    gtk_misc_set_padding(GTK_MISC(vbox_label), 3, 3);       /* properties for the labels */
+                    gtk_misc_set_alignment(GTK_MISC(vbox_label), 0.5, 0.5);
+                    g_ptr_array_add(col_labels, (gpointer) vbox_label);     /* Keeping a pointer to the label */
+                }
         }
     va_end(args);
 
@@ -477,7 +447,7 @@ void add_new_row_to_tab(tab_t *tab, decode_generic_t *row)
 /**
  * Inits data interpretor with default tabs
  * Must be called only once at bootime
- * @param main_struct : main_structure
+ * @param main_struct : main structure
  * */
 static void add_default_tabs(heraia_struct_t *main_struct)
 {
@@ -553,19 +523,165 @@ static void add_default_tabs(heraia_struct_t *main_struct)
 }
 
 
+/**
+ * Gets the selected tab (if any) from data interpretor's notebook
+ * @param main_struct : main structure
+ * @return A gint that represents the selected tab : >=0 if any < 0 otherwise
+ */
+gint di_get_selected_tab(heraia_struct_t *main_struct)
+{
+    GtkNotebook *notebook = NULL;  /**< data interpretor's notebook               */
+    gint selected_tab = -1;        /**< Selected tab in data interpretor's window */
+
+    notebook = GTK_NOTEBOOK(heraia_get_widget(main_struct->xmls->main, "diw_notebook"));
+
+    if (notebook != NULL)
+        {
+            selected_tab = gtk_notebook_get_current_page(notebook);
+        }
+
+    return selected_tab;
+}
 
 
+/**
+ * Sets the selected tab (if possible) to data interpretor's notebook
+ * @param main_struct : main structure
+ * @param selected_tab : the saved selected tab
+ */
+void di_set_selected_tab(heraia_struct_t *main_struct, gint selected_tab)
+{
+    GtkNotebook *notebook = NULL;  /**< data interpretor's notebook               */
+
+    if (selected_tab >= 0)
+        {
+            notebook = GTK_NOTEBOOK(heraia_get_widget(main_struct->xmls->main, "diw_notebook"));
+
+            if (notebook != NULL)
+                {
+                    gtk_notebook_set_current_page(notebook, selected_tab);
+                    main_struct->current_DW->tab_displayed = selected_tab;
+                }
+        }
+}
 
 
+/**
+ * Gets the stream_size (if any) from data interpretor's window
+ * @param main_struct : main structure
+ * @return A gint that represents the stream size : >=0 if any < 0 otherwise
+ */
+gint di_get_stream_size(heraia_struct_t *main_struct)
+{
+    GtkSpinButton *spin_button = NULL;  /**< data interpretor's spin button */
+    gint stream_size = -1;              /**< stream size sat by the user    */
+
+    spin_button = GTK_SPIN_BUTTON(heraia_get_widget(main_struct->xmls->main, "stream_size_spin_button"));
+
+    if (spin_button != NULL)
+        {
+            stream_size = gtk_spin_button_get_value_as_int(spin_button);
+        }
+
+    return stream_size;
+}
 
 
+/**
+ * Sets the stream size (if possible) to data interpretor's notebook
+ * @param main_struct : main structure
+ * @param stream_size : the saved stream_size
+ */
+void di_set_stream_size(heraia_struct_t *main_struct, gint stream_size)
+{
+    GtkSpinButton *spin_button = NULL;  /**< data interpretor's spin button */
 
+    if (stream_size >= 0)
+        {
+            spin_button = GTK_SPIN_BUTTON(heraia_get_widget(main_struct->xmls->main, "stream_size_spin_button"));
 
+            if (spin_button != NULL)
+                {
+                    gtk_spin_button_set_value(spin_button, (gdouble) stream_size);
+                }
+        }
+}
 
+/**
+ * Gets the endianness as selected in the radio group button
+ * @param main_struct : main structure
+ * @return a gint that represents the endianness (H_DI_LITTLE_ENDIAN,
+ *         H_DI_MIDDLE_ENDIAN, H_DI_BIG_ENDIAN) or -1 if nothing was correct
+ */
+gint di_get_endianness(heraia_struct_t *main_struct)
+{
+    GtkWidget *rb = NULL;
+    GtkWidget *activated = NULL;
+    const gchar *widget_name = NULL;
 
+    rb =  heraia_get_widget(main_struct->xmls->main, "diw_rb_little_endian");
 
+    if (rb != NULL)
+        {
+            activated = gtk_radio_button_get_active_from_widget(GTK_RADIO_BUTTON(rb));
 
+            if (activated != NULL)
+                {
+                    widget_name = gtk_buildable_get_name(GTK_BUILDABLE(activated));
+                }
+        }
 
+    if (widget_name != NULL)
+        {
+            if (g_ascii_strcasecmp(widget_name, "diw_rb_little_endian") == 0)
+                {
+                    return H_DI_LITTLE_ENDIAN;
+                }
+            else if (g_ascii_strcasecmp(widget_name, "diw_rb_big_endian") == 0)
+                {
+                    return H_DI_BIG_ENDIAN;
+                }
+            else if (g_ascii_strcasecmp(widget_name, "diw_rb_middle_endian") == 0)
+                {
+                    return H_DI_MIDDLE_ENDIAN;
+                }
+            else
+                {
+                    return -1;
+                }
+        }
+    else
+        {
+            return -1;
+        }
+}
 
+/**
+ * Sets the endianness as stated by the second parameter
+ * @param main_struct : main structure
+ * @param endianness : the endianness to be sat. Must be one of the following :
+ *                     (H_DI_LITTLE_ENDIAN, H_DI_MIDDLE_ENDIAN, H_DI_BIG_ENDIAN)
+ */
+extern void di_set_endianness(heraia_struct_t *main_struct, gint endianness)
+{
+    GtkWidget *rb = NULL;
 
+    switch (endianness)
+        {
+            case H_DI_BIG_ENDIAN:
+                rb = heraia_get_widget(main_struct->xmls->main, "diw_rb_big_endian");
+                gtk_radio_button_set_active(GTK_RADIO_BUTTON(rb));
+            break;
 
+            case H_DI_MIDDLE_ENDIAN:
+                rb = heraia_get_widget(main_struct->xmls->main, "diw_rb_middle_endian");
+                gtk_radio_button_set_active(GTK_RADIO_BUTTON(rb));
+            break;
+
+            case H_DI_LITTLE_ENDIAN:
+            default:
+                rb = heraia_get_widget(main_struct->xmls->main, "diw_rb_little_endian");
+                gtk_radio_button_set_active(GTK_RADIO_BUTTON(rb));
+        }
+
+}
