@@ -1,3 +1,8 @@
+22.06.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Added the button to choose whether to display the offsets or not.
+     * Coded the event to the function that will display or hide the offsets
+
 17.06.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * New script to help extract translatable strings

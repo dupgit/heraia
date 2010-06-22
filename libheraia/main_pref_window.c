@@ -32,11 +32,12 @@ static gboolean pref_window_delete(GtkWidget *widget, GdkEvent  *event, gpointer
 static void main_pref_window_connect_signals(heraia_struct_t *main_struct);
 
 /* ToolBar buttons */
-static void on_mp_tb_fp_bt_toggled(GtkToggleToolButton *toolbutton, gpointer data);
-static void on_mp_tb_display_bt_toggled(GtkToggleToolButton *toolbutton, gpointer data);
+static void on_mp_tb_fp_bt_toggled(GtkToggleToolButton *tool_button, gpointer data);
+static void on_mp_tb_display_bt_toggled(GtkToggleToolButton *tool_button, gpointer data);
 
 /* Toogle Buttons */
-static void on_mp_thousand_bt_toggled(GtkToggleButton *togglebutton, gpointer data);
+static void on_mp_thousand_bt_toggled(GtkToggleButton *toggle_button, gpointer data);
+static void on_mp_display_offset_bt_toggled(GtkToggleButton *toggle_button, gpointer data);
 
 
 /******************************** The Signals *********************************/
@@ -87,6 +88,10 @@ static void main_pref_window_connect_signals(heraia_struct_t *main_struct)
     /* Toggling the button to choose to display with separated thousand or not */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "mp_thousand_bt")), "toggled",
                      G_CALLBACK(on_mp_thousand_bt_toggled), main_struct);
+
+    /* Toggling the button to choose to display the offsets or not */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "mp_display_offset_bt")), "toggled",
+                     G_CALLBACK(on_mp_display_offset_bt_toggled), main_struct);
 }
 
 
@@ -100,7 +105,7 @@ static void main_pref_window_connect_signals(heraia_struct_t *main_struct)
  * @param toolbutton : button that was clicked
  * @param data : user data : MUST be heraia_struct_t *main_struct main structure
  */
-static void on_mp_tb_fp_bt_toggled(GtkToggleToolButton *toolbutton, gpointer data)
+static void on_mp_tb_fp_bt_toggled(GtkToggleToolButton *tool_button, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
     GtkWidget *notebook = NULL;  /* Main Preference Window's Notebook */
@@ -119,7 +124,7 @@ static void on_mp_tb_fp_bt_toggled(GtkToggleToolButton *toolbutton, gpointer dat
  * @param toolbutton : button that was clicked
  * @param data : user data : MUST be heraia_struct_t *main_struct main structure
  */
-static void on_mp_tb_display_bt_toggled(GtkToggleToolButton *toolbutton, gpointer data)
+static void on_mp_tb_display_bt_toggled(GtkToggleToolButton *tool_button, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
     GtkWidget *notebook = NULL;  /* Main Preference Window's Notebook */
@@ -139,11 +144,30 @@ static void on_mp_tb_display_bt_toggled(GtkToggleToolButton *toolbutton, gpointe
  * @param togglebutton : button that was toggled
  * @param data : user data : MUST be heraia_struct_t *main_struct main structure
  */
-static void on_mp_thousand_bt_toggled(GtkToggleButton *togglebutton, gpointer data)
+static void on_mp_thousand_bt_toggled(GtkToggleButton *toggle_button, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
 
     refresh_file_labels(main_struct);
+}
+
+
+/**
+ * Displays or not offsets
+ * @param togglebutton : button that was toggled
+ * @param data : user data : MUST be heraia_struct_t *main_struct main structure
+ */
+static void on_mp_display_offset_bt_toggled(GtkToggleButton *toggle_button, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+    GtkWidget *hex_widget = NULL;
+
+
+    if (toggle_button != NULL && main_struct != NULL && main_struct->current_doc != NULL)
+        {
+            hex_widget = main_struct->current_doc->hex_widget;
+            gtk_hex_show_offsets(GTK_HEX(hex_widget), gtk_toggle_button_get_active(toggle_button));
+        }
 }
 
 /******************************** End Signals *********************************/
