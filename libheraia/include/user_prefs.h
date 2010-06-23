@@ -49,6 +49,7 @@
 #define KN_MAIN_PREFS "Main Preferences"
 
 #define KN_DISP_THOUSAND "Thousand"
+#define KN_DISP_OFFSETS "Offsets"
 
 #define KN_DI_SELECTED_TAB "Selected Tab"
 #define KN_DI_STREAM_SIZE "Stream Size"

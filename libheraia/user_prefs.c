@@ -221,6 +221,10 @@ static void save_mp_display_preferences_options(heraia_struct_t *main_struct)
             /* Display Thousand (or not) */
             activated = is_toggle_button_activated(main_struct->xmls->main, "mp_thousand_bt");
             g_key_file_set_boolean(prefs->file, GN_DISPLAY_PREFS, KN_DISP_THOUSAND, activated);
+
+            /* Display offsets (or not) */
+            activated = is_toggle_button_activated(main_struct->xmls->main, "mp_display_offset_bt");
+            g_key_file_set_boolean(prefs->file, GN_DISPLAY_PREFS, KN_DISP_OFFSETS, activated);
         }
 }
 
@@ -393,7 +397,7 @@ static void load_mp_file_preferences_options(heraia_struct_t *main_struct)
 static void load_mp_display_preferences_options(heraia_struct_t *main_struct)
 {
     prefs_t *prefs = NULL;
-    GtkWidget *display_thousand_bt = NULL;
+    GtkWidget *toggle_button = NULL;
     gboolean activated = FALSE;
 
     if (main_struct != NULL)
@@ -402,8 +406,13 @@ static void load_mp_display_preferences_options(heraia_struct_t *main_struct)
 
             /* Display thousands (or not) */
             activated = g_key_file_get_boolean(prefs->file, GN_DISPLAY_PREFS, KN_DISP_THOUSAND, NULL);
-            display_thousand_bt = heraia_get_widget(main_struct->xmls->main, "mp_thousand_bt");
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(display_thousand_bt), activated);
+            toggle_button = heraia_get_widget(main_struct->xmls->main, "mp_thousand_bt");
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(toggle_button), activated);
+
+            /* Display offsets (or not) */
+            activated = g_key_file_get_boolean(prefs->file, GN_DISPLAY_PREFS, KN_DISP_OFFSETS, NULL);
+            toggle_button = heraia_get_widget(main_struct->xmls->main, "mp_display_offset_bt");
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(toggle_button), activated);
         }
 }
 

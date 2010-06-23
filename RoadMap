@@ -93,7 +93,7 @@ I let you imagine what I expect before I do a major release !!!
    * Enable line numbers in the ghex widget with an option in main preferences
 
 . 0.1.7
-   * save and load  a "project" like geany editor (saving preferences, opened
+   * save and load a "project" like geany editor (saving preferences, opened
      files, current opened tab and so on...)
 
 . 0.1.8

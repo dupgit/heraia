@@ -745,7 +745,7 @@ void destroy_dt_window(GtkWidget *widget, GdkEvent  *event, gpointer data)
 
 /**
  * What to do when a change occurs in tabs (user selected a particular
- * tab
+ * tab)
  * @param notebook : the widget that issued this signal
  * @param page : the new current page
  * @param tab_num : index of this page
@@ -757,11 +757,19 @@ gboolean file_notebook_tab_changed(GtkNotebook *notebook, GtkNotebookPage *page,
 
     if (main_struct != NULL)
         {
-            main_struct->current_doc = g_ptr_array_index(main_struct->documents, tab_num);
-            update_main_struct_name(main_struct);
-            main_struct->event = HERAIA_REFRESH_TAB_CHANGED;
-            refresh_event_handler(GTK_WIDGET(notebook), main_struct);
-            main_struct->event = HERAIA_REFRESH_NOTHING;
+            if (tab_num >= 0 && tab_num <= main_struct->documents->len)
+                {
+                    /* Current document is now from the selected tab */
+                    main_struct->current_doc = g_ptr_array_index(main_struct->documents, tab_num);
+
+                    /* Changing main window's name */
+                    update_main_struct_name(main_struct);
+
+                    /* Refreshing the view */
+                    main_struct->event = HERAIA_REFRESH_TAB_CHANGED;
+                    refresh_event_handler(GTK_WIDGET(notebook), main_struct);
+                    main_struct->event = HERAIA_REFRESH_NOTHING;
+                }
 
         }
 
@@ -982,7 +990,7 @@ void set_notebook_tab_name(heraia_struct_t *main_struct)
     gchar *filename = NULL;
     gchar *whole_filename;
     gint current = 0;           /* index of the current tab displayed */
-     gchar *markup= NULL;       /* markup text                        */
+    gchar *markup= NULL;        /* markup text                        */
 
     if (main_struct != NULL && main_struct->current_doc != NULL)
        {

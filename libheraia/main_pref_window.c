@@ -160,13 +160,17 @@ static void on_mp_thousand_bt_toggled(GtkToggleButton *toggle_button, gpointer d
 static void on_mp_display_offset_bt_toggled(GtkToggleButton *toggle_button, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
-    GtkWidget *hex_widget = NULL;
+    doc_t *document = NULL;
+    guint i = 0;
 
-
-    if (toggle_button != NULL && main_struct != NULL && main_struct->current_doc != NULL)
+    if (toggle_button != NULL && main_struct != NULL && main_struct->documents != NULL)
         {
-            hex_widget = main_struct->current_doc->hex_widget;
-            gtk_hex_show_offsets(GTK_HEX(hex_widget), gtk_toggle_button_get_active(toggle_button));
+
+             for(i = 0; i < main_struct->documents->len; i++)
+                {
+                    document = g_ptr_array_index(main_struct->documents, i);
+                    gtk_hex_show_offsets(GTK_HEX(document->hex_widget), gtk_toggle_button_get_active(toggle_button));
+                }
         }
 }
 

@@ -1,3 +1,9 @@
+23.06.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Displaying the offsets or not is now a global setting. This setting is
+       saved in the preference file
+     * Comments to explain parts of the code
+
 22.06.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Added the button to choose whether to display the offsets or not.
