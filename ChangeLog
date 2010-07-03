@@ -1,3 +1,7 @@
+03.07.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Added a script to generate the devel docs properly
+
 23.06.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Displaying the offsets or not is now a global setting. This setting is
