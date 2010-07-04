@@ -4,6 +4,7 @@
        more accurate)
      * Glade changes in order to display main notebook's popup menu
      * Corrected a display bug found when displaying main notebook's popup menu
+     * Preparing menus for undo/redo/copy/cut/paste functionalities
 
 03.07.2010
    - Olivier Delhomme <heraia@delhomme.org>
