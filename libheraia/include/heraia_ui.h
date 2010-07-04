@@ -98,7 +98,7 @@ extern void update_main_struct_name(heraia_struct_t *main_struct);
 
 /* NoteBook */
 extern void set_notebook_tab_name(heraia_struct_t *main_struct);
-extern void add_new_tab_in_main_struct(heraia_struct_t *main_struct, doc_t *doc);
+extern void add_new_tab_in_main_window(heraia_struct_t *main_struct, doc_t *doc);
 extern void set_notebook_tab_label_color(heraia_struct_t *main_struct, gboolean color);
 
 #endif /* _LIBHERAIA_HERAIA_UI_H_ */

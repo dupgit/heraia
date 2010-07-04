@@ -1323,6 +1323,7 @@ POSSIBILITY OF SUCH DAMAGES.
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="scrollable">True</property>
+                <property name="enable_popup">True</property>
               </object>
               <packing>
                 <property name="resize">True</property>

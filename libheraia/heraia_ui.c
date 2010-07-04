@@ -1447,7 +1447,7 @@ void gtk_radio_button_set_active(GtkRadioButton *radio_button)
         {
             toggle_button = group->data;
 
-            if (toggle_button == radio_button)
+            if (toggle_button == GTK_TOGGLE_BUTTON(radio_button))
                 {
                    gtk_toggle_button_set_active(toggle_button, TRUE);
                 }
@@ -1723,7 +1723,7 @@ void init_window_states(heraia_struct_t *main_struct)
  * @param main_struct : main structure
  * @param doc : the new document that will be related to the tab
  */
-void add_new_tab_in_main_struct(heraia_struct_t *main_struct, doc_t *doc)
+void add_new_tab_in_main_window(heraia_struct_t *main_struct, doc_t *doc)
 {
     GtkWidget *vbox = NULL;       /**< used for vbox creation               */
     GtkNotebook *notebook = NULL; /**< file_notebook from heraia.gtkbuilder */

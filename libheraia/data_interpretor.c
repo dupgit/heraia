@@ -607,6 +607,7 @@ void di_set_stream_size(heraia_struct_t *main_struct, gint stream_size)
         }
 }
 
+
 /**
  * Gets the endianness as selected in the radio group button
  * @param main_struct : main structure
@@ -655,6 +656,7 @@ gint di_get_endianness(heraia_struct_t *main_struct)
             return -1;
         }
 }
+
 
 /**
  * Sets the endianness as stated by the second parameter

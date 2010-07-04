@@ -58,7 +58,7 @@ gboolean load_file_to_analyse(heraia_struct_t *main_struct, gchar *filename)
 
             if (doc != NULL)
                 {
-                    add_new_tab_in_main_struct(main_struct, doc);
+                    add_new_tab_in_main_window(main_struct, doc);
 
                     log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Hexwidget : %p"), doc->hex_widget);
 

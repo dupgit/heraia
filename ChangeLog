@@ -1,3 +1,9 @@
+04.07.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * New function name to adda new tab to the main window (this is definitly
+       more accurate)
+     * Glade changes in order to display popup menu's main notebook
+
 03.07.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Added a script to generate the devel docs properly
