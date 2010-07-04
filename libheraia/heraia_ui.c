@@ -609,7 +609,7 @@ void on_save_as_activate(GtkWidget *widget, gpointer data)
             else
                 {
                     /* updating the window name and tab's name */
-                    update_main_struct_name(main_struct);
+                    update_main_window_name(main_struct);
                     set_notebook_tab_name(main_struct);
                     main_struct->current_doc->modified = FALSE; /* document has just been saved (thus it is not modified !) */
                     log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("File %s saved and now edited."), doc_t_document_get_filename(main_struct->current_doc));
@@ -763,7 +763,7 @@ gboolean file_notebook_tab_changed(GtkNotebook *notebook, GtkNotebookPage *page,
                     main_struct->current_doc = g_ptr_array_index(main_struct->documents, tab_num);
 
                     /* Changing main window's name */
-                    update_main_struct_name(main_struct);
+                    update_main_window_name(main_struct);
 
                     /* Refreshing the view */
                     main_struct->event = HERAIA_REFRESH_TAB_CHANGED;
@@ -953,11 +953,10 @@ gchar *select_a_file_to_save(heraia_struct_t *main_struct)
 
 
 /**
- * @fn void update_main_struct_name(heraia_struct_t *main_struct)
  *  Update main window heraia's name to reflect the current edited file
  * @param main_struct : main structure
  */
-void update_main_struct_name(heraia_struct_t *main_struct)
+void update_main_window_name(heraia_struct_t *main_struct)
 {
     GtkWidget *widget = NULL;
     gchar *filename = NULL;
@@ -1729,12 +1728,27 @@ void add_new_tab_in_main_window(heraia_struct_t *main_struct, doc_t *doc)
     GtkNotebook *notebook = NULL; /**< file_notebook from heraia.gtkbuilder */
     GtkWidget *tab_label = NULL;  /**< tab's label                          */
     gint tab_num = -1;            /**< new tab's index                      */
+    gchar *filename = NULL;
+    gchar *whole_filename;
+    gchar *markup= NULL;        /* markup text                        */
 
     notebook = GTK_NOTEBOOK(heraia_get_widget(main_struct->xmls->main, "file_notebook"));
     vbox = gtk_vbox_new(FALSE, 2);
     gtk_box_pack_start(GTK_BOX(vbox), doc->hex_widget, TRUE, TRUE, 3);
 
+    /* tab's label */
     tab_label = gtk_label_new(NULL);
+    whole_filename = doc_t_document_get_filename(doc);
+
+    if (whole_filename != NULL)
+        {
+            filename = g_filename_display_basename(whole_filename);
+            markup =  g_markup_printf_escaped("%s", filename);
+            gtk_label_set_markup(GTK_LABEL(tab_label), markup);
+            gtk_widget_set_tooltip_text(tab_label, g_filename_display_name(whole_filename));
+            g_free(markup);
+        }
+
 
     gtk_widget_show_all(vbox);
     tab_num = gtk_notebook_append_page(notebook, vbox, tab_label);

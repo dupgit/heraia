@@ -2,7 +2,8 @@
    - Olivier Delhomme <heraia@delhomme.org>
      * New function name to adda new tab to the main window (this is definitly
        more accurate)
-     * Glade changes in order to display popup menu's main notebook
+     * Glade changes in order to display main notebook's popup menu
+     * Corrected a display bug found when displaying main notebook's popup menu
 
 03.07.2010
    - Olivier Delhomme <heraia@delhomme.org>

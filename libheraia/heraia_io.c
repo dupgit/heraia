@@ -64,9 +64,8 @@ gboolean load_file_to_analyse(heraia_struct_t *main_struct, gchar *filename)
 
                     success = TRUE;
 
-                    /* updating the window name and tab's name */
-                    update_main_struct_name(main_struct);
-                    set_notebook_tab_name(main_struct);
+                    /* updating the window name */
+                    update_main_window_name(main_struct);
 
                     /* Showing all the widgets */
                     grey_main_widgets(main_struct->xmls->main, FALSE);

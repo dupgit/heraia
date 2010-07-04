@@ -94,7 +94,7 @@ extern gboolean is_toggle_button_activated(GtkBuilder *main_xml, gchar *check_bu
 
 /* Widget */
 extern void destroy_a_single_widget(GtkWidget *widget);
-extern void update_main_struct_name(heraia_struct_t *main_struct);
+extern void update_main_window_name(heraia_struct_t *main_struct);
 
 /* NoteBook */
 extern void set_notebook_tab_name(heraia_struct_t *main_struct);
