@@ -1,3 +1,8 @@
+05.07.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Added signal handlers for undo and redo menu entries
+     * Tried to implement undo and redo functions !
+
 04.07.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * New function name to adda new tab to the main window (this is definitly

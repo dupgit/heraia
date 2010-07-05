@@ -324,7 +324,38 @@ static gboolean a_propos_delete(GtkWidget *widget, GdkEvent  *event, gpointer da
 
 
 /**
- * @fn void on_delete_activate(GtkWidget *widget, gpointer data)
+ *  Undo, edit menu
+ * @param widget : the widget that issued the signal
+ * @param data : user data MUST be heraia_struct_t *main_struct main structure
+ */
+void on_undo_activate(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+
+    if (main_struct != NULL && main_struct->current_doc != NULL)
+        {
+            hex_document_undo(main_struct->current_doc->hex_doc);
+        }
+}
+
+
+/**
+ *  Redo, edit menu
+ * @param widget : the widget that issued the signal
+ * @param data : user data MUST be heraia_struct_t *main_struct main structure
+ */
+void on_redo_activate(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+
+    if (main_struct != NULL && main_struct->current_doc != NULL)
+        {
+            hex_document_redo(main_struct->current_doc->hex_doc);
+        }
+}
+
+
+/**
  *  Delete, edit menu
  * @warning Not yet implemented
  * @todo Write a usefull function here :)
@@ -340,7 +371,6 @@ void on_delete_activate(GtkWidget *widget, gpointer data)
 
 
 /**
- * @fn void on_cut_activate(GtkWidget *widget, gpointer data)
  *  Cut, edit menu
  * @warning Not yet implemented
  * @todo Write a usefull function here :)
@@ -356,7 +386,6 @@ void on_cut_activate(GtkWidget *widget, gpointer data)
 
 
 /**
- * @fn void on_copy_activate( GtkWidget *widget, gpointer data )
  *  Copy, edit menu
  * @warning Not yet implemented
  * @todo Write a usefull function here :)
@@ -372,7 +401,6 @@ void on_copy_activate(GtkWidget *widget, gpointer data)
 
 
 /**
- * @fn void on_paste_activate( GtkWidget *widget, gpointer data )
  *  Paste, edit menu
  * @warning Not yet implemented
  * @todo Write a usefull function here :)
@@ -1196,6 +1224,14 @@ static void heraia_ui_connect_signals(heraia_struct_t *main_struct)
     /* Preferences, file menu ; See main_pref_window.c for main_pref_window's signals */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "preferences")), "activate",
                      G_CALLBACK(on_preferences_activate), main_struct);
+
+   /* Undo, edit menu */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_undo")), "activate",
+                     G_CALLBACK(on_undo_activate), main_struct);
+
+   /* Redo, edit menu */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_redo")), "activate",
+                     G_CALLBACK(on_redo_activate), main_struct);
 
     /* Cut, edit menu */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "cut")), "activate",

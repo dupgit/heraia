@@ -37,6 +37,8 @@ extern void on_save_as_activate(GtkWidget *widget, gpointer data);
 extern void on_preferences_activate(GtkWidget *widget, gpointer data);
 extern void on_delete_activate(GtkWidget *widget, gpointer data);
 extern void a_propos_activate(GtkWidget *widget, gpointer data);
+extern void on_undo_activate(GtkWidget *widget, gpointer data);
+extern void on_redo_activate(GtkWidget *widget, gpointer data);
 extern void on_cut_activate(GtkWidget *widget, gpointer data);
 extern void on_copy_activate(GtkWidget *widget, gpointer data);
 extern void on_paste_activate(GtkWidget *widget, gpointer data);
