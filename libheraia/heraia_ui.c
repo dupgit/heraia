@@ -331,11 +331,34 @@ static gboolean a_propos_delete(GtkWidget *widget, GdkEvent  *event, gpointer da
 void on_undo_activate(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
+    GtkBuilder *xml = NULL;
+    gboolean result = FALSE;
 
-    if (main_struct != NULL && main_struct->current_doc != NULL)
+    if (main_struct != NULL && main_struct->current_doc != NULL && main_struct->xmls->main != NULL)
         {
-            hex_document_undo(main_struct->current_doc->hex_doc);
+            result = hex_document_undo(main_struct->current_doc->hex_doc);
+
+            xml = main_struct->xmls->main;
+
+            if (result == TRUE)
+                {
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_redo"), TRUE);
+                }
+
+            if (main_struct->current_doc->hex_doc->undo_top == NULL)
+                {   /* No more undos are possible. The document is as the origin ! */
+                    set_notebook_tab_label_color(main_struct, FALSE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_undo"), FALSE);
+                    main_struct->current_doc->modified = FALSE;
+                }
+            else
+                {
+                    set_notebook_tab_label_color(main_struct, TRUE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_undo"), TRUE);
+                }
+
         }
+
 }
 
 
@@ -347,10 +370,30 @@ void on_undo_activate(GtkWidget *widget, gpointer data)
 void on_redo_activate(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
+    GtkBuilder *xml = NULL;
+    gboolean result = FALSE;
 
-    if (main_struct != NULL && main_struct->current_doc != NULL)
+    if (main_struct != NULL && main_struct->current_doc != NULL && main_struct->xmls->main != NULL)
         {
-            hex_document_redo(main_struct->current_doc->hex_doc);
+            result = hex_document_redo(main_struct->current_doc->hex_doc);
+
+            xml = main_struct->xmls->main;
+
+            if (result == TRUE)
+                {
+                    set_notebook_tab_label_color(main_struct, TRUE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_undo"), TRUE);
+                    main_struct->current_doc->modified = TRUE;
+                }
+
+            if (main_struct->current_doc->hex_doc->undo_stack == NULL || main_struct->current_doc->hex_doc->undo_stack == main_struct->current_doc->hex_doc->undo_top)
+                {
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_redo"), FALSE);
+                }
+            else
+                {
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_redo"), TRUE);
+                }
         }
 }
 
@@ -483,6 +526,8 @@ void refresh_file_labels(heraia_struct_t *main_struct)
                         {
                             main_struct->current_doc->modified = main_struct->current_doc->hex_doc->changed;
                             set_notebook_tab_label_color(main_struct, main_struct->current_doc->hex_doc->changed);
+                            /* If the document changes, then when might undo things ... */
+                            gtk_widget_set_sensitive(heraia_get_widget(main_struct->xmls->main, "menu_undo"), TRUE);
                         }
 
                 }
@@ -1083,30 +1128,30 @@ void set_notebook_tab_label_color(heraia_struct_t *main_struct, gboolean color)
 
 
 /**
- * Hides or grey all widgets that needs an open file when boolean show is
- * FALSE
- * @param main : main GtkBuilder XML structure
+ * Hides or grey all widgets that needs an open file when boolean greyed is
+ * TRUE. Also sets the current page of the notebook to the first one.
+ * @param xml : GtkBuilder XML main structure
  * @param greyed : boolean (TRUE to hide an grey widgets)
  */
-void grey_main_widgets(GtkBuilder *main, gboolean greyed)
+void grey_main_widgets(GtkBuilder *xml, gboolean greyed)
 {
     GtkWidget *notebook = NULL;  /* file notebook in main window */
 
-    if (main != NULL)
+    if (xml != NULL)
         {
-            notebook = heraia_get_widget(main, "file_notebook");
+            notebook = heraia_get_widget(xml, "file_notebook");
             gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 0);
 
             if (greyed == TRUE)
                 {
-                    gtk_widget_set_sensitive(heraia_get_widget(main, "save"), FALSE);
-                    gtk_widget_set_sensitive(heraia_get_widget(main, "save_as"), FALSE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "save"), FALSE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "save_as"), FALSE);
                     gtk_widget_hide(notebook);
                 }
             else
                 {
-                    gtk_widget_set_sensitive(heraia_get_widget(main, "save"), TRUE);
-                    gtk_widget_set_sensitive(heraia_get_widget(main, "save_as"), TRUE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "save"), TRUE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "save_as"), TRUE);
                     gtk_widget_show_all(notebook);
                 }
         }
@@ -1128,6 +1173,10 @@ void init_heraia_interface(heraia_struct_t *main_struct)
             /* inits window states (shows or hide windows) */
             init_window_states(main_struct);
 
+
+            /* menus */
+            gtk_widget_set_sensitive(heraia_get_widget(main_struct->xmls->main, "menu_redo"), FALSE);
+            gtk_widget_set_sensitive(heraia_get_widget(main_struct->xmls->main, "menu_undo"), FALSE);
             if (main_struct->current_doc != NULL)
                 {
                     grey_main_widgets(main_struct->xmls->main, FALSE);
@@ -1531,7 +1580,6 @@ gboolean is_toggle_button_activated(GtkBuilder *main_xml, gchar *check_button)
 
 
 /**
- * @fn GtkWidget *heraia_get_widget(GtkBuilder *xml, gchar *widget_name)
  *  This is a wrapper to the GtkBuilder xml get widget. It is intended
  *  to simplify the developpers lives if they have to choose or
  *  propose other means to do the same thing than libglade (say,

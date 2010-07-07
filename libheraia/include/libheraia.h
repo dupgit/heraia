@@ -223,7 +223,7 @@ typedef struct
     gint x;              /**< x position (upper left corner)     */
     gint y;              /**< y position (upper left corner)     */
     guint height;        /**< y+height (bottom right corner)     */
-    guint width;         /**< x+width (bottom right corner)     */
+    guint width;         /**< x+width (bottom right corner)      */
     gboolean displayed;  /**< TRUE if displayed, FALSE otherwise */
 } window_prop_t;
 

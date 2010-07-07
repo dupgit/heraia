@@ -1,3 +1,9 @@
+07.07.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Changed some comments
+     * Code coherence.
+     * Fancier undo/redo
+
 05.07.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Added signal handlers for undo and redo menu entries
