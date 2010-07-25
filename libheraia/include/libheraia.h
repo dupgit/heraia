@@ -148,7 +148,7 @@ typedef struct
 /**
  * @struct decode_generic_t
  * Basic way to have as many as we want decoding functions corresponding to one
- * label. This Structure is basicaly one row in the data intrepretor window
+ * label. This structure is basicaly one row in the data intrepretor window
  * @warning this structure is subject to changes
  */
  typedef struct

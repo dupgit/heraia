@@ -24,11 +24,11 @@ else
     echo "autoconf 2.5x) to build heraia."
     echo
     echo "Please install the appropriated package and re-run autogen.sh"
-    echo "This might also happen if you don't have the m4 provided as a "
+    echo "This might also happen if you don't have the m4 provided as a"
     echo "subdirectory in this package in the directory where aclocal will find"
     echo "them. Just copy ./m4/* in, usually, /usr/share/aclocal."
     echo
-    echo "Or, it can also come from a configure.ac mistake (then it's my "
+    echo "Or, it can also come from a configure.ac mistake (then it's my"
     echo "business ;)). Please report your issue on the heraia mailing list."
     echo "See http://heraia.tuxfamily.org for informations on how to subscribe."
     echo
