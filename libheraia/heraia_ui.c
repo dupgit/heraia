@@ -409,7 +409,11 @@ void on_delete_activate(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
 
-    log_message(main_struct, G_LOG_LEVEL_WARNING, Q_("Not implemented Yet (Please contribute !)"));
+    if (main_struct != NULL && main_struct->current_doc != NULL)
+        {
+            gtk_hex_delete_selection(main_struct->current_doc->hex_widget);
+            refresh_event_handler(widget, data);
+        }
 }
 
 
@@ -424,7 +428,11 @@ void on_cut_activate(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
 
-    log_message(main_struct, G_LOG_LEVEL_WARNING, Q_("Not implemented Yet (Please contribute !)"));
+    if (main_struct != NULL && main_struct->current_doc != NULL)
+        {
+            gtk_hex_cut_to_clipboard(main_struct->current_doc->hex_widget);
+            refresh_event_handler(widget, data);
+        }
 }
 
 
@@ -439,7 +447,10 @@ void on_copy_activate(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
 
-    log_message(main_struct, G_LOG_LEVEL_WARNING, Q_("Not implemented Yet (Please contribute !)"));
+    if (main_struct != NULL && main_struct->current_doc != NULL)
+        {
+            gtk_hex_copy_to_clipboard(main_struct->current_doc->hex_widget);
+        }
 }
 
 
@@ -454,7 +465,11 @@ void on_paste_activate(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
 
-    log_message(main_struct, G_LOG_LEVEL_WARNING, Q_("Not implemented Yet (Please contribute !)"));
+    if (main_struct != NULL && main_struct->current_doc != NULL)
+        {
+            gtk_hex_paste_from_clipboard(main_struct->current_doc->hex_widget);
+            refresh_event_handler(widget, data);
+        }
 }
 
 
@@ -526,8 +541,10 @@ void refresh_file_labels(heraia_struct_t *main_struct)
                         {
                             main_struct->current_doc->modified = main_struct->current_doc->hex_doc->changed;
                             set_notebook_tab_label_color(main_struct, main_struct->current_doc->hex_doc->changed);
+
                             /* If the document changes, then when might undo things ... */
                             gtk_widget_set_sensitive(heraia_get_widget(main_struct->xmls->main, "menu_undo"), TRUE);
+
                         }
 
                 }
@@ -780,7 +797,8 @@ gboolean delete_main_struct_event(GtkWidget *widget, GdkEvent  *event, gpointer 
 
     on_quit_activate(widget, data);
 
-    return FALSE;
+    /* If we are leaving heraia, we are not supposed to be here ! */
+    return TRUE;
 }
 
 
@@ -1146,12 +1164,20 @@ void grey_main_widgets(GtkBuilder *xml, gboolean greyed)
                 {
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "save"), FALSE);
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "save_as"), FALSE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_cut"), FALSE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_copy"), FALSE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_paste"), FALSE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_delete"), FALSE);
                     gtk_widget_hide(notebook);
                 }
             else
                 {
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "save"), TRUE);
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "save_as"), TRUE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_cut"), TRUE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_copy"), TRUE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_paste"), TRUE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_delete"), TRUE);
                     gtk_widget_show_all(notebook);
                 }
         }
@@ -1283,19 +1309,19 @@ static void heraia_ui_connect_signals(heraia_struct_t *main_struct)
                      G_CALLBACK(on_redo_activate), main_struct);
 
     /* Cut, edit menu */
-    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "cut")), "activate",
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_cut")), "activate",
                      G_CALLBACK(on_cut_activate), main_struct);
 
     /* Copy, edit menu */
-    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "copy")), "activate",
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_copy")), "activate",
                      G_CALLBACK(on_copy_activate), main_struct);
 
     /* Paste, edit menu */
-    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "paste")), "activate",
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_paste")), "activate",
                      G_CALLBACK(on_paste_activate), main_struct);
 
     /* Delete, edit menu */
-    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "delete")), "activate",
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_delete")), "activate",
                      G_CALLBACK(on_delete_activate), main_struct);
 
     /* Test, Help menu */

@@ -1039,7 +1039,7 @@ POSSIBILITY OF SUCH DAMAGES.
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="cut">
+                      <object class="GtkImageMenuItem" id="menu_cut">
                         <property name="label">gtk-cut</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
@@ -1048,7 +1048,7 @@ POSSIBILITY OF SUCH DAMAGES.
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="copy">
+                      <object class="GtkImageMenuItem" id="menu_copy">
                         <property name="label">gtk-copy</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
@@ -1057,7 +1057,7 @@ POSSIBILITY OF SUCH DAMAGES.
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="paste">
+                      <object class="GtkImageMenuItem" id="menu_paste">
                         <property name="label">gtk-paste</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
@@ -1066,7 +1066,7 @@ POSSIBILITY OF SUCH DAMAGES.
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="delete">
+                      <object class="GtkImageMenuItem" id="menu_delete">
                         <property name="label">gtk-delete</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
