@@ -78,7 +78,7 @@ I let you imagine what I expect before I do a major release !!!
    * Saving stream size from data interpretor's windows to main preferences
    * Clean duplicate code in data_interpretor.c
 
-. 0.1.4
+. 0.1.4 [10.08.2010]
    * undo/redo features
    * copy/cut/paste features
    * Saving endianness from data interpretor's windows to main preferences
