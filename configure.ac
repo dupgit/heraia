@@ -1,6 +1,6 @@
 AC_PREREQ(2.59)
 
-AC_INIT([Heraia], [0.1.4],
+AC_INIT([Heraia], [0.1.5],
         [Olivier Delhomme],
         [heraia])
 

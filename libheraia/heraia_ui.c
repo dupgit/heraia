@@ -1684,10 +1684,8 @@ static gboolean close_heraia(heraia_struct_t *main_struct)
 {
     gboolean unsaved = FALSE;    /* if there is any unsaved documents */
     gboolean quit_heraia = TRUE; /* By default we want to quit        */
-    GtkWidget *dialog = NULL;
-    GtkWidget *label = NULL;
-    GtkWidget *content_area = NULL;
-    GtkWidget *parent = NULL;
+    GtkWidget *dialog = NULL;    /* The dialog box                    */
+    GtkWidget *parent = NULL;    /* parent widget for the dialog box  */
 
     unsaved = unsaved_documents(main_struct);
 
@@ -1695,14 +1693,10 @@ static gboolean close_heraia(heraia_struct_t *main_struct)
         {
             /* Displays a dialog box that let the user choose what to do */
             parent = heraia_get_widget(main_struct->xmls->main, "main_window");
-            dialog = gtk_dialog_new_with_buttons(Q_("Unsaved document(s) remains."), GTK_WINDOW(parent), GTK_DIALOG_DESTROY_WITH_PARENT,
-                                                 GTK_STOCK_YES, GTK_RESPONSE_YES,
-                                                 GTK_STOCK_NO, GTK_RESPONSE_NO, NULL);
-            content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-            gtk_container_set_border_width(GTK_CONTAINER(content_area), 4);
-            label = gtk_label_new(Q_("Do you want to quit without saving ?"));
-            gtk_container_add(GTK_CONTAINER(content_area), label);
-            gtk_widget_show_all(dialog);
+
+            dialog = gtk_message_dialog_new(parent, GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO, Q_("Unsaved document(s) remains."));
+            gtk_message_dialog_format_secondary_markup(dialog, Q_("Do you want to quit without saving ?"));
+
 
             gint result = gtk_dialog_run(GTK_DIALOG(dialog));
 

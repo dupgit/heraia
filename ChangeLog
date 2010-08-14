@@ -1,3 +1,9 @@
+14.08.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Now leading to 0.1.5
+     * Improved the dialog box that appears when exiting heraia with modified
+       documents by using GtkMessageDialog instead of GtkDialog (this is easier)
+
 10.08.2010 [release 0.1.4]
    - Olivier Delhomme <heraia@delhomme.org>
 
