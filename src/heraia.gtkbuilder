@@ -984,12 +984,11 @@ POSSIBILITY OF SUCH DAMAGES.
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="preferences">
-                        <property name="label">gtk-preferences</property>
+                      <object class="GtkImageMenuItem" id="menu_close">
+                        <property name="label">gtk-close</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_preferences_activate"/>
                       </object>
                     </child>
                     <child>
@@ -1072,6 +1071,20 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_delete_activate"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="menuitem3">
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="preferences">
+                        <property name="label">gtk-preferences</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                        <signal name="activate" handler="on_preferences_activate"/>
                       </object>
                     </child>
                   </object>

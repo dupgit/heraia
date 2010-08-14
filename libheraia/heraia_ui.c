@@ -411,7 +411,7 @@ void on_delete_activate(GtkWidget *widget, gpointer data)
 
     if (main_struct != NULL && main_struct->current_doc != NULL)
         {
-            gtk_hex_delete_selection(main_struct->current_doc->hex_widget);
+            gtk_hex_delete_selection(GTK_HEX(main_struct->current_doc->hex_widget));
             refresh_event_handler(widget, data);
         }
 }
@@ -430,7 +430,7 @@ void on_cut_activate(GtkWidget *widget, gpointer data)
 
     if (main_struct != NULL && main_struct->current_doc != NULL)
         {
-            gtk_hex_cut_to_clipboard(main_struct->current_doc->hex_widget);
+            gtk_hex_cut_to_clipboard(GTK_HEX(main_struct->current_doc->hex_widget));
             refresh_event_handler(widget, data);
         }
 }
@@ -449,7 +449,7 @@ void on_copy_activate(GtkWidget *widget, gpointer data)
 
     if (main_struct != NULL && main_struct->current_doc != NULL)
         {
-            gtk_hex_copy_to_clipboard(main_struct->current_doc->hex_widget);
+            gtk_hex_copy_to_clipboard(GTK_HEX(main_struct->current_doc->hex_widget));
         }
 }
 
@@ -467,7 +467,7 @@ void on_paste_activate(GtkWidget *widget, gpointer data)
 
     if (main_struct != NULL && main_struct->current_doc != NULL)
         {
-            gtk_hex_paste_from_clipboard(main_struct->current_doc->hex_widget);
+            gtk_hex_paste_from_clipboard(GTK_HEX(main_struct->current_doc->hex_widget));
             refresh_event_handler(widget, data);
         }
 }
@@ -629,7 +629,19 @@ void on_open_activate(GtkWidget *widget, gpointer data)
 
 
 /**
- * @fn void on_save_activate(GtkWidget *widget, gpointer data)
+ * Closes an openned file
+ * @param widget : the widget that issued the signal
+ * @param data : user data MUST be heraia_struct_t *main_struct main structure
+ */
+void on_close_activate(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+
+    log_message(main_struct, G_LOG_LEVEL_WARNING, Q_("Please feel free to contribute !"));
+}
+
+
+/**
  *  Here we attemp to save the edited file
  *  @todo be more accurate on error (error type, message and filename) returns
  *        we should return something at least ...
@@ -1168,6 +1180,7 @@ void grey_main_widgets(GtkBuilder *xml, gboolean greyed)
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_copy"), FALSE);
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_paste"), FALSE);
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_delete"), FALSE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_close"), FALSE);
                     gtk_widget_hide(notebook);
                 }
             else
@@ -1178,6 +1191,7 @@ void grey_main_widgets(GtkBuilder *xml, gboolean greyed)
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_copy"), TRUE);
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_paste"), TRUE);
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_delete"), TRUE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_close"), TRUE);
                     gtk_widget_show_all(notebook);
                 }
         }
@@ -1288,6 +1302,10 @@ static void heraia_ui_connect_signals(heraia_struct_t *main_struct)
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "open")), "activate",
                      G_CALLBACK(on_open_activate), main_struct);
 
+    /* Close, file menu */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_close")), "activate",
+                     G_CALLBACK(on_close_activate), main_struct);
+
     /* Save, file menu */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "save")), "activate",
                      G_CALLBACK(on_save_activate), main_struct);
@@ -1296,7 +1314,7 @@ static void heraia_ui_connect_signals(heraia_struct_t *main_struct)
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "save_as")), "activate",
                      G_CALLBACK(on_save_as_activate), main_struct);
 
-    /* Preferences, file menu ; See main_pref_window.c for main_pref_window's signals */
+    /* Preferences, Edit menu ; See main_pref_window.c for main_pref_window's signals */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "preferences")), "activate",
                      G_CALLBACK(on_preferences_activate), main_struct);
 
@@ -1694,8 +1712,8 @@ static gboolean close_heraia(heraia_struct_t *main_struct)
             /* Displays a dialog box that let the user choose what to do */
             parent = heraia_get_widget(main_struct->xmls->main, "main_window");
 
-            dialog = gtk_message_dialog_new(parent, GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO, Q_("Unsaved document(s) remains."));
-            gtk_message_dialog_format_secondary_markup(dialog, Q_("Do you want to quit without saving ?"));
+            dialog = gtk_message_dialog_new(GTK_WINDOW(parent), GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO, Q_("Unsaved document(s) remains."));
+            gtk_message_dialog_format_secondary_markup(GTK_MESSAGE_DIALOG(dialog), Q_("Do you want to quit without saving ?"));
 
 
             gint result = gtk_dialog_run(GTK_DIALOG(dialog));
@@ -1834,7 +1852,7 @@ void add_new_tab_in_main_window(heraia_struct_t *main_struct, doc_t *doc)
     gint tab_num = -1;            /**< new tab's index                      */
     gchar *filename = NULL;
     gchar *whole_filename;
-    gchar *markup= NULL;        /* markup text                        */
+    gchar *markup= NULL;          /**< markup text                          */
 
     notebook = GTK_NOTEBOOK(heraia_get_widget(main_struct->xmls->main, "file_notebook"));
     vbox = gtk_vbox_new(FALSE, 2);
@@ -1852,7 +1870,6 @@ void add_new_tab_in_main_window(heraia_struct_t *main_struct, doc_t *doc)
             gtk_widget_set_tooltip_text(tab_label, g_filename_display_name(whole_filename));
             g_free(markup);
         }
-
 
     gtk_widget_show_all(vbox);
     tab_num = gtk_notebook_append_page(notebook, vbox, tab_label);

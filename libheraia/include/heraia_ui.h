@@ -32,6 +32,7 @@
 extern void on_quit_activate(GtkWidget *widget, gpointer data);
 extern void on_new_activate(GtkWidget *widget, gpointer data);
 extern void on_open_activate(GtkWidget *widget, gpointer data);
+extern void on_close_activate(GtkWidget *widget, gpointer data);
 extern void on_save_activate(GtkWidget *widget, gpointer data);
 extern void on_save_as_activate(GtkWidget *widget, gpointer data);
 extern void on_preferences_activate(GtkWidget *widget, gpointer data);
