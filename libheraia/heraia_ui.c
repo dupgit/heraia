@@ -636,8 +636,55 @@ void on_open_activate(GtkWidget *widget, gpointer data)
 void on_close_activate(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
+    doc_t * current_doc = NULL;  /**< Current document to close in heraia    */
+    doc_t *document = NULL;      /**< To iterate over the array of documents */
+    gint index = -1;
+    gint i = 0;
 
-    log_message(main_struct, G_LOG_LEVEL_WARNING, Q_("Please feel free to contribute !"));
+    if (main_struct != NULL && main_struct->current_doc != NULL)
+        {
+            log_message(main_struct, G_LOG_LEVEL_WARNING, Q_("Please feel free to contribute !"));
+
+            current_doc = main_struct->current_doc;
+
+            /* removes the pointer from the array */
+            i = 0;
+            index = -1;
+            while (i < main_struct->documents->len && index == -1)
+                {
+                    document = g_ptr_array_index(main_struct->documents, i);
+                    if (document == current_doc)
+                        {
+                            index = i;
+                        }
+                    i++;
+                }
+
+            if (index >= 0)
+                {
+                    g_ptr_array_remove_index(main_struct->documents, index);
+
+                    /* kills the widget and the document */
+                    close_doc_t(current_doc);
+
+                    if (main_struct->documents->len > 0)
+                        {
+                            if (index == 0)
+                                {
+                                    main_struct->current_doc = g_ptr_array_index(main_struct->documents, 0);
+                                }
+                            else
+                                {
+                                    main_struct->current_doc = g_ptr_array_index(main_struct->documents, index - 1);
+                                }
+                        }
+                    else
+                        {
+                            main_struct->current_doc = NULL;
+                            grey_main_widgets(main_struct->xmls->main, TRUE);
+                        }
+                }
+        }
 }
 
 

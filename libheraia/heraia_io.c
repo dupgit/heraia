@@ -54,7 +54,7 @@ gboolean load_file_to_analyse(heraia_struct_t *main_struct, gchar *filename)
     if (S_ISREG(stat_buf->st_mode) && stat_buf->st_size > 0)
         {
 
-            doc = heraia_hex_document_new(main_struct, filename); /* removes the old hexdocument and adds a new one */
+            doc = heraia_hex_document_new(main_struct, filename); /* Adds an new hexdocument */
 
             if (doc != NULL)
                 {

@@ -284,8 +284,7 @@ typedef struct
 
 /**
  * @struct heraia_struct_t
- *  This is the main structure (mainly named main_struct due to historycal reasons)
- *  It contains all things that the program needs
+ *  This is the main structure. It contains all things that the program needs
  */
 typedef struct
 {
