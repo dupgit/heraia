@@ -638,16 +638,18 @@ void on_close_activate(GtkWidget *widget, gpointer data)
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
     doc_t * current_doc = NULL;  /**< Current document to close in heraia    */
     doc_t *document = NULL;      /**< To iterate over the array of documents */
+    GtkWidget *notebook = NULL;  /**< Notenook on the main window            */
     gint index = -1;
     gint i = 0;
 
     if (main_struct != NULL && main_struct->current_doc != NULL)
         {
-            log_message(main_struct, G_LOG_LEVEL_WARNING, Q_("Please feel free to contribute !"));
 
             current_doc = main_struct->current_doc;
 
-            /* removes the pointer from the array */
+            log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Closing document %s"), doc_t_document_get_filename(current_doc));
+
+            /* Try to catch the index of the current document */
             i = 0;
             index = -1;
             while (i < main_struct->documents->len && index == -1)
@@ -662,27 +664,39 @@ void on_close_activate(GtkWidget *widget, gpointer data)
 
             if (index >= 0)
                 {
+                    /* Removing the index in the array */
                     g_ptr_array_remove_index(main_struct->documents, index);
+
+                    /* And removing it in the notebook */
+                    notebook = heraia_get_widget(main_struct->xmls->main, "file_notebook");
+                    gtk_notebook_remove_page(GTK_NOTEBOOK(notebook),index);
 
                     /* kills the widget and the document */
                     close_doc_t(current_doc);
 
                     if (main_struct->documents->len > 0)
                         {
+                            /* Try to find out the new current document */
                             if (index == 0)
                                 {
                                     main_struct->current_doc = g_ptr_array_index(main_struct->documents, 0);
+                                    gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 0);
                                 }
                             else
                                 {
                                     main_struct->current_doc = g_ptr_array_index(main_struct->documents, index - 1);
+                                    gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), index - 1);
                                 }
                         }
                     else
                         {
+                            /* No more documents openned */
                             main_struct->current_doc = NULL;
                             grey_main_widgets(main_struct->xmls->main, TRUE);
                         }
+
+                    refresh_event_handler(notebook, main_struct);
+
                 }
         }
 }

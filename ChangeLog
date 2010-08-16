@@ -1,6 +1,7 @@
 16.08.2010
    - Olivier Delhomme <heraia@delhomme.org>
-     * Trying to close documents
+     * Trying to close documents :closing GtkHex widget and the corresponding
+       tab and refreshing the datas
 
 14.08.2010
    - Olivier Delhomme <heraia@delhomme.org>
