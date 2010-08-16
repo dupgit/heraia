@@ -639,6 +639,9 @@ void on_close_activate(GtkWidget *widget, gpointer data)
     doc_t * current_doc = NULL;  /**< Current document to close in heraia    */
     doc_t *document = NULL;      /**< To iterate over the array of documents */
     GtkWidget *notebook = NULL;  /**< Notenook on the main window            */
+    GtkWidget *dialog = NULL;    /**< The dialog box                         */
+    GtkWidget *parent = NULL;    /**< parent widget for the dialog box       */
+    gint result = 0;             /**< result from the dialog box             */
     gint index = -1;
     gint i = 0;
 
@@ -648,6 +651,30 @@ void on_close_activate(GtkWidget *widget, gpointer data)
             current_doc = main_struct->current_doc;
 
             log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Closing document %s"), doc_t_document_get_filename(current_doc));
+
+
+            if (current_doc->modified == TRUE)
+                {
+                    /* Displays a dialog box that let the user choose what to do */
+                    parent = heraia_get_widget(main_struct->xmls->main, "main_window");
+
+                    dialog = gtk_message_dialog_new(GTK_WINDOW(parent), GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO, Q_("This document has been edited and is not saved !"));
+                    gtk_message_dialog_format_secondary_markup(GTK_MESSAGE_DIALOG(dialog), Q_("Do you want to close it without saving it ?"));
+
+                    result = gtk_dialog_run(GTK_DIALOG(dialog));
+
+                    gtk_widget_destroy(dialog);
+
+                    switch (result)
+                        {
+                            case GTK_RESPONSE_YES: /* Will continue if we say Yes */
+                            break;
+
+                            default:  /* Stops closing if we say No */
+                                return;
+                            break;
+                        }
+                }
 
             /* Try to catch the index of the current document */
             i = 0;
@@ -1761,10 +1788,11 @@ static gboolean unsaved_documents(heraia_struct_t *main_struct)
  */
 static gboolean close_heraia(heraia_struct_t *main_struct)
 {
-    gboolean unsaved = FALSE;    /* if there is any unsaved documents */
-    gboolean quit_heraia = TRUE; /* By default we want to quit        */
-    GtkWidget *dialog = NULL;    /* The dialog box                    */
-    GtkWidget *parent = NULL;    /* parent widget for the dialog box  */
+    gboolean unsaved = FALSE;    /**< if there is any unsaved documents */
+    gboolean quit_heraia = TRUE; /**< By default we want to quit        */
+    GtkWidget *dialog = NULL;    /**< The dialog box                    */
+    GtkWidget *parent = NULL;    /**< parent widget for the dialog box  */
+    gint result = 0;             /**< result from the dialog box        */
 
     unsaved = unsaved_documents(main_struct);
 
@@ -1777,7 +1805,7 @@ static gboolean close_heraia(heraia_struct_t *main_struct)
             gtk_message_dialog_format_secondary_markup(GTK_MESSAGE_DIALOG(dialog), Q_("Do you want to quit without saving ?"));
 
 
-            gint result = gtk_dialog_run(GTK_DIALOG(dialog));
+            result = gtk_dialog_run(GTK_DIALOG(dialog));
 
             switch (result)
                 {
