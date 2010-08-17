@@ -652,7 +652,6 @@ void on_close_activate(GtkWidget *widget, gpointer data)
 
             log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Closing document %s"), doc_t_document_get_filename(current_doc));
 
-
             if (current_doc->modified == TRUE)
                 {
                     /* Displays a dialog box that let the user choose what to do */
@@ -722,7 +721,9 @@ void on_close_activate(GtkWidget *widget, gpointer data)
                             grey_main_widgets(main_struct->xmls->main, TRUE);
                         }
 
+                    /* updating things in conformance to the new situation */
                     refresh_event_handler(notebook, main_struct);
+                    update_main_window_name(main_struct);
 
                 }
         }
@@ -1154,7 +1155,7 @@ void update_main_window_name(heraia_struct_t *main_struct)
     gchar *whole_filename = NULL;
 
     if (main_struct != NULL && main_struct->current_doc != NULL)
-       {
+        {
             widget = heraia_get_widget(main_struct->xmls->main, "main_window");
 
             whole_filename = doc_t_document_get_filename(main_struct->current_doc);
@@ -1162,7 +1163,12 @@ void update_main_window_name(heraia_struct_t *main_struct)
             filename = g_filename_display_basename(whole_filename);
 
             gtk_window_set_title(GTK_WINDOW(widget), filename);
-       }
+        }
+    else if (main_struct != NULL)
+        {
+            widget = heraia_get_widget(main_struct->xmls->main, "main_window");
+            gtk_window_set_title(GTK_WINDOW(widget), "Heraia");
+        }
 }
 
 

@@ -1,3 +1,8 @@
+17.08.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Now when closing the last document its name does no stay in the main
+       window's title.
+
 16.08.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Trying to close documents :closing GtkHex widget and the corresponding
