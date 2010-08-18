@@ -90,6 +90,7 @@ I let you imagine what I expect before I do a major release !!!
 
 . 0.1.6
    * have basic search functions
+   * hability to jump anywhere in the file
    * Enable line numbers in the ghex widget with an option in main preferences
 
 . 0.1.7

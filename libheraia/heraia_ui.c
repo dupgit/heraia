@@ -1935,7 +1935,7 @@ void init_window_states(heraia_struct_t *main_struct)
 }
 
 /**
- *  Adds a new tab to the main window in file's notebook
+ * Adds a new tab to the main window in file's notebook
  * @param main_struct : main structure
  * @param doc : the new document that will be related to the tab
  */
@@ -1948,6 +1948,8 @@ void add_new_tab_in_main_window(heraia_struct_t *main_struct, doc_t *doc)
     gchar *filename = NULL;
     gchar *whole_filename;
     gchar *markup= NULL;          /**< markup text                          */
+    GtkWidget *hbox = NULL;       /**< used for hbox creation in the tabs   */
+    GtkWidget *button = NULL;     /**< Closing button                       */
 
     notebook = GTK_NOTEBOOK(heraia_get_widget(main_struct->xmls->main, "file_notebook"));
     vbox = gtk_vbox_new(FALSE, 2);
@@ -1966,8 +1968,20 @@ void add_new_tab_in_main_window(heraia_struct_t *main_struct, doc_t *doc)
             g_free(markup);
         }
 
+    /* Close button in tabs */
+    hbox = gtk_hbox_new(FALSE, 0);
+    button = gtk_button_new();
+    gtk_button_set_image(button, gtk_image_new_from_stock(GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU));
+    gtk_button_set_relief(GTK_BUTTON(button), GTK_RELIEF_NONE);
+    gtk_container_set_border_width(GTK_CONTAINER(button), 0);
+
+    /* Packing label and button all together in order to display everything in the tab */
+    gtk_box_pack_start(GTK_BOX(hbox), tab_label, FALSE, FALSE, 0);
+    gtk_box_pack_end(GTK_BOX(hbox), button, FALSE, FALSE, 0);
+    gtk_widget_show_all(hbox);
+
     gtk_widget_show_all(vbox);
-    tab_num = gtk_notebook_append_page(notebook, vbox, tab_label);
+    tab_num = gtk_notebook_append_page(notebook, vbox, hbox);
 
     gtk_notebook_set_current_page(notebook, tab_num);
     main_struct->current_doc = doc;
