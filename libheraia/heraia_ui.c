@@ -1975,6 +1975,7 @@ void add_new_tab_in_main_window(heraia_struct_t *main_struct, doc_t *doc)
     button = gtk_button_new_with_label("x");
     gtk_button_set_relief(GTK_BUTTON(button), GTK_RELIEF_NONE);
     gtk_widget_set_size_request(button, 18, 17);
+    gtk_widget_set_tooltip_text(button, Q_("Close button"));
 
     /* Packing label and button all together in order to display everything in the tab */
     gtk_box_pack_start(GTK_BOX(hbox), tab_label, FALSE, FALSE, 0);
