@@ -36,7 +36,8 @@ static void heraia_ui_connect_signals(heraia_struct_t *main_struct);
 static void record_and_hide_about_box(heraia_struct_t *main_struct);
 static gboolean unsaved_documents(heraia_struct_t *main_struct);
 static gboolean close_heraia(heraia_struct_t *main_struct);
-
+static GtkWidget *create_tab_close_button(heraia_struct_t *main_struct, GtkWidget *tab_label);
+static GtkWidget *find_label_from_hbox(GtkWidget *hbox);
 
 /**
  * @fn void on_quit_activate(GtkWidget *widget, gpointer data)
@@ -629,6 +630,73 @@ void on_open_activate(GtkWidget *widget, gpointer data)
 
 
 /**
+ * Searches main notebook's tabs for a particular widget and returns the number
+ * of the corresponding tab if it exists, -1 otherwise
+ * @param main_struct : main structure
+ * @param to_find : a GtkWidget that we want to find in the main notebook tabs
+ * @return a gint as tha tab number that contains the widget "to_find" or -1 if
+ *         not found
+ */
+gint find_tab_number_from_widget(heraia_struct_t *main_struct, GtkWidget *to_find)
+{
+    GtkWidget *notebook = NULL;  /**< Notenook on the main window         */
+    GtkWidget *page = NULL;      /**< pages on the notebook               */
+    GtkWidget *tab_label = NULL; /**< tab label GtkWidget (hbox + others) */
+    gint nb_pages = 0;           /**< Number of pages in the notebook     */
+    gint i = 0;
+    gboolean found = FALSE;      /**< True when the widget has been found */
+    GList *children = NULL;      /**< Children from the tab label         */
+
+    notebook = heraia_get_widget(main_struct->xmls->main, "file_notebook");
+
+    nb_pages = gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook));
+
+    i = 0;
+    found = FALSE;
+    while (i < nb_pages && found == FALSE)
+        {
+            page = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), i);
+
+            if (page != NULL)
+                {
+                    tab_label = gtk_notebook_get_tab_label(GTK_NOTEBOOK(notebook), page);
+
+                    if (GTK_IS_HBOX(tab_label))
+                        {
+                            children = gtk_container_get_children(GTK_CONTAINER(tab_label));
+                        }
+
+                    while (children != NULL && found == FALSE)
+                        {
+                            if (children->data == to_find)
+                                {
+                                    found = TRUE;
+                                }
+                            else
+                                {
+                                    children = g_list_next(children);
+                                }
+                        }
+                }
+
+            if (found == FALSE)
+                {
+                    i++;
+                }
+        }
+
+    if (found == TRUE)
+        {
+            return i;
+        }
+    else
+        {
+            return -1;
+        }
+}
+
+
+/**
  * Closes an openned file
  * @param widget : the widget that issued the signal
  * @param data : user data MUST be heraia_struct_t *main_struct main structure
@@ -636,7 +704,7 @@ void on_open_activate(GtkWidget *widget, gpointer data)
 void on_close_activate(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
-    doc_t * current_doc = NULL;  /**< Current document to close in heraia    */
+    doc_t * closing_doc = NULL;  /**< Current document to close in heraia    */
     doc_t *document = NULL;      /**< To iterate over the array of documents */
     GtkWidget *notebook = NULL;  /**< Notenook on the main window            */
     GtkWidget *dialog = NULL;    /**< The dialog box                         */
@@ -644,15 +712,29 @@ void on_close_activate(GtkWidget *widget, gpointer data)
     gint result = 0;             /**< result from the dialog box             */
     gint index = -1;
     gint i = 0;
+    gint tab_number = 0;
+    gboolean is_current_doc;     /**< Says wheter the document that we are
+                                      trying to close is the current one or
+                                      not                                    */
 
     if (main_struct != NULL && main_struct->current_doc != NULL)
         {
+            /* Guessing where the user asked to close the document */
+            if (GTK_IS_BUTTON(widget))
+                {
+                    /* Guessing which document the user has closed */
+                    tab_number = find_tab_number_from_widget(main_struct, widget);
+                    closing_doc = g_ptr_array_index(main_struct->documents, tab_number);
+                    is_current_doc = closing_doc == main_struct->current_doc;
+                }
+            else
+                {
+                    closing_doc = main_struct->current_doc;
+                }
 
-            current_doc = main_struct->current_doc;
+            log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Closing document %s"), doc_t_document_get_filename(closing_doc));
 
-            log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Closing document %s"), doc_t_document_get_filename(current_doc));
-
-            if (current_doc->modified == TRUE)
+            if (closing_doc->modified == TRUE)
                 {
                     /* Displays a dialog box that let the user choose what to do */
                     parent = heraia_get_widget(main_struct->xmls->main, "main_window");
@@ -675,13 +757,13 @@ void on_close_activate(GtkWidget *widget, gpointer data)
                         }
                 }
 
-            /* Try to catch the index of the current document */
+            /* Try to catch the index of the closing document */
             i = 0;
             index = -1;
             while (i < main_struct->documents->len && index == -1)
                 {
                     document = g_ptr_array_index(main_struct->documents, i);
-                    if (document == current_doc)
+                    if (document == closing_doc)
                         {
                             index = i;
                         }
@@ -695,32 +777,37 @@ void on_close_activate(GtkWidget *widget, gpointer data)
 
                     /* And removing it in the notebook */
                     notebook = heraia_get_widget(main_struct->xmls->main, "file_notebook");
-                    gtk_notebook_remove_page(GTK_NOTEBOOK(notebook),index);
+                    gtk_notebook_remove_page(GTK_NOTEBOOK(notebook), index);
 
                     /* kills the widget and the document */
-                    close_doc_t(current_doc);
+                    close_doc_t(closing_doc);
 
-                    if (main_struct->documents->len > 0)
+
+                    /* Try to find out the new current document */
+                    /* We do not need to update if the current doc is not closed ! */
+                    if (is_current_doc == TRUE)
                         {
-                            /* Try to find out the new current document */
-                            if (index == 0)
+                            if (main_struct->documents->len > 0)
                                 {
-                                    main_struct->current_doc = g_ptr_array_index(main_struct->documents, 0);
-                                    gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 0);
+                                    /* there is still some documents opened (at least one) */
+                                    if (index == 0)
+                                        {
+                                            main_struct->current_doc = g_ptr_array_index(main_struct->documents, 0);
+                                            gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 0);
+                                        }
+                                    else
+                                        {
+                                            main_struct->current_doc = g_ptr_array_index(main_struct->documents, index - 1);
+                                            gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), index - 1);
+                                        }
                                 }
                             else
                                 {
-                                    main_struct->current_doc = g_ptr_array_index(main_struct->documents, index - 1);
-                                    gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), index - 1);
+                                    /* No more documents openned */
+                                    main_struct->current_doc = NULL;
+                                    grey_main_widgets(main_struct->xmls->main, TRUE);
                                 }
                         }
-                    else
-                        {
-                            /* No more documents openned */
-                            main_struct->current_doc = NULL;
-                            grey_main_widgets(main_struct->xmls->main, TRUE);
-                        }
-
                     /* updating things in conformance to the new situation */
                     refresh_event_handler(notebook, main_struct);
                     update_main_window_name(main_struct);
@@ -1171,6 +1258,48 @@ void update_main_window_name(heraia_struct_t *main_struct)
         }
 }
 
+/**
+ * Tries to find the label contained in the hbox
+ * @param hbox : the hbox widget containing one GtkLabel
+ * @return the label or NULL if not found
+ */
+static GtkWidget *find_label_from_hbox(GtkWidget *hbox)
+{
+    GList *children = NULL;     /**< List of children in hbox widget */
+    gboolean found = FALSE;
+
+    if (hbox != NULL)
+        {
+            children = gtk_container_get_children(GTK_CONTAINER(hbox));
+            found = FALSE;
+
+            while (children != NULL && found == FALSE)
+                {
+                    if (GTK_IS_LABEL(children->data))
+                        {
+                            found = TRUE;
+                        }
+                    else
+                        {
+                            children = g_list_next(children);
+                        }
+                }
+
+            if (found == TRUE)
+                {
+                    return children->data;
+                }
+            else
+                {
+                    return NULL;
+                }
+        }
+    else
+        {
+            return NULL;
+        }
+}
+
 
 /**
  *  Sets notebook's tab's name. This function should only be called
@@ -1179,34 +1308,39 @@ void update_main_window_name(heraia_struct_t *main_struct)
  */
 void set_notebook_tab_name(heraia_struct_t *main_struct)
 {
-    GtkWidget *notebook = NULL; /* file notebook in main window       */
-    GtkWidget *page = NULL;     /* Current page for the file notebook */
-    GtkWidget *label = NULL;    /* tab's label                        */
-    doc_t *doc = NULL;          /* corresponding tab's document       */
+    GtkWidget *notebook = NULL; /**< file notebook in main window                */
+    GtkWidget *page = NULL;     /**< Current page for the file notebook          */
+    GtkWidget *hbox = NULL;     /**< container that has the label and the button */
+    GtkWidget *label = NULL;    /**< tab's label                                 */
+    doc_t *doc = NULL;          /**< corresponding tab's document                */
     gchar *filename = NULL;
     gchar *whole_filename;
-    gint current = 0;           /* index of the current tab displayed */
-    gchar *markup= NULL;        /* markup text                        */
+    gint current = 0;           /**< index of the current tab displayed          */
+    gchar *markup= NULL;        /**< markup text                                 */
 
     if (main_struct != NULL && main_struct->current_doc != NULL)
-       {
-           notebook = heraia_get_widget(main_struct->xmls->main, "file_notebook");
-           current = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
-           page = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), current);
-           label = gtk_notebook_get_tab_label(GTK_NOTEBOOK(notebook), page);
+        {
+            notebook = heraia_get_widget(main_struct->xmls->main, "file_notebook");
+            current = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
+            page = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), current);
+            hbox = gtk_notebook_get_tab_label(GTK_NOTEBOOK(notebook), page);
+            label = find_label_from_hbox(hbox);
 
-           doc = g_ptr_array_index(main_struct->documents, current);
-           whole_filename = doc_t_document_get_filename(doc);
+            if (label != NULL)
+                {
+                    doc = g_ptr_array_index(main_struct->documents, current);
+                    whole_filename = doc_t_document_get_filename(doc);
 
-           if (whole_filename != NULL)
-               {
-                    filename = g_filename_display_basename(whole_filename);
-                    markup =  g_markup_printf_escaped("%s", filename);
-                    gtk_label_set_markup(GTK_LABEL(label), markup);
-                    gtk_widget_set_tooltip_text(label, g_filename_display_name(whole_filename));
-                    g_free(markup);
-               }
-       }
+                    if (whole_filename != NULL)
+                        {
+                            filename = g_filename_display_basename(whole_filename);
+                            markup =  g_markup_printf_escaped("%s", filename);
+                            gtk_label_set_markup(GTK_LABEL(label), markup);
+                            gtk_widget_set_tooltip_text(label, g_filename_display_name(whole_filename));
+                            g_free(markup);
+                        }
+                }
+        }
 }
 
 
@@ -1218,35 +1352,40 @@ void set_notebook_tab_name(heraia_struct_t *main_struct)
  */
 void set_notebook_tab_label_color(heraia_struct_t *main_struct, gboolean color)
 {
-    GtkWidget *notebook = NULL; /* file notebook in main window       */
-    GtkWidget *page = NULL;     /* Current page for the file notebook */
-    GtkWidget *label = NULL;    /* tab's label                        */
-    gint current = 0;           /* index of the current tab displayed */
-    gchar *markup= NULL;        /* markup text                        */
-    gchar *text = NULL;         /* label's text                       */
+    GtkWidget *notebook = NULL; /**< file notebook in main window                */
+    GtkWidget *page = NULL;     /**< Current page for the file notebook          */
+    GtkWidget *label = NULL;    /**< tab's label                                 */
+    GtkWidget *hbox = NULL;     /**< container that has the label and the button */
+    gint current = 0;           /**< index of the current tab displayed          */
+    gchar *markup= NULL;        /**< markup text                                 */
+    gchar *text = NULL;         /**< label's text                                */
 
     if (main_struct != NULL && main_struct->current_doc != NULL)
         {
             notebook = heraia_get_widget(main_struct->xmls->main, "file_notebook");
             current = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
             page = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), current);
-            label = gtk_notebook_get_tab_label(GTK_NOTEBOOK(notebook), page);
+            hbox = gtk_notebook_get_tab_label(GTK_NOTEBOOK(notebook), page);
+            label = find_label_from_hbox(hbox);
 
-            text = g_strdup(gtk_label_get_text(GTK_LABEL(label)));
-
-            if (color == TRUE)
+            if (label != NULL)
                 {
-                    markup = g_markup_printf_escaped("<span foreground=\"blue\">%s</span>", text);
-                }
-            else
-                {
-                    markup = g_markup_printf_escaped("%s", text);
-                }
+                    text = g_strdup(gtk_label_get_text(GTK_LABEL(label)));
 
-            log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Changing color for filename %s in tab : %d"), markup, current);
-            gtk_label_set_markup(GTK_LABEL(label), markup);
-            g_free(markup);
-            g_free(text);
+                    if (color == TRUE)
+                        {
+                            markup = g_markup_printf_escaped("<span foreground=\"blue\">%s</span>", text);
+                        }
+                    else
+                        {
+                            markup = g_markup_printf_escaped("%s", text);
+                        }
+
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Changing color for filename %s in tab : %d"), markup, current);
+                    gtk_label_set_markup(GTK_LABEL(label), markup);
+                    g_free(markup);
+                    g_free(text);
+                }
         }
 }
 
@@ -1934,6 +2073,37 @@ void init_window_states(heraia_struct_t *main_struct)
         }
 }
 
+
+/**
+ * Creates a label an a button to add into a tab from main window's notebook
+ * @param main_struct : main structure
+ * @param tab_label : a GtkWidget that is the label we want to add to the tab
+ * @return a newly created GtkWidget which contains the label and a close button
+ */
+static GtkWidget *create_tab_close_button(heraia_struct_t *main_struct, GtkWidget *tab_label)
+{
+    GtkWidget *hbox = NULL;    /**< used for hbox creation in the tabs */
+    GtkWidget *button = NULL;  /**< Closing button                     */
+
+
+     /* Close button in tabs */
+    hbox = gtk_hbox_new(FALSE, 0);
+
+    button = gtk_button_new_with_label("x");
+    gtk_button_set_relief(GTK_BUTTON(button), GTK_RELIEF_NONE);
+    gtk_widget_set_size_request(button, 18, 17);
+    gtk_widget_set_tooltip_text(button, Q_("Close button"));
+    g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(on_close_activate), main_struct);
+
+    /* Packing label and button all together in order to display everything in the tab */
+    gtk_box_pack_start(GTK_BOX(hbox), tab_label, FALSE, FALSE, 0);
+    gtk_box_pack_end(GTK_BOX(hbox), button, FALSE, FALSE, 2);
+    gtk_widget_show_all(hbox);
+
+    return hbox;
+}
+
+
 /**
  * Adds a new tab to the main window in file's notebook
  * @param main_struct : main structure
@@ -1949,9 +2119,6 @@ void add_new_tab_in_main_window(heraia_struct_t *main_struct, doc_t *doc)
     gchar *whole_filename;
     gchar *markup= NULL;          /**< markup text                          */
     GtkWidget *hbox = NULL;       /**< used for hbox creation in the tabs   */
-    GtkWidget *button = NULL;     /**< Closing button                       */
-    GtkWidget *image = NULL;
-    GtkWidget *align = NULL;
 
     notebook = GTK_NOTEBOOK(heraia_get_widget(main_struct->xmls->main, "file_notebook"));
     vbox = gtk_vbox_new(FALSE, 2);
@@ -1970,17 +2137,7 @@ void add_new_tab_in_main_window(heraia_struct_t *main_struct, doc_t *doc)
             g_free(markup);
         }
 
-    /* Close button in tabs */
-    hbox = gtk_hbox_new(FALSE, 0);
-    button = gtk_button_new_with_label("x");
-    gtk_button_set_relief(GTK_BUTTON(button), GTK_RELIEF_NONE);
-    gtk_widget_set_size_request(button, 18, 17);
-    gtk_widget_set_tooltip_text(button, Q_("Close button"));
-
-    /* Packing label and button all together in order to display everything in the tab */
-    gtk_box_pack_start(GTK_BOX(hbox), tab_label, FALSE, FALSE, 0);
-    gtk_box_pack_end(GTK_BOX(hbox), button, FALSE, FALSE, 2);
-    gtk_widget_show_all(hbox);
+    hbox = create_tab_close_button(main_struct, tab_label);
 
     gtk_widget_show_all(vbox);
     tab_num = gtk_notebook_append_page(notebook, vbox, hbox);
