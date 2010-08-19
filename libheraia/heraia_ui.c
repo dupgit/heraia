@@ -1352,13 +1352,14 @@ void set_notebook_tab_name(heraia_struct_t *main_struct)
  */
 void set_notebook_tab_label_color(heraia_struct_t *main_struct, gboolean color)
 {
-    GtkWidget *notebook = NULL; /**< file notebook in main window                */
-    GtkWidget *page = NULL;     /**< Current page for the file notebook          */
-    GtkWidget *label = NULL;    /**< tab's label                                 */
-    GtkWidget *hbox = NULL;     /**< container that has the label and the button */
-    gint current = 0;           /**< index of the current tab displayed          */
-    gchar *markup= NULL;        /**< markup text                                 */
-    gchar *text = NULL;         /**< label's text                                */
+    GtkWidget *notebook = NULL;   /**< file notebook in main window                */
+    GtkWidget *page = NULL;       /**< Current page for the file notebook          */
+    GtkWidget *label = NULL;      /**< tab's label                                 */
+    GtkWidget *menu_label = NULL; /**< menu tab's label                            */
+    GtkWidget *hbox = NULL;       /**< container that has the label and the button */
+    gint current = 0;             /**< index of the current tab displayed          */
+    gchar *markup= NULL;          /**< markup text                                 */
+    gchar *text = NULL;           /**< label's text                                */
 
     if (main_struct != NULL && main_struct->current_doc != NULL)
         {
@@ -1383,6 +1384,10 @@ void set_notebook_tab_label_color(heraia_struct_t *main_struct, gboolean color)
 
                     log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Changing color for filename %s in tab : %d"), markup, current);
                     gtk_label_set_markup(GTK_LABEL(label), markup);
+                    menu_label = gtk_label_new(NULL);
+                    gtk_label_set_markup(GTK_LABEL(menu_label), markup);
+                    gtk_notebook_set_menu_label(GTK_NOTEBOOK(notebook), page, menu_label);
+
                     g_free(markup);
                     g_free(text);
                 }
@@ -2117,7 +2122,8 @@ void add_new_tab_in_main_window(heraia_struct_t *main_struct, doc_t *doc)
     gint tab_num = -1;            /**< new tab's index                      */
     gchar *filename = NULL;
     gchar *whole_filename;
-    gchar *markup= NULL;          /**< markup text                          */
+    gchar *markup = NULL;         /**< markup text                          */
+    gchar *menu_markup = NULL;    /**< menu markup text                     */
     GtkWidget *hbox = NULL;       /**< used for hbox creation in the tabs   */
 
     notebook = GTK_NOTEBOOK(heraia_get_widget(main_struct->xmls->main, "file_notebook"));
@@ -2132,11 +2138,14 @@ void add_new_tab_in_main_window(heraia_struct_t *main_struct, doc_t *doc)
     if (whole_filename != NULL)
         {
             filename = g_filename_display_basename(whole_filename);
-            markup =  g_markup_printf_escaped("%s", filename);
+            markup = g_markup_printf_escaped("%s", filename);
+            menu_markup = g_markup_printf_escaped("%s", filename);
             gtk_label_set_markup(GTK_LABEL(tab_label), markup);
-            gtk_label_set_markup(GTK_LABEL(menu_label), markup);
+            gtk_label_set_markup(GTK_LABEL(menu_label), menu_markup);
+            gtk_label_set_justify(GTK_LABEL(menu_label), GTK_JUSTIFY_LEFT);
             gtk_widget_set_tooltip_text(tab_label, g_filename_display_name(whole_filename));
             g_free(markup);
+            g_free(menu_markup);
         }
 
     hbox = create_tab_close_button(main_struct, tab_label);

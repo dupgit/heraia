@@ -1083,17 +1083,17 @@ msgstr "Version    : %s\n"
 #: ../plugins/stat/stat.c:760
 #, c-format
 msgid "Last intern modification : %s\n"
-msgstr "Dernière modification interne : %s"
+msgstr "Dernière modification interne : %s\n"
 
 #: ../plugins/stat/stat.c:767
 #, c-format
 msgid "Last acces to the file   : %s\n"
-msgstr "Dernier accès au fichier      : %s"
+msgstr "Dernier accès au fichier      : %s\n"
 
 #: ../plugins/stat/stat.c:774
 #, c-format
 msgid "Last extern modification : %s\n"
-msgstr "Dernière modification externe : %s"
+msgstr "Dernière modification externe : %s\n"
 
 #: ../libheraia/heraia_ui.c:735
 #, c-format
@@ -1122,7 +1122,7 @@ msgstr "Afficher les positions"
 
 #: ../src/heraia.gtkbuilder:201
 msgid "Hex view"
-msgstr "Vue héxadécimale"
+msgstr "Vue hexadécimale"
 
 #: ../src/heraia.gtkbuilder:602
 msgid "(C) 2005 - 2010 Two or more autors (see Credits)"

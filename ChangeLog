@@ -9,6 +9,7 @@
        It is now corrected.
      * Now when loading a file with the option "display offsets" toogled the
        offsets ARE displayed !
+     * Menu labels are following tabs (color when changes occurs)
 
 18.08.2010
    - Olivier Delhomme <heraia@delhomme.org>
