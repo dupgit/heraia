@@ -4,6 +4,9 @@
        other tab than the current one)
      * Some accelerators are back !
      * Still doing some efforts on translation
+     * Menu from the notebook (to change between tabs) is now correct
+     * When openning a new document a bug forced to display the first tab only.
+       It is now corrected.
 
 18.08.2010
    - Olivier Delhomme <heraia@delhomme.org>

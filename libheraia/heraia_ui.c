@@ -1403,7 +1403,6 @@ void grey_main_widgets(GtkBuilder *xml, gboolean greyed)
     if (xml != NULL)
         {
             notebook = heraia_get_widget(xml, "file_notebook");
-            gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 0);
 
             if (greyed == TRUE)
                 {
@@ -2114,6 +2113,7 @@ void add_new_tab_in_main_window(heraia_struct_t *main_struct, doc_t *doc)
     GtkWidget *vbox = NULL;       /**< used for vbox creation               */
     GtkNotebook *notebook = NULL; /**< file_notebook from heraia.gtkbuilder */
     GtkWidget *tab_label = NULL;  /**< tab's label                          */
+    GtkWidget *menu_label = NULL; /**<menu's label                          */
     gint tab_num = -1;            /**< new tab's index                      */
     gchar *filename = NULL;
     gchar *whole_filename;
@@ -2124,8 +2124,9 @@ void add_new_tab_in_main_window(heraia_struct_t *main_struct, doc_t *doc)
     vbox = gtk_vbox_new(FALSE, 2);
     gtk_box_pack_start(GTK_BOX(vbox), doc->hex_widget, TRUE, TRUE, 3);
 
-    /* tab's label */
+    /* tab's label and menu label */
     tab_label = gtk_label_new(NULL);
+    menu_label = gtk_label_new(NULL);
     whole_filename = doc_t_document_get_filename(doc);
 
     if (whole_filename != NULL)
@@ -2133,6 +2134,7 @@ void add_new_tab_in_main_window(heraia_struct_t *main_struct, doc_t *doc)
             filename = g_filename_display_basename(whole_filename);
             markup =  g_markup_printf_escaped("%s", filename);
             gtk_label_set_markup(GTK_LABEL(tab_label), markup);
+            gtk_label_set_markup(GTK_LABEL(menu_label), markup);
             gtk_widget_set_tooltip_text(tab_label, g_filename_display_name(whole_filename));
             g_free(markup);
         }
@@ -2140,7 +2142,7 @@ void add_new_tab_in_main_window(heraia_struct_t *main_struct, doc_t *doc)
     hbox = create_tab_close_button(main_struct, tab_label);
 
     gtk_widget_show_all(vbox);
-    tab_num = gtk_notebook_append_page(notebook, vbox, hbox);
+    tab_num = gtk_notebook_append_page_menu(notebook, vbox, hbox, menu_label);
 
     gtk_notebook_set_current_page(notebook, tab_num);
     main_struct->current_doc = doc;
