@@ -599,11 +599,11 @@
     <property name="title" translatable="yes">About Heraia</property>
     <property name="icon">pixmaps/logo_with_more_transparency.png</property>
     <property name="type_hint">normal</property>
-    <property name="copyright">(C) 2005 - 2010 Two or more autors (see Credits)</property>
+    <property name="copyright" translatable="yes">(C) 2005 - 2010 Two or more autors (see Credits)</property>
     <property name="comments" translatable="yes">An hexadecimal analyser and editor</property>
     <property name="website">http://heraia.tuxfamily.org/</property>
     <property name="website_label" translatable="yes">Heraia web site</property>
-    <property name="license" translatable="yes">            GNU GENERAL PUBLIC LICENSE
+    <property name="license">            GNU GENERAL PUBLIC LICENSE
                Version 2, June 1991
 
       Copyright (C) 1989, 1991 Free Software Foundation, Inc.
@@ -834,12 +834,12 @@ PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGES.
 
              END OF TERMS AND CONDITIONS</property>
-    <property name="authors">(C) 2005 - 2010 Olivier Delhomme
-(C) 2005 - 2008 S&#xE9;bastien Tricaud</property>
+    <property name="authors">(C) 2005 - 2010 Olivier DELHOMME
+(C) 2005 - 2008 S&#xE9;bastien TRICAUD</property>
     <property name="documenters"></property>
-    <property name="translator_credits" translatable="yes" comments="TRANSLATORS: Replace this string with your names, one name per line.">French : Olivier Delhomme </property>
-    <property name="artists">(C) 2005 - 2007 Gregory Audet
-(C) 2009 - Aur&#xE9;lie Deraisme</property>
+    <property name="translator_credits" translatable="yes" comments="TRANSLATORS: Replace this string with your names, one name per line.">French : Olivier DELHOMME</property>
+    <property name="artists">(C) 2005 - 2007 Gregory AUDET
+(C) 2009 - Aur&#xE9;lie DERAISME</property>
     <property name="logo">pixmaps/logo_with_more_transparency.png</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox1">

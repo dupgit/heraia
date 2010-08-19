@@ -3,6 +3,7 @@
      * Closing from tabs is now functionnal (even if closing a document from an
        other tab than the current one)
      * Some accelerators are back !
+     * Still doing some efforts on translation
 
 18.08.2010
    - Olivier Delhomme <heraia@delhomme.org>
