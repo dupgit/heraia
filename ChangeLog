@@ -10,6 +10,7 @@
      * Now when loading a file with the option "display offsets" toogled the
        offsets ARE displayed !
      * Menu labels are following tabs (color when changes occurs)
+     * investigating GSEAL and disabling deprecated symbols
 
 18.08.2010
    - Olivier Delhomme <heraia@delhomme.org>
