@@ -928,6 +928,9 @@ POSSIBILITY OF SUCH DAMAGES.
   <object class="GtkWindow" id="main_window">
     <property name="title" translatable="yes">Heraia</property>
     <property name="icon">pixmaps/logo_with_more_transparency.png</property>
+    <accel-groups>
+      <group name="accel_main_window"/>
+    </accel-groups>
     <child>
       <object class="GtkVBox" id="vbox8">
         <property name="visible">True</property>
@@ -948,6 +951,7 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <property name="accel_group">accel_main_window</property>
                         <signal name="activate" handler="on_new_activate"/>
                       </object>
                     </child>
@@ -957,6 +961,7 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <property name="accel_group">accel_main_window</property>
                         <signal name="activate" handler="on_open_activate"/>
                       </object>
                     </child>
@@ -966,6 +971,7 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <property name="accel_group">accel_main_window</property>
                         <signal name="activate" handler="on_save_activate"/>
                       </object>
                     </child>
@@ -975,6 +981,7 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <property name="accel_group">accel_main_window</property>
                         <signal name="activate" handler="on_save_as_activate"/>
                       </object>
                     </child>
@@ -989,6 +996,7 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <property name="accel_group">accel_main_window</property>
                       </object>
                     </child>
                     <child>
@@ -1002,6 +1010,7 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <property name="accel_group">accel_main_window</property>
                         <signal name="activate" handler="on_quit_activate"/>
                       </object>
                     </child>
@@ -1022,6 +1031,7 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <property name="accel_group">accel_main_window</property>
                       </object>
                     </child>
                     <child>
@@ -1030,6 +1040,7 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <property name="accel_group">accel_main_window</property>
                       </object>
                     </child>
                     <child>
@@ -1043,6 +1054,7 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <property name="accel_group">accel_main_window</property>
                         <signal name="activate" handler="on_cut_activate"/>
                       </object>
                     </child>
@@ -1052,6 +1064,7 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <property name="accel_group">accel_main_window</property>
                         <signal name="activate" handler="on_copy_activate"/>
                       </object>
                     </child>
@@ -1061,6 +1074,7 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <property name="accel_group">accel_main_window</property>
                         <signal name="activate" handler="on_paste_activate"/>
                       </object>
                     </child>
@@ -1070,6 +1084,7 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <property name="accel_group">accel_main_window</property>
                         <signal name="activate" handler="on_delete_activate"/>
                       </object>
                     </child>
@@ -1084,6 +1099,7 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <property name="accel_group">accel_main_window</property>
                         <signal name="activate" handler="on_preferences_activate"/>
                       </object>
                     </child>
@@ -1156,6 +1172,7 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <property name="accel_group">accel_main_window</property>
                         <signal name="activate" handler="on_a_propos1_activate"/>
                       </object>
                     </child>
@@ -1171,6 +1188,7 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="tooltip_text" translatable="yes">Does run some self tests</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <property name="accel_group">accel_main_window</property>
                       </object>
                     </child>
                   </object>
@@ -1429,4 +1447,107 @@ POSSIBILITY OF SUCH DAMAGES.
       </object>
     </child>
   </object>
+  <object class="GtkDialog" id="go_to_dialog">
+    <property name="border_width">5</property>
+    <property name="type_hint">normal</property>
+    <property name="has_separator">False</property>
+    <child internal-child="vbox">
+      <object class="GtkVBox" id="dialog-vbox2">
+        <property name="visible">True</property>
+        <property name="spacing">2</property>
+        <child>
+          <object class="GtkVBox" id="vbox1">
+            <property name="visible">True</property>
+            <child>
+              <object class="GtkHBox" id="hbox3">
+                <property name="visible">True</property>
+                <child>
+                  <object class="GtkLabel" id="label2">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Go to byte number :</property>
+                  </object>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="entry1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="invisible_char">&#x25CF;</property>
+                  </object>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkHSeparator" id="hseparator3">
+                <property name="visible">True</property>
+              </object>
+              <packing>
+                <property name="padding">3</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child internal-child="action_area">
+          <object class="GtkHButtonBox" id="dialog-action_area2">
+            <property name="visible">True</property>
+            <property name="homogeneous">True</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="button1">
+                <property name="label">gtk-cancel</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="button2">
+                <property name="label">gtk-ok</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="0">button1</action-widget>
+      <action-widget response="0">button2</action-widget>
+    </action-widgets>
+  </object>
+  <object class="GtkAccelGroup" id="accel_main_window"/>
 </interface>
