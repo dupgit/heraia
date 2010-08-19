@@ -7,6 +7,8 @@
      * Menu from the notebook (to change between tabs) is now correct
      * When openning a new document a bug forced to display the first tab only.
        It is now corrected.
+     * Now when loading a file with the option "display offsets" toogled the
+       offsets ARE displayed !
 
 18.08.2010
    - Olivier Delhomme <heraia@delhomme.org>

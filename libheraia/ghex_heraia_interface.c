@@ -50,6 +50,9 @@ doc_t *heraia_hex_document_new(heraia_struct_t *main_struct, char *filename)
             /* creating a new view to this new document */
             hex_widget = hex_document_add_view(hex_doc);
 
+            /* displaying the offsets if requested */
+            gtk_hex_show_offsets(GTK_HEX(hex_widget), is_toggle_button_activated(main_struct->xmls->main, "mp_display_offset_bt"));
+
             /* joining those two new structures in one */
             doc = new_doc_t(hex_doc, hex_widget);
 
