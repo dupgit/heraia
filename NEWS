@@ -1,3 +1,10 @@
+20.08.2010 New version 0.1.5
+            - full french translation
+            - now one can close files with a little button on tabs or via
+              the menu.
+            - the interface has been taken into account. Some very minor bugs
+              were corrected (user experience is getting better)
+
 10.08.2010 New version 0.1.4
             - undo / redo functions
             - copy / cut / paste /delete functions

@@ -1,3 +1,18 @@
+20 August 2010
+    Release date for 0.1.5. This version is the first public version with full
+    french translation. In fact version 0.1.3 was also fully translated but was
+    not released because of my ISP !
+
+    From May i'm working on usability of heraia and now the user can open
+    multiple file, close them, use copy, cut, paste , delete and undo, redo
+    things at will. A message is warning the leaving user when a modified
+    document still exists in order to know what to do.
+
+    I'm now thinking about a libfilecache to bring a cache mecanism to GtkHex
+    library (this is the best way not to break API's I think). And i'm going to
+    begin work to let the user add it's data types (first step before
+    templates). Expect more visible changes in next releases.
+
 13 May 2010
     Ok, I'm not very serious and forgot to write here...
     Now libheraia is a real library and thus this is possible to have bindings

@@ -85,7 +85,7 @@ I let you imagine what I expect before I do a major release !!!
 
 . 0.1.5 [20.08.2010]
    * have the ability to open more than one file at a time
-   * have the ability to close openned files
+   * have the ability to close opened files
    * Improve dialog box when closing with modified documents
 
 . 0.1.6

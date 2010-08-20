@@ -1,28 +1,32 @@
-Heraia is free software licensed under the GPLv2 or later. It is a standalone 
-hexadecimal file analyser. One would say hexadecimal editor. It provides tools 
-to analyse and edit files in a hexadecimal way :
- 
+What is heraia ?
+================
+
+Heraia is free software licensed under the GPLv2 or later. It is a standalone
+hexadecimal file analyser. One would say hexadecimal editor. It provides tools
+to analyse and edit files in an hexadecimal way :
+
   . a data interpretor
   . a plugin that do some graphical analysis
 
 It contains :
 
-  . a fully functionnal plugin system
-  . an extensible data interpretor 
+  . a fully functional plugin system
+  . an extensible data interpretor
 
-It is written in C using GTK and based on GtkHex Widget. It is known to run on 
-both Linux and Windows. It integrates smoothly with Gnome but it does not 
+It is written in C using GTK and based on GtkHex Widget. It is known to run on
+both Linux and Windows. It integrates smoothly with Gnome but it does not
 depends on it.
 
 You can download heraia at both locations (for now) :
 
  . http://download.gna.org/heraia/
- . http://heraia.tuxfamily.org/downloads/
- 
+ . http://src.delhomme.org/download/heraia/
+
  directory description :
- 
+
   . 'devel-docs'    : contains all doxygen documentaion used to develop
   . 'packages'      : contains binary packages specific to systems
-  . 'release'       : contains all releases and source code since august 2008
-  . 'source_tar_gz' : contains all tar.gz done between febuary 2005 and 
+  . 'release'       : contains all releases and source code since
+                      august 2008
+  . 'source_tar_gz' : contains all tar.gz done between febuary 2005 and
                       august 2008
