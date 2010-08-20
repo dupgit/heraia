@@ -262,7 +262,7 @@ msgstr "Il reste des documents non enregistrés"
 
 #: ../libheraia/heraia_ui.c:1554
 msgid "Do you want to quit without saving ?"
-msgstr "Voulez vous quitter sans les enregsitrer ?"
+msgstr "Voulez vous quitter sans les enregistrer ?"
 
 #: ../libheraia/log.c:66
 #, c-format

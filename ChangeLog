@@ -1,3 +1,8 @@
+20.08.2010 [release 0.1.5]
+   - Olivier Delhomme <heraia@delhomme.org>
+     * French errors in the translation
+     * 0.1.5 release
+
 19.08.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Closing from tabs is now functionnal (even if closing a document from an
