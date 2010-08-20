@@ -40,5 +40,7 @@ extern guint64 ghex_get_cursor_position(GtkWidget *hex_widget);
 extern selection_t *ghex_get_selection(GtkWidget *hex_widget);
 
 extern doc_t *new_doc_t(Heraia_Document *hex_doc, GtkWidget *hex_widget);
+extern void close_doc_t(doc_t *current_doc);
+
 
 #endif /* _GHEX_HERAIA_INTERFACE_H_ */

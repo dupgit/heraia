@@ -32,6 +32,7 @@
 extern void on_quit_activate(GtkWidget *widget, gpointer data);
 extern void on_new_activate(GtkWidget *widget, gpointer data);
 extern void on_open_activate(GtkWidget *widget, gpointer data);
+extern void on_close_activate(GtkWidget *widget, gpointer data);
 extern void on_save_activate(GtkWidget *widget, gpointer data);
 extern void on_save_as_activate(GtkWidget *widget, gpointer data);
 extern void on_preferences_activate(GtkWidget *widget, gpointer data);
@@ -102,5 +103,7 @@ extern void update_main_window_name(heraia_struct_t *main_struct);
 extern void set_notebook_tab_name(heraia_struct_t *main_struct);
 extern void add_new_tab_in_main_window(heraia_struct_t *main_struct, doc_t *doc);
 extern void set_notebook_tab_label_color(heraia_struct_t *main_struct, gboolean color);
+extern gint find_tab_number_from_widget(heraia_struct_t *main_struct, GtkWidget *to_find);
+
 
 #endif /* _LIBHERAIA_HERAIA_UI_H_ */

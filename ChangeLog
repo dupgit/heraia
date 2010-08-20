@@ -1,3 +1,53 @@
+20.08.2010 [release 0.1.5]
+   - Olivier Delhomme <heraia@delhomme.org>
+     * French errors in the translation
+     * 0.1.5 release
+
+19.08.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Closing from tabs is now functionnal (even if closing a document from an
+       other tab than the current one)
+     * Some accelerators are back !
+     * Still doing some efforts on translation
+     * Menu from the notebook (to change between tabs) is now correct
+     * When openning a new document a bug forced to display the first tab only.
+       It is now corrected.
+     * Now when loading a file with the option "display offsets" toogled the
+       offsets ARE displayed !
+     * Menu labels are following tabs (color when changes occurs)
+     * investigating GSEAL and disabling deprecated symbols
+
+18.08.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Roadmap modification (0.1.6 addition)
+
+17.08.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Now when closing the last document its name does no stay in the main
+       window's title.
+
+16.08.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Trying to close documents :closing GtkHex widget and the corresponding
+       tab and refreshing the datas
+
+14.08.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Now leading to 0.1.5
+     * Improved the dialog box that appears when exiting heraia with modified
+       documents by using GtkMessageDialog instead of GtkDialog (this is easier)
+     * Main menu organisation and new "close" menu entry (under "File" menu)
+
+10.08.2010 [release 0.1.4]
+   - Olivier Delhomme <heraia@delhomme.org>
+
+26.07.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Corrected a bug that occured when closing heraia by clicking the red
+       cross with a modified document and then say no to the dialog box : The
+       main window (and only that one) was closed...
+     * Copy / cut / paste / delete are now functionnal !
+
 07.07.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Changed some comments

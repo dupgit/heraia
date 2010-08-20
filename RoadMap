@@ -78,18 +78,19 @@ I let you imagine what I expect before I do a major release !!!
    * Saving stream size from data interpretor's windows to main preferences
    * Clean duplicate code in data_interpretor.c
 
-. 0.1.4
+. 0.1.4 [10.08.2010]
    * undo/redo features
    * copy/cut/paste features
    * Saving endianness from data interpretor's windows to main preferences
 
-. 0.1.5
+. 0.1.5 [20.08.2010]
    * have the ability to open more than one file at a time
    * have the ability to close openned files
    * Improve dialog box when closing with modified documents
 
 . 0.1.6
    * have basic search functions
+   * hability to jump anywhere in the file
    * Enable line numbers in the ghex widget with an option in main preferences
 
 . 0.1.7

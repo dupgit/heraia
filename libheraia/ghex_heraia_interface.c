@@ -50,6 +50,9 @@ doc_t *heraia_hex_document_new(heraia_struct_t *main_struct, char *filename)
             /* creating a new view to this new document */
             hex_widget = hex_document_add_view(hex_doc);
 
+            /* displaying the offsets if requested */
+            gtk_hex_show_offsets(GTK_HEX(hex_widget), is_toggle_button_activated(main_struct->xmls->main, "mp_display_offset_bt"));
+
             /* joining those two new structures in one */
             doc = new_doc_t(hex_doc, hex_widget);
 
@@ -368,9 +371,9 @@ selection_t *ghex_get_selection(GtkWidget *hex_widget)
 
 /**
  * Inits a doc_t structure
- * @param doc : hex_document but encapsulated in Heraia_Document
- *              structure
- * @param hexwidget : Widget to display an hexadecimal view of the file
+ * @param hex_doc : hex_document but encapsulated in Heraia_Document
+ *                  structure
+ * @param hex_widget : Widget to display an hexadecimal view of the file
  * @return returns a newly allocated doc_t structure
  */
 doc_t *new_doc_t(Heraia_Document *hex_doc, GtkWidget *hex_widget)
@@ -384,4 +387,19 @@ doc_t *new_doc_t(Heraia_Document *hex_doc, GtkWidget *hex_widget)
     new_doc->modified = hex_doc->changed; /**@todo do a function to access this value **/
 
     return new_doc;
+}
+
+
+/**
+ * Closes a previously malloced doc_t structure
+ * @param current_doc
+ */
+void close_doc_t(doc_t *current_doc)
+{
+
+    if (current_doc != NULL)
+        {
+            gtk_widget_destroy(current_doc->hex_widget);
+            g_free(current_doc);
+        }
 }
