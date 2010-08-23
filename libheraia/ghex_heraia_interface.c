@@ -33,8 +33,8 @@
  *  from the filename 'filename'
  * @param main_struct : main structure
  * @param filename : a char * representing an existing file named "filename"
- * @return Always returns HERAIA_NOERR; @todo : do something to take errors into
- *         account
+ * @return Always returns HERAIA_NOERR;
+ * @todo : do something to take errors into account
  */
 doc_t *heraia_hex_document_new(heraia_struct_t *main_struct, char *filename)
 {

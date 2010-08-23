@@ -401,8 +401,6 @@ void on_redo_activate(GtkWidget *widget, gpointer data)
 
 /**
  *  Delete, edit menu
- * @warning Not yet implemented
- * @todo Write a usefull function here :)
  * @param widget : the widget that issued the signal
  * @param data : user data MUST be heraia_struct_t *main_struct main structure
  */
@@ -420,8 +418,6 @@ void on_delete_activate(GtkWidget *widget, gpointer data)
 
 /**
  *  Cut, edit menu
- * @warning Not yet implemented
- * @todo Write a usefull function here :)
  * @param widget : the widget that issued the signal
  * @param data : user data MUST be heraia_struct_t *main_struct main structure
  */
@@ -439,8 +435,6 @@ void on_cut_activate(GtkWidget *widget, gpointer data)
 
 /**
  *  Copy, edit menu
- * @warning Not yet implemented
- * @todo Write a usefull function here :)
  * @param widget : the widget that issued the signal
  * @param data : user data MUST be heraia_struct_t *main_struct main structure
  */
@@ -457,8 +451,6 @@ void on_copy_activate(GtkWidget *widget, gpointer data)
 
 /**
  *  Paste, edit menu
- * @warning Not yet implemented
- * @todo Write a usefull function here :)
  * @param widget : the widget that issued the signal
  * @param data : user data MUST be heraia_struct_t *main_struct main structure
  */
