@@ -116,7 +116,10 @@
                     <child>
                       <object class="GtkAlignment" id="alignment4">
                         <property name="visible">True</property>
+                        <property name="top_padding">2</property>
+                        <property name="bottom_padding">2</property>
                         <property name="left_padding">12</property>
+                        <property name="right_padding">2</property>
                         <child>
                           <object class="GtkVBox" id="vbox11">
                             <property name="visible">True</property>
@@ -165,7 +168,10 @@
                     <child>
                       <object class="GtkAlignment" id="alignment112">
                         <property name="visible">True</property>
+                        <property name="top_padding">2</property>
+                        <property name="bottom_padding">2</property>
                         <property name="left_padding">12</property>
+                        <property name="right_padding">2</property>
                         <child>
                           <object class="GtkVBox" id="vbox112">
                             <property name="visible">True</property>
@@ -979,7 +985,6 @@ POSSIBILITY OF SUCH DAMAGES.
                       <object class="GtkImageMenuItem" id="save_as">
                         <property name="label">gtk-save-as</property>
                         <property name="visible">True</property>
-                        <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accel_main_window</property>
                         <signal name="activate" handler="on_save_as_activate"/>
@@ -1090,6 +1095,19 @@ POSSIBILITY OF SUCH DAMAGES.
                     </child>
                     <child>
                       <object class="GtkSeparatorMenuItem" id="menuitem3">
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="menu_goto">
+                        <property name="label">gtk-jump-to</property>
+                        <property name="visible">True</property>
+                        <property name="use_stock">True</property>
+                        <property name="accel_group">accel_main_window</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="menuitem8">
                         <property name="visible">True</property>
                       </object>
                     </child>
@@ -1471,7 +1489,7 @@ POSSIBILITY OF SUCH DAMAGES.
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="entry1">
+                  <object class="GtkEntry" id="goto_entry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="invisible_char">&#x25CF;</property>
@@ -1488,16 +1506,96 @@ POSSIBILITY OF SUCH DAMAGES.
               </packing>
             </child>
             <child>
-              <object class="GtkHSeparator" id="hseparator3">
+              <object class="GtkFrame" id="frame2">
                 <property name="visible">True</property>
+                <property name="label_xalign">0</property>
+                <child>
+                  <object class="GtkAlignment" id="alignment2">
+                    <property name="visible">True</property>
+                    <property name="top_padding">2</property>
+                    <property name="bottom_padding">2</property>
+                    <property name="left_padding">12</property>
+                    <property name="right_padding">2</property>
+                    <child>
+                      <object class="GtkVBox" id="vbox5">
+                        <property name="visible">True</property>
+                        <child>
+                          <object class="GtkRadioButton" id="goto_from_beginning">
+                            <property name="label" translatable="yes">Beginning (forward)</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="active">True</property>
+                            <property name="draw_indicator">True</property>
+                          </object>
+                          <packing>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkRadioButton" id="goto_from_here_fwd">
+                            <property name="label" translatable="yes">Current position (forward)</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="active">True</property>
+                            <property name="draw_indicator">True</property>
+                            <property name="group">goto_from_beginning</property>
+                          </object>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkRadioButton" id="goto_from_here_rwd">
+                            <property name="label" translatable="yes">Current position (backward)</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="active">True</property>
+                            <property name="draw_indicator">True</property>
+                            <property name="group">goto_from_beginning</property>
+                          </object>
+                          <packing>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkRadioButton" id="goto_from_end">
+                            <property name="label" translatable="yes">End (backward)</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="draw_indicator">True</property>
+                            <property name="group">goto_from_beginning</property>
+                          </object>
+                          <packing>
+                            <property name="position">3</property>
+                          </packing>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child type="label">
+                  <object class="GtkLabel" id="label3">
+                    <property name="visible">True</property>
+                    <property name="xpad">4</property>
+                    <property name="label" translatable="yes">From :</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                </child>
               </object>
               <packing>
-                <property name="padding">3</property>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">1</property>
               </packing>
             </child>
           </object>
           <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
             <property name="position">1</property>
           </packing>
         </child>
@@ -1550,4 +1648,5 @@ POSSIBILITY OF SUCH DAMAGES.
     </action-widgets>
   </object>
   <object class="GtkAccelGroup" id="accel_main_window"/>
+  <object class="GtkAction" id="action1"/>
 </interface>
