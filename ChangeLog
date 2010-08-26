@@ -4,6 +4,8 @@
      * New files to manage the goto dialog box
      * Now one can jump across the file, forward, bacward, from the beginning or
        form the end !
+     * Some description modification to avoid repeating things and to clarify on
+       which systems heraia is known to work on.
 
 25.08.2010
    - Olivier Delhomme <heraia@delhomme.org>

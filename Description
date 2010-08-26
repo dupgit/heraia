@@ -3,19 +3,16 @@ What is heraia ?
 
 Heraia is free software licensed under the GPLv2 or later. It is a standalone
 hexadecimal file analyser. One would say hexadecimal editor. It provides tools
-to analyse and edit files in an hexadecimal way :
-
-  . a data interpretor
-  . a plugin that do some graphical analysis
-
-It contains :
+to analyse and edit files in an hexadecimal way. It contains :
 
   . a fully functional plugin system
   . an extensible data interpretor
 
 It is written in C using GTK and based on GtkHex Widget. It is known to run on
-many systems 32 or 64 bits (Ubuntu 9.04, debian lenny, fedora 12, windows XP).
-It integrates smoothly with Gnome but it does not depends on it.
+many systems 32 or 64 bits (Ubuntu 9.04, Debian 5.0, Fedora 12 (used to work on
+windows XP). As it is based on GtkBuilder, minimum version of Gtk is 2.16 (so it
+won't work on Centos 5 or RHEL 5). It integrates smoothly with Gnome but it does
+not depend on it.
 
 You can download heraia at both locations (for now) :
 
