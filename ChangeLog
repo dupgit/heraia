@@ -1,6 +1,9 @@
 26.08.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * casts to avoid warnings on 32 bits systems
+     * New files to manage the goto dialog box
+     * Now one can jump across the file, forward, bacward, from the beginning or
+       form the end !
 
 25.08.2010
    - Olivier Delhomme <heraia@delhomme.org>

@@ -13,7 +13,8 @@ headerfiles = 							\
 		include/data_interpretor.h		\
 		include/plugin_list.h			\
 		include/log.h					\
-		include/tests.h
+		include/tests.h					\
+		include/goto_dialog.h
 
 pkglib_LTLIBRARIES = libheraia.la
 
@@ -41,4 +42,5 @@ libheraia_la_SOURCES =  		\
 		data_interpretor.c		\
 		plugin_list.c			\
 		tests.c					\
+		goto_dialog.c			\
 		$(headerfiles)

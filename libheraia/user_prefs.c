@@ -200,6 +200,7 @@ static void save_mp_file_preferences_options(heraia_struct_t *main_struct)
                     save_window_preferences(prefs->file, KN_PLUGIN_LIST, main_struct->win_prop->plugin_list);
                     save_window_preferences(prefs->file, KN_LDT, main_struct->win_prop->ldt);
                     save_window_preferences(prefs->file, KN_MAIN_PREFS, main_struct->win_prop->main_pref_window);
+                    save_window_preferences(prefs->file, KN_GOTO_DIALOG, main_struct->win_prop->goto_window);
                 }
         }
 }
@@ -385,6 +386,7 @@ static void load_mp_file_preferences_options(heraia_struct_t *main_struct)
                     load_window_preferences(prefs->file, KN_PLUGIN_LIST, main_struct->win_prop->plugin_list);
                     load_window_preferences(prefs->file, KN_LDT, main_struct->win_prop->ldt);
                     load_window_preferences(prefs->file, KN_MAIN_PREFS, main_struct->win_prop->main_pref_window);
+                    load_window_preferences(prefs->file, KN_GOTO_DIALOG, main_struct->win_prop->goto_window);
                 }
         }
 }

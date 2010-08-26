@@ -13,5 +13,6 @@
 ../libheraia/data_interpretor.c
 ../libheraia/plugin_list.c
 ../libheraia/tests.c
+../libheraia/goto_dialog.c
 ../plugins/stat/stat.c
 

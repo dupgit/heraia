@@ -336,6 +336,26 @@ guint64 ghex_get_cursor_position(GtkWidget *hex_widget)
 
 
 /**
+ * Sets the cursor at the defined position in the hexwidget
+ * @param hex_widget : the widget that displays the hex document
+ * @param position : the position where we want to go
+ * @warning no checks are made here (limits and such ...)
+ */
+void ghex_set_cursor_position(GtkWidget *hex_widget, guint64 position)
+{
+
+    Heraia_Hex *gh = GTK_HEX(hex_widget);
+
+    if (gh != NULL)
+        {
+              gtk_hex_set_cursor(gh, position);
+        }
+}
+
+
+
+
+/**
  * Retrieves the selection made (if any) in the hex widget
  * @param hex_widget : the widget that displays the hex document
  * @return returns a filed selection_t structure

@@ -238,6 +238,10 @@ void record_all_dialog_box_positions(heraia_struct_t *main_struct)
             /* main_preferences */
             dialog_box = heraia_get_widget (main_struct->xmls->main, "main_preferences_window");
             record_dialog_box_position(dialog_box, main_struct->win_prop->main_pref_window);
+
+            /* goto dialog box */
+            dialog_box = heraia_get_widget (main_struct->xmls->main, "goto_dialog");
+            record_dialog_box_position(dialog_box, main_struct->win_prop->goto_window);
         }
 }
 
@@ -1410,6 +1414,7 @@ void grey_main_widgets(GtkBuilder *xml, gboolean greyed)
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_paste"), FALSE);
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_delete"), FALSE);
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_close"), FALSE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_goto"), FALSE);
                     gtk_widget_hide(notebook);
                 }
             else
@@ -1421,6 +1426,7 @@ void grey_main_widgets(GtkBuilder *xml, gboolean greyed)
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_paste"), TRUE);
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_delete"), TRUE);
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_close"), TRUE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_goto"), TRUE);
                     gtk_widget_show_all(notebook);
                 }
         }
@@ -1442,10 +1448,10 @@ void init_heraia_interface(heraia_struct_t *main_struct)
             /* inits window states (shows or hide windows) */
             init_window_states(main_struct);
 
-
             /* menus */
             gtk_widget_set_sensitive(heraia_get_widget(main_struct->xmls->main, "menu_redo"), FALSE);
             gtk_widget_set_sensitive(heraia_get_widget(main_struct->xmls->main, "menu_undo"), FALSE);
+
             if (main_struct->current_doc != NULL)
                 {
                     grey_main_widgets(main_struct->xmls->main, FALSE);
@@ -1542,6 +1548,10 @@ static void heraia_ui_connect_signals(heraia_struct_t *main_struct)
     /* Save As, file menu */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "save_as")), "activate",
                      G_CALLBACK(on_save_as_activate), main_struct);
+
+    /* Goto dialog, edit menu */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_goto")), "activate",
+                     G_CALLBACK(on_goto_activate), main_struct);
 
     /* Preferences, Edit menu ; See main_pref_window.c for main_pref_window's signals */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "preferences")), "activate",
@@ -1673,6 +1683,21 @@ int load_heraia_ui(heraia_struct_t *main_struct)
                 {
                     fprintf(stdout, Q_(" [Done]\n"));
                 }
+
+
+            /* Goto dialog window */
+            if (main_struct->debug == TRUE)
+                {
+                    fprintf(stdout, Q_("goto dialog window init interface"));
+                }
+
+            goto_dialog_init_interface(main_struct);
+
+            if (main_struct->debug == TRUE)
+                {
+                    fprintf(stdout, Q_(" [Done]\n"));
+                }
+
 
 
             /* preferences file */
@@ -2056,6 +2081,15 @@ void init_window_states(heraia_struct_t *main_struct)
                             gtk_widget_show_all(dialog_box);
                         }
 
+                    /* Goto dialog window */
+                    dialog_box = heraia_get_widget(main_struct->xmls->main, "goto_dialog");
+                    if (main_struct->win_prop->goto_window->displayed == TRUE)
+                        {
+                            gtk_window_move(GTK_WINDOW(dialog_box), main_struct->win_prop->main_pref_window->x, main_struct->win_prop->main_pref_window->y);
+                            gtk_window_resize(GTK_WINDOW(dialog_box), main_struct->win_prop->main_pref_window->width, main_struct->win_prop->main_pref_window->height);
+                            gtk_widget_show_all(dialog_box);
+                        }
+
                     /* About Box */
                     dialog_box = heraia_get_widget(main_struct->xmls->main, "about_dialog");
                     if (main_struct->win_prop->about_box->displayed == TRUE)
@@ -2158,26 +2192,29 @@ void add_new_tab_in_main_window(heraia_struct_t *main_struct, doc_t *doc)
  */
 void show_hide_widget(GtkWidget *widget, gboolean show, window_prop_t *win_prop)
 {
-    if (win_prop != NULL)
-            {
-                if (show)
+    if (widget != NULL)
+        {
+            if (win_prop != NULL)
                     {
-                        move_and_show_dialog_box(widget, win_prop);
+                        if (show)
+                            {
+                                move_and_show_dialog_box(widget, win_prop);
+                            }
+                        else
+                            {
+                                record_and_hide_dialog_box(widget, win_prop);
+                            }
                     }
                 else
                     {
-                        record_and_hide_dialog_box(widget, win_prop);
+                        if (show)
+                            {
+                                gtk_widget_show(widget);
+                            }
+                        else
+                            {
+                                gtk_widget_hide(widget);
+                            }
                     }
-            }
-        else
-            {
-                if (show)
-                    {
-                        gtk_widget_show(widget);
-                    }
-                else
-                    {
-                        gtk_widget_hide(widget);
-                    }
-            }
+        }
 }

@@ -985,6 +985,7 @@ POSSIBILITY OF SUCH DAMAGES.
                       <object class="GtkImageMenuItem" id="save_as">
                         <property name="label">gtk-save-as</property>
                         <property name="visible">True</property>
+                        <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accel_main_window</property>
                         <signal name="activate" handler="on_save_as_activate"/>
@@ -1102,6 +1103,7 @@ POSSIBILITY OF SUCH DAMAGES.
                       <object class="GtkImageMenuItem" id="menu_goto">
                         <property name="label">gtk-jump-to</property>
                         <property name="visible">True</property>
+                        <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accel_main_window</property>
                       </object>
@@ -1465,7 +1467,7 @@ POSSIBILITY OF SUCH DAMAGES.
       </object>
     </child>
   </object>
-  <object class="GtkDialog" id="go_to_dialog">
+  <object class="GtkDialog" id="goto_dialog">
     <property name="border_width">5</property>
     <property name="type_hint">normal</property>
     <property name="has_separator">False</property>
@@ -1605,7 +1607,7 @@ POSSIBILITY OF SUCH DAMAGES.
             <property name="homogeneous">True</property>
             <property name="layout_style">end</property>
             <child>
-              <object class="GtkButton" id="button1">
+              <object class="GtkButton" id="gtd_cancel_bt">
                 <property name="label">gtk-cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -1619,7 +1621,7 @@ POSSIBILITY OF SUCH DAMAGES.
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="button2">
+              <object class="GtkButton" id="gtd_ok_bt">
                 <property name="label">gtk-ok</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -1643,8 +1645,8 @@ POSSIBILITY OF SUCH DAMAGES.
       </object>
     </child>
     <action-widgets>
-      <action-widget response="0">button1</action-widget>
-      <action-widget response="0">button2</action-widget>
+      <action-widget response="0">gtd_cancel_bt</action-widget>
+      <action-widget response="0">gtd_ok_bt</action-widget>
     </action-widgets>
   </object>
   <object class="GtkAccelGroup" id="accel_main_window"/>

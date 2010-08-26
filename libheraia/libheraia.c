@@ -43,6 +43,7 @@
 #include "main_pref_window.h"
 #include "plugin.h"
 #include "user_prefs.h"
+#include "goto_dialog.h"
 
 /**
  * @fn int libheraia_test(void)

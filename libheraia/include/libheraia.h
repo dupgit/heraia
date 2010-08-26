@@ -241,6 +241,7 @@ typedef struct
     window_prop_t *plugin_list;       /**< plugin description window */
     window_prop_t *ldt;               /**< list data types window    */
     window_prop_t *main_pref_window;  /**< main preference window    */
+    window_prop_t *goto_window;       /**< goto dialog window        */
 } all_window_prop_t;
 
 
@@ -313,6 +314,7 @@ typedef struct
 #include "plugin_list.h"
 #include "user_prefs.h"
 #include "tests.h"
+#include "goto_dialog.h"
 
 
 extern int libheraia_test(void);
