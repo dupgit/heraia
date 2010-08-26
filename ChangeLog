@@ -1,3 +1,7 @@
+26.08.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * casts to avoid warnings on 32 bits systems
+
 25.08.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Some ui modifications : alignments and goto dialog box

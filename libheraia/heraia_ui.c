@@ -505,17 +505,17 @@ void refresh_file_labels(heraia_struct_t *main_struct)
                     /* To translators : do not translate <small> and such         */
                     if (is_toggle_button_activated(main_struct->xmls->main, "mp_thousand_bt") == TRUE)
                         {
-                            position_text = g_strdup_printf("<small>%'lu</small>", position + 1);
-                            file_size_text = g_strdup_printf("<small>%'lu</small>", file_size);
-                            file_sel_text = g_strdup_printf("<small>%'lu -> %'lu</small>", sel->start + 1, sel->end + 1);
-                            file_sel_size_text = g_strdup_printf("<small>%'li</small>", (sel->end - sel->start) + 1);
+                            position_text = g_strdup_printf("<small>%'lu</small>", (unsigned long int) (position + 1));
+                            file_size_text = g_strdup_printf("<small>%'lu</small>", (unsigned long int) file_size);
+                            file_sel_text = g_strdup_printf("<small>%'lu -> %'lu</small>", (unsigned long int) (sel->start + 1), (unsigned long int) (sel->end + 1));
+                            file_sel_size_text = g_strdup_printf("<small>%'li</small>", (unsigned long int) ((sel->end - sel->start) + 1));
                         }
                     else
                         {
-                            position_text = g_strdup_printf("<small>%lu</small>", position + 1);
-                            file_size_text = g_strdup_printf("<small>%lu</small>", file_size);
-                            file_sel_text = g_strdup_printf("<small>%lu - %lu</small>", sel->start + 1, sel->end + 1);
-                            file_sel_size_text = g_strdup_printf("<small>%li</small>", (sel->end - sel->start) + 1);
+                            position_text = g_strdup_printf("<small>%lu</small>", (unsigned long int) (position + 1));
+                            file_size_text = g_strdup_printf("<small>%lu</small>", (unsigned long int) file_size);
+                            file_sel_text = g_strdup_printf("<small>%lu -> %lu</small>", (unsigned long int) (sel->start + 1), (unsigned long int) (sel->end + 1));
+                            file_sel_size_text = g_strdup_printf("<small>%li</small>", (unsigned long int) ((sel->end - sel->start) + 1));
                         }
 
                     gtk_label_set_markup(GTK_LABEL(position_label), position_text);
