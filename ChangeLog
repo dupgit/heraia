@@ -1,3 +1,11 @@
+29.08.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Description corrections (compilation under debian lenny is not possible
+       since it uses GTK 2.12 - will try squeeze)
+     * Bug correction (the goto window was displayed at the main_prefs position
+       when loading heraia).
+     * Search menu definition in the gtkbuilder's file
+
 26.08.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * casts to avoid warnings on 32 bits systems

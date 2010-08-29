@@ -2085,8 +2085,8 @@ void init_window_states(heraia_struct_t *main_struct)
                     dialog_box = heraia_get_widget(main_struct->xmls->main, "goto_dialog");
                     if (main_struct->win_prop->goto_window->displayed == TRUE)
                         {
-                            gtk_window_move(GTK_WINDOW(dialog_box), main_struct->win_prop->main_pref_window->x, main_struct->win_prop->main_pref_window->y);
-                            gtk_window_resize(GTK_WINDOW(dialog_box), main_struct->win_prop->main_pref_window->width, main_struct->win_prop->main_pref_window->height);
+                            gtk_window_move(GTK_WINDOW(dialog_box), main_struct->win_prop->goto_window->x, main_struct->win_prop->goto_window->y);
+                            gtk_window_resize(GTK_WINDOW(dialog_box), main_struct->win_prop->goto_window->width, main_struct->win_prop->goto_window->height);
                             gtk_widget_show_all(dialog_box);
                         }
 
