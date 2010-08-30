@@ -146,8 +146,10 @@ PKG_CHECK_MODULES(GMODULE, [gmodule-2.0 >= $GMODULE_VERSION])
 
 AC_PROG_INSTALL
 
+dnl This flag : "-Wcast-qual" implies gcc warnings on gthreads.h
+
 CFLAGS="$CFLAGS -Wall -Wstrict-prototypes -Wmissing-declarations \
--Wbad-function-cast -Wcast-qual -Wcast-align -Wnested-externs -Wunused \
+-Wbad-function-cast -Wcast-align -Wnested-externs -Wunused \
 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE \
 -DGSEAL_ENABLE -DG_DISABLE_DEPRECATED=1"
 
