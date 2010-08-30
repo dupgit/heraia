@@ -14,7 +14,8 @@ headerfiles = 							\
 		include/plugin_list.h			\
 		include/log.h					\
 		include/tests.h					\
-		include/goto_dialog.h
+		include/goto_dialog.h			\
+		include/result_window.h
 
 pkglib_LTLIBRARIES = libheraia.la
 
@@ -43,4 +44,5 @@ libheraia_la_SOURCES =  		\
 		plugin_list.c			\
 		tests.c					\
 		goto_dialog.c			\
+		result_window.c			\
 		$(headerfiles)

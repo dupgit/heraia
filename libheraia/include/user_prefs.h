@@ -48,6 +48,7 @@
 #define KN_LDT "List Data Types"
 #define KN_MAIN_PREFS "Main Preferences"
 #define KN_GOTO_DIALOG "Goto Dialog"
+#define KN_RESULT_WINDOW "Result Window"
 
 #define KN_DISP_THOUSAND "Thousand"
 #define KN_DISP_OFFSETS "Offsets"

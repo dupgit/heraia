@@ -44,6 +44,7 @@
 #include "plugin.h"
 #include "user_prefs.h"
 #include "goto_dialog.h"
+#include "result_window.h"
 
 /**
  * @fn int libheraia_test(void)

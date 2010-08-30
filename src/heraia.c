@@ -155,6 +155,7 @@ static heraia_struct_t *init_window_property_struct(heraia_struct_t *main_struct
     window_prop_t *ldt = NULL;
     window_prop_t *main_pref_window = NULL;
     window_prop_t *goto_window = NULL;
+    window_prop_t *result_window = NULL;
 
     /* Global struct */
     win_prop = (all_window_prop_t *) g_malloc0(sizeof(all_window_prop_t));
@@ -168,6 +169,7 @@ static heraia_struct_t *init_window_property_struct(heraia_struct_t *main_struct
     ldt = init_window_properties(0, 0, WPT_DEFAULT_HEIGHT, WPT_DEFAULT_WIDTH, FALSE);
     main_pref_window = init_window_properties(0, 0, WPT_DEFAULT_HEIGHT, WPT_DEFAULT_WIDTH, FALSE);
     goto_window = init_window_properties(0, 0, WPT_DEFAULT_HEIGHT, WPT_DEFAULT_WIDTH, FALSE);
+    result_window = init_window_properties(0, 0, WPT_DEFAULT_HEIGHT, WPT_DEFAULT_WIDTH, FALSE);
 
     /* Attach to the struct */
     win_prop->about_box = about_box;
@@ -178,6 +180,7 @@ static heraia_struct_t *init_window_property_struct(heraia_struct_t *main_struct
     win_prop->ldt = ldt;
     win_prop->main_pref_window = main_pref_window;
     win_prop->goto_window = goto_window;
+    win_prop->result_window = result_window;
 
     /* attach it to the main struct so that it can be read everywhere */
     main_struct->win_prop = win_prop;

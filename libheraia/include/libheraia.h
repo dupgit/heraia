@@ -231,6 +231,8 @@ typedef struct
 /**
  * @struct all_window_prop_t
  *  Structure to keep window properties for each window
+ *  @todo Transform this to a list of properties and add values to distinguish
+ *        between windows ?
  */
 typedef struct
 {
@@ -242,6 +244,7 @@ typedef struct
     window_prop_t *ldt;               /**< list data types window    */
     window_prop_t *main_pref_window;  /**< main preference window    */
     window_prop_t *goto_window;       /**< goto dialog window        */
+    window_prop_t *result_window;     /**< result window properties  */
 } all_window_prop_t;
 
 
@@ -315,6 +318,7 @@ typedef struct
 #include "user_prefs.h"
 #include "tests.h"
 #include "goto_dialog.h"
+#include "result_window.h"
 
 
 extern int libheraia_test(void);

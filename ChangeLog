@@ -1,3 +1,10 @@
+30.08.2009
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Forgot to add goto_dialog.[hc] files in svn !
+     * Working on result window that will be used as a collector for a numerous
+       future features such as find, find data from a type, and so on
+     * Working on find window and find and replace window (inspired by ghex)
+
 29.08.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Description corrections (compilation under debian lenny is not possible
