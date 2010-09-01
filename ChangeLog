@@ -2,6 +2,9 @@
    - Olivier Delhomme <heraia@delhomme.org>
      * new files for the find and find and replace windows
      * Working on find window and find and replace window
+     * Some documentation of functions
+     * Roadmap adds (I removed translatable project for 0.3.0 as we already have
+       a translatable project since 0.1.3 !)
 
 30.08.2009
    - Olivier Delhomme <heraia@delhomme.org>

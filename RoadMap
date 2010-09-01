@@ -96,10 +96,14 @@ I let you imagine what I expect before I do a major release !!!
 . 0.1.7
    * save and load a "project" like geany editor (saving preferences, opened
      files, current opened tabs and so on...)
+   * find data from type
 
 . 0.1.8
    * rewrite data_type creation in order to allow a script or an extern
      program execution
+
+. 0.1.9
+   * python bindings ?
 
 - 0.2.0
    * rename tha main_window_t structure in main_struct_t structure which
@@ -113,12 +117,24 @@ I let you imagine what I expect before I do a major release !!!
    * enhance python bindings
    * work in progress to make the whole project translatable
 
+. 0.2.2
+   * Pass parts of the file to an extern (or not) filter
+
+. 0.2.3
+   * Begin work on template manager
+
+. 0.2.4
+   * Begin writing some user documentation
+
+. 0.2.8
+   * If there is time, see how to bring 3D visualization in stat plugin
+
 - 0.3.0
-   * translatable project
+   * user documentation
    * ability to pass a part of the file to an extern program and analyse it's
      output -> ie gunzip, unzip, sed, ...
    * have parts of the template manager
-   * new visualisation on stat plugin (3D visualisation for the 2D histo)
+   * new visualisation on stat plugin (3D visualization for the 2D histo)
    * add more functions to the plugin list (a configure button if the plugin is
      configurable, and so on)
 

@@ -46,6 +46,7 @@ static void destroy_fr_window_event(GtkWidget *widget, GdkEvent  *event, gpointe
 static void fr_window_close(GtkWidget *widget, gpointer data);
 static void fr_window_connect_signal(heraia_struct_t *main_struct);
 
+
 /**
  * Show find window
  * @param widget : the widget that issued the signal
@@ -62,7 +63,6 @@ void find_window_show(GtkWidget *widget, gpointer data)
             show_hide_widget(window, TRUE, main_struct->win_prop->find_window);
         }
 }
-
 
 
 /**
@@ -154,7 +154,12 @@ void find_window_init_interface(heraia_struct_t * main_struct)
 /******************************* common stuff *********************************/
 /******************************************************************************/
 
-
+/**
+ * Creates the HexDocument and the GtkHex widget with the right properties and
+ * Fills a doc_t structure with them.
+ * @return a newly allocated doc_t structure with HexDocument and GtkHex widget
+ *         correctly configured to fit in the find and find and replace windows
+ */
 static doc_t *create_find_or_replace_doc_t(void)
 {
     Heraia_Document *find_hex_doc = NULL;
@@ -182,6 +187,13 @@ static doc_t *create_find_or_replace_doc_t(void)
 }
 
 
+/**
+ * Adds the GtkHex widget to the right frame
+ * @param xmls : xmls structure
+ * @param widget_name : the widget that will receive the GtkHex widget (a frame)
+ * @param entry : the doc_t structure that contains document and gtkhex widget
+ *                used as an entry field
+ */
 static void find_replace_add_ghex_widget(xml_t *xmls, gchar *widget_name, doc_t *entry)
 {
     GtkWidget *al = NULL;

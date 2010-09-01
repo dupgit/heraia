@@ -5,7 +5,6 @@
  * write a data analyser (perhaps some statistic GNU projects could do the job)
  * find documentation on SQL DATE
 
-
 20.06.2005 add a command line option to hide the data interpretor window
 09.04.2006 change all the functions to have a good "C" return status :
            0 == sucess else errno
@@ -20,6 +19,7 @@
 08.07.2008 Add a swig hability and begin doing thing in ruby <-- is this really
            a thing that I want ?
 28.01.2009 generate a key in order to be able sign debian packages
+01.09.2010 Add some user documentation.
 
 [Done List]
 19.03.2005 add a way to decode in big-endian or little-endian (Done 05.04.2005)
