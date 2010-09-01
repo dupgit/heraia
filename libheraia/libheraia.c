@@ -45,6 +45,7 @@
 #include "user_prefs.h"
 #include "goto_dialog.h"
 #include "result_window.h"
+#include "find_replace_window.h"
 
 /**
  * @fn int libheraia_test(void)

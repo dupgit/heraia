@@ -245,6 +245,8 @@ typedef struct
     window_prop_t *main_pref_window;  /**< main preference window    */
     window_prop_t *goto_window;       /**< goto dialog window        */
     window_prop_t *result_window;     /**< result window properties  */
+    window_prop_t *find_window;       /**< find window               */
+    window_prop_t *fr_window;         /**< find and replace window   */
 } all_window_prop_t;
 
 
@@ -302,6 +304,9 @@ typedef struct
     RefreshType event;              /**< Tells what is happening                                                   */
     all_window_prop_t *win_prop;    /**< Keeps window properties                                                   */
     prefs_t *prefs;                 /**< All datas related to main preferences                                     */
+    doc_t *find_doc;                /**< find document and hexwidget for find window                               */
+    doc_t *fr_find_doc;             /**< find and replace window, find document and hexwidget                      */
+    doc_t *fr_replace_doc;          /**< find and replace window, replace document and hexwidget                   */
 } heraia_struct_t;
 
 
@@ -319,6 +324,7 @@ typedef struct
 #include "tests.h"
 #include "goto_dialog.h"
 #include "result_window.h"
+#include "find_replace_window.h"
 
 
 extern int libheraia_test(void);

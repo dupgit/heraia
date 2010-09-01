@@ -1,3 +1,8 @@
+01.09.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * new files for the find and find and replace windows
+     * Working on find window and find and replace window
+
 30.08.2009
    - Olivier Delhomme <heraia@delhomme.org>
      * Forgot to add goto_dialog.[hc] files in svn !

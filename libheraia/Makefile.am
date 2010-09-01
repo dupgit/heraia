@@ -15,7 +15,8 @@ headerfiles = 							\
 		include/log.h					\
 		include/tests.h					\
 		include/goto_dialog.h			\
-		include/result_window.h
+		include/result_window.h			\
+		include/find_replace_window.h
 
 pkglib_LTLIBRARIES = libheraia.la
 
@@ -45,4 +46,5 @@ libheraia_la_SOURCES =  		\
 		tests.c					\
 		goto_dialog.c			\
 		result_window.c			\
+		find_replace_window.c	\
 		$(headerfiles)

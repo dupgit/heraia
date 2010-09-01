@@ -156,6 +156,8 @@ static heraia_struct_t *init_window_property_struct(heraia_struct_t *main_struct
     window_prop_t *main_pref_window = NULL;
     window_prop_t *goto_window = NULL;
     window_prop_t *result_window = NULL;
+    window_prop_t *find_window = NULL;
+    window_prop_t *fr_window = NULL;
 
     /* Global struct */
     win_prop = (all_window_prop_t *) g_malloc0(sizeof(all_window_prop_t));
@@ -170,6 +172,9 @@ static heraia_struct_t *init_window_property_struct(heraia_struct_t *main_struct
     main_pref_window = init_window_properties(0, 0, WPT_DEFAULT_HEIGHT, WPT_DEFAULT_WIDTH, FALSE);
     goto_window = init_window_properties(0, 0, WPT_DEFAULT_HEIGHT, WPT_DEFAULT_WIDTH, FALSE);
     result_window = init_window_properties(0, 0, WPT_DEFAULT_HEIGHT, WPT_DEFAULT_WIDTH, FALSE);
+    find_window = init_window_properties(0, 0, WPT_DEFAULT_HEIGHT, WPT_DEFAULT_WIDTH, FALSE);
+    fr_window = init_window_properties(0, 0, WPT_DEFAULT_HEIGHT, WPT_DEFAULT_WIDTH, FALSE);
+
 
     /* Attach to the struct */
     win_prop->about_box = about_box;
@@ -181,6 +186,8 @@ static heraia_struct_t *init_window_property_struct(heraia_struct_t *main_struct
     win_prop->main_pref_window = main_pref_window;
     win_prop->goto_window = goto_window;
     win_prop->result_window = result_window;
+    win_prop->find_window = find_window;
+    win_prop->fr_window = fr_window;
 
     /* attach it to the main struct so that it can be read everywhere */
     main_struct->win_prop = win_prop;
@@ -239,6 +246,11 @@ static heraia_struct_t *heraia_init_main_struct(gchar *heraia_path)
 
     /* documents */
     main_struct->documents = g_ptr_array_new();
+
+    /* find and replace stuff */
+    main_struct->find_doc = NULL;
+    main_struct->fr_find_doc = NULL;
+    main_struct->fr_replace_doc = NULL;
 
     /* init global variable for the library */
     libheraia_main_struct = main_struct;

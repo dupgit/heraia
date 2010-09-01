@@ -49,6 +49,8 @@
 #define KN_MAIN_PREFS "Main Preferences"
 #define KN_GOTO_DIALOG "Goto Dialog"
 #define KN_RESULT_WINDOW "Result Window"
+#define KN_FIND_WINDOW "Find Window"
+#define KN_FR_WINDOW "Find and Replace Window"
 
 #define KN_DISP_THOUSAND "Thousand"
 #define KN_DISP_OFFSETS "Offsets"

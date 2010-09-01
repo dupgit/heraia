@@ -147,13 +147,14 @@ PKG_CHECK_MODULES(GMODULE, [gmodule-2.0 >= $GMODULE_VERSION])
 AC_PROG_INSTALL
 
 dnl This flag : "-Wcast-qual" implies gcc warnings on gthreads.h
+dnl -DGTK_DISABLE_DEPRECATED=1 -DG_DISABLE_DEPRECATED=1 -DGSEAL_ENABLE
 
 CFLAGS="$CFLAGS -Wall -Wstrict-prototypes -Wmissing-declarations \
 -Wbad-function-cast -Wcast-align -Wnested-externs -Wunused \
 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE \
 -DGSEAL_ENABLE -DG_DISABLE_DEPRECATED=1"
 
-dnl -DGTK_DISABLE_DEPRECATED=1 -DG_DISABLE_DEPRECATED=1 -DGSEAL_ENABLE
+
 
 dnl **************************************************
 dnl * checking OS                                    *

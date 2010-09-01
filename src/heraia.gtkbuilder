@@ -1510,6 +1510,7 @@ POSSIBILITY OF SUCH DAMAGES.
   </object>
   <object class="GtkDialog" id="goto_dialog">
     <property name="border_width">5</property>
+    <property name="title" translatable="yes">Go to...</property>
     <property name="type_hint">normal</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
@@ -1693,6 +1694,7 @@ POSSIBILITY OF SUCH DAMAGES.
   <object class="GtkAccelGroup" id="accel_main_window"/>
   <object class="GtkAction" id="action1"/>
   <object class="GtkWindow" id="result_window">
+    <property name="title" translatable="yes">Results</property>
     <child>
       <object class="GtkVBox" id="vbox6">
         <property name="visible">True</property>
@@ -1782,11 +1784,12 @@ POSSIBILITY OF SUCH DAMAGES.
     </child>
   </object>
   <object class="GtkWindow" id="find_window">
+    <property name="title" translatable="yes">Find...</property>
     <child>
       <object class="GtkVBox" id="vbox14">
         <property name="visible">True</property>
         <child>
-          <object class="GtkFrame" id="frame5">
+          <object class="GtkFrame" id="find_frame">
             <property name="visible">True</property>
             <property name="border_width">2</property>
             <property name="label_xalign">0</property>
@@ -1908,7 +1911,8 @@ POSSIBILITY OF SUCH DAMAGES.
       </object>
     </child>
   </object>
-  <object class="GtkWindow" id="find_replace_window">
+  <object class="GtkWindow" id="fr_window">
+    <property name="title" translatable="yes">Find and replace...</property>
     <child>
       <object class="GtkVBox" id="vbox15">
         <property name="visible">True</property>

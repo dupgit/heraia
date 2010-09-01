@@ -471,6 +471,38 @@ void on_paste_activate(GtkWidget *widget, gpointer data)
 
 
 /**
+ * Find, Search menu
+ * @param widget : the widget that issued the signal
+ * @param data : user data MUST be heraia_struct_t *main_struct main structure
+ */
+void on_find_activate(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+
+    if (main_struct != NULL && main_struct->current_doc != NULL)
+    {
+        find_window_show(widget, main_struct);
+    }
+}
+
+
+/**
+ * Find and replace, Search menu
+ * @param widget : the widget that issued the signal
+ * @param data : user data MUST be heraia_struct_t *main_struct main structure
+ */
+void on_fr_activate(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+
+    if (main_struct != NULL && main_struct->current_doc != NULL)
+    {
+        fr_window_show(widget, main_struct);
+    }
+}
+
+
+/**
  *  This function is refreshing the labels on the main
  *  window in order to reflect cursor position, selected
  *  positions and total selected size.
@@ -1527,6 +1559,7 @@ static void heraia_ui_connect_signals(heraia_struct_t *main_struct)
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "DIMenu")), "activate",
                      G_CALLBACK(on_DIMenu_activate), main_struct);
 
+    /*** File Menu ***/
     /* Quit, file menu */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "quit")), "activate",
                      G_CALLBACK(on_quit_activate), main_struct);
@@ -1551,6 +1584,8 @@ static void heraia_ui_connect_signals(heraia_struct_t *main_struct)
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "save_as")), "activate",
                      G_CALLBACK(on_save_as_activate), main_struct);
 
+
+    /*** Edit Menu ***/
     /* Goto dialog, edit menu */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_goto")), "activate",
                      G_CALLBACK(on_goto_activate), main_struct);
@@ -1583,10 +1618,20 @@ static void heraia_ui_connect_signals(heraia_struct_t *main_struct)
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_delete")), "activate",
                      G_CALLBACK(on_delete_activate), main_struct);
 
+     /*** Search Menu ***/
+    /* Find, Search menu */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_find")), "activate",
+                     G_CALLBACK(on_find_activate), main_struct);
+
+    /* Find and replace, Search menu */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_find_replace")), "activate",
+                     G_CALLBACK(on_fr_activate), main_struct);
+
+
+    /*** Help Menu ***/
     /* Test, Help menu */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "tests_menu")), "activate",
                      G_CALLBACK(on_tests_menu_activate), main_struct);
-
 
     /* about dialog box */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "a_propos")), "activate",
@@ -1636,7 +1681,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
             /* Heraia UI signals */
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, Q_("Connecting heraia_ui signals     "));
+                    fprintf(stdout, Q_("Connecting heraia_ui signals          "));
                 }
 
             heraia_ui_connect_signals(main_struct);
@@ -1649,7 +1694,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
             /* The Log window */
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, Q_("log window init interface        "));
+                    fprintf(stdout, Q_("log window init interface             "));
                 }
 
             log_window_init_interface(main_struct);
@@ -1662,7 +1707,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
             /* Preferences window */
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, Q_("preferences window init interface"));
+                    fprintf(stdout, Q_("preferences window init interface     "));
                 }
 
             main_pref_window_init_interface(main_struct);
@@ -1676,7 +1721,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
             /* The data interpretor window */
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, Q_("data interpretor init interface  "));
+                    fprintf(stdout, Q_("data interpretor init interface       "));
                 }
 
             data_interpretor_init_interface(main_struct);
@@ -1690,7 +1735,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
             /* Goto dialog window */
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, Q_("goto dialog window init interface"));
+                    fprintf(stdout, Q_("goto dialog window init interface     "));
                 }
 
             goto_dialog_init_interface(main_struct);
@@ -1704,7 +1749,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
             /* result window */
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, Q_("result window init interface     "));
+                    fprintf(stdout, Q_("result window init interface          "));
                 }
 
             result_window_init_interface(main_struct);
@@ -1714,10 +1759,36 @@ int load_heraia_ui(heraia_struct_t *main_struct)
                     fprintf(stdout, Q_(" [Done]\n"));
                 }
 
+            /* find window */
+            if (main_struct->debug == TRUE)
+                {
+                    fprintf(stdout, Q_("find window init interface            "));
+                }
+
+            find_window_init_interface(main_struct);
+
+            if (main_struct->debug == TRUE)
+                {
+                    fprintf(stdout, Q_(" [Done]\n"));
+                }
+
+            /* find window */
+            if (main_struct->debug == TRUE)
+                {
+                    fprintf(stdout, Q_("find and replace window init interface"));
+                }
+
+            fr_window_init_interface(main_struct);
+
+            if (main_struct->debug == TRUE)
+                {
+                    fprintf(stdout, Q_(" [Done]\n"));
+                }
+
 
             /* preferences file */
 
-            fprintf(stdout, Q_("Loading heraia preference file   "));
+            fprintf(stdout, Q_("Loading heraia preference file        "));
 
             if (load_preference_file(main_struct) != TRUE)
                 {
@@ -1726,7 +1797,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
             else /* Setting up preferences */
                 {
                     fprintf(stdout, Q_(" [Done]\n"));
-                    fprintf(stdout, Q_("Setting up preferences           "));
+                    fprintf(stdout, Q_("Setting up preferences                "));
                     load_preferences(main_struct);
                     fprintf(stdout, Q_(" [Done]\n"));
                 }
@@ -2107,10 +2178,28 @@ void init_window_states(heraia_struct_t *main_struct)
 
                     /* result window */
                     dialog_box = heraia_get_widget(main_struct->xmls->main, "result_window");
-                    if (main_struct->win_prop->goto_window->displayed == TRUE)
+                    if (main_struct->win_prop->result_window->displayed == TRUE)
                         {
                             gtk_window_move(GTK_WINDOW(dialog_box), main_struct->win_prop->result_window->x, main_struct->win_prop->result_window->y);
                             gtk_window_resize(GTK_WINDOW(dialog_box), main_struct->win_prop->result_window->width, main_struct->win_prop->result_window->height);
+                            gtk_widget_show_all(dialog_box);
+                        }
+
+                    /* find window */
+                    dialog_box = heraia_get_widget(main_struct->xmls->main, "find_window");
+                    if (main_struct->win_prop->find_window->displayed == TRUE)
+                        {
+                            gtk_window_move(GTK_WINDOW(dialog_box), main_struct->win_prop->find_window->x, main_struct->win_prop->find_window->y);
+                            gtk_window_resize(GTK_WINDOW(dialog_box), main_struct->win_prop->find_window->width, main_struct->win_prop->find_window->height);
+                            gtk_widget_show_all(dialog_box);
+                        }
+
+                    /* find and replace window */
+                    dialog_box = heraia_get_widget(main_struct->xmls->main, "fr_window");
+                    if (main_struct->win_prop->fr_window->displayed == TRUE)
+                        {
+                            gtk_window_move(GTK_WINDOW(dialog_box), main_struct->win_prop->fr_window->x, main_struct->win_prop->fr_window->y);
+                            gtk_window_resize(GTK_WINDOW(dialog_box), main_struct->win_prop->fr_window->width, main_struct->win_prop->fr_window->height);
                             gtk_widget_show_all(dialog_box);
                         }
 
