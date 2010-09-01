@@ -5,6 +5,7 @@
      * Some documentation of functions
      * Roadmap adds (I removed translatable project for 0.3.0 as we already have
        a translatable project since 0.1.3 !)
+     * Find forward is working
 
 30.08.2009
    - Olivier Delhomme <heraia@delhomme.org>

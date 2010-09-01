@@ -741,9 +741,9 @@ void on_close_activate(GtkWidget *widget, gpointer data)
     gint index = -1;
     gint i = 0;
     gint tab_number = 0;
-    gboolean is_current_doc;     /**< Says wheter the document that we are
-                                      trying to close is the current one or
-                                      not                                    */
+    gboolean is_current_doc = FALSE; /**< Says wheter the document that we are
+                                          trying to close is the current one or
+                                          not                                 */
 
     if (main_struct != NULL && main_struct->current_doc != NULL)
         {

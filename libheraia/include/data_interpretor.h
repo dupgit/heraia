@@ -56,12 +56,10 @@
 #define H_DI_MIDDLE_ENDIAN 4
 #define H_DI_LITTLE_ENDIAN 8
 
+extern guint which_endianness(heraia_struct_t *main_struct);
 extern void data_interpretor_init_interface(heraia_struct_t *main_struct);
 extern void refresh_data_interpretor_window(GtkWidget *hexwidget, gpointer data);
 
-/**
- * Testing things
- */
 extern void add_tab_in_data_interpretor(GtkNotebook *notebook, tab_t *tab);
 extern tab_t *add_new_tab_in_data_interpretor(GtkNotebook *notebook, guint index, const gchar *label, guint num_cols, ...);
 extern void add_new_row_to_tab(tab_t *tab, decode_generic_t *row);

@@ -38,6 +38,8 @@ extern gchar *doc_t_document_get_filename(doc_t *doc);
 extern guint64 ghex_file_size(Heraia_Hex *gh);
 extern guint64 ghex_get_cursor_position(GtkWidget *hex_widget);
 extern void ghex_set_cursor_position(GtkWidget *hex_widget, guint64 position);
+extern gboolean ghex_find_forward(doc_t *doc, guchar *search_buffer, guint buffer_size, guint64 *position);
+
 extern selection_t *ghex_get_selection(GtkWidget *hex_widget);
 
 extern doc_t *new_doc_t(Heraia_Document *hex_doc, GtkWidget *hex_widget);

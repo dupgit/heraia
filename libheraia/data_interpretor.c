@@ -26,7 +26,7 @@
  */
 #include <libheraia.h>
 
-static guint which_endianness(heraia_struct_t *main_struct);
+guint which_endianness(heraia_struct_t *main_struct);
 static guint which_stream_size(heraia_struct_t *main_struct);
 static void interpret(doc_t *doc, decode_t *decode_struct, decode_parameters_t *decode_parameters, guint length);
 static void connect_data_interpretor_signals(heraia_struct_t *main_struct);
@@ -46,7 +46,7 @@ static void add_default_tabs(heraia_struct_t *main_struct);
  *         - H_DI_BIG_ENDIAN for big endian encoding
  *         - H_DI_MIDDLE_ENDIAN for middle endian encoding
  */
-static guint which_endianness(heraia_struct_t *main_struct)
+guint which_endianness(heraia_struct_t *main_struct)
 {
     gint endianness = -1;
 

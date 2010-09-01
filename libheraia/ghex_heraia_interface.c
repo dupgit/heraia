@@ -352,7 +352,43 @@ void ghex_set_cursor_position(GtkWidget *hex_widget, guint64 position)
         }
 }
 
+/**
+ * Wrapper to the hex_document_find_forward function
+ * Tries to find search_buffer in doc
+ * @param doc : the document searched
+ * @param search_buffer : the string searched for
+ * @param buffer_size : size of the buffer
+ * @param[out] : position (if any) of the found string
+ * @return True if something has been found. False otherwise
+ */
+gboolean ghex_find_forward(doc_t *doc, guchar *search_buffer, guint buffer_size, guint64 *position)
+{
+    guint64 current_position = 0;
+    guint offset = 0;
+    gboolean result = FALSE;
 
+    if (doc != NULL && doc->hex_widget != NULL && doc->hex_doc != NULL)
+        {
+            current_position = ghex_get_cursor_position(doc->hex_widget);
+            result = hex_document_find_forward(doc->hex_doc, current_position + 1, search_buffer, buffer_size, &offset);
+
+            if (result == TRUE)
+                {
+                    *position = (guint64) offset;
+                    return TRUE;
+                }
+            else
+                {
+                    *position = 0;
+                    return FALSE;
+                }
+        }
+    else
+        {
+            *position = 0;
+            return FALSE;
+        }
+}
 
 
 /**

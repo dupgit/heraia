@@ -31,6 +31,7 @@
 #include <libheraia.h>
 
 /*** common stuff ***/
+static guchar *fr_get_search_string(heraia_struct_t * main_struct, doc_t *doc, guint *buffer_size);
 static doc_t *create_find_or_replace_doc_t(void);
 static void find_replace_add_ghex_widget(xml_t *xmls, gchar *widget_name, doc_t *entry);
 
@@ -99,14 +100,47 @@ static void destroy_find_window_event(GtkWidget *widget, GdkEvent  *event, gpoin
 static void find_window_close(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
-     GtkWidget *window = NULL;     /**< find window */
+    GtkWidget *window = NULL;     /**< find window */
 
     if (main_struct != NULL)
         {
-             window = heraia_get_widget(main_struct->xmls->main, "find_window");
-             show_hide_widget(window, FALSE, main_struct->win_prop->find_window);
+            window = heraia_get_widget(main_struct->xmls->main, "find_window");
+            show_hide_widget(window, FALSE, main_struct->win_prop->find_window);
         }
 
+}
+
+
+/**
+ * Tries to find, in the document, what the user entered in the GtkHex entry in
+ * the find window
+ * @param widget : calling widget (may be NULL as we don't use this here)
+ * @param data : MUST be heraia_struct_t *main_struct main structure and not NULL
+ */
+static void find_next_bt_clicked(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+    guchar *buffer = NULL;     /**< Buffer that contains the search string             */
+    doc_t *current_doc = NULL; /**< Current doc where we want to search for the string */
+    gboolean result = FALSE;
+    guint64 position = 0;
+    guint buffer_size = 0;
+
+    if (main_struct != NULL)
+        {
+            buffer = fr_get_search_string(main_struct, main_struct->find_doc, &buffer_size);
+
+            if (buffer != NULL)
+                {
+                    current_doc = main_struct->current_doc;
+                    result = ghex_find_forward(current_doc, buffer, buffer_size, &position);
+
+                    if (result == TRUE)
+                        {
+                            ghex_set_cursor_position(current_doc->hex_widget, position);
+                        }
+                }
+        }
 }
 
 
@@ -119,6 +153,10 @@ static void find_window_connect_signal(heraia_struct_t *main_struct)
     /* Close button */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "find_close_bt")), "clicked",
                      G_CALLBACK(find_window_close), main_struct);
+
+    /* Next button */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "find_next_bt")), "clicked",
+                     G_CALLBACK(find_next_bt_clicked), main_struct);
 
     /* When result window is killed or destroyed */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "result_window")), "delete_event",
@@ -153,6 +191,49 @@ void find_window_init_interface(heraia_struct_t * main_struct)
 /******************************************************************************/
 /******************************* common stuff *********************************/
 /******************************************************************************/
+
+/**
+ * Gets the string from the document doc
+ * @param main_struct : main structure, needed here to compute endianness
+ * @param doc : the document (HexDocument and HexWidget) used to defined the
+ *              search string
+ * @return a newly allocated guchar string that may be g_free'ed when no longer
+ *         needed
+ */
+static guchar *fr_get_search_string(heraia_struct_t * main_struct, doc_t *doc, guint *buffer_size)
+{
+    guint size = 0;          /**< size of the search string (we hope that this value is small) */
+    guchar *buffer = NULL;   /**< buffer for the search string                                 */
+    guint endianness = 0;    /**< endianness as selected in data interpretor's window          */
+    gboolean result = FALSE;
+
+
+    size = ghex_file_size(GTK_HEX(doc->hex_widget));
+
+    if (size > 0 && size < 4096)  /* Here fixes some limits ! */
+        {
+            buffer = (guchar *) g_malloc0(sizeof(guchar) * size);
+            endianness = which_endianness(main_struct);
+            result = ghex_get_data(doc->hex_widget, size, endianness, buffer);
+
+            if (result == TRUE)
+                {
+                    *buffer_size = size;
+                    return buffer;
+                }
+            else
+                {
+                    *buffer_size = 0;
+                    return NULL;
+                }
+        }
+    else
+        {
+            *buffer_size = 0;
+            return NULL;
+        }
+}
+
 
 /**
  * Creates the HexDocument and the GtkHex widget with the right properties and

@@ -43,6 +43,8 @@ extern void on_redo_activate(GtkWidget *widget, gpointer data);
 extern void on_cut_activate(GtkWidget *widget, gpointer data);
 extern void on_copy_activate(GtkWidget *widget, gpointer data);
 extern void on_paste_activate(GtkWidget *widget, gpointer data);
+extern void on_fr_activate(GtkWidget *widget, gpointer data);
+void on_find_activate(GtkWidget *widget, gpointer data);
 extern void on_DIMenu_activate(GtkWidget *widget, gpointer data);
 extern void on_tests_menu_activate(GtkWidget *widget, gpointer data);
 extern gboolean delete_main_struct_event(GtkWidget *widget, GdkEvent *event, gpointer data);
