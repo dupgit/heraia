@@ -1540,6 +1540,7 @@ POSSIBILITY OF SUCH DAMAGES.
                   <object class="GtkEntry" id="goto_entry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="tooltip_text" translatable="yes">You can enter decimal values or hexadecimal ones by prepending '0x' (eg 0xAF0)</property>
                     <property name="invisible_char">&#x25CF;</property>
                   </object>
                   <packing>

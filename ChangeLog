@@ -3,6 +3,7 @@
      * Corrected a bug that crashed heraia when using "Go to..." with no
        document loaded
      * goto dialog box enhancements
+     * Now one can specify offsets in hexadecimal in the goto dialog window
 
 01.09.2010
    - Olivier Delhomme <heraia@delhomme.org>

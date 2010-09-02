@@ -122,6 +122,7 @@ static void goto_dialog_ok(GtkWidget *widget, gpointer data)
      const gchar *widget_name = NULL;
      const gchar *entry_text = NULL;
      guint64 offset = 0;
+     gboolean convert_ok = FALSE;
 
 
     radio_button = heraia_get_widget(main_struct->xmls->main, "goto_from_beginning");
@@ -130,7 +131,16 @@ static void goto_dialog_ok(GtkWidget *widget, gpointer data)
         {
             entry_text = gtk_entry_get_text(GTK_ENTRY(heraia_get_widget(main_struct->xmls->main, "goto_entry")));
 
-            if (sscanf(entry_text, "%lu", &offset) == 1)
+            if (entry_text[0] == '0' && entry_text[1] == 'x')
+                {
+                    convert_ok = (sscanf(entry_text, "%lx", &offset) == 1);
+                }
+            else
+                {
+                    convert_ok = (sscanf(entry_text, "%lu", &offset) == 1);
+                }
+
+            if (convert_ok == TRUE)
                 {
 
                     radio_active = gtk_radio_button_get_active_from_widget(GTK_RADIO_BUTTON(radio_button));
