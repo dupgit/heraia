@@ -126,7 +126,7 @@ static void goto_dialog_ok(GtkWidget *widget, gpointer data)
 
     radio_button = heraia_get_widget(main_struct->xmls->main, "goto_from_beginning");
 
-     if (radio_button != NULL)
+     if (radio_button != NULL && main_struct->current_doc != NULL)
         {
             entry_text = gtk_entry_get_text(GTK_ENTRY(heraia_get_widget(main_struct->xmls->main, "goto_entry")));
 

@@ -1526,9 +1526,13 @@ POSSIBILITY OF SUCH DAMAGES.
                 <child>
                   <object class="GtkLabel" id="label2">
                     <property name="visible">True</property>
+                    <property name="xalign">0</property>
+                    <property name="xpad">4</property>
                     <property name="label" translatable="yes">Go to byte number :</property>
                   </object>
                   <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
@@ -1544,8 +1548,6 @@ POSSIBILITY OF SUCH DAMAGES.
                 </child>
               </object>
               <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
                 <property name="position">0</property>
               </packing>
             </child>

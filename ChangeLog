@@ -1,3 +1,9 @@
+02.09.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Corrected a bug that crashed heraia when using "Go to..." with no
+       document loaded
+     * goto dialog box enhancements
+
 01.09.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * new files for the find and find and replace windows
