@@ -113,7 +113,7 @@ static void find_window_close(GtkWidget *widget, gpointer data)
 
 /**
  * Tries to find, in the document, what the user entered in the GtkHex entry in
- * the find window
+ * the find window (forward from the current position)
  * @param widget : calling widget (may be NULL as we don't use this here)
  * @param data : MUST be heraia_struct_t *main_struct main structure and not NULL
  */
@@ -133,6 +133,7 @@ static void find_next_bt_clicked(GtkWidget *widget, gpointer data)
             if (buffer != NULL)
                 {
                     current_doc = main_struct->current_doc;
+                    position = ghex_get_cursor_position(current_doc->hex_widget);
                     result = ghex_find_forward(current_doc, buffer, buffer_size, &position);
 
                     if (result == TRUE)
@@ -141,6 +142,86 @@ static void find_next_bt_clicked(GtkWidget *widget, gpointer data)
                         }
                 }
         }
+}
+
+
+/**
+ * Tries to find, in the document, what the user entered in the GtkHex entry in
+ * the find window (backward from the current position)
+ * @param widget : calling widget (may be NULL as we don't use this here)
+ * @param data : MUST be heraia_struct_t *main_struct main structure and not NULL
+ */
+static void find_prev_bt_clicked(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+    guchar *buffer = NULL;     /**< Buffer that contains the search string             */
+    doc_t *current_doc = NULL; /**< Current doc where we want to search for the string */
+    gboolean result = FALSE;
+    guint64 position = 0;
+    guint buffer_size = 0;
+
+    if (main_struct != NULL)
+        {
+            buffer = fr_get_search_string(main_struct, main_struct->find_doc, &buffer_size);
+
+            if (buffer != NULL)
+                {
+                    current_doc = main_struct->current_doc;
+                    position = ghex_get_cursor_position(current_doc->hex_widget);
+                    result = ghex_find_backward(current_doc, buffer, buffer_size, &position);
+
+                    if (result == TRUE)
+                        {
+                            ghex_set_cursor_position(current_doc->hex_widget, position);
+                        }
+                }
+        }
+}
+
+
+/**
+ * Tries to find, in the document, what the user entered in the GtkHex entry in
+ * the find window (all positions from 0)
+ * @param widget : calling widget (may be NULL as we don't use this here)
+ * @param data : MUST be heraia_struct_t *main_struct main structure and not NULL
+ */
+static void find_all_bt_clicked(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+    guchar *buffer = NULL;     /**< Buffer that contains the search string             */
+    doc_t *current_doc = NULL; /**< Current doc where we want to search for the string */
+    gboolean result = FALSE;
+    guint64 position = 0;
+    guint buffer_size = 0;
+    GArray *all_pos = NULL;   /**< All positions of the searched string */
+    guint i = 0;
+
+    if (main_struct != NULL)
+        {
+            buffer = fr_get_search_string(main_struct, main_struct->find_doc, &buffer_size);
+
+            if (buffer != NULL)
+                {
+                    all_pos = g_array_new(TRUE, TRUE, sizeof(guint64));
+                    current_doc = main_struct->current_doc;
+                    position = 0;
+                    result = ghex_find_forward(current_doc, buffer, buffer_size, &position);
+
+                    while (result == TRUE)
+                        {
+                            all_pos = g_array_append_val(all_pos, position);
+                            position = position + 1;
+                            result = ghex_find_forward(current_doc, buffer, buffer_size, &position);
+                        }
+                }
+        }
+
+    for (i = 0; i < all_pos->len; i++)
+        {
+            log_message(main_struct, G_LOG_LEVEL_DEBUG, "%d :\t%lu", i, g_array_index(all_pos, guint64, i));
+        }
+
+    g_array_free(all_pos, TRUE);
 }
 
 
@@ -157,6 +238,14 @@ static void find_window_connect_signal(heraia_struct_t *main_struct)
     /* Next button */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "find_next_bt")), "clicked",
                      G_CALLBACK(find_next_bt_clicked), main_struct);
+
+    /* Prev button */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "find_prev_bt")), "clicked",
+                     G_CALLBACK(find_prev_bt_clicked), main_struct);
+
+    /* Find all button */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "find_all_bt")), "clicked",
+                     G_CALLBACK(find_all_bt_clicked), main_struct);
 
     /* When result window is killed or destroyed */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "result_window")), "delete_event",

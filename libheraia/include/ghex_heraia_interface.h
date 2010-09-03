@@ -33,12 +33,17 @@ extern gboolean ghex_get_data(GtkWidget *hex_widget, guint length, guint endiann
 extern doc_t *heraia_hex_document_new(heraia_struct_t *main_struct, char *filename);
 extern HERAIA_ERROR heraia_hex_document_save(doc_t *current_doc);
 extern HERAIA_ERROR heraia_hex_document_save_as(doc_t *current_doc, gchar *filename);
+
 extern gchar *heraia_hex_document_get_filename(Heraia_Document *hex_doc);
 extern gchar *doc_t_document_get_filename(doc_t *doc);
+
 extern guint64 ghex_file_size(Heraia_Hex *gh);
+
 extern guint64 ghex_get_cursor_position(GtkWidget *hex_widget);
 extern void ghex_set_cursor_position(GtkWidget *hex_widget, guint64 position);
+
 extern gboolean ghex_find_forward(doc_t *doc, guchar *search_buffer, guint buffer_size, guint64 *position);
+extern gboolean ghex_find_backward(doc_t *doc, guchar *search_buffer, guint buffer_size, guint64 *position);
 
 extern selection_t *ghex_get_selection(GtkWidget *hex_widget);
 

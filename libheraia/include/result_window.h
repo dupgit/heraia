@@ -29,6 +29,17 @@
 #ifndef _HERAIA_RESULT_WINDOW_H_
 #define _HERAIA_RESULT_WINDOW_H_
 
+/**
+ * Columns definition for the GtkListStore
+ */
+enum {
+  R_LS_HEX,
+  R_LS_ASCII,
+  R_LS_POS,
+  R_LS_N_COLUMNS
+};
+
+
 extern void result_window_show(GtkWidget *widget, gpointer data);
 extern void result_window_init_interface(heraia_struct_t *main_struct);
 

@@ -1,3 +1,8 @@
+03.09.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * find previous and find all (still needs to be displayed in the result
+       window)
+
 02.09.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Corrected a bug that crashed heraia when using "Go to..." with no

@@ -454,16 +454,6 @@
       </object>
     </child>
   </object>
-  <object class="GtkListStore" id="result_liststore">
-    <columns>
-      <!-- column-name result_hexa -->
-      <column type="gchar"/>
-      <!-- column-name result_text -->
-      <column type="gchar"/>
-      <!-- column-name result_position -->
-      <column type="guint64"/>
-    </columns>
-  </object>
   <object class="GtkWindow" id="plugin_list_window">
     <property name="title" translatable="yes">Plugins list</property>
     <property name="icon">pixmaps/logo_with_more_transparency.png</property>
@@ -1709,7 +1699,10 @@ POSSIBILITY OF SUCH DAMAGES.
             <child>
               <object class="GtkAlignment" id="alignment3">
                 <property name="visible">True</property>
-                <property name="left_padding">12</property>
+                <property name="top_padding">2</property>
+                <property name="bottom_padding">2</property>
+                <property name="left_padding">2</property>
+                <property name="right_padding">2</property>
                 <child>
                   <object class="GtkNotebook" id="result_notebook">
                     <property name="visible">True</property>
@@ -1799,10 +1792,10 @@ POSSIBILITY OF SUCH DAMAGES.
             <child>
               <object class="GtkAlignment" id="find_al">
                 <property name="visible">True</property>
-                <property name="top_padding">2</property>
-                <property name="bottom_padding">2</property>
-                <property name="left_padding">12</property>
-                <property name="right_padding">2</property>
+                <property name="top_padding">4</property>
+                <property name="bottom_padding">4</property>
+                <property name="left_padding">4</property>
+                <property name="right_padding">4</property>
                 <child>
                   <placeholder/>
                 </child>
@@ -1927,10 +1920,10 @@ POSSIBILITY OF SUCH DAMAGES.
             <child>
               <object class="GtkAlignment" id="fr_find_al">
                 <property name="visible">True</property>
-                <property name="top_padding">2</property>
-                <property name="bottom_padding">2</property>
-                <property name="left_padding">12</property>
-                <property name="right_padding">2</property>
+                <property name="top_padding">4</property>
+                <property name="bottom_padding">4</property>
+                <property name="left_padding">4</property>
+                <property name="right_padding">4</property>
                 <child>
                   <placeholder/>
                 </child>
@@ -1957,10 +1950,10 @@ POSSIBILITY OF SUCH DAMAGES.
             <child>
               <object class="GtkAlignment" id="fr_replace_al">
                 <property name="visible">True</property>
-                <property name="top_padding">2</property>
-                <property name="bottom_padding">2</property>
-                <property name="left_padding">12</property>
-                <property name="right_padding">2</property>
+                <property name="top_padding">4</property>
+                <property name="bottom_padding">4</property>
+                <property name="left_padding">4</property>
+                <property name="right_padding">4</property>
                 <child>
                   <placeholder/>
                 </child>
