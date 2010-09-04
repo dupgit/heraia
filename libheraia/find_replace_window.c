@@ -216,12 +216,15 @@ static void find_all_bt_clicked(GtkWidget *widget, gpointer data)
                 }
         }
 
-    for (i = 0; i < all_pos->len; i++)
+    if (all_pos != NULL)
         {
-            log_message(main_struct, G_LOG_LEVEL_DEBUG, "%d :\t%lu", i, g_array_index(all_pos, guint64, i));
-        }
+            for (i = 0; i < all_pos->len; i++)
+                {
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, "%d :\t%lu", i, g_array_index(all_pos, guint64, i));
+                }
 
-    g_array_free(all_pos, TRUE);
+            g_array_free(all_pos, TRUE);
+        }
 }
 
 

@@ -68,8 +68,51 @@ void on_quit_activate(GtkWidget *widget, gpointer data)
 void on_new_activate(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
+    Heraia_Document *new_hex_doc = NULL;
+    GtkWidget *new_hex_widget = NULL;
+    doc_t *doc = NULL;
 
-    log_message(main_struct, G_LOG_LEVEL_WARNING, Q_("Not implemented Yet (Please contribute !)"));
+    new_hex_doc = hex_document_new();
+
+    if (new_hex_doc != NULL)
+        {
+            new_hex_doc->file_name = g_strdup_printf(Q_("No name"));
+            new_hex_doc->changed = TRUE;
+
+            /* creating a new view to this new document */
+            new_hex_widget = hex_document_add_view(new_hex_doc);
+
+            /* Sets some option : insert mode */
+            gtk_hex_set_insert_mode(GTK_HEX(new_hex_widget), TRUE);
+            gtk_hex_show_offsets(GTK_HEX(new_hex_widget), is_toggle_button_activated(main_struct->xmls->main, "mp_display_offset_bt"));
+
+            /* signal connection on cursor moves */
+            connect_cursor_moved_signal(main_struct, new_hex_widget);
+
+            /* joining those two new structures in one */
+            doc = new_doc_t(new_hex_doc, new_hex_widget);
+
+            /* Adding this new doc to the list of docs (here a GPtrArray) */
+            g_ptr_array_add(main_struct->documents, doc);
+
+            add_new_tab_in_main_window(main_struct, doc);
+            set_notebook_tab_label_color(main_struct, TRUE);
+
+            grey_main_widgets(main_struct->xmls->main, FALSE);
+
+            log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Hexwidget : %p"), doc->hex_widget);
+
+            /* updating the window name */
+            update_main_window_name(main_struct);
+
+            if (main_struct->current_doc != NULL)
+                {
+                    /* Not thread safe here ? */
+                    main_struct->event = HERAIA_REFRESH_NEW_FILE;
+                    refresh_event_handler(main_struct->current_doc->hex_widget, main_struct);
+                }
+
+        }
 }
 
 
@@ -2292,8 +2335,8 @@ void add_new_tab_in_main_window(heraia_struct_t *main_struct, doc_t *doc)
     gtk_widget_show_all(vbox);
     tab_num = gtk_notebook_append_page_menu(notebook, vbox, hbox, menu_label);
 
-    gtk_notebook_set_current_page(notebook, tab_num);
     main_struct->current_doc = doc;
+    gtk_notebook_set_current_page(notebook, tab_num);
 }
 
 

@@ -1,3 +1,9 @@
+04.09.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Creating a new document is now possible an the new sub menu from File
+       menu is now functionnal ! Bug when saving the file : it saves it without
+       prompting the user !
+
 03.09.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * find previous and find all (still needs to be displayed in the result

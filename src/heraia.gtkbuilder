@@ -1792,10 +1792,10 @@ POSSIBILITY OF SUCH DAMAGES.
             <child>
               <object class="GtkAlignment" id="find_al">
                 <property name="visible">True</property>
-                <property name="top_padding">4</property>
-                <property name="bottom_padding">4</property>
-                <property name="left_padding">4</property>
-                <property name="right_padding">4</property>
+                <property name="top_padding">2</property>
+                <property name="bottom_padding">2</property>
+                <property name="left_padding">2</property>
+                <property name="right_padding">2</property>
                 <child>
                   <placeholder/>
                 </child>
@@ -1920,10 +1920,10 @@ POSSIBILITY OF SUCH DAMAGES.
             <child>
               <object class="GtkAlignment" id="fr_find_al">
                 <property name="visible">True</property>
-                <property name="top_padding">4</property>
-                <property name="bottom_padding">4</property>
-                <property name="left_padding">4</property>
-                <property name="right_padding">4</property>
+                <property name="top_padding">2</property>
+                <property name="bottom_padding">2</property>
+                <property name="left_padding">2</property>
+                <property name="right_padding">2</property>
                 <child>
                   <placeholder/>
                 </child>
@@ -1950,10 +1950,10 @@ POSSIBILITY OF SUCH DAMAGES.
             <child>
               <object class="GtkAlignment" id="fr_replace_al">
                 <property name="visible">True</property>
-                <property name="top_padding">4</property>
-                <property name="bottom_padding">4</property>
-                <property name="left_padding">4</property>
-                <property name="right_padding">4</property>
+                <property name="top_padding">2</property>
+                <property name="bottom_padding">2</property>
+                <property name="left_padding">2</property>
+                <property name="right_padding">2</property>
                 <child>
                   <placeholder/>
                 </child>
