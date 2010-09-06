@@ -523,9 +523,9 @@ void on_find_activate(GtkWidget *widget, gpointer data)
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
 
     if (main_struct != NULL && main_struct->current_doc != NULL)
-    {
-        find_window_show(widget, main_struct);
-    }
+        {
+            find_window_show(widget, main_struct);
+        }
 }
 
 
@@ -539,9 +539,9 @@ void on_fr_activate(GtkWidget *widget, gpointer data)
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
 
     if (main_struct != NULL && main_struct->current_doc != NULL)
-    {
-        fr_window_show(widget, main_struct);
-    }
+        {
+            fr_window_show(widget, main_struct);
+        }
 }
 
 
@@ -2212,11 +2212,16 @@ void init_window_states(heraia_struct_t *main_struct)
 
                     /* Goto dialog window */
                     dialog_box = heraia_get_widget(main_struct->xmls->main, "goto_dialog");
-                    if (main_struct->win_prop->goto_window->displayed == TRUE)
+                    if (main_struct->win_prop->goto_window->displayed == TRUE && main_struct->current_doc != NULL)
                         {
                             gtk_window_move(GTK_WINDOW(dialog_box), main_struct->win_prop->goto_window->x, main_struct->win_prop->goto_window->y);
                             gtk_window_resize(GTK_WINDOW(dialog_box), main_struct->win_prop->goto_window->width, main_struct->win_prop->goto_window->height);
                             gtk_widget_show_all(dialog_box);
+                        }
+                    else
+                        {
+                            /* if the window is not displayed modifies it's properties accordingly */
+                            main_struct->win_prop->goto_window->displayed = FALSE;
                         }
 
                     /* result window */
@@ -2230,20 +2235,30 @@ void init_window_states(heraia_struct_t *main_struct)
 
                     /* find window */
                     dialog_box = heraia_get_widget(main_struct->xmls->main, "find_window");
-                    if (main_struct->win_prop->find_window->displayed == TRUE)
+                    if (main_struct->win_prop->find_window->displayed == TRUE && main_struct->current_doc != NULL)
                         {
                             gtk_window_move(GTK_WINDOW(dialog_box), main_struct->win_prop->find_window->x, main_struct->win_prop->find_window->y);
                             gtk_window_resize(GTK_WINDOW(dialog_box), main_struct->win_prop->find_window->width, main_struct->win_prop->find_window->height);
                             gtk_widget_show_all(dialog_box);
                         }
+                    else
+                        {
+                            /* if the window is not displayed modifies it's properties accordingly */
+                            main_struct->win_prop->find_window->displayed = FALSE;
+                        }
 
                     /* find and replace window */
                     dialog_box = heraia_get_widget(main_struct->xmls->main, "fr_window");
-                    if (main_struct->win_prop->fr_window->displayed == TRUE)
+                    if (main_struct->win_prop->fr_window->displayed == TRUE && main_struct->current_doc != NULL)
                         {
                             gtk_window_move(GTK_WINDOW(dialog_box), main_struct->win_prop->fr_window->x, main_struct->win_prop->fr_window->y);
                             gtk_window_resize(GTK_WINDOW(dialog_box), main_struct->win_prop->fr_window->width, main_struct->win_prop->fr_window->height);
                             gtk_widget_show_all(dialog_box);
+                        }
+                    else
+                        {
+                            /* if the window is not displayed modifies it's properties accordingly */
+                            main_struct->win_prop->fr_window->displayed = FALSE;
                         }
 
                     /* About Box */
