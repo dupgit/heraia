@@ -239,7 +239,7 @@ static void change_endianness(guint len, guint endianness, guchar *result)
  *              copied bytes.
  *  @return TRUE if everything went ok, FALSE otherwise
  */
-gboolean ghex_memcpy(Heraia_Hex *gh, guint pos, guint len, guint endianness, guchar *result)
+gboolean ghex_memcpy(Heraia_Hex *gh, guint64 pos, guint len, guint endianness, guchar *result)
 {
     guint i;
 
@@ -268,8 +268,8 @@ gboolean ghex_memcpy(Heraia_Hex *gh, guint pos, guint len, guint endianness, guc
 
 
 /**
- *  Gets the data from the hexwidget, a wrapper to the ghex_memcpy
- *  function.
+ *  Gets the data from the hexwidget under the cursor, a wrapper to the
+ *  ghex_memcpy function.
  *  @warning guchar *c MUST have been pre allocated BEFORE the call.
  *
  * @param data_window : data interpretor window structure
@@ -277,16 +277,44 @@ gboolean ghex_memcpy(Heraia_Hex *gh, guint pos, guint len, guint endianness, guc
  *        to *c
  * @param endianness : H_DI_BIG_ENDIAN, H_DI_MIDDLE_ENDIAN or H_DI_LITTLE_ENDIAN
  * @param c : a previously g_malloc'ed gchar * string that will contain
- *              copied bytes.
+ *            copied bytes.
  */
 gboolean ghex_get_data(GtkWidget *hex_widget, guint length, guint endianness, guchar *c)
+{
+    Heraia_Hex *gh = GTK_HEX(hex_widget);
+
+    if (gh != NULL)
+        {
+            return ghex_get_data_position(hex_widget, gtk_hex_get_cursor(gh), length, endianness, c);
+        }
+    else
+        {
+            return FALSE;
+        }
+}
+
+
+/**
+ *  Gets the data from the hexwidget, a wrapper to the ghex_memcpy
+ *  function.
+ *  @warning guchar *c MUST have been pre allocated BEFORE the call.
+ *
+ * @param data_window : data interpretor window structure
+ * @param pos : position in the file where we want to get the data
+ * @param length : can be anything but MUST be strictly less than the size allocated
+ *        to *c
+ * @param endianness : H_DI_BIG_ENDIAN, H_DI_MIDDLE_ENDIAN or H_DI_LITTLE_ENDIAN
+ * @param c : a previously g_malloc'ed gchar * string that will contain
+ *            copied bytes.
+ */
+gboolean ghex_get_data_position(GtkWidget *hex_widget, guint64 pos, guint length, guint endianness, guchar *c)
 {
     gboolean result = FALSE;
     Heraia_Hex *gh = GTK_HEX(hex_widget);
 
     if (gh != NULL)
         {
-            result = ghex_memcpy(gh, gtk_hex_get_cursor(gh), length, endianness, c);
+            result = ghex_memcpy(gh, pos, length, endianness, c);
         }
     else
         {
@@ -498,4 +526,71 @@ void close_doc_t(doc_t *current_doc)
             gtk_widget_destroy(current_doc->hex_widget);
             g_free(current_doc);
         }
+}
+
+
+/** Thoses functions below where taken directly from the libgtkhex itself. This
+ * is tools to display ascii or hex text
+ */
+
+/*
+ * format_[x|a]block() formats contents of the buffer
+ * into displayable text in hex or ascii, respectively
+ */
+gint format_xblock(GtkHex *gh, gchar *out, guint start, guint end)
+{
+    gint i = 0;
+    gint j = 0;
+    gint low = 0;
+    gint high = 0;
+    guchar c;
+
+    for (i = start, j = 0; i < end; i++)
+        {
+            c = gtk_hex_get_byte(gh, i);
+            low = c & 0x0F;
+            high = (c & 0xF0) >> 4;
+
+            out[j] = ((high < 10)?(high + '0'):(high - 10 + 'A'));
+            j++;
+            out[j] = ((low < 10)?(low + '0'):(low - 10 + 'A'));
+            j++;
+
+            if (i % gh->group_type == 0)
+                {
+                    out[j] = ' ';
+                    j++;
+                }
+        }
+
+    out[j] = 0;
+
+    return j;
+}
+
+
+gint format_ablock(GtkHex *gh, gchar *out, guint start, guint end)
+{
+    gint i = 0;
+    gint j = 0;
+    guchar c;
+
+    for(i = start, j = 0; i < end; i++, j++)
+        {
+            c = gtk_hex_get_byte(gh, i);
+
+            if (is_displayable(c))
+                {
+                    out[j] = c;
+                }
+            else
+                {
+                    out[j] = '.';
+                }
+        }
+
+    j++;
+    out[j] = 0;
+
+    return end - start;
 }

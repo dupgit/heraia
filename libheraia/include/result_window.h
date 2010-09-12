@@ -31,16 +31,20 @@
 
 /**
  * Columns definition for the GtkListStore
+ * Used for :
+ *  - find all button
  */
 enum {
+  R_LS_POS,
   R_LS_HEX,
   R_LS_ASCII,
-  R_LS_POS,
   R_LS_N_COLUMNS
 };
 
-
 extern void result_window_show(GtkWidget *widget, gpointer data);
 extern void result_window_init_interface(heraia_struct_t *main_struct);
+
+extern void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_pos, guint size);
+
 
 #endif /* _HERAIA_RESULT_WINDOW_H_ */

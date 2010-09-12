@@ -223,6 +223,8 @@ static void find_all_bt_clicked(GtkWidget *widget, gpointer data)
                     log_message(main_struct, G_LOG_LEVEL_DEBUG, "%d :\t%lu", i, g_array_index(all_pos, guint64, i));
                 }
 
+            rw_add_one_tab_from_find_all_bt(main_struct, all_pos, buffer_size);
+
             g_array_free(all_pos, TRUE);
         }
 }
