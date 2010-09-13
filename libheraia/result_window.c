@@ -136,18 +136,9 @@ void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_p
     for (i = 0; i < all_pos->len; i++)
         {
             pos = g_array_index(all_pos, guint64, i);
-            if (pos - 4 > 0)
-                {
-                    pos = pos - 4;
-                }
-            else
-                {
-                    pos = 0;
-                }
 
             if (pos + buffer_size > ghex_file_size(GTK_HEX(current_doc->hex_widget)))
                 {
-                    pos = pos + 4;
                     gap = ghex_file_size(GTK_HEX(current_doc->hex_widget)) - pos - size;
                     if (gap < 0)
                         {
@@ -156,11 +147,20 @@ void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_p
                     pos = pos - gap;
                     buffer_size = 2 * gap + size;
                 }
+            else if (pos - 4 > 0)
+                {
+                    pos = pos - 4;
+                }
+            else
+                {
+                    pos = 0;
+                }
+
 
             ascii_buffer = ghex_get_data_to_ascii(current_doc->hex_widget, pos, buffer_size, endianness);
             hex_buffer = ghex_get_data_to_hex(current_doc->hex_widget, pos, buffer_size, endianness);
 
-            log_message(main_struct, G_LOG_LEVEL_DEBUG, "%d : %s - %s", i, ascii_buffer, hex_buffer);
+            log_message(main_struct, G_LOG_LEVEL_DEBUG, "%d : %d, %s - %s", pos, buffer_size, ascii_buffer, hex_buffer);
 
             g_free(ascii_buffer);
             g_free(hex_buffer);

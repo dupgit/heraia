@@ -247,7 +247,7 @@ gboolean ghex_memcpy(Heraia_Hex *gh, guint64 pos, guint len, guint endianness, g
         {
             return FALSE;
         }
-    else if ((pos < 0) || ((pos+len) > ghex_file_size(gh))) /* pos located in the file limits ! */
+    else if ((pos < 0) || ((pos+len-1) > ghex_file_size(gh))) /* pos located in the file limits ! */
         {
             return FALSE;
         }

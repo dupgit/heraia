@@ -1,3 +1,7 @@
+13.09.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Working on the result window for the 'find all' button
+
 06.09.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Now find,find and replace and goto windows are not displayed if a
