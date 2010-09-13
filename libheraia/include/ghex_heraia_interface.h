@@ -30,6 +30,8 @@
 extern gboolean ghex_memcpy(Heraia_Hex *gh, guint64 pos, guint len, guint endianness, guchar *result);
 extern gboolean ghex_get_data(GtkWidget *hex_widget, guint length, guint endianness, guchar *c);
 extern gboolean ghex_get_data_position(GtkWidget *hex_widget, guint64 pos, guint length, guint endianness, guchar *c);
+extern guchar *ghex_get_data_to_ascii(GtkWidget *hex_widget, guint64 pos, guint length, guint endianness);
+extern guchar *ghex_get_data_to_hex(GtkWidget *hex_widget, guint64 pos, guint length, guint endianness);
 
 extern doc_t *heraia_hex_document_new(heraia_struct_t *main_struct, char *filename);
 extern HERAIA_ERROR heraia_hex_document_save(doc_t *current_doc);
@@ -53,9 +55,6 @@ extern void close_doc_t(doc_t *current_doc);
 
 
 /* From libgtkhex */
-extern gint format_xblock(GtkHex *gh, gchar *out, guint start, guint end);
-extern gint format_ablock(GtkHex *gh, gchar *out, guint start, guint end);
-
 #define is_displayable(c) (((c) >= 0x20) && ((c) < 0x7f))
 
 #endif /* _GHEX_HERAIA_INTERFACE_H_ */

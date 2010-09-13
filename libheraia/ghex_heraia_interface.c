@@ -272,7 +272,7 @@ gboolean ghex_memcpy(Heraia_Hex *gh, guint64 pos, guint len, guint endianness, g
  *  ghex_memcpy function.
  *  @warning guchar *c MUST have been pre allocated BEFORE the call.
  *
- * @param data_window : data interpretor window structure
+ * @param hex_widget : MUST be a Heraia_Hex widget
  * @param length : can be anything but MUST be strictly less than the size allocated
  *        to *c
  * @param endianness : H_DI_BIG_ENDIAN, H_DI_MIDDLE_ENDIAN or H_DI_LITTLE_ENDIAN
@@ -299,7 +299,7 @@ gboolean ghex_get_data(GtkWidget *hex_widget, guint length, guint endianness, gu
  *  function.
  *  @warning guchar *c MUST have been pre allocated BEFORE the call.
  *
- * @param data_window : data interpretor window structure
+ * @param hex_widget : MUST be a Heraia_Hex widget
  * @param pos : position in the file where we want to get the data
  * @param length : can be anything but MUST be strictly less than the size allocated
  *        to *c
@@ -324,6 +324,115 @@ gboolean ghex_get_data_position(GtkWidget *hex_widget, guint64 pos, guint length
     return result;
 }
 
+
+/**
+ * Gets data from a defined position and formats it in an ascii displayable form
+ * @param hex_widget : MUST be a Heraia_Hex widget
+ * @param pos : position in the file where we want to get the data
+ * @param length : length of the data to get
+ * @param endianness : H_DI_BIG_ENDIAN, H_DI_MIDDLE_ENDIAN or H_DI_LITTLE_ENDIAN
+ * @return the newly allocated string that contains the ascii translation from
+ *         the data or NULL if something went wrong.
+ */
+guchar *ghex_get_data_to_ascii(GtkWidget *hex_widget, guint64 pos, guint length, guint endianness)
+{
+    Heraia_Hex *gh = GTK_HEX(hex_widget);
+    guchar *c = NULL;
+    guchar *result = NULL;
+    gint i = 0;
+
+    c = (guchar *) g_malloc0 (sizeof(guchar)*(length + 1));
+
+    if (ghex_memcpy(gh, pos, length, endianness, c))
+        {
+
+            result = (guchar *) g_malloc0 (sizeof(guchar)*(length + 1));
+
+            for(i = 0; i < length; i++)
+                {
+                    if (is_displayable(c[i]))
+                        {
+                            result[i] = c[i];
+                        }
+                    else
+                        {
+                            result[i] = '.';
+                        }
+                }
+
+            i++;
+            result[i] = (guchar) 0;
+
+            g_free(c);
+
+            return result;
+        }
+    else
+        {
+            g_free(c);
+            return NULL;
+        }
+}
+
+
+/**
+ * Gets data from a defined position and formats it in an hex displayable form
+ * @param hex_widget : MUST be a Heraia_Hex widget
+ * @param pos : position in the file where we want to get the data
+ * @param length : length of the data to get
+ * @param endianness : H_DI_BIG_ENDIAN, H_DI_MIDDLE_ENDIAN or H_DI_LITTLE_ENDIAN
+ * @return the newly allocated string that contains the ascii translation from
+ *         the data or NULL if something went wrong.
+ */
+guchar *ghex_get_data_to_hex(GtkWidget *hex_widget, guint64 pos, guint length, guint endianness)
+{
+    Heraia_Hex *gh = GTK_HEX(hex_widget);
+    static guchar hex[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+    guchar *c = NULL;
+    guchar *result = NULL;
+    gint i = 0;
+    gint j = 0;
+    gint high = 0;
+    gint low = 0;
+
+    c = (guchar *) g_malloc0 (sizeof(guchar)*(length + 1));
+
+    if (ghex_memcpy(gh, pos, length, endianness, c))
+        {
+
+            result = (guchar *) g_malloc0 (sizeof(guchar)*( 3 * length + 1));
+
+            j = 0;
+            for(i = 0; i < length; i++)
+                {
+                    low = c[i] & 0x0F;
+                    high = (c[i] & 0xF0) >> 4;
+
+                    result[j] = hex[high];
+                    j++;
+                    result[j] = hex[low];
+                    j++;
+
+                    if (i % gh->group_type == 0)
+                        {
+                            result[j] = ' ';
+                            j++;
+                        }
+                }
+
+            j++;
+            result[j] = (guchar) 0;
+
+            g_free(c);
+
+            return result;
+        }
+    else
+        {
+            g_free(c);
+            return NULL;
+        }
+}
 
 /**
  *  Returns the file size of an opened Heraia_Hex document.
@@ -526,71 +635,4 @@ void close_doc_t(doc_t *current_doc)
             gtk_widget_destroy(current_doc->hex_widget);
             g_free(current_doc);
         }
-}
-
-
-/** Thoses functions below where taken directly from the libgtkhex itself. This
- * is tools to display ascii or hex text
- */
-
-/*
- * format_[x|a]block() formats contents of the buffer
- * into displayable text in hex or ascii, respectively
- */
-gint format_xblock(GtkHex *gh, gchar *out, guint start, guint end)
-{
-    gint i = 0;
-    gint j = 0;
-    gint low = 0;
-    gint high = 0;
-    guchar c;
-
-    for (i = start, j = 0; i < end; i++)
-        {
-            c = gtk_hex_get_byte(gh, i);
-            low = c & 0x0F;
-            high = (c & 0xF0) >> 4;
-
-            out[j] = ((high < 10)?(high + '0'):(high - 10 + 'A'));
-            j++;
-            out[j] = ((low < 10)?(low + '0'):(low - 10 + 'A'));
-            j++;
-
-            if (i % gh->group_type == 0)
-                {
-                    out[j] = ' ';
-                    j++;
-                }
-        }
-
-    out[j] = 0;
-
-    return j;
-}
-
-
-gint format_ablock(GtkHex *gh, gchar *out, guint start, guint end)
-{
-    gint i = 0;
-    gint j = 0;
-    guchar c;
-
-    for(i = start, j = 0; i < end; i++, j++)
-        {
-            c = gtk_hex_get_byte(gh, i);
-
-            if (is_displayable(c))
-                {
-                    out[j] = c;
-                }
-            else
-                {
-                    out[j] = '.';
-                }
-        }
-
-    j++;
-    out[j] = 0;
-
-    return end - start;
 }

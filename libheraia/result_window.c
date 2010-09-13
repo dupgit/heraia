@@ -118,23 +118,17 @@ void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_p
     GtkListStore *lstore =  NULL;     /**< List store that will contain results                  */
     guint i = 0;
     guint64 pos = 0;
-    doc_t * current_doc = NULL;       /**< Current document on which we want to do the search    */
+    doc_t *current_doc = NULL;        /**< Current document on which we want to do the search    */
     gint endianness = LITTLE_ENDIAN;  /**< endianness as selected in the data interpretor window */
     gint buffer_size = 0;             /**< buffer size (bigger than size in order to display     */
                                       /**  some byte before and after the results)               */
     guchar *ascii_buffer = NULL;      /**< the ascii buffer                                      */
     guchar *hex_buffer = NULL;        /**< the hex buffer                                        */
+    gint gap = 0;
 
     current_doc = main_struct->current_doc;
     endianness = di_get_endianness(main_struct); /* Endianness must not change between results */
     buffer_size = 8 + size;  /* we want to have 4 bytes before and 4 bytes after the result to be displayed */
-
-    /* Added one NULL end byte */
-    ascii_buffer = (guchar *) g_malloc0((buffer_size + 1) * sizeof(guchar) );
-
-    /* On byte expands onto 2 chars + one space. Add one NULL end byte */
-    hex_buffer = (guchar *) g_malloc0((3 * buffer_size + 1) * sizeof(guchar));
-
 
     /* The columns :  R_LS_POS (G_TYPE_INT64), R_LS_HEX (G_TYPE_STRING), R_LS_ASCII (G_TYPE_STRING) */
     lstore = gtk_list_store_new(R_LS_N_COLUMNS, G_TYPE_INT64, G_TYPE_STRING, G_TYPE_STRING);
@@ -151,14 +145,27 @@ void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_p
                     pos = 0;
                 }
 
-            format_xblock(GTK_HEX(current_doc->hex_widget), ascii_buffer, pos, pos + buffer_size);
-            format_ablock(GTK_HEX(current_doc->hex_widget), hex_buffer, pos, pos + buffer_size);
+            if (pos + buffer_size > ghex_file_size(GTK_HEX(current_doc->hex_widget)))
+                {
+                    pos = pos + 4;
+                    gap = ghex_file_size(GTK_HEX(current_doc->hex_widget)) - pos - size;
+                    if (gap < 0)
+                        {
+                            gap = 0;
+                        }
+                    pos = pos - gap;
+                    buffer_size = 2 * gap + size;
+                }
+
+            ascii_buffer = ghex_get_data_to_ascii(current_doc->hex_widget, pos, buffer_size, endianness);
+            hex_buffer = ghex_get_data_to_hex(current_doc->hex_widget, pos, buffer_size, endianness);
 
             log_message(main_struct, G_LOG_LEVEL_DEBUG, "%d : %s - %s", i, ascii_buffer, hex_buffer);
-        }
 
-    g_free(ascii_buffer);
-    g_free(hex_buffer);
+            g_free(ascii_buffer);
+            g_free(hex_buffer);
+
+        }
 }
 
 
