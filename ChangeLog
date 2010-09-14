@@ -1,3 +1,8 @@
+14.09.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Corrected some bugs in the manner to 'center' results from the find all
+       button.
+
 13.09.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Working on the result window for the 'find all' button

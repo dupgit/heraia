@@ -128,7 +128,6 @@ void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_p
 
     current_doc = main_struct->current_doc;
     endianness = di_get_endianness(main_struct); /* Endianness must not change between results */
-    buffer_size = 8 + size;  /* we want to have 4 bytes before and 4 bytes after the result to be displayed */
 
     /* The columns :  R_LS_POS (G_TYPE_INT64), R_LS_HEX (G_TYPE_STRING), R_LS_ASCII (G_TYPE_STRING) */
     lstore = gtk_list_store_new(R_LS_N_COLUMNS, G_TYPE_INT64, G_TYPE_STRING, G_TYPE_STRING);
@@ -137,7 +136,7 @@ void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_p
         {
             pos = g_array_index(all_pos, guint64, i);
 
-            if (pos + buffer_size > ghex_file_size(GTK_HEX(current_doc->hex_widget)))
+            if ((pos + buffer_size) > ghex_file_size(GTK_HEX(current_doc->hex_widget)))
                 {
                     gap = ghex_file_size(GTK_HEX(current_doc->hex_widget)) - pos - size;
                     if (gap < 0)
@@ -147,13 +146,18 @@ void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_p
                     pos = pos - gap;
                     buffer_size = 2 * gap + size;
                 }
-            else if (pos - 4 > 0)
-                {
-                    pos = pos - 4;
-                }
             else
                 {
-                    pos = 0;
+                    if (pos > 4)
+                        {
+                            pos = pos - 4;
+                            buffer_size = 8 + size; /* we want to have 4 bytes before and 4 bytes after the result to be displayed */
+                        }
+                    else
+                        {
+                            buffer_size = 2 * pos + size;
+                            pos = 0;
+                        }
                 }
 
 
