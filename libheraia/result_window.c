@@ -112,12 +112,16 @@ static void result_window_close(GtkWidget *widget, gpointer data)
 
 /**
  * Add one tab for the results from the find all button
+ * @param main_struct : main structure of heraia
+ * @param all_pos : A GArray of all found positions
+ * @param size : size of the string searched for (in bytes)
  */
 void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_pos, guint size)
 {
     GtkListStore *lstore =  NULL;     /**< List store that will contain results                  */
     guint i = 0;
-    guint64 pos = 0;
+    guint64 pos = 0;                  /**< a calculated position to center the search string     */
+    guint64 real_pos = 0;             /**< real position                                         */
     doc_t *current_doc = NULL;        /**< Current document on which we want to do the search    */
     gint endianness = LITTLE_ENDIAN;  /**< endianness as selected in the data interpretor window */
     gint buffer_size = 0;             /**< buffer size (bigger than size in order to display     */
@@ -125,6 +129,18 @@ void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_p
     guchar *ascii_buffer = NULL;      /**< the ascii buffer                                      */
     guchar *hex_buffer = NULL;        /**< the hex buffer                                        */
     gint gap = 0;
+    GtkTreeIter iter;
+    guchar *label_text = NULL;        /**< text label                                           */
+
+    GtkWidget *vbox = NULL;           /**< used for vbox creation                 */
+    GtkWidget *notebook = NULL;       /**< result_notebook from heraia.gtkbuilder */
+    GtkWidget *tview = NULL;          /**< the tree view                          */
+    GtkWidget *tab_label = NULL;      /**< tab's label                            */
+    GtkCellRenderer *renderer = NULL;
+    GtkTreeViewColumn *column = NULL;
+    gint tab_num = -1;                /**< new tab's index                        */
+    gchar *markup = NULL;             /**< markup text                            */
+
 
     current_doc = main_struct->current_doc;
     endianness = di_get_endianness(main_struct); /* Endianness must not change between results */
@@ -135,6 +151,7 @@ void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_p
     for (i = 0; i < all_pos->len; i++)
         {
             pos = g_array_index(all_pos, guint64, i);
+            real_pos = pos;
 
             if ((pos + buffer_size) > ghex_file_size(GTK_HEX(current_doc->hex_widget)))
                 {
@@ -160,16 +177,48 @@ void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_p
                         }
                 }
 
-
             ascii_buffer = ghex_get_data_to_ascii(current_doc->hex_widget, pos, buffer_size, endianness);
             hex_buffer = ghex_get_data_to_hex(current_doc->hex_widget, pos, buffer_size, endianness);
 
-            log_message(main_struct, G_LOG_LEVEL_DEBUG, "%d : %d, %s - %s", pos, buffer_size, ascii_buffer, hex_buffer);
+            gtk_list_store_append(lstore, &iter);
+            gtk_list_store_set(lstore, &iter, R_LS_POS, real_pos, R_LS_HEX, hex_buffer, R_LS_ASCII, ascii_buffer, -1);
+
+            /* log_message(main_struct, G_LOG_LEVEL_DEBUG, "%d : %d, %s - %s", pos, buffer_size, ascii_buffer, hex_buffer); */
 
             g_free(ascii_buffer);
             g_free(hex_buffer);
 
         }
+
+    /* Using last pos to retrive the text for the label */
+    label_text = ghex_get_data_to_ascii(current_doc->hex_widget, real_pos, size, endianness);
+
+    notebook = heraia_get_widget(main_struct->xmls->main, "result_notebook");
+    vbox = gtk_vbox_new(FALSE, 2);
+    tview = gtk_tree_view_new_with_model(GTK_TREE_MODEL(lstore));
+    gtk_box_pack_start(GTK_BOX(vbox), tview, TRUE, TRUE, 3);
+
+    renderer = gtk_cell_renderer_text_new();
+    column = gtk_tree_view_column_new_with_attributes("Position", renderer, "text", R_LS_POS, NULL);
+    gtk_tree_view_append_column(GTK_TREE_VIEW(tview), column);
+
+    column = gtk_tree_view_column_new_with_attributes("Hex", renderer, "text", R_LS_HEX, NULL);
+    gtk_tree_view_append_column(GTK_TREE_VIEW(tview), column);
+
+    column = gtk_tree_view_column_new_with_attributes("Hex", renderer, "text", R_LS_ASCII, NULL);
+    gtk_tree_view_append_column(GTK_TREE_VIEW(tview), column);
+
+    /* tab's label and menu label */
+    tab_label = gtk_label_new(NULL);
+    markup = g_markup_printf_escaped("%s", label_text);
+    gtk_label_set_markup(GTK_LABEL(tab_label), markup);
+    g_free(markup);
+
+    gtk_widget_show_all(vbox);
+    tab_num = gtk_notebook_append_page(GTK_NOTEBOOK(notebook), vbox, tab_label);
+
+    gtk_widget_show_all(notebook);
+    result_window_show(notebook, main_struct);
 }
 
 
