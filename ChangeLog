@@ -1,3 +1,9 @@
+16.09.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Refactoring the code
+     * Added icons for the new windows
+     * New menu entry result window in the Display menu (not yet connected)
+
 15.09.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Still working on the result window

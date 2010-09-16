@@ -194,7 +194,6 @@ static void find_all_bt_clicked(GtkWidget *widget, gpointer data)
     guint64 position = 0;
     guint buffer_size = 0;
     GArray *all_pos = NULL;   /**< All positions of the searched string */
-    guint i = 0;
 
     if (main_struct != NULL)
         {

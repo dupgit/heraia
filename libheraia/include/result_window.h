@@ -35,6 +35,7 @@
  *  - find all button
  */
 enum {
+  R_LS_N,
   R_LS_POS,
   R_LS_HEX,
   R_LS_ASCII,
