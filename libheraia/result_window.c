@@ -137,14 +137,14 @@ static void determine_pos_and_buffer_size(guint64 *pos, guint *buffer_size, guin
                 {
                     gap = 0;
                 }
-            *pos = *pos - gap;
+            *pos = (*pos) - gap;
             *buffer_size = 2 * gap + size;
         }
     else
         {
             if (*pos > 4)
                 {
-                    *pos = *pos - 4;
+                    *pos = (*pos) - 4;
                     *buffer_size = 8 + size; /* we want to have 4 bytes before and 4 bytes after the result to be displayed */
                 }
             else
@@ -227,23 +227,25 @@ static void add_gtk_tree_view_to_result_notebook(heraia_struct_t *main_struct, G
  */
 void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_pos, guint size)
 {
-    GtkListStore *lstore =  NULL;     /**< List store that will contain results                  */
+    GtkListStore *lstore =  NULL;     /**< List store that will contain results                    */
     guint i = 0;
-    guint64 pos = 0;                  /**< a calculated position to center the search string     */
-    guint64 real_pos = 0;             /**< real position                                         */
-    doc_t *current_doc = NULL;        /**< Current document on which we want to do the search    */
-    gint endianness = LITTLE_ENDIAN;  /**< endianness as selected in the data interpretor window */
-    guint buffer_size = 0;             /**< buffer size (bigger than size in order to display     */
-                                      /**  some byte before and after the results)               */
-    guchar *ascii_buffer = NULL;      /**< the ascii buffer                                      */
-    guchar *hex_buffer = NULL;        /**< the hex buffer                                        */
+    guint64 pos = 0;                  /**< a calculated position to center the search string       */
+    guint64 real_pos = 0;             /**< real position                                           */
+    guint64 file_size = 0 ;           /**< size of the file  during the search (should not change) */
+    doc_t *current_doc = NULL;        /**< Current document on which we want to do the search      */
+    gint endianness = LITTLE_ENDIAN;  /**< endianness as selected in the data interpretor window   */
+    guint buffer_size = 0;             /**< buffer size (bigger than size in order to display      */
+                                      /**  some byte before and after the results)                 */
+    guchar *ascii_buffer = NULL;      /**< the ascii buffer                                        */
+    guchar *hex_buffer = NULL;        /**< the hex buffer                                          */
     GtkTreeIter iter;
-    guchar *label_text = NULL;        /**< text label                                           */
+    guchar *label_text = NULL;        /**< text label                                              */
 
 
     current_doc = main_struct->current_doc;
     endianness = LITTLE_ENDIAN; /** Endianness by default (we want the search to be flat) -> However this may
                                     be modified if someone asks for */
+    file_size = ghex_file_size(GTK_HEX(current_doc->hex_widget));
 
     /* The columns :  R_LS_N (G_TYPE_UINT), R_LS_POS (G_TYPE_UINT64), R_LS_HEX (G_TYPE_STRING), R_LS_ASCII (G_TYPE_STRING) */
     lstore = gtk_list_store_new(R_LS_N_COLUMNS, G_TYPE_UINT, G_TYPE_UINT64, G_TYPE_STRING, G_TYPE_STRING);
@@ -253,7 +255,7 @@ void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_p
             pos = g_array_index(all_pos, guint64, i);
             real_pos = pos;
 
-            determine_pos_and_buffer_size(&pos, &buffer_size, size, ghex_file_size(GTK_HEX(current_doc->hex_widget)));
+            determine_pos_and_buffer_size(&pos, &buffer_size, size, file_size);
 
             ascii_buffer = ghex_get_data_to_ascii(current_doc->hex_widget, pos, buffer_size, endianness);
             hex_buffer = ghex_get_data_to_hex(current_doc->hex_widget, pos, buffer_size, endianness);

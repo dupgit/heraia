@@ -3,6 +3,7 @@
      * Refactoring the code
      * Added icons for the new windows
      * New menu entry result window in the Display menu (not yet connected)
+     * Avoid calculating file size at each loop (as it doesn't change)
 
 15.09.2010
    - Olivier Delhomme <heraia@delhomme.org>
