@@ -343,10 +343,10 @@ guchar *ghex_get_data_to_ascii(GtkWidget *hex_widget, guint64 pos, guint length,
 
     c = (guchar *) g_malloc0 (sizeof(guchar)*(length + 1));
 
-    if (ghex_memcpy(gh, pos, length, endianness, c))
+    if (ghex_memcpy(gh, pos, length, endianness, c) == TRUE)
         {
 
-            result = (guchar *) g_malloc0 (sizeof(guchar)*(length + 1));
+            result = (guchar *) g_malloc0 (sizeof(guchar)*(length + 2));
 
             for(i = 0; i < length; i++)
                 {
@@ -397,10 +397,10 @@ guchar *ghex_get_data_to_hex(GtkWidget *hex_widget, guint64 pos, guint length, g
 
     c = (guchar *) g_malloc0 (sizeof(guchar)*(length + 1));
 
-    if (ghex_memcpy(gh, pos, length, endianness, c))
+    if (ghex_memcpy(gh, pos, length, endianness, c) == TRUE)
         {
 
-            result = (guchar *) g_malloc0 (sizeof(guchar)*( 3 * length + 1));
+            result = (guchar *) g_malloc0 (sizeof(guchar)*( 3 * length + 2));
 
             j = 0;
             for(i = 0; i < length; i++)

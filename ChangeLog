@@ -1,3 +1,8 @@
+20.09.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Corrected some bugs that crashed heraia when using the find all button
+     * Roadmap adds
+
 16.09.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Refactoring the code

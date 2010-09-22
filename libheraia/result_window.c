@@ -127,32 +127,43 @@ static void result_window_close(GtkWidget *widget, gpointer data)
  */
 static void determine_pos_and_buffer_size(guint64 *pos, guint *buffer_size, guint size, guint64 file_size)
 {
-
+    guint64 a_pos = 0;
+    guint a_buf_size = 0;
     gint gap = 0;
 
-    if ((*pos + *buffer_size) > file_size)
+    a_pos = *pos;
+    a_buf_size = *buffer_size;
+
+    if ((a_pos + a_buf_size) > file_size)
         {
-            gap = file_size - *pos - size;
+            gap = file_size - a_pos - size;
             if (gap < 0)
                 {
                     gap = 0;
                 }
-            *pos = (*pos) - gap;
-            *buffer_size = 2 * gap + size;
+            else if (gap > 4)
+                    {
+                        gap = 4;
+                    }
+            a_pos = a_pos - gap;
+            a_buf_size = (2 * gap) + size;
         }
     else
         {
-            if (*pos > 4)
+            if (a_pos >= 4)
                 {
-                    *pos = (*pos) - 4;
-                    *buffer_size = 8 + size; /* we want to have 4 bytes before and 4 bytes after the result to be displayed */
+                    a_pos = a_pos - 4;
+                    a_buf_size = 8 + size; /* we want to have 4 bytes before and 4 bytes after the result to be displayed */
                 }
             else
                 {
-                    *buffer_size = 2 * (*pos) + size;
-                    *pos = 0;
+                    a_buf_size = (2 * a_pos) + size;
+                    a_pos = 0;
                 }
         }
+
+    *pos = a_pos;
+    *buffer_size = a_buf_size;
 }
 
 
@@ -263,9 +274,9 @@ void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_p
             if (ascii_buffer != NULL && hex_buffer != NULL)
                 {
                     gtk_list_store_append(lstore, &iter);
-                    gtk_list_store_set(lstore, &iter, R_LS_N, i+1, R_LS_POS, real_pos, R_LS_HEX, hex_buffer, R_LS_ASCII, ascii_buffer, -1);
+                    gtk_list_store_set(lstore, &iter, R_LS_N, i + 1, R_LS_POS, real_pos + 1, R_LS_HEX, hex_buffer, R_LS_ASCII, ascii_buffer, -1);
 
-                    log_message(main_struct, G_LOG_LEVEL_DEBUG, "%ld : %d, %s - %s", pos, buffer_size, ascii_buffer, hex_buffer);
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, "%lld : %d, %s - %s", pos, buffer_size, ascii_buffer, hex_buffer);
 
                     g_free(ascii_buffer);
                     g_free(hex_buffer);
