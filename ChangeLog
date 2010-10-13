@@ -2,6 +2,8 @@
    - Olivier Delhomme <heraia@delhomme.org>
      * Corrected a bug in the find window that prevented to search when the
        cursor of the search window was not at position 0
+     * Corrected a bug that crashed heraia (or lead the window title to be
+       messed) when closing the last opened document.
 
 20.09.2010
    - Olivier Delhomme <heraia@delhomme.org>

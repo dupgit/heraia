@@ -792,15 +792,16 @@ void on_close_activate(GtkWidget *widget, gpointer data)
         {
             /* Guessing where the user asked to close the document */
             if (GTK_IS_BUTTON(widget))
-                {
+                {   /* From the tab */
                     /* Guessing which document the user has closed */
                     tab_number = find_tab_number_from_widget(main_struct, widget);
                     closing_doc = g_ptr_array_index(main_struct->documents, tab_number);
-                    is_current_doc = closing_doc == main_struct->current_doc;
+                    is_current_doc = (closing_doc == main_struct->current_doc);
                 }
             else
-                {
+                {   /* From the menu */
                     closing_doc = main_struct->current_doc;
+                    is_current_doc = TRUE;
                 }
 
             log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Closing document %s"), doc_t_document_get_filename(closing_doc));
@@ -852,7 +853,6 @@ void on_close_activate(GtkWidget *widget, gpointer data)
 
                     /* kills the widget and the document */
                     close_doc_t(closing_doc);
-
 
                     /* Try to find out the new current document */
                     /* We do not need to update if the current doc is not closed ! */
