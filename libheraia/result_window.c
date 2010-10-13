@@ -115,6 +115,40 @@ static void result_window_close(GtkWidget *widget, gpointer data)
 
 
 /**
+ * Function called upon selection change. Changes the cursor position to the
+ * right place (should also change to the right document).
+ * @param selection : the selection that changed
+ * @param data : user data MUST be main program's structure
+ */
+static void tree_selection_changed(GtkTreeSelection *selection, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+    GtkTreeIter iter = NULL;
+    GtkTreeModel *model = NULL;
+    GtkWidget *result_notebook = NULL;
+    guint64 a_pos = 0;
+    gint
+    doc_t *the_doc = NULL;
+
+    if main_struct != NULL)
+        {
+            result_notebook = heraia_get_widget(main_struct->xmls, "result_notebook");
+
+            if (gtk_tree_selection_get_selected(selection, &model, &iter))
+                {
+                    gtk_tree_model_get(model, &iter, R_LS_POS, &a_pos, -1);*
+                    index = gtk_notebook_get_current_page(GTK_NOTEBOOK(result_notebook));
+                    the_doc = g_ptr_array_index(main_struct->results, index);
+                    if (the_doc != NULL)
+                        {
+                            /* Change file's notebook tab in main window to display the_doc document if it is possible */
+                            ghex_set_cursor_position(the_doc->hex_widget, a_pos);
+                        }
+                }
+        }
+}
+
+/**
  * Calculates the position and the associated buffer size in order that the text
  * searched for will be centered in the results
  * @param pos : Must be the position of the searched text, is returned as the

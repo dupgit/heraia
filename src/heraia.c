@@ -251,6 +251,7 @@ static heraia_struct_t *heraia_init_main_struct(gchar *heraia_path)
     main_struct->find_doc = NULL;
     main_struct->fr_find_doc = NULL;
     main_struct->fr_replace_doc = NULL;
+    main_struct->results = g_ptr_array_new();
 
     /* init global variable for the library */
     libheraia_main_struct = main_struct;

@@ -6,6 +6,8 @@
        messed) when closing the last opened document.
      * Corrected a bug when launching heraia : if no document is opened then the
        result window is not displayed (even if is was before)
+     * Call back function that will be called upon selection change (the signal
+       has still to be sat)
 
 20.09.2010
    - Olivier Delhomme <heraia@delhomme.org>
