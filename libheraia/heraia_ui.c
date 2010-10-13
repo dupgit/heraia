@@ -2226,11 +2226,15 @@ void init_window_states(heraia_struct_t *main_struct)
 
                     /* result window */
                     dialog_box = heraia_get_widget(main_struct->xmls->main, "result_window");
-                    if (main_struct->win_prop->result_window->displayed == TRUE)
+                    if (main_struct->win_prop->result_window->displayed == TRUE && main_struct->current_doc != NULL)
                         {
                             gtk_window_move(GTK_WINDOW(dialog_box), main_struct->win_prop->result_window->x, main_struct->win_prop->result_window->y);
                             gtk_window_resize(GTK_WINDOW(dialog_box), main_struct->win_prop->result_window->width, main_struct->win_prop->result_window->height);
                             gtk_widget_show_all(dialog_box);
+                        }
+                    else
+                        {
+                            main_struct->win_prop->result_window->displayed = FALSE;
                         }
 
                     /* find window */

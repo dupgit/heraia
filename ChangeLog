@@ -4,6 +4,8 @@
        cursor of the search window was not at position 0
      * Corrected a bug that crashed heraia (or lead the window title to be
        messed) when closing the last opened document.
+     * Corrected a bug when launching heraia : if no document is opened then the
+       result window is not displayed (even if is was before)
 
 20.09.2010
    - Olivier Delhomme <heraia@delhomme.org>
