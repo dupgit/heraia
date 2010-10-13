@@ -301,7 +301,7 @@ static guchar *fr_get_search_string(heraia_struct_t * main_struct, doc_t *doc, g
         {
             buffer = (guchar *) g_malloc0(sizeof(guchar) * size);
             endianness = which_endianness(main_struct);
-            result = ghex_get_data(doc->hex_widget, size, endianness, buffer);
+            result = ghex_get_data_position(doc->hex_widget, 0, size, endianness, buffer);
 
             if (result == TRUE)
                 {
