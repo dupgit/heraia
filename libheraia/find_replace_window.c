@@ -218,7 +218,7 @@ static void find_all_bt_clicked(GtkWidget *widget, gpointer data)
     if (all_pos != NULL)
         {
             rw_add_one_tab_from_find_all_bt(main_struct, all_pos, buffer_size);
-            main_struct->results = g_array_append_val(main_struct->results, current_doc);
+            g_ptr_array_add(main_struct->results, current_doc);
             g_array_free(all_pos, TRUE);
         }
 }

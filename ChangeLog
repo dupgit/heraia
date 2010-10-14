@@ -1,3 +1,8 @@
+14.10.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Now on can click on search results and it will jump to the given position
+       in the given file
+
 13.10.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Corrected a bug in the find window that prevented to search when the

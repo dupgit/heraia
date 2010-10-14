@@ -34,6 +34,8 @@ static void destroy_result_window_event(GtkWidget *widget, GdkEvent  *event, gpo
 static void result_window_close(GtkWidget *widget, gpointer data);
 static void result_window_connect_signal(heraia_struct_t *main_struct);
 
+static void tree_selection_changed(GtkTreeSelection *selection, gpointer data);
+
 static void determine_pos_and_buffer_size(guint64 *pos, guint *buffer_size, guint size, guint64 file_size);
 static void add_gtk_tree_view_to_result_notebook(heraia_struct_t *main_struct, GtkListStore *lstore, guchar *label_text);
 
@@ -123,30 +125,33 @@ static void result_window_close(GtkWidget *widget, gpointer data)
 static void tree_selection_changed(GtkTreeSelection *selection, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
-    GtkTreeIter iter = NULL;
+    GtkTreeIter iter;
     GtkTreeModel *model = NULL;
     GtkWidget *result_notebook = NULL;
     guint64 a_pos = 0;
-    gint
+    gint index = 0;
     doc_t *the_doc = NULL;
 
-    if main_struct != NULL)
+    if (main_struct != NULL && main_struct->xmls != NULL && main_struct->xmls->main != NULL)
         {
-            result_notebook = heraia_get_widget(main_struct->xmls, "result_notebook");
+            result_notebook = heraia_get_widget(main_struct->xmls->main, "result_notebook");
 
             if (gtk_tree_selection_get_selected(selection, &model, &iter))
                 {
-                    gtk_tree_model_get(model, &iter, R_LS_POS, &a_pos, -1);*
+                    gtk_tree_model_get(model, &iter, R_LS_POS, &a_pos, -1);
                     index = gtk_notebook_get_current_page(GTK_NOTEBOOK(result_notebook));
                     the_doc = g_ptr_array_index(main_struct->results, index);
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Search result index : %d "), index);
+
                     if (the_doc != NULL)
                         {
                             /* Change file's notebook tab in main window to display the_doc document if it is possible */
-                            ghex_set_cursor_position(the_doc->hex_widget, a_pos);
+                            ghex_set_cursor_position(the_doc->hex_widget, a_pos - 1);
                         }
                 }
         }
 }
+
 
 /**
  * Calculates the position and the associated buffer size in order that the text
@@ -216,6 +221,7 @@ static void add_gtk_tree_view_to_result_notebook(heraia_struct_t *main_struct, G
     GtkWidget *tab_label = NULL;      /**< tab's label                            */
     GtkCellRenderer *renderer = NULL; /**< a rennderer for the cells              */
     GtkTreeViewColumn *column = NULL; /**< columns to be added to the treeview    */
+    GtkTreeSelection *select = NULL;  /**< selection to the treeview              */
     gint tab_num = -1;                /**< new tab's index                        */
     gchar *markup = NULL;             /**< markup text                            */
 
@@ -248,6 +254,12 @@ static void add_gtk_tree_view_to_result_notebook(heraia_struct_t *main_struct, G
     renderer = gtk_cell_renderer_text_new();
     column = gtk_tree_view_column_new_with_attributes(Q_("Ascii"), renderer, "text", R_LS_ASCII, NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(tview), column);
+
+    /* Signal handling */
+    select = gtk_tree_view_get_selection(GTK_TREE_VIEW(tview));
+    gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
+    g_signal_connect(G_OBJECT(select), "changed", G_CALLBACK(tree_selection_changed), main_struct);
+
 
     /* tab's label and menu label */
     if (label_text != NULL)

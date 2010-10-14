@@ -476,7 +476,8 @@ guint64 ghex_get_cursor_position(GtkWidget *hex_widget)
  * Sets the cursor at the defined position in the hexwidget
  * @param hex_widget : the widget that displays the hex document
  * @param position : the position where we want to go
- * @warning no checks are made here (limits and such ...)
+ * @warning no checks are made here (limits and such ...). Checks are made in
+ *          the gtk_hex_set_cursor function itself.
  */
 void ghex_set_cursor_position(GtkWidget *hex_widget, guint64 position)
 {
