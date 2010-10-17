@@ -193,7 +193,7 @@ static void find_all_bt_clicked(GtkWidget *widget, gpointer data)
     gboolean result = FALSE;
     guint64 position = 0;
     guint buffer_size = 0;
-    GArray *all_pos = NULL;   /**< All positions of the searched string */
+    GArray *all_pos = NULL;    /**< All positions of the searched string               */
 
     if (main_struct != NULL)
         {
@@ -218,7 +218,6 @@ static void find_all_bt_clicked(GtkWidget *widget, gpointer data)
     if (all_pos != NULL)
         {
             rw_add_one_tab_from_find_all_bt(main_struct, all_pos, buffer_size);
-            g_ptr_array_add(main_struct->results, current_doc);
             g_array_free(all_pos, TRUE);
         }
 }

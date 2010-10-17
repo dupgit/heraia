@@ -341,6 +341,8 @@ void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_p
 
 
     current_doc = main_struct->current_doc;
+    g_ptr_array_add(main_struct->results, current_doc);
+
     endianness = LITTLE_ENDIAN; /** Endianness by default (we want the search to be flat) -> However this may
                                     be modified if someone asks for */
     file_size = ghex_file_size(GTK_HEX(current_doc->hex_widget));
@@ -410,38 +412,36 @@ void rw_remove_all_tabs(heraia_struct_t *main_struct, doc_t *doc)
     gint j = 0;
     gint len = 0;               /**< total len of result array                   */
     GtkWidget *notebook = NULL; /**< result_notebook from heraia.gtkbuilder      */
-    gpointer value = NULL;      /**< Value to compare with doc                   */
+    doc_t *value = NULL;        /**< Value to compare with doc                   */
     GArray *array = NULL;       /**< array that stores the indexes where results
                                      value is equal to doc.                      */
 
     if (main_struct != NULL && main_struct->results != NULL)
         {
+            notebook = heraia_get_widget(main_struct->xmls->main, "result_notebook");
+
             array = g_array_new(TRUE, TRUE, sizeof(gint));
 
             len = main_struct->results->len;
+
             /* looking for the results */
-            for (i = 0; i < len ; i++)
+            i = 0;
+            while (i < len)
                 {
                     value = g_ptr_array_index(main_struct->results, i);
+
                     if (value == doc)
                         {
-                            array = g_array_append_val(array, i);
+                            log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Removing index %d."), i);
+                            g_ptr_array_remove_index(main_struct->results, i);
+                            gtk_notebook_remove_page(GTK_NOTEBOOK(notebook), i);
+                            len = main_struct->results->len;
+                            i = 0;
                         }
-                }
-
-            notebook = heraia_get_widget(main_struct->xmls->main, "result_notebook");
-
-            /* destroying the results in the array and in the notebook */
-            len = array->len;
-            for (i = 0; i < len ; i++);
-                {
-                    j = g_array_index(array, gint, i);
-
-                    /* Removing the index in the results array */
-                    g_ptr_array_remove_index(main_struct->results, j);
-
-                    /* And removing it in the notebook */
-                    gtk_notebook_remove_page(GTK_NOTEBOOK(notebook), j);
+                    else
+                        {
+                            i = i + 1;
+                        }
                 }
         }
 }
