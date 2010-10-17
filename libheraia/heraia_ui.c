@@ -846,6 +846,9 @@ void on_close_activate(GtkWidget *widget, gpointer data)
                     /* Removing the index in the array */
                     g_ptr_array_remove_index(main_struct->documents, index);
 
+                    /* Removes all results beeing associated with this document */
+                    rw_remove_all_tabs(main_struct, closing_doc);
+
                     /* And removing it in the notebook */
                     notebook = heraia_get_widget(main_struct->xmls->main, "file_notebook");
                     gtk_notebook_remove_page(GTK_NOTEBOOK(notebook), index);
@@ -881,7 +884,6 @@ void on_close_activate(GtkWidget *widget, gpointer data)
                     /* updating things in conformance to the new situation */
                     refresh_event_handler(notebook, main_struct);
                     update_main_window_name(main_struct);
-
                 }
         }
 }

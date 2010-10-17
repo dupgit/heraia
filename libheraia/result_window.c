@@ -396,3 +396,52 @@ static void result_window_connect_signal(heraia_struct_t *main_struct)
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "result_window")), "destroy",
                      G_CALLBACK(destroy_result_window_event), main_struct);
 }
+
+
+/**
+ * Remove all tabs from the result window that correspond to the specified
+ * document.
+ * @param main_struct : heraia's main structure
+ * @param doc : the document beeing close in main window's notebook
+ */
+void rw_remove_all_tabs(heraia_struct_t *main_struct, doc_t *doc)
+{
+    gint i = 0;
+    gint j = 0;
+    gint len = 0;               /**< total len of result array                   */
+    GtkWidget *notebook = NULL; /**< result_notebook from heraia.gtkbuilder      */
+    gpointer value = NULL;      /**< Value to compare with doc                   */
+    GArray *array = NULL;       /**< array that stores the indexes where results
+                                     value is equal to doc.                      */
+
+    if (main_struct != NULL && main_struct->results != NULL)
+        {
+            array = g_array_new(TRUE, TRUE, sizeof(gint));
+
+            len = main_struct->results->len;
+            /* looking for the results */
+            for (i = 0; i < len ; i++)
+                {
+                    value = g_ptr_array_index(main_struct->results, i);
+                    if (value == doc)
+                        {
+                            array = g_array_append_val(array, i);
+                        }
+                }
+
+            notebook = heraia_get_widget(main_struct->xmls->main, "result_notebook");
+
+            /* destroying the results in the array and in the notebook */
+            len = array->len;
+            for (i = 0; i < len ; i++);
+                {
+                    j = g_array_index(array, gint, i);
+
+                    /* Removing the index in the results array */
+                    g_ptr_array_remove_index(main_struct->results, j);
+
+                    /* And removing it in the notebook */
+                    gtk_notebook_remove_page(GTK_NOTEBOOK(notebook), j);
+                }
+        }
+}
