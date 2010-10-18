@@ -2,6 +2,8 @@
    - Olivier Delhomme <heraia@delhomme.org>
      * Having some improvments when searching the tabs to kill from the result
        window
+     * Corrected a bug that prevented the tab menu to be displayed in the result
+       window notebook
 
 17.10.2010
    - Olivier Delhomme <heraia@delhomme.org>

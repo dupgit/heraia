@@ -296,6 +296,7 @@ static void add_gtk_tree_view_to_result_notebook(heraia_struct_t *main_struct, G
             markup = g_markup_printf_escaped("%s", label_text);
             gtk_label_set_markup(GTK_LABEL(tab_label), markup);
 
+            menu_label = gtk_label_new(NULL);
             menu_markup = g_markup_printf_escaped("%s", label_text);
             gtk_label_set_markup(GTK_LABEL(menu_label), menu_markup);
             gtk_label_set_justify(GTK_LABEL(menu_label), GTK_JUSTIFY_LEFT);
