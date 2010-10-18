@@ -436,7 +436,7 @@ void rw_remove_all_tabs(heraia_struct_t *main_struct, doc_t *doc)
                             g_ptr_array_remove_index(main_struct->results, i);
                             gtk_notebook_remove_page(GTK_NOTEBOOK(notebook), i);
                             len = main_struct->results->len;
-                            i = 0;
+                            /* i = 0; */
                         }
                     else
                         {
