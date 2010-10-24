@@ -1,3 +1,11 @@
+24.10.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Corrected a bug that prevented to find all positions when searching for
+       instance an 'e' in 'green' will now find two positions.
+     * Corrected an enother similar bug that occured when pressing the back
+       button
+     * Changing a bit the way the "find and replace" dialog box looks like
+
 18.10.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Having some improvments when searching the tabs to kill from the result

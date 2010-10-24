@@ -167,7 +167,7 @@ static void find_prev_bt_clicked(GtkWidget *widget, gpointer data)
             if (buffer != NULL)
                 {
                     current_doc = main_struct->current_doc;
-                    position = ghex_get_cursor_position(current_doc->hex_widget);
+                    position = ghex_get_cursor_position(current_doc->hex_widget) + 1 ;
                     result = ghex_find_backward(current_doc, buffer, buffer_size, &position);
 
                     if (result == TRUE)
@@ -209,7 +209,6 @@ static void find_all_bt_clicked(GtkWidget *widget, gpointer data)
                     while (result == TRUE)
                         {
                             all_pos = g_array_append_val(all_pos, position);
-                            position = position + 1;
                             result = ghex_find_forward(current_doc, buffer, buffer_size, &position);
                         }
                 }
