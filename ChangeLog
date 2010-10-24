@@ -3,8 +3,11 @@
      * Corrected a bug that prevented to find all positions when searching for
        instance an 'e' in 'green' will now find two positions.
      * Corrected an enother similar bug that occured when pressing the back
-       button
-     * Changing a bit the way the "find and replace" dialog box looks like
+       button.
+     * Changing a bit the way the "find and replace" dialog box looks like.
+     * factoring code. Now search button in the find and replace window does
+       work.
+     * Now replace button works.
 
 18.10.2010
    - Olivier Delhomme <heraia@delhomme.org>

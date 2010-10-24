@@ -29,9 +29,14 @@
 
 extern gboolean ghex_memcpy(Heraia_Hex *gh, guint64 pos, guint len, guint endianness, guchar *result);
 extern gboolean ghex_get_data(GtkWidget *hex_widget, guint length, guint endianness, guchar *c);
+extern void ghex_set_data(doc_t *doc, guint64 position, guint rep_len, guint len, guchar *data);
+
 extern gboolean ghex_get_data_position(GtkWidget *hex_widget, guint64 pos, guint length, guint endianness, guchar *c);
+
 extern guchar *ghex_get_data_to_ascii(GtkWidget *hex_widget, guint64 pos, guint length, guint endianness);
 extern guchar *ghex_get_data_to_hex(GtkWidget *hex_widget, guint64 pos, guint length, guint endianness);
+
+extern gint ghex_compare_data(doc_t *doc, guchar *string,  guint buffer_size, guint64 position);
 
 extern doc_t *heraia_hex_document_new(heraia_struct_t *main_struct, char *filename);
 extern HERAIA_ERROR heraia_hex_document_save(doc_t *current_doc);

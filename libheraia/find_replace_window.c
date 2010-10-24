@@ -34,19 +34,24 @@
 static guchar *fr_get_search_string(heraia_struct_t * main_struct, doc_t *doc, guint *buffer_size);
 static doc_t *create_find_or_replace_doc_t(void);
 static void find_replace_add_ghex_widget(xml_t *xmls, gchar *widget_name, doc_t *entry);
+static void fr_search_forward(heraia_struct_t * main_struct, doc_t * search_doc);
 
 /*** find window ***/
 static gboolean delete_find_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data);
 static void destroy_find_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data);
 static void find_window_close(GtkWidget *widget, gpointer data);
 static void find_window_connect_signal(heraia_struct_t *main_struct);
+static void find_all_bt_clicked(GtkWidget *widget, gpointer data);
+static void find_next_bt_clicked(GtkWidget *widget, gpointer data);
+static void find_prev_bt_clicked(GtkWidget *widget, gpointer data);
 
 /*** find and replace window ***/
 static gboolean delete_fr_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data);
 static void destroy_fr_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data);
 static void fr_window_close(GtkWidget *widget, gpointer data);
 static void fr_window_connect_signal(heraia_struct_t *main_struct);
-
+static void fr_search_bt_clicked(GtkWidget *widget, gpointer data);
+static void fr_replace_bt_clicked(GtkWidget *widget, gpointer data);
 
 /**
  * Show find window
@@ -120,27 +125,10 @@ static void find_window_close(GtkWidget *widget, gpointer data)
 static void find_next_bt_clicked(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
-    guchar *buffer = NULL;     /**< Buffer that contains the search string             */
-    doc_t *current_doc = NULL; /**< Current doc where we want to search for the string */
-    gboolean result = FALSE;
-    guint64 position = 0;
-    guint buffer_size = 0;
 
-    if (main_struct != NULL)
+    if (main_struct != NULL && main_struct->find_doc != NULL)
         {
-            buffer = fr_get_search_string(main_struct, main_struct->find_doc, &buffer_size);
-
-            if (buffer != NULL)
-                {
-                    current_doc = main_struct->current_doc;
-                    position = ghex_get_cursor_position(current_doc->hex_widget);
-                    result = ghex_find_forward(current_doc, buffer, buffer_size, &position);
-
-                    if (result == TRUE)
-                        {
-                            ghex_set_cursor_position(current_doc->hex_widget, position);
-                        }
-                }
+            fr_search_forward(main_struct, main_struct->find_doc);
         }
 }
 
@@ -373,6 +361,36 @@ static void find_replace_add_ghex_widget(xml_t *xmls, gchar *widget_name, doc_t 
 }
 
 
+/**
+ * Searches from the search document in the current one in the main window
+ * @param main_struct : heraia's main structure
+ * @param search_doc : the document used to enter the searched string
+ */
+static void fr_search_forward(heraia_struct_t * main_struct, doc_t * search_doc)
+{
+    guchar *buffer = NULL;     /**< Buffer that contains the search string             */
+    doc_t *current_doc = NULL; /**< Current doc where we want to search for the string */
+    gboolean result = FALSE;
+    guint64 position = 0;
+    guint buffer_size = 0;
+
+    buffer = fr_get_search_string(main_struct, search_doc, &buffer_size);
+
+    if (buffer != NULL)
+        {
+            current_doc = main_struct->current_doc;
+            position = ghex_get_cursor_position(current_doc->hex_widget);
+            result = ghex_find_forward(current_doc, buffer, buffer_size, &position);
+
+            if (result == TRUE)
+                {
+                    ghex_set_cursor_position(current_doc->hex_widget, position);
+                }
+        }
+}
+
+
+
 /******************************************************************************/
 /************************** find and replace window ***************************/
 /******************************************************************************/
@@ -456,6 +474,66 @@ static void fr_window_connect_signal(heraia_struct_t *main_struct)
 
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "fr_window")), "destroy",
                      G_CALLBACK(destroy_fr_window_event), main_struct);
+
+    /* Search button */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "fr_find_bt")), "clicked",
+                     G_CALLBACK(fr_search_bt_clicked), main_struct);
+
+    /* Replace button */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "fr_replace_bt")), "clicked",
+                     G_CALLBACK(fr_replace_bt_clicked), main_struct);
+}
+
+
+/**
+ * Tries to find, in the document, what the user entered in the GtkHex entry in
+ * the fr window in the find hexwidget (forward from the current position)
+ * @param widget : calling widget (may be NULL as we don't use this here)
+ * @param data : MUST be heraia_struct_t *main_struct main structure and not NULL
+ */
+static void fr_search_bt_clicked(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+
+    if (main_struct != NULL && main_struct->fr_find_doc != NULL)
+        {
+           fr_search_forward(main_struct, main_struct->fr_find_doc);
+        }
+}
+
+
+/**
+ * Tries to replace, in the document, what the user entered in the GtkHex entry
+ * in the fr window in the find hexwidget by what the user entered in the
+ * replace entry in that same window
+ * @param widget : calling widget (may be NULL as we don't use this here)
+ * @param data : MUST be heraia_struct_t *main_struct main structure and not NULL
+ */
+static void fr_replace_bt_clicked(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+    guchar *buffer = NULL;     /**< Buffer that contains the search string             */
+    guchar *rep_buffer = NULL; /**< Buffer that contains the replace string            */
+    doc_t *current_doc = NULL; /**< Current doc where we want to search for the string */
+    guint buffer_size = 0;     /**< Size of the searched string                        */
+    guint rep_buf_size = 0;    /**< Size of the replace string                         */
+    guint64 position = 0;      /**< Current position in the current document !         */
+
+
+    if (main_struct != NULL && main_struct->current_doc != NULL && main_struct->fr_find_doc != NULL && main_struct->fr_replace_doc != NULL)
+        {
+            current_doc = main_struct->current_doc;
+            buffer = fr_get_search_string(main_struct, main_struct->fr_find_doc, &buffer_size);
+            rep_buffer = fr_get_search_string(main_struct, main_struct->fr_replace_doc, &rep_buf_size);
+            position = ghex_get_cursor_position(current_doc->hex_widget);
+            fprintf(stdout, "Position : %Ld\n", position );
+            if (ghex_compare_data(current_doc, buffer, buffer_size, position) == 0)
+                {
+                    /* The strings are equal and can be replaced in the current document */
+                    ghex_set_data(current_doc, position, buffer_size, rep_buf_size, rep_buffer);
+                    fprintf(stdout, "set data !\n");
+                }
+        }
 }
 
 
