@@ -526,12 +526,10 @@ static void fr_replace_bt_clicked(GtkWidget *widget, gpointer data)
             buffer = fr_get_search_string(main_struct, main_struct->fr_find_doc, &buffer_size);
             rep_buffer = fr_get_search_string(main_struct, main_struct->fr_replace_doc, &rep_buf_size);
             position = ghex_get_cursor_position(current_doc->hex_widget);
-            fprintf(stdout, "Position : %Ld\n", position );
             if (ghex_compare_data(current_doc, buffer, buffer_size, position) == 0)
                 {
                     /* The strings are equal and can be replaced in the current document */
                     ghex_set_data(current_doc, position, buffer_size, rep_buf_size, rep_buffer);
-                    fprintf(stdout, "set data !\n");
                 }
         }
 }
