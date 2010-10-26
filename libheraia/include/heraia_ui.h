@@ -47,7 +47,7 @@ extern void on_fr_activate(GtkWidget *widget, gpointer data);
 extern void on_find_activate(GtkWidget *widget, gpointer data);
 extern void on_DIMenu_activate(GtkWidget *widget, gpointer data);
 extern void on_tests_menu_activate(GtkWidget *widget, gpointer data);
-extern gboolean delete_main_struct_event(GtkWidget *widget, GdkEvent *event, gpointer data);
+extern gboolean delete_main_window_event(GtkWidget *widget, GdkEvent *event, gpointer data);
 
 extern gboolean delete_dt_window_event(GtkWidget *widget, GdkEvent *event, gpointer data);
 extern void destroy_dt_window(GtkWidget *widget, GdkEvent  *event, gpointer data);

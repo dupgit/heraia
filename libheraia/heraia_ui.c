@@ -283,6 +283,18 @@ void record_all_dialog_box_positions(heraia_struct_t *main_struct)
             /* goto dialog box */
             dialog_box = heraia_get_widget (main_struct->xmls->main, "goto_dialog");
             record_dialog_box_position(dialog_box, main_struct->win_prop->goto_window);
+
+            /* result window */
+            dialog_box = heraia_get_widget (main_struct->xmls->main, "result_window");
+            record_dialog_box_position(dialog_box, main_struct->win_prop->result_window);
+
+            /* find window */
+            dialog_box = heraia_get_widget (main_struct->xmls->main, "find_window");
+            record_dialog_box_position(dialog_box, main_struct->win_prop->find_window);
+
+            /* find and replace window */
+            dialog_box = heraia_get_widget (main_struct->xmls->main, "fr_window");
+            record_dialog_box_position(dialog_box, main_struct->win_prop->fr_window);
         }
 }
 
@@ -767,7 +779,7 @@ gint find_tab_number_from_widget(heraia_struct_t *main_struct, gchar *notebook_n
 
 
 /**
- * Closes an openned file
+ * Closes an opened file
  * @param widget : the widget that issued the signal
  * @param data : user data MUST be heraia_struct_t *main_struct main structure
  */
@@ -1052,7 +1064,7 @@ void on_tests_menu_activate(GtkWidget *widget, gpointer data)
  * @param event : event associated (may be NULL as we don't use this here)
  * @param data : MUST be heraia_struct_t *main_struct main structure
  */
-gboolean delete_main_struct_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
+gboolean delete_main_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {
 
     on_quit_activate(widget, data);
@@ -1216,16 +1228,12 @@ GSList *select_file_to_load(heraia_struct_t *main_struct)
                                                                 GTK_STOCK_OPEN, GTK_RESPONSE_OK,
                                                                 NULL));
 
-    /**
-     *  for the moment we do not want to retrieve multiples selections
-     *  but this could be a valuable thing in the future
-     */
     gtk_window_set_modal(GTK_WINDOW(file_chooser), TRUE);
     gtk_file_chooser_set_select_multiple(file_chooser, TRUE);
 
     /**
-     *  We want the file selection path to be the one of the previous
-     *  openned file if any !
+     *  We want the file selection path to be the one of the current
+     *  opened file if any !
      */
     if (doc_t_document_get_filename(main_struct->current_doc) != NULL)
        {
@@ -1329,6 +1337,7 @@ void update_main_window_name(heraia_struct_t *main_struct)
             gtk_window_set_title(GTK_WINDOW(widget), "Heraia");
         }
 }
+
 
 /**
  * Tries to find the label contained in the hbox
@@ -1698,7 +1707,7 @@ static void heraia_ui_connect_signals(heraia_struct_t *main_struct)
 
     /* main window killed or destroyed */
     g_signal_connect(G_OBJECT (heraia_get_widget(main_struct->xmls->main, "main_window")), "delete-event",
-                     G_CALLBACK(delete_main_struct_event), main_struct);
+                     G_CALLBACK(delete_main_window_event), main_struct);
 }
 
 
@@ -2227,6 +2236,7 @@ void init_window_states(heraia_struct_t *main_struct)
 
                     /* result window */
                     dialog_box = heraia_get_widget(main_struct->xmls->main, "result_window");
+                    cmi = heraia_get_widget(main_struct->xmls->main, "menu_result");
                     if (main_struct->win_prop->result_window->displayed == TRUE && main_struct->current_doc != NULL)
                         {
                             gtk_window_move(GTK_WINDOW(dialog_box), main_struct->win_prop->result_window->x, main_struct->win_prop->result_window->y);
@@ -2237,6 +2247,7 @@ void init_window_states(heraia_struct_t *main_struct)
                         {
                             main_struct->win_prop->result_window->displayed = FALSE;
                         }
+                    init_one_cmi_window_state(dialog_box, cmi, main_struct->win_prop->result_window);
 
                     /* find window */
                     dialog_box = heraia_get_widget(main_struct->xmls->main, "find_window");

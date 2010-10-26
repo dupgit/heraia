@@ -40,6 +40,9 @@ static void rw_on_close_activate(GtkWidget *widget, gpointer data);
 static void determine_pos_and_buffer_size(guint64 *pos, guint *buffer_size, guint size, guint64 file_size);
 static void add_gtk_tree_view_to_result_notebook(heraia_struct_t *main_struct, GtkListStore *lstore, guchar *label_text, doc_t *doc);
 
+static void menu_result_toggle(GtkWidget *widget, gpointer data);
+
+
 /**
  * Show result window
  * @param widget : the widget that issued the signal (may be NULL as we do not
@@ -54,7 +57,8 @@ void result_window_show(GtkWidget *widget, gpointer data)
     if (main_struct != NULL && main_struct->current_doc != NULL)
         {
             window = heraia_get_widget(main_struct->xmls->main, "result_window");
-            show_hide_widget(window, TRUE, main_struct->win_prop->result_window);
+            move_and_show_dialog_box(window, main_struct->win_prop->result_window);
+            gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(heraia_get_widget(main_struct->xmls->main, "menu_result")), TRUE);
         }
 }
 
@@ -111,9 +115,9 @@ static void result_window_close(GtkWidget *widget, gpointer data)
     if (main_struct != NULL)
         {
              window = heraia_get_widget(main_struct->xmls->main, "result_window");
-             show_hide_widget(window, FALSE, main_struct->win_prop->result_window);
+             record_and_hide_dialog_box(window, main_struct->win_prop->result_window);
+             gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(heraia_get_widget(main_struct->xmls->main, "menu_result")), FALSE);
         }
-
 }
 
 
@@ -383,6 +387,29 @@ void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_p
 
 
 /**
+ *  The Check menu item for the result window
+ * @param widget : the widget that issued the signal (here the menu_result check
+ *                 menu item
+ * @param data : user data, MUST be main_struct main structure
+ */
+static void menu_result_toggle(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+    GtkCheckMenuItem *cmi = GTK_CHECK_MENU_ITEM(widget);
+    gboolean checked = gtk_check_menu_item_get_active(cmi);
+
+    if (checked == TRUE)
+        {
+            result_window_show(widget, data);
+        }
+    else
+        {
+             result_window_close(widget, data);
+        }
+}
+
+
+/**
  * Signal connections for the result window
  * @param main_struct : heraia's main structure
  */
@@ -398,6 +425,10 @@ static void result_window_connect_signal(heraia_struct_t *main_struct)
 
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "result_window")), "destroy",
                      G_CALLBACK(destroy_result_window_event), main_struct);
+
+    /* The toogle button in the main menu*/
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_result")), "toggled",
+                     G_CALLBACK(menu_result_toggle), main_struct);
 }
 
 
