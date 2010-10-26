@@ -410,7 +410,6 @@ static void result_window_connect_signal(heraia_struct_t *main_struct)
 void rw_remove_all_tabs(heraia_struct_t *main_struct, doc_t *doc)
 {
     gint i = 0;
-    gint j = 0;
     gint len = 0;               /**< total len of result array                   */
     GtkWidget *notebook = NULL; /**< result_notebook from heraia.gtkbuilder      */
     doc_t *value = NULL;        /**< Value to compare with doc                   */
@@ -437,7 +436,6 @@ void rw_remove_all_tabs(heraia_struct_t *main_struct, doc_t *doc)
                             g_ptr_array_remove_index(main_struct->results, i);
                             gtk_notebook_remove_page(GTK_NOTEBOOK(notebook), i);
                             len = main_struct->results->len;
-                            /* i = 0; */
                         }
                     else
                         {

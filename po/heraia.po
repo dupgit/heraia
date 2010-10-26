@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-19 17:04+0200\n"
+"POT-Creation-Date: 2010-10-26 20:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -73,82 +73,82 @@ msgstr ""
 msgid "     %d for loading files tests\n"
 msgstr ""
 
-#: ../src/heraia.c:199 ../src/heraia.c:201
+#: ../src/heraia.c:199 ../src/heraia.c:201 ../src/heraia.c:214
 msgid "Main structure could not be initialiazed !"
 msgstr ""
 
-#: ../src/heraia.c:200 ../src/heraia.c:202
+#: ../src/heraia.c:200 ../src/heraia.c:202 ../src/heraia.c:215
 msgid "Do you have a memory problem ?\n"
 msgstr ""
 
-#: ../src/heraia.c:257 ../src/heraia.c:258
+#: ../src/heraia.c:257 ../src/heraia.c:258 ../src/heraia.c:277
 msgid "Enabling plugins"
 msgstr ""
 
 #. the plugin_list_window (here the plugins may be loaded !)
-#: ../src/heraia.c:261 ../src/heraia.c:262
+#: ../src/heraia.c:261 ../src/heraia.c:262 ../src/heraia.c:281
 msgid "Inits the plugin list window"
 msgstr ""
 
-#: ../src/heraia.c:268 ../src/heraia.c:269
+#: ../src/heraia.c:268 ../src/heraia.c:269 ../src/heraia.c:288
 msgid "Plugins will be disabled"
 msgstr ""
 
-#: ../src/heraia.c:340 ../src/heraia.c:345
+#: ../src/heraia.c:340 ../src/heraia.c:345 ../src/heraia.c:364
 #, c-format
 msgid "Gettext package : %s\n"
 msgstr ""
 
-#: ../src/heraia.c:341 ../src/heraia.c:346
+#: ../src/heraia.c:341 ../src/heraia.c:346 ../src/heraia.c:365
 #, c-format
 msgid "Locale dir : %s\n"
 msgstr ""
 
-#: ../src/heraia.c:342 ../src/heraia.c:347
+#: ../src/heraia.c:342 ../src/heraia.c:347 ../src/heraia.c:366
 #, c-format
 msgid "Bindtextdomain : %s\n"
 msgstr ""
 
-#: ../src/heraia.c:370 ../src/heraia.c:375
+#: ../src/heraia.c:370 ../src/heraia.c:375 ../src/heraia.c:394
 msgid "WARNING : tmp_struct is not equal to main_struct!\n"
 msgstr ""
 
-#: ../src/heraia.c:376 ../src/heraia.c:381
+#: ../src/heraia.c:376 ../src/heraia.c:381 ../src/heraia.c:400
 msgid "WARNING : Error while testing decode functions\n"
 msgstr ""
 
-#: ../src/heraia.c:510 ../src/heraia.c:526
+#: ../src/heraia.c:510 ../src/heraia.c:526 ../src/heraia.c:545
 msgid "Main struct initialized !\n"
 msgstr ""
 
-#: ../src/heraia.c:520 ../src/heraia.c:536
+#: ../src/heraia.c:520 ../src/heraia.c:536 ../src/heraia.c:555
 msgid "Beginning things\n"
 msgstr ""
 
-#: ../src/heraia.c:530 ../src/heraia.c:546
+#: ../src/heraia.c:530 ../src/heraia.c:546 ../src/heraia.c:565
 msgid "Main interface loaded"
 msgstr ""
 
-#: ../src/heraia.c:531 ../src/heraia.c:547
+#: ../src/heraia.c:531 ../src/heraia.c:547 ../src/heraia.c:566
 #, c-format
 msgid "Preference file is %s"
 msgstr ""
 
-#: ../src/heraia.c:532 ../src/heraia.c:548
+#: ../src/heraia.c:532 ../src/heraia.c:548 ../src/heraia.c:567
 #, c-format
 msgid "data interpretor's tab is %d"
 msgstr ""
 
-#: ../src/heraia.c:546 ../src/heraia.c:562
+#: ../src/heraia.c:546 ../src/heraia.c:562 ../src/heraia.c:581
 #, c-format
 msgid "main_struct : %p"
 msgstr ""
 
-#: ../src/heraia.c:569 ../src/heraia.c:585
+#: ../src/heraia.c:569 ../src/heraia.c:585 ../src/heraia.c:604
 msgid "File heraia.gtkbuilder not found !\n"
 msgstr ""
 
-#: ../libheraia/libheraia.c:55
+#: ../libheraia/libheraia.c:55 ../libheraia/libheraia.c:58
 msgid "Libheraia library test OK\n"
 msgstr ""
 
@@ -169,43 +169,52 @@ msgid "Not implemented Yet (Please contribute !)"
 msgstr ""
 
 #: ../libheraia/heraia_ui.c:562 ../libheraia/heraia_ui.c:840
+#: ../libheraia/heraia_ui.c:912
 #, c-format
 msgid "Error while saving file %s !"
 msgstr ""
 
 #: ../libheraia/heraia_ui.c:602 ../libheraia/heraia_ui.c:880
+#: ../libheraia/heraia_ui.c:952
 msgid "Saving file as... : operation cancelled."
 msgstr ""
 
 #: ../libheraia/heraia_ui.c:606 ../libheraia/heraia_ui.c:884
+#: ../libheraia/heraia_ui.c:956
 #, c-format
 msgid "Error while saving file as %s"
 msgstr ""
 
 #. document has just been saved (thus it is not modified !)
 #: ../libheraia/heraia_ui.c:615 ../libheraia/heraia_ui.c:893
+#: ../libheraia/heraia_ui.c:965
 #, c-format
 msgid "File %s saved and now edited."
 msgstr ""
 
 #: ../libheraia/heraia_ui.c:688 ../libheraia/heraia_ui.c:966
+#: ../libheraia/heraia_ui.c:1038
 msgid "All tests went Ok."
 msgstr ""
 
 #: ../libheraia/heraia_ui.c:692 ../libheraia/heraia_ui.c:970
+#: ../libheraia/heraia_ui.c:1042
 msgid "Some tests failed."
 msgstr ""
 
 #: ../libheraia/heraia_ui.c:853 ../libheraia/heraia_ui.c:1140
+#: ../libheraia/heraia_ui.c:1212
 msgid "Select a file to analyse"
 msgstr ""
 
 #. Selection a name to the file to save
 #: ../libheraia/heraia_ui.c:912 ../libheraia/heraia_ui.c:1199
+#: ../libheraia/heraia_ui.c:1271
 msgid "Save As..."
 msgstr ""
 
 #: ../libheraia/heraia_ui.c:1042 ../libheraia/heraia_ui.c:1384
+#: ../libheraia/heraia_ui.c:1457
 #, c-format
 msgid "Changing color for filename %s in tab : %d"
 msgstr ""
@@ -220,6 +229,11 @@ msgstr ""
 #: ../libheraia/heraia_ui.c:1638 ../libheraia/heraia_ui.c:1651
 #: ../libheraia/heraia_ui.c:1664 ../libheraia/heraia_ui.c:1678
 #: ../libheraia/heraia_ui.c:1692 ../libheraia/heraia_ui.c:1695
+#: ../libheraia/heraia_ui.c:1735 ../libheraia/heraia_ui.c:1748
+#: ../libheraia/heraia_ui.c:1761 ../libheraia/heraia_ui.c:1775
+#: ../libheraia/heraia_ui.c:1789 ../libheraia/heraia_ui.c:1803
+#: ../libheraia/heraia_ui.c:1816 ../libheraia/heraia_ui.c:1829
+#: ../libheraia/heraia_ui.c:1843 ../libheraia/heraia_ui.c:1846
 msgid " [Done]\n"
 msgstr ""
 
@@ -241,6 +255,7 @@ msgid "Loading heraia preference file   "
 msgstr ""
 
 #: ../libheraia/heraia_ui.c:1319 ../libheraia/heraia_ui.c:1688
+#: ../libheraia/heraia_ui.c:1839
 msgid " [FAILED]\n"
 msgstr ""
 
@@ -249,12 +264,12 @@ msgid "Setting up preferences           "
 msgstr ""
 
 #: ../libheraia/heraia_ui.c:1549 ../libheraia/heraia_ui.c:1581
-#: ../libheraia/heraia_ui.c:1949
+#: ../libheraia/heraia_ui.c:1949 ../libheraia/heraia_ui.c:2100
 msgid "Unsaved document(s) remains."
 msgstr ""
 
 #: ../libheraia/heraia_ui.c:1554 ../libheraia/heraia_ui.c:1586
-#: ../libheraia/heraia_ui.c:1950
+#: ../libheraia/heraia_ui.c:1950 ../libheraia/heraia_ui.c:2101
 msgid "Do you want to quit without saving ?"
 msgstr ""
 
@@ -334,7 +349,7 @@ msgstr ""
 msgid "filename to load : %s"
 msgstr ""
 
-#: ../libheraia/heraia_io.c:63
+#: ../libheraia/heraia_io.c:63 ../libheraia/heraia_ui.c:101
 #, c-format
 msgid "Hexwidget : %p"
 msgstr ""
@@ -885,55 +900,68 @@ msgid "use a blank separator for thousands"
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:151 ../src/heraia.gtkbuilder:152
+#: ../src/heraia.gtkbuilder:155
 msgid "Left info pane"
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:174 ../src/heraia.gtkbuilder:221
+#: ../src/heraia.gtkbuilder:227
 msgid "page 2"
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:187 ../src/heraia.gtkbuilder:234
+#: ../src/heraia.gtkbuilder:240
 msgid "page 3"
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:215 ../src/heraia.gtkbuilder:262
+#: ../src/heraia.gtkbuilder:268
 msgid "Data interpretor"
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:250 ../src/heraia.gtkbuilder:297
+#: ../src/heraia.gtkbuilder:303
 msgid "Little endian "
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:265 ../src/heraia.gtkbuilder:312
+#: ../src/heraia.gtkbuilder:318
 msgid "Middle endian"
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:281 ../src/heraia.gtkbuilder:328
+#: ../src/heraia.gtkbuilder:334
 msgid "Big endian"
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:305 ../src/heraia.gtkbuilder:352
+#: ../src/heraia.gtkbuilder:358
 msgid "Endianness"
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:325 ../src/heraia.gtkbuilder:372
+#: ../src/heraia.gtkbuilder:378
 msgid "stream size :"
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:405 ../src/heraia.gtkbuilder:1050
 #: ../src/heraia.gtkbuilder:452 ../src/heraia.gtkbuilder:1148
+#: ../src/heraia.gtkbuilder:458 ../src/heraia.gtkbuilder:1206
 msgid "Plugins list"
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:552 ../src/heraia.gtkbuilder:599
+#: ../src/heraia.gtkbuilder:605
 msgid "About Heraia"
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:556 ../src/heraia.gtkbuilder:603
+#: ../src/heraia.gtkbuilder:609
 msgid "An hexadecimal analyser and editor"
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:558 ../src/heraia.gtkbuilder:605
+#: ../src/heraia.gtkbuilder:611
 msgid "Heraia web site"
 msgstr ""
 
@@ -942,58 +970,72 @@ msgid "translator-credits"
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:813 ../src/heraia.gtkbuilder:860
+#: ../src/heraia.gtkbuilder:866
 msgid "Log"
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:882 ../src/heraia.gtkbuilder:929
+#: ../src/heraia.gtkbuilder:935
 msgid "Heraia"
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:894 ../src/heraia.gtkbuilder:944
+#: ../src/heraia.gtkbuilder:950
 msgid "_File"
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:968 ../src/heraia.gtkbuilder:1024
+#: ../src/heraia.gtkbuilder:1030
 msgid "_Edit"
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:1015 ../src/heraia.gtkbuilder:1113
+#: ../src/heraia.gtkbuilder:1164
 msgid "_Display"
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:1022 ../src/heraia.gtkbuilder:1120
+#: ../src/heraia.gtkbuilder:1171
 msgid "Data _Interpretor"
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:1031 ../src/heraia.gtkbuilder:1129
+#: ../src/heraia.gtkbuilder:1180
 msgid "_Log"
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:1043 ../src/heraia.gtkbuilder:1141
+#: ../src/heraia.gtkbuilder:1199
 msgid "_Plugins"
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:1067 ../src/heraia.gtkbuilder:1165
+#: ../src/heraia.gtkbuilder:1223
 msgid "_Help"
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:1089 ../src/heraia.gtkbuilder:1188
+#: ../src/heraia.gtkbuilder:1246
 msgid "Does run some self tests"
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:1129 ../src/heraia.gtkbuilder:1229
+#: ../src/heraia.gtkbuilder:1287
 msgid "<small>Position :</small>"
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:1146 ../src/heraia.gtkbuilder:1246
+#: ../src/heraia.gtkbuilder:1304
 msgid "<small>Selection :</small>"
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:1199 ../src/heraia.gtkbuilder:1299
+#: ../src/heraia.gtkbuilder:1357
 msgid "<small>Selection size :</small>"
 msgstr ""
 
 #: ../src/heraia.gtkbuilder:1234 ../src/heraia.gtkbuilder:1334
+#: ../src/heraia.gtkbuilder:1392
 msgid "<small>File size :</small>"
 msgstr ""
 
@@ -1057,43 +1099,162 @@ msgstr ""
 msgid "Last extern modification : %s\n"
 msgstr ""
 
-#: ../libheraia/heraia_ui.c:735
+#: ../libheraia/heraia_ui.c:735 ../libheraia/heraia_ui.c:806
 #, c-format
 msgid "Closing document %s"
 msgstr ""
 
-#: ../libheraia/heraia_ui.c:742
+#: ../libheraia/heraia_ui.c:742 ../libheraia/heraia_ui.c:813
 msgid "This document has been edited and is not saved !"
 msgstr ""
 
-#: ../libheraia/heraia_ui.c:743
+#: ../libheraia/heraia_ui.c:743 ../libheraia/heraia_ui.c:814
 msgid "Do you want to close it without saving it ?"
 msgstr ""
 
-#: ../libheraia/heraia_ui.c:2095
+#: ../libheraia/heraia_ui.c:2095 ../libheraia/heraia_ui.c:2305
 msgid "Close button"
 msgstr ""
 
-#: ../src/heraia.gtkbuilder:126
+#: ../src/heraia.gtkbuilder:126 ../src/heraia.gtkbuilder:129
 msgid "Use a blank separator for thousands"
 msgstr ""
 
-#: ../src/heraia.gtkbuilder:174
+#: ../src/heraia.gtkbuilder:174 ../src/heraia.gtkbuilder:180
 msgid "Display offsets"
 msgstr ""
 
-#: ../src/heraia.gtkbuilder:201
+#: ../src/heraia.gtkbuilder:201 ../src/heraia.gtkbuilder:207
 msgid "Hex view"
 msgstr ""
 
-#: ../src/heraia.gtkbuilder:602
+#: ../src/heraia.gtkbuilder:602 ../src/heraia.gtkbuilder:608
 msgid "(C) 2005 - 2010 Two or more autors (see Credits)"
 msgstr ""
 
-#: ../src/heraia.gtkbuilder:1467
+#: ../src/heraia.gtkbuilder:1467 ../src/heraia.gtkbuilder:1529
 msgid "Go to byte number :"
 msgstr ""
 
-#: ../src/heraia.gtkbuilder:840
+#: ../src/heraia.gtkbuilder:840 ../src/heraia.gtkbuilder:846
 msgid "French : Olivier DELHOMME"
+msgstr ""
+
+#: ../libheraia/heraia_ui.c:77
+msgid "No name"
+msgstr ""
+
+#: ../libheraia/heraia_ui.c:1728
+msgid "Connecting heraia_ui signals          "
+msgstr ""
+
+#: ../libheraia/heraia_ui.c:1741
+msgid "log window init interface             "
+msgstr ""
+
+#: ../libheraia/heraia_ui.c:1754
+msgid "preferences window init interface     "
+msgstr ""
+
+#: ../libheraia/heraia_ui.c:1768
+msgid "data interpretor init interface       "
+msgstr ""
+
+#: ../libheraia/heraia_ui.c:1782
+msgid "goto dialog window init interface     "
+msgstr ""
+
+#: ../libheraia/heraia_ui.c:1796
+msgid "result window init interface          "
+msgstr ""
+
+#: ../libheraia/heraia_ui.c:1809
+msgid "find window init interface            "
+msgstr ""
+
+#: ../libheraia/heraia_ui.c:1822
+msgid "find and replace window init interface"
+msgstr ""
+
+#. preferences file
+#: ../libheraia/heraia_ui.c:1835
+msgid "Loading heraia preference file        "
+msgstr ""
+
+#: ../libheraia/heraia_ui.c:1844
+msgid "Setting up preferences                "
+msgstr ""
+
+#: ../src/heraia.gtkbuilder:1134
+msgid "_Search"
+msgstr ""
+
+#: ../src/heraia.gtkbuilder:1188
+msgid "_Result Window"
+msgstr ""
+
+#: ../src/heraia.gtkbuilder:1510
+msgid "Go to..."
+msgstr ""
+
+#: ../src/heraia.gtkbuilder:1541
+msgid ""
+"You can enter decimal values or hexadecimal ones by prepending '0x' (eg "
+"0xAF0)"
+msgstr ""
+
+#: ../src/heraia.gtkbuilder:1569
+msgid "Beginning (forward)"
+msgstr ""
+
+#: ../src/heraia.gtkbuilder:1582
+msgid "Current position (forward)"
+msgstr ""
+
+#: ../src/heraia.gtkbuilder:1596
+msgid "Current position (backward)"
+msgstr ""
+
+#: ../src/heraia.gtkbuilder:1610
+msgid "End (backward)"
+msgstr ""
+
+#: ../src/heraia.gtkbuilder:1629
+msgid "From :"
+msgstr ""
+
+#: ../src/heraia.gtkbuilder:1698
+msgid "Results"
+msgstr ""
+
+#: ../src/heraia.gtkbuilder:1748
+msgid "Results :"
+msgstr ""
+
+#: ../src/heraia.gtkbuilder:1792
+msgid "Find..."
+msgstr ""
+
+#: ../src/heraia.gtkbuilder:1818 ../src/heraia.gtkbuilder:1947
+msgid "Find a string :"
+msgstr ""
+
+#: ../src/heraia.gtkbuilder:1863
+msgid "Find all"
+msgstr ""
+
+#: ../src/heraia.gtkbuilder:1921
+msgid "Find and replace..."
+msgstr ""
+
+#: ../src/heraia.gtkbuilder:1977
+msgid "Replace with :"
+msgstr ""
+
+#: ../src/heraia.gtkbuilder:2008
+msgid "R_eplace"
+msgstr ""
+
+#: ../src/heraia.gtkbuilder:2022
+msgid "Replace and searc_h"
 msgstr ""

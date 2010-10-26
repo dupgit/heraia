@@ -2019,7 +2019,7 @@ POSSIBILITY OF SUCH DAMAGES.
             </child>
             <child>
               <object class="GtkButton" id="fr_replace_search_bt">
-                <property name="label">Replace and searc_h</property>
+                <property name="label" translatable="yes">Replace and searc_h</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>

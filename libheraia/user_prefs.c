@@ -431,7 +431,6 @@ static void load_mp_display_preferences_options(heraia_struct_t *main_struct)
  */
 static void load_di_preferences(heraia_struct_t *main_struct)
 {
-    GtkNotebook *notebook = NULL;  /**< data interpretor's notebook               */
     gint selected_tab = -1;        /**< Selected tab in data interpretor's window */
     gint stream_size = -1;         /**< Stream size in data interpretor's window  */
     gint endianness = -1;          /**< Endianness in data interpretor's window   */

@@ -558,6 +558,7 @@ gboolean ghex_find_forward(doc_t *doc, guchar *search_buffer, guint buffer_size,
  *        thing
  * @return a gint 0 means that at the given position and for the len buffer_size
  *         the document doc contains exactly the string.
+ *         -1 if an error occured.
  */
 gint ghex_compare_data(doc_t *doc, guchar *string,  guint buffer_size, guint64 position)
 {
@@ -565,6 +566,10 @@ gint ghex_compare_data(doc_t *doc, guchar *string,  guint buffer_size, guint64 p
     if (doc != NULL && doc->hex_doc != NULL && string != NULL)
         {
             return hex_document_compare_data(doc->hex_doc, string, (gint) position, buffer_size);
+        }
+    else
+        {
+            return -1;
         }
 }
 

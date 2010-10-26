@@ -283,5 +283,5 @@ echo "    - Data dir                 : ${datadir}"
 echo "    - Plugins dir              : ${plugins_dir}"
 echo "    - Locale dir               : ${LOCALEDIR}"
 echo
-echo "    You can now run 'make' to compile heraia"
+echo "    You can now run 'make -s' to compile heraia"
 echo
