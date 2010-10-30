@@ -1,3 +1,8 @@
+30.10.2010 [release 0.1.6]
+   - Olivier Delhomme <heraia@delhomme.org>
+     * ChangeLog typos corrections !
+     * 0.1.6 release
+
 26.10.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Sanitizing a bit the code
@@ -15,7 +20,7 @@
    - Olivier Delhomme <heraia@delhomme.org>
      * Corrected a bug that prevented to find all positions when searching for
        instance an 'e' in 'green' will now find two positions.
-     * Corrected an enother similar bug that occured when pressing the back
+     * Corrected an another similar bug that occured when pressing the back
        button.
      * Changing a bit the way the "find and replace" dialog box looks like.
      * factoring code. Now search button in the find and replace window does
@@ -79,7 +84,7 @@
 06.09.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Now find,find and replace and goto windows are not displayed if a
-      document is not opened when launching heraia
+       document is not opened when launching heraia
 
 04.09.2010
    - Olivier Delhomme <heraia@delhomme.org>
@@ -128,8 +133,8 @@
    - Olivier Delhomme <heraia@delhomme.org>
      * casts to avoid warnings on 32 bits systems
      * New files to manage the goto dialog box
-     * Now one can jump across the file, forward, bacward, from the beginning or
-       form the end !
+     * Now one can jump across the file, forward, backward, from the beginning
+       or from the end !
      * Some description modification to avoid repeating things and to clarify on
        which systems heraia is known to work on.
 
