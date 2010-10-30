@@ -295,6 +295,23 @@ gboolean ghex_get_data(GtkWidget *hex_widget, guint length, guint endianness, gu
 
 
 /**
+ *  Wrapper to the hex_document_set_data function
+ * @param doc : the document searched
+ * @param position : the position where to set the data
+ * @param rep_len : the len of the data to be replaced in the document doc
+ * @param len : the len of the data
+ * @param data : the data that will replace the one in the document
+ */
+void ghex_set_data(doc_t *doc, guint64 position, guint rep_len, guint len, guchar *data)
+{
+    if (doc != NULL && doc->hex_doc != NULL && data != NULL)
+        {
+            hex_document_set_data(doc->hex_doc, position, len, rep_len, data, TRUE);
+        }
+}
+
+
+/**
  *  Gets the data from the hexwidget, a wrapper to the ghex_memcpy
  *  function.
  *  @warning guchar *c MUST have been pre allocated BEFORE the call.
@@ -476,7 +493,8 @@ guint64 ghex_get_cursor_position(GtkWidget *hex_widget)
  * Sets the cursor at the defined position in the hexwidget
  * @param hex_widget : the widget that displays the hex document
  * @param position : the position where we want to go
- * @warning no checks are made here (limits and such ...)
+ * @warning no checks are made here (limits and such ...). Checks are made in
+ *          the gtk_hex_set_cursor function itself.
  */
 void ghex_set_cursor_position(GtkWidget *hex_widget, guint64 position)
 {
@@ -496,7 +514,7 @@ void ghex_set_cursor_position(GtkWidget *hex_widget, guint64 position)
  * @param doc : the document searched
  * @param search_buffer : the string searched for
  * @param buffer_size : size of the buffer
- * @param[out] : position (if any) of the found string
+ * @param[out] position (if any) of the found string
  * @return True if something has been found. False otherwise
  */
 gboolean ghex_find_forward(doc_t *doc, guchar *search_buffer, guint buffer_size, guint64 *position)
@@ -525,6 +543,33 @@ gboolean ghex_find_forward(doc_t *doc, guchar *search_buffer, guint buffer_size,
         {
             *position = 0;
             return FALSE;
+        }
+}
+
+
+/**
+ * Wrapper to the hex_document_compare_data function
+ * Compares data from string to the one contained in doc at position position
+ * and with len buffer_size
+ * @param doc : the document where we want to compare data
+ * @param string : the string we want to compare
+ * @param buffer_size : size of the buffer string
+ * @param position the localisation in the document where we want to compare
+ *        thing
+ * @return a gint 0 means that at the given position and for the len buffer_size
+ *         the document doc contains exactly the string.
+ *         -1 if an error occured.
+ */
+gint ghex_compare_data(doc_t *doc, guchar *string,  guint buffer_size, guint64 position)
+{
+
+    if (doc != NULL && doc->hex_doc != NULL && string != NULL)
+        {
+            return hex_document_compare_data(doc->hex_doc, string, (gint) position, buffer_size);
+        }
+    else
+        {
+            return -1;
         }
 }
 

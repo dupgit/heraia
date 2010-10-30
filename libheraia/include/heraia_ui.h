@@ -44,10 +44,10 @@ extern void on_cut_activate(GtkWidget *widget, gpointer data);
 extern void on_copy_activate(GtkWidget *widget, gpointer data);
 extern void on_paste_activate(GtkWidget *widget, gpointer data);
 extern void on_fr_activate(GtkWidget *widget, gpointer data);
-void on_find_activate(GtkWidget *widget, gpointer data);
+extern void on_find_activate(GtkWidget *widget, gpointer data);
 extern void on_DIMenu_activate(GtkWidget *widget, gpointer data);
 extern void on_tests_menu_activate(GtkWidget *widget, gpointer data);
-extern gboolean delete_main_struct_event(GtkWidget *widget, GdkEvent *event, gpointer data);
+extern gboolean delete_main_window_event(GtkWidget *widget, GdkEvent *event, gpointer data);
 
 extern gboolean delete_dt_window_event(GtkWidget *widget, GdkEvent *event, gpointer data);
 extern void destroy_dt_window(GtkWidget *widget, GdkEvent  *event, gpointer data);
@@ -105,7 +105,9 @@ extern void update_main_window_name(heraia_struct_t *main_struct);
 extern void set_notebook_tab_name(heraia_struct_t *main_struct);
 extern void add_new_tab_in_main_window(heraia_struct_t *main_struct, doc_t *doc);
 extern void set_notebook_tab_label_color(heraia_struct_t *main_struct, gboolean color);
-extern gint find_tab_number_from_widget(heraia_struct_t *main_struct, GtkWidget *to_find);
+extern gint find_tab_number_from_widget(heraia_struct_t *main_struct, gchar *notebook_name, GtkWidget *to_find);
+extern GtkWidget *find_label_from_hbox(GtkWidget *hbox);
+extern GtkWidget *create_tab_close_button(heraia_struct_t *main_struct, GtkWidget *tab_label, void *signal_handler);
 
 
 #endif /* _LIBHERAIA_HERAIA_UI_H_ */

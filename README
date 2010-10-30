@@ -3,7 +3,7 @@ Compiling the program if you have the svn sources (the easy way)
  ./autoclean.sh
  ./autogen.sh
  ./configure
- make
+ make -s
 
 Optional (system installation) :
  sudo make install

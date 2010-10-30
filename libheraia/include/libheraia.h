@@ -291,6 +291,8 @@ typedef struct
 /**
  * @struct heraia_struct_t
  *  This is the main structure. It contains all things that the program needs
+ *  results GPtrArray stores the pointer of the corresponding document from
+ *  which the search took place.
  */
 typedef struct
 {
@@ -307,6 +309,7 @@ typedef struct
     doc_t *find_doc;                /**< find document and hexwidget for find window                               */
     doc_t *fr_find_doc;             /**< find and replace window, find document and hexwidget                      */
     doc_t *fr_replace_doc;          /**< find and replace window, replace document and hexwidget                   */
+    GPtrArray *results;             /**< An array of pointers for each tab in the result window.                   */
 } heraia_struct_t;
 
 

@@ -34,8 +34,14 @@ static void destroy_result_window_event(GtkWidget *widget, GdkEvent  *event, gpo
 static void result_window_close(GtkWidget *widget, gpointer data);
 static void result_window_connect_signal(heraia_struct_t *main_struct);
 
+static void tree_selection_changed(GtkTreeSelection *selection, gpointer data);
+static void rw_on_close_activate(GtkWidget *widget, gpointer data);
+
 static void determine_pos_and_buffer_size(guint64 *pos, guint *buffer_size, guint size, guint64 file_size);
-static void add_gtk_tree_view_to_result_notebook(heraia_struct_t *main_struct, GtkListStore *lstore, guchar *label_text);
+static void add_gtk_tree_view_to_result_notebook(heraia_struct_t *main_struct, GtkListStore *lstore, guchar *label_text, doc_t *doc);
+
+static void menu_result_toggle(GtkWidget *widget, gpointer data);
+
 
 /**
  * Show result window
@@ -51,7 +57,8 @@ void result_window_show(GtkWidget *widget, gpointer data)
     if (main_struct != NULL && main_struct->current_doc != NULL)
         {
             window = heraia_get_widget(main_struct->xmls->main, "result_window");
-            show_hide_widget(window, TRUE, main_struct->win_prop->result_window);
+            move_and_show_dialog_box(window, main_struct->win_prop->result_window);
+            gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(heraia_get_widget(main_struct->xmls->main, "menu_result")), TRUE);
         }
 }
 
@@ -108,9 +115,46 @@ static void result_window_close(GtkWidget *widget, gpointer data)
     if (main_struct != NULL)
         {
              window = heraia_get_widget(main_struct->xmls->main, "result_window");
-             show_hide_widget(window, FALSE, main_struct->win_prop->result_window);
+             record_and_hide_dialog_box(window, main_struct->win_prop->result_window);
+             gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(heraia_get_widget(main_struct->xmls->main, "menu_result")), FALSE);
         }
+}
 
+
+/**
+ * Function called upon selection change. Changes the cursor position to the
+ * right place (should also change to the right document).
+ * @param selection : the selection that changed
+ * @param data : user data MUST be main program's structure
+ */
+static void tree_selection_changed(GtkTreeSelection *selection, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+    GtkTreeIter iter;
+    GtkTreeModel *model = NULL;
+    GtkWidget *result_notebook = NULL;
+    guint64 a_pos = 0;
+    gint index = 0;
+    doc_t *the_doc = NULL;
+
+    if (main_struct != NULL && main_struct->xmls != NULL && main_struct->xmls->main != NULL)
+        {
+            result_notebook = heraia_get_widget(main_struct->xmls->main, "result_notebook");
+
+            if (gtk_tree_selection_get_selected(selection, &model, &iter))
+                {
+                    gtk_tree_model_get(model, &iter, R_LS_POS, &a_pos, -1);
+                    index = gtk_notebook_get_current_page(GTK_NOTEBOOK(result_notebook));
+                    the_doc = g_ptr_array_index(main_struct->results, index);
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Search result index : %d "), index);
+
+                    if (the_doc != NULL)
+                        {
+                            /* Change file's notebook tab in main window to display the_doc document if it is possible */
+                            ghex_set_cursor_position(the_doc->hex_widget, a_pos - 1);
+                        }
+                }
+        }
 }
 
 
@@ -168,23 +212,51 @@ static void determine_pos_and_buffer_size(guint64 *pos, guint *buffer_size, guin
 
 
 /**
+ * Closes a result tab
+ * @param widget : the widget that issued the signal
+ * @param data : user data MUST be heraia_struct_t *main_struct main structure
+ */
+static void rw_on_close_activate(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+    GtkWidget *notebook = NULL;  /**< result_notebook from heraia.gtkbuilder     */
+    gint tab_number = 0;         /**< index of the tab (and thus from the array) */
+
+    tab_number = find_tab_number_from_widget(main_struct, "result_notebook", widget);
+
+    /* Removing the index in the array */
+    g_ptr_array_remove_index(main_struct->results, tab_number);
+
+    /* And removing it in the notebook */
+    notebook = heraia_get_widget(main_struct->xmls->main, "result_notebook");
+    gtk_notebook_remove_page(GTK_NOTEBOOK(notebook), tab_number);
+}
+
+
+/**
  * Add one tab to the result window's notebook with a gtk_tree_view in it
  * @param main_struct : main structure of heraia
  * @param lstore : the populated list store (for the tree view)
  * @param label_text : the text for the label of the tab
+ * @param doc : the document from which the search was done
  */
-static void add_gtk_tree_view_to_result_notebook(heraia_struct_t *main_struct, GtkListStore *lstore, guchar *label_text)
+static void add_gtk_tree_view_to_result_notebook(heraia_struct_t *main_struct, GtkListStore *lstore, guchar *label_text, doc_t *doc)
 {
-    GtkWidget *vbox = NULL;           /**< used for vbox creation                 */
-    GtkWidget *scrolledw = NULL;      /**< the scrolled window                    */
-    GtkWidget *notebook = NULL;       /**< result_notebook from heraia.gtkbuilder */
-    GtkWidget *tview = NULL;          /**< the tree view                          */
-    GtkWidget *tab_label = NULL;      /**< tab's label                            */
-    GtkCellRenderer *renderer = NULL; /**< a rennderer for the cells              */
-    GtkTreeViewColumn *column = NULL; /**< columns to be added to the treeview    */
-    gint tab_num = -1;                /**< new tab's index                        */
-    gchar *markup = NULL;             /**< markup text                            */
-
+    GtkWidget *vbox = NULL;           /**< used for vbox creation                      */
+    GtkWidget *scrolledw = NULL;      /**< the scrolled window                         */
+    GtkWidget *notebook = NULL;       /**< result_notebook from heraia.gtkbuilder      */
+    GtkWidget *tview = NULL;          /**< the tree view                               */
+    GtkWidget *tab_label = NULL;      /**< tab's label                                 */
+    GtkWidget *hbox = NULL;           /**< the hbox that will receive the close button */
+    GtkCellRenderer *renderer = NULL; /**< a rennderer for the cells                   */
+    GtkTreeViewColumn *column = NULL; /**< columns to be added to the treeview         */
+    GtkTreeSelection *select = NULL;  /**< selection to the treeview                   */
+    gint tab_num = -1;                /**< new tab's index                             */
+    gchar *markup = NULL;             /**< markup text                                 */
+    gchar *menu_markup = NULL;        /**< menu markup text (menu in the notebook)     */
+    GtkWidget *menu_label = NULL;     /**<menu's label (notebook's menu)               */
+    gchar *whole_filename = NULL;     /**< filename of the document from where the
+                                           search took place                           */
 
     notebook = heraia_get_widget(main_struct->xmls->main, "result_notebook");
     vbox = gtk_vbox_new(FALSE, 2);
@@ -215,16 +287,36 @@ static void add_gtk_tree_view_to_result_notebook(heraia_struct_t *main_struct, G
     column = gtk_tree_view_column_new_with_attributes(Q_("Ascii"), renderer, "text", R_LS_ASCII, NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(tview), column);
 
-    /* tab's label and menu label */
+    /* Signal handling */
+    select = gtk_tree_view_get_selection(GTK_TREE_VIEW(tview));
+    gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
+    g_signal_connect(G_OBJECT(select), "changed", G_CALLBACK(tree_selection_changed), main_struct);
+
+
+    /* tab's label, menu label and tooltips */
     if (label_text != NULL)
         {
             tab_label = gtk_label_new(NULL);
             markup = g_markup_printf_escaped("%s", label_text);
             gtk_label_set_markup(GTK_LABEL(tab_label), markup);
+
+            menu_label = gtk_label_new(NULL);
+            menu_markup = g_markup_printf_escaped("%s", label_text);
+            gtk_label_set_markup(GTK_LABEL(menu_label), menu_markup);
+            gtk_label_set_justify(GTK_LABEL(menu_label), GTK_JUSTIFY_LEFT);
+
+            whole_filename = doc_t_document_get_filename(doc);
+            gtk_widget_set_tooltip_text(tab_label, g_filename_display_name(whole_filename));
+
             g_free(markup);
+            g_free(menu_markup);
         }
 
-    tab_num = gtk_notebook_append_page(GTK_NOTEBOOK(notebook), vbox, tab_label);
+    /* Creating the close button */
+    hbox = create_tab_close_button(main_struct, tab_label, rw_on_close_activate);
+
+    gtk_widget_show_all(vbox);
+    tab_num = gtk_notebook_append_page_menu(GTK_NOTEBOOK(notebook), vbox, hbox, menu_label);
 
     gtk_widget_show_all(notebook);
 }
@@ -254,6 +346,8 @@ void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_p
 
 
     current_doc = main_struct->current_doc;
+    g_ptr_array_add(main_struct->results, current_doc);
+
     endianness = LITTLE_ENDIAN; /** Endianness by default (we want the search to be flat) -> However this may
                                     be modified if someone asks for */
     file_size = ghex_file_size(GTK_HEX(current_doc->hex_widget));
@@ -286,9 +380,32 @@ void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_p
     /* Using last pos to retrieve the text for the label */
     label_text = ghex_get_data_to_ascii(current_doc->hex_widget, real_pos, size, endianness);
 
-    add_gtk_tree_view_to_result_notebook(main_struct, lstore, label_text);
+    add_gtk_tree_view_to_result_notebook(main_struct, lstore, label_text, current_doc);
 
     result_window_show(NULL, main_struct);
+}
+
+
+/**
+ *  The Check menu item for the result window
+ * @param widget : the widget that issued the signal (here the menu_result check
+ *                 menu item
+ * @param data : user data, MUST be main_struct main structure
+ */
+static void menu_result_toggle(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+    GtkCheckMenuItem *cmi = GTK_CHECK_MENU_ITEM(widget);
+    gboolean checked = gtk_check_menu_item_get_active(cmi);
+
+    if (checked == TRUE)
+        {
+            result_window_show(widget, data);
+        }
+    else
+        {
+             result_window_close(widget, data);
+        }
 }
 
 
@@ -308,4 +425,53 @@ static void result_window_connect_signal(heraia_struct_t *main_struct)
 
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "result_window")), "destroy",
                      G_CALLBACK(destroy_result_window_event), main_struct);
+
+    /* The toogle button in the main menu*/
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_result")), "toggled",
+                     G_CALLBACK(menu_result_toggle), main_struct);
+}
+
+
+/**
+ * Remove all tabs from the result window that correspond to the specified
+ * document.
+ * @param main_struct : heraia's main structure
+ * @param doc : the document beeing close in main window's notebook
+ */
+void rw_remove_all_tabs(heraia_struct_t *main_struct, doc_t *doc)
+{
+    gint i = 0;
+    gint len = 0;               /**< total len of result array                   */
+    GtkWidget *notebook = NULL; /**< result_notebook from heraia.gtkbuilder      */
+    doc_t *value = NULL;        /**< Value to compare with doc                   */
+    GArray *array = NULL;       /**< array that stores the indexes where results
+                                     value is equal to doc.                      */
+
+    if (main_struct != NULL && main_struct->results != NULL)
+        {
+            notebook = heraia_get_widget(main_struct->xmls->main, "result_notebook");
+
+            array = g_array_new(TRUE, TRUE, sizeof(gint));
+
+            len = main_struct->results->len;
+
+            /* looking for the results */
+            i = 0;
+            while (i < len)
+                {
+                    value = g_ptr_array_index(main_struct->results, i);
+
+                    if (value == doc)
+                        {
+                            log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Removing index %d."), i);
+                            g_ptr_array_remove_index(main_struct->results, i);
+                            gtk_notebook_remove_page(GTK_NOTEBOOK(notebook), i);
+                            len = main_struct->results->len;
+                        }
+                    else
+                        {
+                            i = i + 1;
+                        }
+                }
+        }
 }
