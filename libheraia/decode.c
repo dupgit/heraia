@@ -195,7 +195,7 @@ gchar *decode_64bits_signed(guchar *data, gpointer data_struct)
     else
         {
             memcpy(&total, data, 8 * sizeof (guchar));
-            return g_strdup_printf("%ld", total);
+            return g_strdup_printf("%lld", (long long int) total);
         }
 }
 
@@ -218,7 +218,7 @@ gchar *decode_64bits_unsigned(guchar *data, gpointer data_struct)
     else
         {
             memcpy(&total, data, 8 * sizeof (guchar));
-            return g_strdup_printf("%lu", total);
+            return g_strdup_printf("%llu", (long long unsigned int) total);
         }
 }
 

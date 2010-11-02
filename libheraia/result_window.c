@@ -394,7 +394,6 @@ void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_p
  */
 static void menu_result_toggle(GtkWidget *widget, gpointer data)
 {
-    heraia_struct_t *main_struct = (heraia_struct_t *) data;
     GtkCheckMenuItem *cmi = GTK_CHECK_MENU_ITEM(widget);
     gboolean checked = gtk_check_menu_item_get_active(cmi);
 
