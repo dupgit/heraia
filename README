@@ -1,3 +1,17 @@
+To build heraia you need to install the following packages (and all their
+dependencies) before :
+
+On ubuntu :
+---------
+
+ . intltool
+ . libglib2.0-dev
+ . libgtk2.0-dev
+ . libgtkhex0-dev
+
+Compiling :
+---------
+
 Compiling the program if you have the svn sources (the easy way)
 
  ./autoclean.sh
@@ -23,7 +37,6 @@ versions).
 
 And also, if you have any question regarding heraia, please e-mail me at
 heraia@delhomme.org
-
 
 ***** Reminder for code coverage *****
 
