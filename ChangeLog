@@ -4,6 +4,7 @@
        Debian and OpenSuse.
      * Correcting things to avoid warnings on 32bits systems
      * Adding OpenSuse to the description as an OS known to compile heraia
+     * Now heading to 0.1.7
 
 30.10.2010 [release 0.1.6]
    - Olivier Delhomme <heraia@delhomme.org>
