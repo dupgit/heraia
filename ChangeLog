@@ -44,7 +44,7 @@
 
 17.10.2010
    - Olivier Delhomme <heraia@delhomme.org>
-     * Generalizing som functions in heraia_ui.c in order to use them in
+     * Generalizing some functions in heraia_ui.c in order to use them in
        result_window.c for the notebook
      * Given that, closing the results are now possible
 
