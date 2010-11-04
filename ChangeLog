@@ -1,3 +1,8 @@
+04.11.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Documentation on what packages are needed to build heraia on Fedora (they
+       are indeed the same than the ones needed for OpenSuse).
+
 02.11.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Documentation on what packages are needed to build heraia on Ubuntu,

@@ -2,7 +2,6 @@ To build heraia you need to install the following packages (and all their
 dependencies) before :
 
 On ubuntu 10.04 and Debian squeeze :
----------
 
  . gcc
  . make
@@ -11,8 +10,7 @@ On ubuntu 10.04 and Debian squeeze :
  . libgtk2.0-dev
  . libgtkhex0-dev
 
-On OpenSuse 11.3 :
----------
+On OpenSuse 11.3 and Fedora 14 :
 
  . gcc
  . make
@@ -49,6 +47,7 @@ versions).
 
 And also, if you have any question regarding heraia, please e-mail me at
 heraia@delhomme.org
+
 
 ***** Reminder for code coverage *****
 
