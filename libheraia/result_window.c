@@ -330,25 +330,25 @@ static void add_gtk_tree_view_to_result_notebook(heraia_struct_t *main_struct, G
  */
 void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_pos, guint size)
 {
-    GtkListStore *lstore =  NULL;     /**< List store that will contain results                    */
+    GtkListStore *lstore =  NULL;         /**< List store that will contain results                    */
     guint i = 0;
-    guint64 pos = 0;                  /**< a calculated position to center the search string       */
-    guint64 real_pos = 0;             /**< real position                                           */
-    guint64 file_size = 0 ;           /**< size of the file  during the search (should not change) */
-    doc_t *current_doc = NULL;        /**< Current document on which we want to do the search      */
-    gint endianness = LITTLE_ENDIAN;  /**< endianness as selected in the data interpretor window   */
-    guint buffer_size = 0;             /**< buffer size (bigger than size in order to display      */
-                                      /**  some byte before and after the results)                 */
-    guchar *ascii_buffer = NULL;      /**< the ascii buffer                                        */
-    guchar *hex_buffer = NULL;        /**< the hex buffer                                          */
+    guint64 pos = 0;                      /**< a calculated position to center the search string       */
+    guint64 real_pos = 0;                 /**< real position                                           */
+    guint64 file_size = 0 ;               /**< size of the file  during the search (should not change) */
+    doc_t *current_doc = NULL;            /**< Current document on which we want to do the search      */
+    gint endianness = H_DI_LITTLE_ENDIAN; /**< endianness as selected in the data interpretor window   */
+    guint buffer_size = 0;                /**< buffer size (bigger than size in order to display      */
+                                          /**  some byte before and after the results)                 */
+    guchar *ascii_buffer = NULL;          /**< the ascii buffer                                        */
+    guchar *hex_buffer = NULL;            /**< the hex buffer                                          */
     GtkTreeIter iter;
-    guchar *label_text = NULL;        /**< text label                                              */
+    guchar *label_text = NULL;            /**< text label                                              */
 
 
     current_doc = main_struct->current_doc;
     g_ptr_array_add(main_struct->results, current_doc);
 
-    endianness = LITTLE_ENDIAN; /** Endianness by default (we want the search to be flat) -> However this may
+    endianness = H_DI_LITTLE_ENDIAN; /** Endianness by default (we want the search to be flat) -> However this may
                                     be modified if someone asks for */
     file_size = ghex_file_size(GTK_HEX(current_doc->hex_widget));
 

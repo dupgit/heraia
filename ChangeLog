@@ -1,3 +1,9 @@
+05.11.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Correcting a syntax error which strangely only appears when trying to
+       compile heraia under windows (I don't even know how this could have been
+       compiled before !)
+
 04.11.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Documentation on what packages are needed to build heraia on Fedora (they
