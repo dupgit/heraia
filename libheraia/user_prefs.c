@@ -30,20 +30,23 @@
 static void verify_preference_file_path_presence(gchar *pathname);
 static void verify_preference_file_name_presence(gchar *filename);
 
+/* Saving */
 static void save_window_preferences(GKeyFile *file, gchar *name, window_prop_t *window_prop);
 
 static void save_mp_file_preferences_options(heraia_struct_t *main_struct);
 static void save_mp_display_preferences_options(heraia_struct_t *main_struct);
+static void save_mp_files_filenames(heraia_struct_t *main_struct, prefs_t *prefs);
 
 static void save_di_preferences(heraia_struct_t *main_struct);
 
 static void save_mpwp_preferences(heraia_struct_t *main_struct);
 
-
+/* Loading */
 static void load_window_preferences(GKeyFile *file, gchar *name, window_prop_t *window_prop);
 
 static void load_mp_file_preferences_options(heraia_struct_t *main_struct);
 static void load_mp_display_preferences_options(heraia_struct_t *main_struct);
+static void load_mp_files_filenames(heraia_struct_t *main_struct, prefs_t *prefs);
 
 static void load_di_preferences(heraia_struct_t *main_struct);
 
@@ -182,6 +185,7 @@ static void save_mp_file_preferences_options(heraia_struct_t *main_struct)
     prefs_t *prefs = NULL;
     gboolean activated = FALSE;
 
+
     if (main_struct != NULL)
         {
             prefs = main_struct->prefs;
@@ -205,7 +209,53 @@ static void save_mp_file_preferences_options(heraia_struct_t *main_struct)
                     save_window_preferences(prefs->file, KN_FIND_WINDOW, main_struct->win_prop->find_window);
                     save_window_preferences(prefs->file, KN_FR_WINDOW, main_struct->win_prop->fr_window);
                 }
+
+            /* Saving opened files filenames ? */
+            activated = is_toggle_button_activated(main_struct->xmls->main, "save_filenames_bt");
+            g_key_file_set_boolean(prefs->file, GN_GLOBAL_PREFS, KN_SAVE_OPENED_FILES_FILENAMES, activated);
+
+            if (activated == TRUE)
+                {
+                    save_mp_files_filenames(main_struct, prefs);
+                }
         }
+}
+
+/**
+ * Saves files filenames to the config file
+ * @param main_struct the main structure
+ * @param prefs preference structure
+ */
+static void save_mp_files_filenames(heraia_struct_t *main_struct, prefs_t *prefs)
+{
+    const gchar **list = NULL;  /**< A list that will contain all the files filenames         */
+    gchar *filename = NULL;     /**< One filename                                             */
+    gsize i = 0;
+    gsize len = 0;
+    gsize j = 0;
+    doc_t *document = NULL;    /**< One document (from the documents array in the main_struct */
+
+    /* First initializing the list variable with the filenames of the opened documents */
+    i = 0;
+    j = 0;
+    len = main_struct->documents->len;
+    list = (const gchar **) g_malloc0 (sizeof(gchar **)*len);
+
+    while (i < len)
+        {
+            document = g_ptr_array_index(main_struct->documents, i);
+
+            if (document != NULL)
+                {
+                    filename = g_strdup(doc_t_document_get_filename(document));
+                    list[j] = filename;
+                    j++;
+                }
+            i++;
+        }
+
+    /* Saving them to the preference file */
+    g_key_file_set_string_list(prefs->file, GN_GLOBAL_PREFS, KN_FILES_FILENAMES, list, j);
 }
 
 
@@ -368,13 +418,14 @@ static void load_mp_file_preferences_options(heraia_struct_t *main_struct)
 {
     prefs_t *prefs = NULL;
     GtkWidget *save_window_position_bt = NULL;
+    GtkWidget *save_filenames_bt = NULL;
     gboolean activated = FALSE;
 
     if (main_struct != NULL)
         {
             prefs = main_struct->prefs;
 
-            /* Saving window's positions ? */
+            /* Loading window's positions ? */
             activated = g_key_file_get_boolean(prefs->file, GN_GLOBAL_PREFS, KN_SAVE_WINDOW_PREFS, NULL);
             save_window_position_bt = heraia_get_widget(main_struct->xmls->main, "save_window_position_bt");
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(save_window_position_bt), activated);
@@ -394,7 +445,44 @@ static void load_mp_file_preferences_options(heraia_struct_t *main_struct)
                     load_window_preferences(prefs->file, KN_FIND_WINDOW, main_struct->win_prop->find_window);
                     load_window_preferences(prefs->file, KN_FR_WINDOW, main_struct->win_prop->fr_window);
                 }
+
+            /* Loading opened files filenames ? */
+            activated = g_key_file_get_boolean(prefs->file, GN_GLOBAL_PREFS, KN_SAVE_OPENED_FILES_FILENAMES, NULL);
+            save_filenames_bt = heraia_get_widget(main_struct->xmls->main, "save_filenames_bt");
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(save_filenames_bt), activated);
+
+            if (activated == TRUE)
+                {
+                    load_mp_files_filenames(main_struct, prefs);
+                }
         }
+}
+
+
+/**
+ * Load files filenames from the config file
+ * @param main_struct the main structure
+ * @param prefs preference structure
+ */
+static void load_mp_files_filenames(heraia_struct_t *main_struct, prefs_t *prefs)
+{
+    gboolean success = TRUE;  /**< True when everything has gone allright                */
+    gchar **list = NULL;      /**< The list that will contain all filenames to be loaded */
+    gsize i = 0;
+    gsize len = 0;
+
+    list = g_key_file_get_string_list(prefs->file, GN_GLOBAL_PREFS, KN_FILES_FILENAMES, &len, NULL);
+
+    for (i = 0; i < len; i++)
+        {
+            success = success && load_file_to_analyse(main_struct, list[i]);
+        }
+
+    if (success == TRUE && main_struct->current_doc != NULL)
+        {
+            main_struct->event = HERAIA_REFRESH_NEW_FILE;
+            refresh_event_handler(main_struct->current_doc->hex_widget, main_struct);
+         }
 }
 
 

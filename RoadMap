@@ -106,6 +106,7 @@ I let you imagine what I expect before I do a major release !!!
    * python bindings ?
    * Look at everything in order to enhance user experience and the have a more
      usable program.
+   * Add an import ability (for instance tcpdump imports)
 
 - 0.2.0
    * rename tha main_window_t structure in main_struct_t structure which

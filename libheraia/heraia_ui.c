@@ -2126,7 +2126,7 @@ static gboolean close_heraia(heraia_struct_t *main_struct)
             gtk_widget_destroy(dialog);
         }
 
-    if ( quit_heraia == TRUE)
+    if (quit_heraia == TRUE)
         {
             /* recording window's position */
             record_all_dialog_box_positions(main_struct);

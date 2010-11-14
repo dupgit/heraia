@@ -1,3 +1,13 @@
+14.11.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Roadmap addition : It may be interesting to import a file from a tcpdump
+       session (or any other tool)
+     * New frame for general options. I want to be able to save the filenames of
+       the opened files in the session in order to be able to read them again in
+       the next session.
+     * Now opened files filenames are saved in the preference file (and opened
+       in the next session (if the option has been sat))
+
 05.11.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Correcting a syntax error which strangely only appears when trying to
