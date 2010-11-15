@@ -88,7 +88,7 @@ I let you imagine what I expect before I do a major release !!!
    * have the ability to close opened files
    * Improve dialog box when closing with modified documents
 
-. 0.1.6
+. 0.1.6 [30.10.2010]
    * have basic search and replace functions
    * hability to jump anywhere in the file
    * Enable line numbers in the ghex widget with an option in main preferences

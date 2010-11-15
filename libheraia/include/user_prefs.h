@@ -54,6 +54,7 @@
 
 #define KN_SAVE_OPENED_FILES_FILENAMES "Opened files filenames"
 #define KN_FILES_FILENAMES "Files filenames"
+#define KN_CURRENT_TAB "Main current tab"
 
 #define KN_DISP_THOUSAND "Thousand"
 #define KN_DISP_OFFSETS "Offsets"

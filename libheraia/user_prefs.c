@@ -233,7 +233,9 @@ static void save_mp_files_filenames(heraia_struct_t *main_struct, prefs_t *prefs
     gsize i = 0;
     gsize len = 0;
     gsize j = 0;
-    doc_t *document = NULL;    /**< One document (from the documents array in the main_struct */
+    gint current_tab = 0;       /**< Current selected tab in the main notebook                 */
+    doc_t *document = NULL;     /**< One document (from the documents array in the main_struct */
+    GtkWidget *notebook = NULL; /**< Main notebook in the file view in the main window         */
 
     /* First initializing the list variable with the filenames of the opened documents */
     i = 0;
@@ -256,6 +258,13 @@ static void save_mp_files_filenames(heraia_struct_t *main_struct, prefs_t *prefs
 
     /* Saving them to the preference file */
     g_key_file_set_string_list(prefs->file, GN_GLOBAL_PREFS, KN_FILES_FILENAMES, list, j);
+
+
+    /* saving current tab */
+    notebook = heraia_get_widget(main_struct->xmls->main, "file_notebook");
+    current_tab = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
+    g_key_file_set_integer(prefs->file, GN_GLOBAL_PREFS, KN_CURRENT_TAB, current_tab);
+
 }
 
 
@@ -470,7 +479,10 @@ static void load_mp_files_filenames(heraia_struct_t *main_struct, prefs_t *prefs
     gchar **list = NULL;      /**< The list that will contain all filenames to be loaded */
     gsize i = 0;
     gsize len = 0;
+    gint current_tab = 0;
+    GtkWidget *notebook = NULL;
 
+    /* get file list */
     list = g_key_file_get_string_list(prefs->file, GN_GLOBAL_PREFS, KN_FILES_FILENAMES, &len, NULL);
 
     for (i = 0; i < len; i++)
@@ -478,11 +490,16 @@ static void load_mp_files_filenames(heraia_struct_t *main_struct, prefs_t *prefs
             success = success && load_file_to_analyse(main_struct, list[i]);
         }
 
-    if (success == TRUE && main_struct->current_doc != NULL)
-        {
-            main_struct->event = HERAIA_REFRESH_NEW_FILE;
-            refresh_event_handler(main_struct->current_doc->hex_widget, main_struct);
-         }
+    /* get current tab */
+    current_tab = g_key_file_get_integer(prefs->file, GN_GLOBAL_PREFS, KN_CURRENT_TAB, NULL);
+    notebook = heraia_get_widget(main_struct->xmls->main, "file_notebook");
+    gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), current_tab);
+
+    //if (success == TRUE && main_struct->current_doc != NULL)
+        //{
+            //main_struct->event = HERAIA_REFRESH_NEW_FILE;
+            //refresh_event_handler(main_struct->current_doc->hex_widget, main_struct);
+         //}
 }
 
 
