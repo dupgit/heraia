@@ -230,7 +230,7 @@ static void save_mp_files_filenames(heraia_struct_t *main_struct, prefs_t *prefs
 {
     const gchar **list = NULL;  /**< A list that will contain all the files filenames            */
     gchar *filename = NULL;     /**< One filename                                                */
-    guint64 *pos_list = NULL;   /**< list of the current position of the cursor in the documents */
+    gint *pos_list = NULL;   /**< list of the current position of the cursor in the documents */
     gsize i = 0;
     gsize len = 0;
     gsize j = 0;
@@ -243,7 +243,7 @@ static void save_mp_files_filenames(heraia_struct_t *main_struct, prefs_t *prefs
     j = 0;
     len = main_struct->documents->len;
     list = (const gchar **) g_malloc0 (sizeof(gchar *)*len);
-    pos_list = (guint64 *) g_malloc0 (sizeof(guint64)*len);
+    pos_list = (gint *) g_malloc0 (sizeof(gint)*len);
 
     while (i < len)
         {
@@ -252,7 +252,8 @@ static void save_mp_files_filenames(heraia_struct_t *main_struct, prefs_t *prefs
             if (document != NULL)
                 {
                     filename = g_strdup(doc_t_document_get_filename(document));
-                    pos_list[j] = ghex_get_cursor_position(document->hex_widget);
+                    /* There will be some limitations here due to the guint64 to gint cast */
+                    pos_list[j] = (gint) ghex_get_cursor_position(document->hex_widget);
                     list[j] = filename;
                     j++;
                 }
@@ -261,14 +262,12 @@ static void save_mp_files_filenames(heraia_struct_t *main_struct, prefs_t *prefs
 
     /* Saving them to the preference file */
     g_key_file_set_string_list(prefs->file, GN_GLOBAL_PREFS, KN_FILES_FILENAMES, list, j);
-    /* There will be some limitations here due to the guint64 to gint cast */
-    g_key_file_set_integer_list(prefs->file, GN_GLOBAL_PREFS, KN_FILES_CURSOR_POSITIONS, (gint *)pos_list, j);
+    g_key_file_set_integer_list(prefs->file, GN_GLOBAL_PREFS, KN_FILES_CURSOR_POSITIONS, pos_list, j);
 
     /* saving current tab */
     notebook = heraia_get_widget(main_struct->xmls->main, "file_notebook");
     current_tab = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
     g_key_file_set_integer(prefs->file, GN_GLOBAL_PREFS, KN_CURRENT_TAB, current_tab);
-
 }
 
 
@@ -480,7 +479,7 @@ static void load_mp_file_preferences_options(heraia_struct_t *main_struct)
 static void load_mp_files_filenames(heraia_struct_t *main_struct, prefs_t *prefs)
 {
     gchar **list = NULL;      /**< The list that will contain all filenames to be loaded       */
-    guint64 *pos_list = NULL; /**< list of the current position of the cursor in the documents */
+    gint *pos_list = NULL;    /**< list of the current position of the cursor in the documents */
     gsize i = 0;
     gsize len = 0;
     gsize pos_len = 0;
@@ -489,8 +488,7 @@ static void load_mp_files_filenames(heraia_struct_t *main_struct, prefs_t *prefs
 
     /* get file list */
     list = g_key_file_get_string_list(prefs->file, GN_GLOBAL_PREFS, KN_FILES_FILENAMES, &len, NULL);
-    /* There is some limitations here due to the cast from 'gint *' to 'guint64 *' */
-    pos_list = (guint64 *) g_key_file_get_integer_list(prefs->file, GN_GLOBAL_PREFS, KN_FILES_CURSOR_POSITIONS, &pos_len, NULL);
+    pos_list = (gint *) g_key_file_get_integer_list(prefs->file, GN_GLOBAL_PREFS, KN_FILES_CURSOR_POSITIONS, &pos_len, NULL);
 
     if (len == pos_len)
         {
@@ -500,7 +498,9 @@ static void load_mp_files_filenames(heraia_struct_t *main_struct, prefs_t *prefs
                         {
                             /* in add_new_tab_in_main_window() function, the newly */
                             /* opened document becomes the current one             */
-                            ghex_set_cursor_position(main_struct->current_doc->hex_widget, pos_list[i]);
+                            /* There is some limitations here due to the cast from */
+                            /* gint to guint64                                     */
+                            ghex_set_cursor_position(main_struct->current_doc->hex_widget, (guint64) pos_list[i]);
                         }
                 }
         }
