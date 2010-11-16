@@ -67,7 +67,7 @@ gboolean load_file_to_analyse(heraia_struct_t *main_struct, gchar *filename)
                     /* updating the window name */
                     update_main_window_name(main_struct);
 
-                    /* Showing all the widgets */
+                    /* Showing all the widgets (in the menu and such) */
                     grey_main_widgets(main_struct->xmls->main, FALSE);
 
                     log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("file %s loaded !"), filename);

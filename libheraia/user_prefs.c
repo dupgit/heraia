@@ -228,20 +228,22 @@ static void save_mp_file_preferences_options(heraia_struct_t *main_struct)
  */
 static void save_mp_files_filenames(heraia_struct_t *main_struct, prefs_t *prefs)
 {
-    const gchar **list = NULL;  /**< A list that will contain all the files filenames         */
-    gchar *filename = NULL;     /**< One filename                                             */
+    const gchar **list = NULL;  /**< A list that will contain all the files filenames            */
+    gchar *filename = NULL;     /**< One filename                                                */
+    guint64 *pos_list = NULL;   /**< list of the current position of the cursor in the documents */
     gsize i = 0;
     gsize len = 0;
     gsize j = 0;
-    gint current_tab = 0;       /**< Current selected tab in the main notebook                 */
-    doc_t *document = NULL;     /**< One document (from the documents array in the main_struct */
-    GtkWidget *notebook = NULL; /**< Main notebook in the file view in the main window         */
+    gint current_tab = 0;       /**< Current selected tab in the main notebook                   */
+    doc_t *document = NULL;     /**< One document (from the documents array in the main_struct   */
+    GtkWidget *notebook = NULL; /**< Main notebook in the file view in the main window           */
 
     /* First initializing the list variable with the filenames of the opened documents */
     i = 0;
     j = 0;
     len = main_struct->documents->len;
-    list = (const gchar **) g_malloc0 (sizeof(gchar **)*len);
+    list = (const gchar **) g_malloc0 (sizeof(gchar *)*len);
+    pos_list = (guint64 *) g_malloc0 (sizeof(guint64)*len);
 
     while (i < len)
         {
@@ -250,6 +252,7 @@ static void save_mp_files_filenames(heraia_struct_t *main_struct, prefs_t *prefs
             if (document != NULL)
                 {
                     filename = g_strdup(doc_t_document_get_filename(document));
+                    pos_list[j] = ghex_get_cursor_position(document->hex_widget);
                     list[j] = filename;
                     j++;
                 }
@@ -258,7 +261,8 @@ static void save_mp_files_filenames(heraia_struct_t *main_struct, prefs_t *prefs
 
     /* Saving them to the preference file */
     g_key_file_set_string_list(prefs->file, GN_GLOBAL_PREFS, KN_FILES_FILENAMES, list, j);
-
+    /* There will be some limitations here due to the guint64 to gint cast */
+    g_key_file_set_integer_list(prefs->file, GN_GLOBAL_PREFS, KN_FILES_CURSOR_POSITIONS, (gint *)pos_list, j);
 
     /* saving current tab */
     notebook = heraia_get_widget(main_struct->xmls->main, "file_notebook");
@@ -475,31 +479,36 @@ static void load_mp_file_preferences_options(heraia_struct_t *main_struct)
  */
 static void load_mp_files_filenames(heraia_struct_t *main_struct, prefs_t *prefs)
 {
-    gboolean success = TRUE;  /**< True when everything has gone allright                */
-    gchar **list = NULL;      /**< The list that will contain all filenames to be loaded */
+    gchar **list = NULL;      /**< The list that will contain all filenames to be loaded       */
+    guint64 *pos_list = NULL; /**< list of the current position of the cursor in the documents */
     gsize i = 0;
     gsize len = 0;
+    gsize pos_len = 0;
     gint current_tab = 0;
     GtkWidget *notebook = NULL;
 
     /* get file list */
     list = g_key_file_get_string_list(prefs->file, GN_GLOBAL_PREFS, KN_FILES_FILENAMES, &len, NULL);
+    /* There is some limitations here due to the cast from 'gint *' to 'guint64 *' */
+    pos_list = (guint64 *) g_key_file_get_integer_list(prefs->file, GN_GLOBAL_PREFS, KN_FILES_CURSOR_POSITIONS, &pos_len, NULL);
 
-    for (i = 0; i < len; i++)
+    if (len == pos_len)
         {
-            success = success && load_file_to_analyse(main_struct, list[i]);
+            for (i = 0; i < len; i++)
+                {
+                    if (load_file_to_analyse(main_struct, list[i]))
+                        {
+                            /* in add_new_tab_in_main_window() function, the newly */
+                            /* opened document becomes the current one             */
+                            ghex_set_cursor_position(main_struct->current_doc->hex_widget, pos_list[i]);
+                        }
+                }
         }
 
     /* get current tab */
     current_tab = g_key_file_get_integer(prefs->file, GN_GLOBAL_PREFS, KN_CURRENT_TAB, NULL);
     notebook = heraia_get_widget(main_struct->xmls->main, "file_notebook");
     gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), current_tab);
-
-    //if (success == TRUE && main_struct->current_doc != NULL)
-        //{
-            //main_struct->event = HERAIA_REFRESH_NEW_FILE;
-            //refresh_event_handler(main_struct->current_doc->hex_widget, main_struct);
-         //}
 }
 
 
