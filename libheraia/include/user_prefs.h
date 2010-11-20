@@ -68,7 +68,7 @@
 #define KN_MPWP_SELECTED_TAB "Selected Tab"
 
 extern void verify_preference_file(gchar *pathname, gchar *filename);
-extern void init_preference_struct(heraia_struct_t *main_struct);
+extern prefs_t *init_preference_struct(void);
 
 extern void save_preferences(heraia_struct_t *main_struct);
 extern void load_preferences(heraia_struct_t *main_struct);

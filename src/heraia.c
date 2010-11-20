@@ -216,9 +216,10 @@ static heraia_struct_t *heraia_init_main_struct(gchar *heraia_path)
             return NULL;
         }
 
+    fprintf(stdout, Q_("Initializing preferences\n"));
     /* preference file name initialisation */
-    main_struct->prefs = NULL;
-    init_preference_struct(main_struct);
+    main_struct->prefs = init_preference_struct();
+    fprintf(stdout, Q_("Ok : verifying file"));
     verify_preference_file(main_struct->prefs->pathname, main_struct->prefs->filename);
 
     /**
@@ -533,8 +534,6 @@ int main(int argc, char **argv)
     init_international_languages();
 
     opt = init_options_struct();
-
-
 
     main_struct = heraia_init_main_struct(heraia_path);
 

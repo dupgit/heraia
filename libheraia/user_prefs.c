@@ -119,28 +119,18 @@ void verify_preference_file(gchar *pathname, gchar *filename)
  * Look out if the preference structure exists or not. If not
  * it creates it.
  * @see http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
- * @param main_struct the main structure
  */
-void init_preference_struct(heraia_struct_t *main_struct)
+prefs_t *init_preference_struct(void)
 {
     prefs_t *prefs = NULL;
 
-    if (main_struct->prefs == NULL)
-        {
-           main_struct->prefs = (prefs_t *) g_malloc0(sizeof(prefs_t));
-           main_struct->prefs->file = g_key_file_new();
-           main_struct->prefs->pathname = g_build_path(G_DIR_SEPARATOR_S, g_get_user_config_dir(), "heraia", NULL);
-           main_struct->prefs->filename = g_build_filename(main_struct->prefs->pathname, "main_preferences", NULL);
-        }
-    else
-        {
-            prefs = main_struct->prefs;
+    prefs = (prefs_t *) g_malloc0(sizeof(prefs_t));
 
-            if (prefs->file == NULL)
-                {
-                    prefs->file = g_key_file_new();
-                }
-        }
+    prefs->file = g_key_file_new();
+    prefs->pathname = g_build_path(G_DIR_SEPARATOR_S, g_get_user_config_dir(), "heraia", NULL);
+    prefs->filename = g_build_filename(prefs->pathname, "main_preferences", NULL);
+
+    return prefs;
 }
 
 
@@ -545,10 +535,10 @@ static void load_mp_display_preferences_options(heraia_struct_t *main_struct)
  */
 static void load_di_preferences(heraia_struct_t *main_struct)
 {
-    gint selected_tab = -1;        /**< Selected tab in data interpretor's window */
-    gint stream_size = -1;         /**< Stream size in data interpretor's window  */
-    gint endianness = -1;          /**< Endianness in data interpretor's window   */
-    prefs_t *prefs = NULL;         /**< structure for preferences                 */
+    gint selected_tab = -1;   /**< Selected tab in data interpretor's window */
+    gint stream_size = -1;    /**< Stream size in data interpretor's window  */
+    gint endianness = -1;     /**< Endianness in data interpretor's window   */
+    prefs_t *prefs = NULL;    /**< structure for preferences                 */
 
     if (main_struct != NULL && main_struct->current_DW != NULL && main_struct->xmls != NULL && main_struct->xmls->main != NULL)
         {

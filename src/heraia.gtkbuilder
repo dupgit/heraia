@@ -1480,6 +1480,11 @@ POSSIBILITY OF SUCH DAMAGES.
               <object class="GtkNotebook" id="file_notebook">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="has_focus">True</property>
+                <property name="is_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="has_default">True</property>
+                <property name="receives_default">True</property>
                 <property name="scrollable">True</property>
                 <property name="enable_popup">True</property>
               </object>

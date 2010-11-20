@@ -1,3 +1,7 @@
+20.11.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Generalized init preference function
+
 16.11.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Trying to put the cursor position in the saved preferences
