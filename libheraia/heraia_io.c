@@ -169,7 +169,7 @@ GtkBuilder *load_xml_file(GList *location_list, gchar *filename)
 
 /**
  * @fn gboolean load_preference_file(heraia_struct_t *main_struct)
- *  Load the preference file
+ * Load the preference file
  * @param main_struct : main structure
  * @return TRUE if everything went ok, FALSE otherwise
  */

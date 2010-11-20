@@ -1,6 +1,8 @@
 20.11.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Generalized init preference function
+     * user_prefs.c code refactoring in order to be able to use this to load and
+       save preferences file as 'projects'.
 
 16.11.2010
    - Olivier Delhomme <heraia@delhomme.org>

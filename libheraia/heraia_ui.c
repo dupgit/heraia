@@ -1840,7 +1840,6 @@ int load_heraia_ui(heraia_struct_t *main_struct)
 
 
             /* preferences file */
-
             fprintf(stdout, Q_("Loading heraia preference file        "));
 
             if (load_preference_file(main_struct) != TRUE)
@@ -1850,9 +1849,9 @@ int load_heraia_ui(heraia_struct_t *main_struct)
             else /* Setting up preferences */
                 {
                     fprintf(stdout, Q_(" [Done]\n"));
-                    fprintf(stdout, Q_("Setting up preferences                "));
-                    load_preferences(main_struct);
-                    fprintf(stdout, Q_(" [Done]\n"));
+                    fprintf(stdout, Q_("Setting up preferences...\n"));
+                    load_preferences(main_struct, main_struct->prefs);
+                    fprintf(stdout, Q_("[Done]\n"));
                 }
         }
 
@@ -2132,7 +2131,7 @@ static gboolean close_heraia(heraia_struct_t *main_struct)
             record_all_dialog_box_positions(main_struct);
 
             /* . Saving preferences */
-            save_preferences(main_struct);
+            save_preferences(main_struct, main_struct->prefs);
         }
 
     return quit_heraia;

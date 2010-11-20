@@ -216,11 +216,9 @@ static heraia_struct_t *heraia_init_main_struct(gchar *heraia_path)
             return NULL;
         }
 
-    fprintf(stdout, Q_("Initializing preferences\n"));
     /* preference file name initialisation */
-    main_struct->prefs = init_preference_struct();
-    fprintf(stdout, Q_("Ok : verifying file"));
-    verify_preference_file(main_struct->prefs->pathname, main_struct->prefs->filename);
+    main_struct->prefs = init_preference_struct(g_build_path(G_DIR_SEPARATOR_S, g_get_user_config_dir(), "heraia", NULL), "main_preferences");
+    verify_preference_file(main_struct->prefs);
 
     /**
      * First, in this early stage of the development we want to toggle debugging
