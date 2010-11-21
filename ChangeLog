@@ -1,3 +1,10 @@
+21.11.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Roadmap typos corrections
+     * Added Projects submenu to File's menu
+     * Deleted all signal calls in the gtkbuilder file
+     * Deleted an old test on context menu
+
 20.11.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Generalized init preference function

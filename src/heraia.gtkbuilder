@@ -1015,7 +1015,6 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accel_main_window</property>
-                        <signal name="activate" handler="on_open_activate"/>
                       </object>
                     </child>
                     <child>
@@ -1025,7 +1024,6 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accel_main_window</property>
-                        <signal name="activate" handler="on_save_activate"/>
                       </object>
                     </child>
                     <child>
@@ -1035,11 +1033,43 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accel_main_window</property>
-                        <signal name="activate" handler="on_save_as_activate"/>
                       </object>
                     </child>
                     <child>
                       <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="menuitem10">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">_Projects</property>
+                        <property name="use_underline">True</property>
+                        <child type="submenu">
+                          <object class="GtkMenu" id="menu2">
+                            <property name="visible">True</property>
+                            <child>
+                              <object class="GtkImageMenuItem" id="menu_projects_open">
+                                <property name="label">gtk-open</property>
+                                <property name="visible">True</property>
+                                <property name="use_underline">True</property>
+                                <property name="use_stock">True</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkImageMenuItem" id="menu_projects_close">
+                                <property name="label">gtk-close</property>
+                                <property name="visible">True</property>
+                                <property name="use_underline">True</property>
+                                <property name="use_stock">True</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="menuitem9">
                         <property name="visible">True</property>
                       </object>
                     </child>
@@ -1064,7 +1094,6 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accel_main_window</property>
-                        <signal name="activate" handler="on_quit_activate"/>
                       </object>
                     </child>
                   </object>
@@ -1085,7 +1114,6 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accel_main_window</property>
-                        <signal name="activate" handler="on_undo_activate"/>
                       </object>
                     </child>
                     <child>
@@ -1109,7 +1137,6 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accel_main_window</property>
-                        <signal name="activate" handler="on_cut_activate"/>
                       </object>
                     </child>
                     <child>
@@ -1119,7 +1146,6 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accel_main_window</property>
-                        <signal name="activate" handler="on_copy_activate"/>
                       </object>
                     </child>
                     <child>
@@ -1129,7 +1155,6 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accel_main_window</property>
-                        <signal name="activate" handler="on_paste_activate"/>
                       </object>
                     </child>
                     <child>
@@ -1139,7 +1164,6 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accel_main_window</property>
-                        <signal name="activate" handler="on_delete_activate"/>
                       </object>
                     </child>
                     <child>
@@ -1168,7 +1192,6 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accel_main_window</property>
-                        <signal name="activate" handler="on_preferences_activate"/>
                       </object>
                     </child>
                   </object>
@@ -1218,7 +1241,6 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="label" translatable="yes">Data _Interpretor</property>
                         <property name="use_underline">True</property>
                         <accelerator key="I" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                        <signal name="activate" handler="on_DIMenu_activate"/>
                       </object>
                     </child>
                     <child>
@@ -1252,7 +1274,6 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Plugins list</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_plugin_list_activate"/>
                       </object>
                     </child>
                     <child>
@@ -1278,7 +1299,6 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accel_main_window</property>
-                        <signal name="activate" handler="on_a_propos1_activate"/>
                       </object>
                     </child>
                     <child>
@@ -1508,54 +1528,6 @@ POSSIBILITY OF SUCH DAMAGES.
     <property name="upper">4096</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
-  </object>
-  <object class="GtkMenu" id="hex_context_menu">
-    <property name="visible">True</property>
-    <child>
-      <object class="GtkImageMenuItem" id="hcm_undo">
-        <property name="label">gtk-undo</property>
-        <property name="visible">True</property>
-        <property name="use_underline">True</property>
-        <property name="use_stock">True</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="hcm_redo">
-        <property name="label">gtk-redo</property>
-        <property name="visible">True</property>
-        <property name="use_underline">True</property>
-        <property name="use_stock">True</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkSeparatorMenuItem" id="menuitem2">
-        <property name="visible">True</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="hcm_copy">
-        <property name="label">gtk-copy</property>
-        <property name="visible">True</property>
-        <property name="use_underline">True</property>
-        <property name="use_stock">True</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="hcm_cut">
-        <property name="label">gtk-cut</property>
-        <property name="visible">True</property>
-        <property name="use_underline">True</property>
-        <property name="use_stock">True</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="hcm_paste">
-        <property name="label">gtk-paste</property>
-        <property name="visible">True</property>
-        <property name="use_underline">True</property>
-        <property name="use_stock">True</property>
-      </object>
-    </child>
   </object>
   <object class="GtkDialog" id="goto_dialog">
     <property name="border_width">5</property>

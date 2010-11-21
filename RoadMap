@@ -104,7 +104,7 @@ I let you imagine what I expect before I do a major release !!!
 
 . 0.1.9
    * python bindings ?
-   * Look at everything in order to enhance user experience and the have a more
+   * Look at everything in order to enhance user experience and have a more
      usable program.
    * Add an import ability (for instance tcpdump imports)
 
@@ -118,7 +118,6 @@ I let you imagine what I expect before I do a major release !!!
    * save and load  a "project" like geany editor (saving preferences, opened
      files, current opened tab and so on...)
    * enhance python bindings
-   * work in progress to make the whole project translatable
 
 . 0.2.1
    * Have something to allow one to take notes (enhanced bookmarks).
