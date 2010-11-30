@@ -1,3 +1,8 @@
+30.11.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Documentation on the required packages to build under OpenIndiana (5.11)
+     * Corrected a locale problème that prevented to compile under OpenIndiana
+
 21.11.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Roadmap typos corrections

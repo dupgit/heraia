@@ -1,5 +1,5 @@
-To build heraia you need to install the following packages (and all their
-dependencies) before :
+To build heraia you need to install the following packages and all their
+dependencies before (according that you have a default installation) :
 
 On ubuntu 10.04 and Debian squeeze :
 
@@ -18,6 +18,14 @@ On OpenSuse 11.3 and Fedora 14 :
  . glib2-devel
  . gtk2-devel
  . ghex-devel
+
+On OpenIndiana 5.11 :
+
+ . gcc-3
+ . gettext
+ . gnu-gettext
+ . ghex
+
 
 Compiling :
 ---------
