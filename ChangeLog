@@ -1,7 +1,18 @@
+01.12.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Working on localization (seems to work under windows - but not under
+       openindiana)
+     * Corrected a small bug
+
 30.11.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Documentation on the required packages to build under OpenIndiana (5.11)
      * Corrected a locale problème that prevented to compile under OpenIndiana
+     * Trying to figure out why the locales are not ok under Windows or
+       OpenIndiana
+     * Correcting the option name in order to reflect reality (blank character
+       is used in french, in US locale it is ','. Now it is "Use thousands's
+       grouping character".
 
 21.11.2010
    - Olivier Delhomme <heraia@delhomme.org>

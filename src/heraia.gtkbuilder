@@ -173,7 +173,7 @@
                             <property name="spacing">2</property>
                             <child>
                               <object class="GtkCheckButton" id="mp_thousand_bt">
-                                <property name="label" translatable="yes">Use a blank separator for thousands</property>
+                                <property name="label" translatable="yes">Use thousands's grouping character</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>

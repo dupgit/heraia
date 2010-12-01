@@ -2,12 +2,11 @@ SUBDIRS =
 
 DEFS = -I$(SRCDIR)  -I$(SRCDIR)/include	 		\
        -I$(top_builddir)/libheraia/include		\
-	   -DPLUGINS_DIR=\"$(plugins_dir)\"			\
 	   -DDATA_DIR=\"$(data_dir)\"				\
+	   -DLOCALEDIR=\"$(LOCALEDIR)\"				\
 	   $(Heraia_Hex_CFLAGS) 					\
 	   $(GMODULE_CFLAGS) $(CFLAGS)				\
-	   $(GTK2_CFLAGS) $(GLIB2_CFLAGS)			\
-	   -DLOCALEDIR=\"${LOCALEDIR}\"
+	   $(GTK2_CFLAGS) $(GLIB2_CFLAGS)
 
 bin_PROGRAMS = heraia
 heraia_LDFLAGS = $(LDFLAGS)
@@ -31,5 +30,4 @@ AM_CPPFLAGS = 			\
 	$(GMODULE_CFLAGS) 	\
 	$(GTKHEX_CFLAGS) 	\
 	$(GLIB2_CFLAGS) 	\
-	$(GKT2_CFLAGS)		\
-	-DLOCALEDIR=\"${LOCALEDIR}\"
+	$(GKT2_CFLAGS)

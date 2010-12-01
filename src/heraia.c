@@ -354,18 +354,22 @@ static GList *init_heraia_location_list(gchar *heraia_path)
 static void init_international_languages(void)
 {
     gchar *result = NULL;
+    gchar *codeset = NULL;
+    gchar *text_domain = NULL;
 
-    gtk_set_locale();
+    /* gtk_set_locale(); */
     result = bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR);
+    codeset = bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+    text_domain = textdomain(GETTEXT_PACKAGE);
 
     if (ENABLE_DEBUG == TRUE)
         {
             fprintf(stdout, Q_("Gettext package : %s\n"), GETTEXT_PACKAGE);
             fprintf(stdout, Q_("Locale dir : %s\n"), LOCALEDIR);
             fprintf(stdout, Q_("Bindtextdomain : %s\n"), result);
+            fprintf(stdout, Q_("Code set : %s\n"), codeset);
+            fprintf(stdout, Q_("Text domain : %s\n"), text_domain);
         }
-    bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
-    textdomain(GETTEXT_PACKAGE);
 }
 
 
