@@ -1578,6 +1578,7 @@ static gboolean load_heraia_xml(heraia_struct_t *main_struct)
                 }
             else
                 {
+                    gtk_builder_set_translation_domain(main_struct->xmls->main, GETTEXT_PACKAGE);
                     return TRUE;
                 }
         }

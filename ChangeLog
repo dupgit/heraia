@@ -1,3 +1,8 @@
+02.12.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Added a call in order to load the proper translation for the gtkbuilder
+       source.
+
 01.12.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Working on localization (seems to work under windows - but not under
