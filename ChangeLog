@@ -1,3 +1,7 @@
+09.12.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Deleted some unecessary tests on GTK's version (we need at least 2.16)
+
 02.12.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Added a call in order to load the proper translation for the gtkbuilder

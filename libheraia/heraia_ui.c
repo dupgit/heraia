@@ -146,14 +146,8 @@ static void set_a_propos_properties(GtkWidget *about_dialog)
 
     if (about_dialog != NULL)
         {
-            if (GTK_MINOR_VERSION >= 12)
-                {
-                    gtk_about_dialog_set_program_name(GTK_ABOUT_DIALOG(about_dialog), PACKAGE_NAME);
-                }
-            if (GTK_MINOR_VERSION >= 6)
-                {
-                    gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(about_dialog), PACKAGE_VERSION);
-                }
+           gtk_about_dialog_set_program_name(GTK_ABOUT_DIALOG(about_dialog), PACKAGE_NAME);
+           gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(about_dialog), PACKAGE_VERSION);
         }
 }
 
@@ -1578,7 +1572,9 @@ static gboolean load_heraia_xml(heraia_struct_t *main_struct)
                 }
             else
                 {
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, "%s", gtk_builder_get_translation_domain(main_struct->xmls->main));
                     gtk_builder_set_translation_domain(main_struct->xmls->main, GETTEXT_PACKAGE);
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, "%s", gtk_builder_get_translation_domain(main_struct->xmls->main));
                     return TRUE;
                 }
         }
