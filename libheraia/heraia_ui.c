@@ -35,7 +35,11 @@ static gboolean load_heraia_xml(heraia_struct_t *main_struct);
 static void heraia_ui_connect_signals(heraia_struct_t *main_struct);
 static void record_and_hide_about_box(heraia_struct_t *main_struct);
 static gboolean unsaved_documents(heraia_struct_t *main_struct);
+static void close_one_document(heraia_struct_t *main_struct, doc_t *closing_doc, gint index);
+static gboolean close_a_project(heraia_struct_t *main_struct, gchar *question);
 static gboolean close_heraia(heraia_struct_t *main_struct);
+
+static void on_projects_close_activate(GtkWidget *widget, gpointer data);
 
 /**
  * @fn void on_quit_activate(GtkWidget *widget, gpointer data)
@@ -773,6 +777,51 @@ gint find_tab_number_from_widget(heraia_struct_t *main_struct, gchar *notebook_n
 
 
 /**
+ * Closes an entire project
+ * @param widget : the widget that issued the signal
+ * @param data : user data MUST be heraia_struct_t *main_struct main structure
+ */
+static void on_projects_close_activate(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+
+    if (main_struct != NULL)
+        {
+            close_a_project(main_struct, N_("Do you want to close the project"));
+        }
+}
+
+
+/**
+ * Closes one document in heraia. Does not do any updates of the interface.
+ * @param main_struct : main structure
+ * @param closing_doc : the doc_t * document to be closed
+ * @param index : the index in the array of documents of the closing_doc
+ *                document
+ */
+static void close_one_document(heraia_struct_t *main_struct, doc_t *closing_doc, gint index)
+{
+    GtkWidget *notebook = NULL;  /**< Notenook on the main window            */
+
+    if (main_struct != NULL && main_struct->documents != NULL)
+        {
+            /* Removing the index in the array */
+            g_ptr_array_remove_index(main_struct->documents, index);
+
+            /* Removes all results beeing associated with this document */
+            rw_remove_all_tabs(main_struct, closing_doc);
+
+            /* And removing it in the notebook */
+            notebook = heraia_get_widget(main_struct->xmls->main, "file_notebook");
+            gtk_notebook_remove_page(GTK_NOTEBOOK(notebook), index);
+
+            /* kills the widget and the document */
+            close_doc_t(closing_doc);
+        }
+}
+
+
+/**
  * Closes an opened file
  * @param widget : the widget that issued the signal
  * @param data : user data MUST be heraia_struct_t *main_struct main structure
@@ -780,7 +829,7 @@ gint find_tab_number_from_widget(heraia_struct_t *main_struct, gchar *notebook_n
 void on_close_activate(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
-    doc_t * closing_doc = NULL;  /**< Current document to close in heraia    */
+    doc_t *closing_doc = NULL;   /**< Current document to close in heraia    */
     doc_t *document = NULL;      /**< To iterate over the array of documents */
     GtkWidget *notebook = NULL;  /**< Notenook on the main window            */
     GtkWidget *dialog = NULL;    /**< The dialog box                         */
@@ -849,18 +898,7 @@ void on_close_activate(GtkWidget *widget, gpointer data)
 
             if (index >= 0)
                 {
-                    /* Removing the index in the array */
-                    g_ptr_array_remove_index(main_struct->documents, index);
-
-                    /* Removes all results beeing associated with this document */
-                    rw_remove_all_tabs(main_struct, closing_doc);
-
-                    /* And removing it in the notebook */
-                    notebook = heraia_get_widget(main_struct->xmls->main, "file_notebook");
-                    gtk_notebook_remove_page(GTK_NOTEBOOK(notebook), index);
-
-                    /* kills the widget and the document */
-                    close_doc_t(closing_doc);
+                    close_one_document(main_struct, closing_doc, index);
 
                     /* Try to find out the new current document */
                     /* We do not need to update if the current doc is not closed ! */
@@ -1572,9 +1610,10 @@ static gboolean load_heraia_xml(heraia_struct_t *main_struct)
                 }
             else
                 {
-                    log_message(main_struct, G_LOG_LEVEL_DEBUG, "%s", gtk_builder_get_translation_domain(main_struct->xmls->main));
-                    gtk_builder_set_translation_domain(main_struct->xmls->main, GETTEXT_PACKAGE);
-                    log_message(main_struct, G_LOG_LEVEL_DEBUG, "%s", gtk_builder_get_translation_domain(main_struct->xmls->main));
+                    /* log_message(main_struct, G_LOG_LEVEL_DEBUG, "%s", gtk_builder_get_translation_domain(main_struct->xmls->main));
+                       gtk_builder_set_translation_domain(main_struct->xmls->main, GETTEXT_PACKAGE);
+                       log_message(main_struct, G_LOG_LEVEL_DEBUG, "%s", gtk_builder_get_translation_domain(main_struct->xmls->main));
+                    */
                     return TRUE;
                 }
         }
@@ -1605,10 +1644,6 @@ void connect_cursor_moved_signal(heraia_struct_t *main_struct, GtkWidget *hex_wi
 static void heraia_ui_connect_signals(heraia_struct_t *main_struct)
 {
 
-    /* the data interpretor menu */
-    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "DIMenu")), "activate",
-                     G_CALLBACK(on_DIMenu_activate), main_struct);
-
     /*** File Menu ***/
     /* Quit, file menu */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "quit")), "activate",
@@ -1633,6 +1668,11 @@ static void heraia_ui_connect_signals(heraia_struct_t *main_struct)
     /* Save As, file menu */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "save_as")), "activate",
                      G_CALLBACK(on_save_as_activate), main_struct);
+
+    /**** Projects sub menu ****/
+    /* Close, projects sub menu, file menu */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_projects_close")), "activate",
+                     G_CALLBACK(on_projects_close_activate), main_struct);
 
 
     /*** Edit Menu ***/
@@ -1668,6 +1708,7 @@ static void heraia_ui_connect_signals(heraia_struct_t *main_struct)
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_delete")), "activate",
                      G_CALLBACK(on_delete_activate), main_struct);
 
+
      /*** Search Menu ***/
     /* Find, Search menu */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_find")), "activate",
@@ -1676,6 +1717,12 @@ static void heraia_ui_connect_signals(heraia_struct_t *main_struct)
     /* Find and replace, Search menu */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_find_replace")), "activate",
                      G_CALLBACK(on_fr_activate), main_struct);
+
+
+    /*** Display menu ***/
+    /* the data interpretor menu */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "DIMenu")), "activate",
+                     G_CALLBACK(on_DIMenu_activate), main_struct);
 
 
     /*** Help Menu ***/
@@ -2082,18 +2129,21 @@ static gboolean unsaved_documents(heraia_struct_t *main_struct)
 
 
 /**
- * @fn void close_heraia(heraia_struct_t *main_struct)
- * Before closing heraia we need to do few things
+ * Closes all documents and saves preferences if the users wants to close
+ * the documents.
  * @param main_struct : main_struct
- * @return TRUE if we can safely quit heraia, FALSE otherwise
+ * @param question a const gchar * string to be displayed when an unsaved
+ *        document is found. This should ask the user what to do.
+ * @return the user anwser if an unsaved document is found and TRUE if not
  */
-static gboolean close_heraia(heraia_struct_t *main_struct)
+static gboolean close_a_project(heraia_struct_t *main_struct, gchar *question)
 {
     gboolean unsaved = FALSE;    /**< if there is any unsaved documents */
     gboolean quit_heraia = TRUE; /**< By default we want to quit        */
     GtkWidget *dialog = NULL;    /**< The dialog box                    */
     GtkWidget *parent = NULL;    /**< parent widget for the dialog box  */
     gint result = 0;             /**< result from the dialog box        */
+    doc_t *closing_doc = NULL;   /**< The document to be closed         */
 
     unsaved = unsaved_documents(main_struct);
 
@@ -2103,7 +2153,7 @@ static gboolean close_heraia(heraia_struct_t *main_struct)
             parent = heraia_get_widget(main_struct->xmls->main, "main_window");
 
             dialog = gtk_message_dialog_new(GTK_WINDOW(parent), GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO, Q_("Unsaved document(s) remains."));
-            gtk_message_dialog_format_secondary_markup(GTK_MESSAGE_DIALOG(dialog), Q_("Do you want to quit without saving ?"));
+            gtk_message_dialog_format_secondary_markup(GTK_MESSAGE_DIALOG(dialog), "%s", question);
 
 
             result = gtk_dialog_run(GTK_DIALOG(dialog));
@@ -2124,14 +2174,42 @@ static gboolean close_heraia(heraia_struct_t *main_struct)
 
     if (quit_heraia == TRUE)
         {
-            /* recording window's position */
+            /* . Recording window's position       */
             record_all_dialog_box_positions(main_struct);
 
-            /* . Saving preferences */
+            /* . Saving preferences                */
             save_preferences(main_struct, main_struct->prefs);
+
+            /* . Closing the documents             */
+            while (main_struct->documents->len > 0)
+                {
+                    closing_doc = g_ptr_array_index(main_struct->documents, 0);
+                    close_one_document(main_struct, closing_doc, 0);
+                }
+            main_struct->current_doc = NULL;
+
+             /* . Updating things in the interface */
+            refresh_event_handler(parent, main_struct);
+            update_main_window_name(main_struct);
+
+            /* . Destroying preferences structure  */
+            free_preference_struct(main_struct->prefs);
+            main_struct->prefs = NULL;
         }
 
     return quit_heraia;
+}
+
+
+/**
+ * @fn void close_heraia(heraia_struct_t *main_struct)
+ * Before closing heraia we need to do few things
+ * @param main_struct : main_struct
+ * @return TRUE if we can safely quit heraia, FALSE otherwise
+ */
+static gboolean close_heraia(heraia_struct_t *main_struct)
+{
+   return close_a_project(main_struct, N_("Do you want to quit without saving ?"));
 }
 
 

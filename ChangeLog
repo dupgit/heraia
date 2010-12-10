@@ -1,3 +1,7 @@
+10.12.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Closing a project is possible. This still has some issues.
+
 09.12.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Deleted some unecessary tests on GTK's version (we need at least 2.16)

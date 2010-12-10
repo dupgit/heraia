@@ -142,6 +142,18 @@ prefs_t *init_preference_struct(gchar *pathname, gchar *filename)
 
 
 /**
+ * Destroys a preference structure
+ * @param prefs the preference structure to be freed
+ */
+void free_preference_struct(prefs_t *prefs)
+{
+    g_free(prefs->filename);
+    g_free(prefs->pathname);
+    g_key_file_free(prefs->file);
+}
+
+
+/**
  *  Window preferences
  *  @param file a GKeyFile where values are stored
  *  @param name a keyname (basically a window name)
