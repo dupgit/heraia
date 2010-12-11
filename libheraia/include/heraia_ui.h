@@ -55,7 +55,7 @@ extern void destroy_dt_window(GtkWidget *widget, GdkEvent  *event, gpointer data
 extern gboolean file_notebook_tab_changed(GtkNotebook *notebook, GtkNotebookPage *page, gint tab_num, gpointer data);
 
 /* file selection */
-extern GSList *select_file_to_load(heraia_struct_t *main_struct);
+extern GSList *select_file_to_load(heraia_struct_t *main_struct, gboolean multiple, gchar *message);
 extern gchar *select_a_file_to_save(heraia_struct_t *main_struct);
 extern void set_the_working_directory(GtkFileChooser *file_chooser, gchar *filename);
 

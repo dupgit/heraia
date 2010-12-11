@@ -31,15 +31,22 @@
 #include <libheraia.h>
 
 static void set_a_propos_properties(GtkWidget *about_dialog);
+
 static gboolean load_heraia_xml(heraia_struct_t *main_struct);
+
 static void heraia_ui_connect_signals(heraia_struct_t *main_struct);
+
 static void record_and_hide_about_box(heraia_struct_t *main_struct);
+
 static gboolean unsaved_documents(heraia_struct_t *main_struct);
+
 static void close_one_document(heraia_struct_t *main_struct, doc_t *closing_doc, gint index);
 static gboolean close_a_project(heraia_struct_t *main_struct, gchar *question);
 static gboolean close_heraia(heraia_struct_t *main_struct);
 
 static void on_projects_close_activate(GtkWidget *widget, gpointer data);
+static void on_projects_open_activate(GtkWidget *widget, gpointer data);
+static void on_projects_save_as_activate(GtkWidget *widget, gpointer data);
 
 /**
  * @fn void on_quit_activate(GtkWidget *widget, gpointer data)
@@ -684,7 +691,7 @@ void on_open_activate(GtkWidget *widget, gpointer data)
     GSList *head = NULL;
     gboolean success = FALSE;
 
-    list = select_file_to_load(main_struct);
+    list = select_file_to_load(main_struct, TRUE, N_("Select a file to analyse"));
 
     if (list != NULL)
         {
@@ -800,7 +807,6 @@ static void on_projects_close_activate(GtkWidget *widget, gpointer data)
 static void on_projects_save_as_activate(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
-    HERAIA_ERROR erreur = HERAIA_NOERR;
     gchar *filename = NULL;  /**< Auto malloc'ed, do not free */
 
     if (main_struct != NULL)
@@ -809,17 +815,47 @@ static void on_projects_save_as_activate(GtkWidget *widget, gpointer data)
 
             if (filename != NULL)
                 {
-                    if (main_struct->prefs != NULL)
-                        {
-                            free_preference_struct(main_struct->prefs);
-                        }
-
+                    free_preference_struct(main_struct->prefs);
                     main_struct->prefs = init_preference_struct(g_path_get_dirname(filename),g_path_get_basename(filename));
                     save_preferences(main_struct, main_struct->prefs);
                 }
         }
 }
 
+
+/**
+ * Opens a project from a file : closes all documents an imports new ones ...
+ * @param widget : the widget that issued the signal
+ * @param data : user data MUST be heraia_struct_t *main_struct main structure
+ */
+static void on_projects_open_activate(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+    gchar *filename = NULL;
+    GSList *list = NULL;
+
+    if (main_struct != NULL)
+        {
+            /* We except a list with only one element (no multiple selection allowed) */
+            list = select_file_to_load(main_struct, FALSE, N_("Select a project to load"));
+
+            if (list != NULL && list->data != NULL)
+                {
+                    /* Closing the projects */
+                    on_projects_close_activate(widget, data);
+
+                    /* Opening the new project */
+                    filename = list->data;
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, "Loading project %s", filename);
+                    main_struct->prefs = init_preference_struct(g_path_get_dirname(filename),g_path_get_basename(filename));
+                    load_preferences(main_struct, main_struct->prefs);
+
+                    /* . Updating things in the interface */
+                    gtk_widget_show_all(heraia_get_widget(main_struct->xmls->main, "file_notebook"));
+                    g_slist_free(list);
+                }
+        }
+}
 
 
 /**
@@ -1273,9 +1309,11 @@ void set_the_working_directory(GtkFileChooser *file_chooser, gchar *filename)
  *  This function does open a file selector dialog box and returns the selected
  *  filename.
  * @param main_struct : main structure
+ * @param multiple : to say wether we want multiple selection be possible or not
+ * @param message : the message to print in the title's dialog box
  * @return returns a list of filenames to be loaded (if any)
  */
-GSList *select_file_to_load(heraia_struct_t *main_struct)
+GSList *select_file_to_load(heraia_struct_t *main_struct, gboolean multiple, gchar *message)
 {
     GtkWidget *parent = NULL; /**< A parent window (we use main_struct)            */
     GtkFileChooser *file_chooser = NULL;
@@ -1283,7 +1321,7 @@ GSList *select_file_to_load(heraia_struct_t *main_struct)
 
     parent = heraia_get_widget(main_struct->xmls->main, "main_window");
 
-    file_chooser = GTK_FILE_CHOOSER(gtk_file_chooser_dialog_new(Q_("Select a file to analyse"),
+    file_chooser = GTK_FILE_CHOOSER(gtk_file_chooser_dialog_new(message,
                                                                 GTK_WINDOW(parent),
                                                                 GTK_FILE_CHOOSER_ACTION_OPEN,
                                                                 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -1291,7 +1329,7 @@ GSList *select_file_to_load(heraia_struct_t *main_struct)
                                                                 NULL));
 
     gtk_window_set_modal(GTK_WINDOW(file_chooser), TRUE);
-    gtk_file_chooser_set_select_multiple(file_chooser, TRUE);
+    gtk_file_chooser_set_select_multiple(file_chooser, multiple);
 
     /**
      *  We want the file selection path to be the one of the current
@@ -1710,6 +1748,10 @@ static void heraia_ui_connect_signals(heraia_struct_t *main_struct)
     /* Save As, projects sub menu, file menu */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_projects_save_as")), "activate",
                      G_CALLBACK(on_projects_save_as_activate), main_struct);
+
+    /* Open, projects sub menu, file menu */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_projects_open")), "activate",
+                     G_CALLBACK(on_projects_open_activate), main_struct);
 
 
     /*** Edit Menu ***/
@@ -2418,8 +2460,7 @@ GtkWidget *create_tab_close_button(heraia_struct_t *main_struct, GtkWidget *tab_
     GtkWidget *hbox = NULL;    /**< used for hbox creation in the tabs */
     GtkWidget *button = NULL;  /**< Closing button                     */
 
-
-     /* Close button in tabs */
+    /* Close button in tabs */
     hbox = gtk_hbox_new(FALSE, 0);
 
     button = gtk_button_new_with_label("x");
