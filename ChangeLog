@@ -1,3 +1,9 @@
+11.12.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Protecting user prefs to avoid segfault if prefs may be NULL
+     * Added a save as entry in the project sub menu
+     * menus are greyed when a project is closed
+
 10.12.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Closing a project is possible. This still has some issues.

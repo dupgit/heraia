@@ -1533,6 +1533,8 @@ void grey_main_widgets(GtkBuilder *xml, gboolean greyed)
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_close"), FALSE);
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_goto"), FALSE);
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_search"), FALSE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_projects_close"), FALSE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_projects_save_as"), FALSE);
                     gtk_widget_hide(notebook);
                 }
             else
@@ -1546,6 +1548,8 @@ void grey_main_widgets(GtkBuilder *xml, gboolean greyed)
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_close"), TRUE);
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_goto"), TRUE);
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_search"), TRUE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_projects_close"), TRUE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_projects_save_as"), TRUE);
                     gtk_widget_show_all(notebook);
                 }
         }
@@ -2191,6 +2195,7 @@ static gboolean close_a_project(heraia_struct_t *main_struct, gchar *question)
              /* . Updating things in the interface */
             refresh_event_handler(parent, main_struct);
             update_main_window_name(main_struct);
+            grey_main_widgets(main_struct->xmls->main, TRUE);
 
             /* . Destroying preferences structure  */
             free_preference_struct(main_struct->prefs);

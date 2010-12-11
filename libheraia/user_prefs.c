@@ -147,9 +147,12 @@ prefs_t *init_preference_struct(gchar *pathname, gchar *filename)
  */
 void free_preference_struct(prefs_t *prefs)
 {
-    g_free(prefs->filename);
-    g_free(prefs->pathname);
-    g_key_file_free(prefs->file);
+    if (prefs != NULL)
+        {
+            g_free(prefs->filename);
+            g_free(prefs->pathname);
+            g_key_file_free(prefs->file);
+        }
 }
 
 
@@ -195,7 +198,7 @@ static void save_mp_file_preferences_options(heraia_struct_t *main_struct, prefs
     gboolean activated = FALSE;
 
 
-    if (main_struct != NULL)
+    if (main_struct != NULL && prefs != NULL)
         {
             /* Saves the position */
             activated = is_toggle_button_activated(main_struct->xmls->main, "save_window_position_bt");
@@ -245,36 +248,39 @@ static void save_mp_files_filenames(heraia_struct_t *main_struct, prefs_t *prefs
     doc_t *document = NULL;     /**< One document (from the documents array in the main_struct   */
     GtkWidget *notebook = NULL; /**< Main notebook in the file view in the main window           */
 
-    /* First initializing the list variable with the filenames of the opened documents */
-    i = 0;
-    j = 0;
-    len = main_struct->documents->len;
-    list = (const gchar **) g_malloc0 (sizeof(gchar *)*len);
-    pos_list = (gint *) g_malloc0 (sizeof(gint)*len);
-
-    while (i < len)
+    if (main_struct != NULL && prefs != NULL)
         {
-            document = g_ptr_array_index(main_struct->documents, i);
+            /* First initializing the list variable with the filenames of the opened documents */
+            i = 0;
+            j = 0;
+            len = main_struct->documents->len;
+            list = (const gchar **) g_malloc0 (sizeof(gchar *)*len);
+            pos_list = (gint *) g_malloc0 (sizeof(gint)*len);
 
-            if (document != NULL)
+            while (i < len)
                 {
-                    filename = g_strdup(doc_t_document_get_filename(document));
-                    /* There will be some limitations here due to the guint64 to gint cast */
-                    pos_list[j] = (gint) ghex_get_cursor_position(document->hex_widget);
-                    list[j] = filename;
-                    j++;
+                    document = g_ptr_array_index(main_struct->documents, i);
+
+                    if (document != NULL)
+                        {
+                            filename = g_strdup(doc_t_document_get_filename(document));
+                            /* There will be some limitations here due to the guint64 to gint cast */
+                            pos_list[j] = (gint) ghex_get_cursor_position(document->hex_widget);
+                            list[j] = filename;
+                            j++;
+                        }
+                    i++;
                 }
-            i++;
+
+            /* Saving them to the preference file */
+            g_key_file_set_string_list(prefs->file, GN_GLOBAL_PREFS, KN_FILES_FILENAMES, list, j);
+            g_key_file_set_integer_list(prefs->file, GN_GLOBAL_PREFS, KN_FILES_CURSOR_POSITIONS, pos_list, j);
+
+            /* saving current tab */
+            notebook = heraia_get_widget(main_struct->xmls->main, "file_notebook");
+            current_tab = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
+            g_key_file_set_integer(prefs->file, GN_GLOBAL_PREFS, KN_CURRENT_TAB, current_tab);
         }
-
-    /* Saving them to the preference file */
-    g_key_file_set_string_list(prefs->file, GN_GLOBAL_PREFS, KN_FILES_FILENAMES, list, j);
-    g_key_file_set_integer_list(prefs->file, GN_GLOBAL_PREFS, KN_FILES_CURSOR_POSITIONS, pos_list, j);
-
-    /* saving current tab */
-    notebook = heraia_get_widget(main_struct->xmls->main, "file_notebook");
-    current_tab = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
-    g_key_file_set_integer(prefs->file, GN_GLOBAL_PREFS, KN_CURRENT_TAB, current_tab);
 }
 
 
@@ -287,7 +293,7 @@ static void save_mp_display_preferences_options(heraia_struct_t *main_struct, pr
 {
     gboolean activated = FALSE;
 
-    if (main_struct != NULL)
+    if (main_struct != NULL && prefs != NULL)
         {
             /* Display Thousand (or not) */
             activated = is_toggle_button_activated(main_struct->xmls->main, "mp_thousand_bt");
@@ -311,7 +317,7 @@ static void save_di_preferences(heraia_struct_t *main_struct, prefs_t *prefs)
     gint stream_size = -1;  /**< Stream size in data interpretor's window  */
     gint endianness = -1;   /**< Endianness in data interpretor's window   */
 
-    if (main_struct != NULL && main_struct->current_DW != NULL)
+    if (main_struct != NULL && main_struct->current_DW != NULL && prefs != NULL)
         {
             selected_tab = di_get_selected_tab(main_struct);
             if (selected_tab >= 0)
@@ -344,7 +350,7 @@ static void save_mpwp_preferences(heraia_struct_t *main_struct, prefs_t *prefs)
     GtkNotebook *notebook = NULL; /**< main preferences's notebook               */
     gint selected_tab = -1;       /**< Selected tab in data interpretor's window */
 
-    if (main_struct != NULL && main_struct->current_DW != NULL)
+    if (main_struct != NULL && main_struct->current_DW != NULL && prefs != NULL)
         {
             notebook = GTK_NOTEBOOK(heraia_get_widget(main_struct->xmls->main, "mp_first_notebook"));
 
@@ -432,7 +438,7 @@ static void load_mp_file_preferences_options(heraia_struct_t *main_struct, prefs
     GtkWidget *save_filenames_bt = NULL;
     gboolean activated = FALSE;
 
-    if (main_struct != NULL)
+    if (main_struct != NULL && prefs != NULL)
         {
             /* Loading window's positions ? */
             activated = g_key_file_get_boolean(prefs->file, GN_GLOBAL_PREFS, KN_SAVE_WINDOW_PREFS, NULL);
@@ -483,29 +489,32 @@ static void load_mp_files_filenames(heraia_struct_t *main_struct, prefs_t *prefs
     gint current_tab = 0;
     GtkWidget *notebook = NULL;
 
-    /* get file list */
-    list = g_key_file_get_string_list(prefs->file, GN_GLOBAL_PREFS, KN_FILES_FILENAMES, &len, NULL);
-    pos_list = (gint *) g_key_file_get_integer_list(prefs->file, GN_GLOBAL_PREFS, KN_FILES_CURSOR_POSITIONS, &pos_len, NULL);
-
-    if (len == pos_len)
+    if (main_struct != NULL && prefs != NULL)
         {
-            for (i = 0; i < len; i++)
+            /* get file list */
+            list = g_key_file_get_string_list(prefs->file, GN_GLOBAL_PREFS, KN_FILES_FILENAMES, &len, NULL);
+            pos_list = (gint *) g_key_file_get_integer_list(prefs->file, GN_GLOBAL_PREFS, KN_FILES_CURSOR_POSITIONS, &pos_len, NULL);
+
+            if (len == pos_len)
                 {
-                    if (load_file_to_analyse(main_struct, list[i]))
+                    for (i = 0; i < len; i++)
                         {
-                            /* in add_new_tab_in_main_window() function, the newly */
-                            /* opened document becomes the current one             */
-                            /* There is some limitations here due to the cast from */
-                            /* gint to guint64                                     */
-                            ghex_set_cursor_position(main_struct->current_doc->hex_widget, (guint64) pos_list[i]);
+                            if (load_file_to_analyse(main_struct, list[i]))
+                                {
+                                    /* in add_new_tab_in_main_window() function, the newly */
+                                    /* opened document becomes the current one             */
+                                    /* There is some limitations here due to the cast from */
+                                    /* gint to guint64                                     */
+                                    ghex_set_cursor_position(main_struct->current_doc->hex_widget, (guint64) pos_list[i]);
+                                }
                         }
                 }
-        }
 
-    /* get current tab */
-    current_tab = g_key_file_get_integer(prefs->file, GN_GLOBAL_PREFS, KN_CURRENT_TAB, NULL);
-    notebook = heraia_get_widget(main_struct->xmls->main, "file_notebook");
-    gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), current_tab);
+            /* get current tab */
+            current_tab = g_key_file_get_integer(prefs->file, GN_GLOBAL_PREFS, KN_CURRENT_TAB, NULL);
+            notebook = heraia_get_widget(main_struct->xmls->main, "file_notebook");
+            gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), current_tab);
+        }
 }
 
 
@@ -519,7 +528,7 @@ static void load_mp_display_preferences_options(heraia_struct_t *main_struct, pr
     GtkWidget *toggle_button = NULL;
     gboolean activated = FALSE;
 
-    if (main_struct != NULL)
+    if (main_struct != NULL && prefs != NULL)
         {
             /* Display thousands (or not) */
             activated = g_key_file_get_boolean(prefs->file, GN_DISPLAY_PREFS, KN_DISP_THOUSAND, NULL);
@@ -545,7 +554,7 @@ static void load_di_preferences(heraia_struct_t *main_struct, prefs_t *prefs)
     gint stream_size = -1;    /**< Stream size in data interpretor's window  */
     gint endianness = -1;     /**< Endianness in data interpretor's window   */
 
-    if (main_struct != NULL && main_struct->current_DW != NULL && main_struct->xmls != NULL && main_struct->xmls->main != NULL)
+    if (main_struct != NULL && main_struct->current_DW != NULL && main_struct->xmls != NULL && main_struct->xmls->main != NULL && prefs != NULL)
         {
             selected_tab = g_key_file_get_integer(prefs->file, GN_DI_PREFS, KN_DI_SELECTED_TAB, NULL);
             stream_size = g_key_file_get_integer(prefs->file, GN_DI_PREFS, KN_DI_STREAM_SIZE, NULL);
@@ -569,7 +578,7 @@ static void load_mpwp_preferences(heraia_struct_t *main_struct, prefs_t *prefs)
     GtkWidget *button = NULL;      /**< tool button from the toolbar              */
     gint selected_tab;             /**< Selected tab in data interpretor's window */
 
-    if (main_struct != NULL && main_struct->current_DW != NULL && main_struct->xmls != NULL && main_struct->xmls->main != NULL)
+    if (main_struct != NULL && main_struct->current_DW != NULL && main_struct->xmls != NULL && main_struct->xmls->main != NULL && prefs != NULL)
         {
             notebook = GTK_NOTEBOOK(heraia_get_widget(main_struct->xmls->main, "mp_first_notebook"));
 

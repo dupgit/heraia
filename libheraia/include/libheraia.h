@@ -137,8 +137,8 @@ typedef struct
  */
  typedef struct
  {
-    DecodeFunc func;  /**< a function to decode into something     */
-    GtkWidget *entry; /**< the widget that will receive the result */
+    DecodeFunc func;  /**< a function to decode into something                  */
+    GtkWidget *entry; /**< the widget that will receive the result              */
     gchar *err_msg;   /**< error message if something went wrong when decoding
                             expects a %d somewhere in the message to represents
                             the stream lenght to be decoded                     */
@@ -183,10 +183,10 @@ typedef struct
  */
 typedef struct
 {
-    GtkWidget *diw;                /**< data interpretor window                                              */
-    gint tab_displayed;            /**< keeps the last displayed tab's number before closing                 */
-    guint nb_tabs;                 /**< keeps Number of tabs in the GPtrArray                                */
-    GPtrArray *tabs;               /**< an array of tabs displayed in data interpretor's notebook            */
+    GtkWidget *diw;                /**< data interpretor window                                   */
+    gint tab_displayed;            /**< keeps the last displayed tab's number before closing      */
+    guint nb_tabs;                 /**< keeps Number of tabs in the GPtrArray                     */
+    GPtrArray *tabs;               /**< an array of tabs displayed in data interpretor's notebook */
 } data_window_t;
 
 
