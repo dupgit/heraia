@@ -793,6 +793,36 @@ static void on_projects_close_activate(GtkWidget *widget, gpointer data)
 
 
 /**
+ * Saves a project in a new file (does not close the project itself)
+ * @param widget : the widget that issued the signal
+ * @param data : user data MUST be heraia_struct_t *main_struct main structure
+ */
+static void on_projects_save_as_activate(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+    HERAIA_ERROR erreur = HERAIA_NOERR;
+    gchar *filename = NULL;  /**< Auto malloc'ed, do not free */
+
+    if (main_struct != NULL)
+        {
+            filename = select_a_file_to_save(main_struct);
+
+            if (filename != NULL)
+                {
+                    if (main_struct->prefs != NULL)
+                        {
+                            free_preference_struct(main_struct->prefs);
+                        }
+
+                    main_struct->prefs = init_preference_struct(g_path_get_dirname(filename),g_path_get_basename(filename));
+                    save_preferences(main_struct, main_struct->prefs);
+                }
+        }
+}
+
+
+
+/**
  * Closes one document in heraia. Does not do any updates of the interface.
  * @param main_struct : main structure
  * @param closing_doc : the doc_t * document to be closed
@@ -1293,7 +1323,6 @@ GSList *select_file_to_load(heraia_struct_t *main_struct)
 
 
 /**
- * @fn gchar *select_a_file_to_save(heraia_struct_t *main_struct)
  *  This function opens a dialog box that allow one to choose a
  *  file name to the file which is about to be saved
  * @param main_struct : main structure
@@ -1677,6 +1706,10 @@ static void heraia_ui_connect_signals(heraia_struct_t *main_struct)
     /* Close, projects sub menu, file menu */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_projects_close")), "activate",
                      G_CALLBACK(on_projects_close_activate), main_struct);
+
+    /* Save As, projects sub menu, file menu */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_projects_save_as")), "activate",
+                     G_CALLBACK(on_projects_save_as_activate), main_struct);
 
 
     /*** Edit Menu ***/

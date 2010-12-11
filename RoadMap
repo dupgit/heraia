@@ -106,6 +106,7 @@ I let you imagine what I expect before I do a major release !!!
    * python bindings ?
    * Look at everything in order to enhance user experience and have a more
      usable program.
+   * Add recent files and recent projects
    * Add an import ability (for instance tcpdump imports)
 
 - 0.2.0
@@ -132,7 +133,7 @@ I let you imagine what I expect before I do a major release !!!
    * Begin writing some user documentation
 
 . 0.2.8
-   * If there is time, see how to bring 3D visualization in stat plugin
+   * If there is time, see how to bring 3D visualization in stat plugin ?
 
 - 0.3.0
    * user documentation

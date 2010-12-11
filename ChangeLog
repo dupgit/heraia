@@ -1,8 +1,10 @@
 11.12.2010
    - Olivier Delhomme <heraia@delhomme.org>
-     * Protecting user prefs to avoid segfault if prefs may be NULL
-     * Added a save as entry in the project sub menu
-     * menus are greyed when a project is closed
+     * Protecting user prefs to avoid segfault if prefs may be NULL.
+     * Added a save as entry in the project sub menu.
+     * menus are greyed when a project is closed.
+     * Roadmap addition.
+     * Saving a project is now possible.
 
 10.12.2010
    - Olivier Delhomme <heraia@delhomme.org>
