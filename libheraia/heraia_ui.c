@@ -846,12 +846,13 @@ static void on_projects_open_activate(GtkWidget *widget, gpointer data)
 
                     /* Opening the new project */
                     filename = list->data;
-                    log_message(main_struct, G_LOG_LEVEL_DEBUG, "Loading project %s", filename);
-                    main_struct->prefs = init_preference_struct(g_path_get_dirname(filename),g_path_get_basename(filename));
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Loading project %s"), filename);
+                    main_struct->prefs = init_preference_struct(g_path_get_dirname(filename), g_path_get_basename(filename));
                     load_preferences(main_struct, main_struct->prefs);
 
                     /* . Updating things in the interface */
                     gtk_widget_show_all(heraia_get_widget(main_struct->xmls->main, "file_notebook"));
+                    init_window_states(main_struct);
                     g_slist_free(list);
                 }
         }
@@ -1107,7 +1108,7 @@ void on_DIMenu_activate(GtkWidget *widget, gpointer data)
                         {
                             notebook = GTK_NOTEBOOK(heraia_get_widget(main_struct->xmls->main, "diw_notebook"));
 
-                            if (main_struct->win_prop->data_interpretor->displayed == FALSE)
+                            if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(heraia_get_widget(main_struct->xmls->main, "DIMenu"))) == TRUE)
                                 {
                                     /* Setting the first page of the notebook as default (Numbers) */
                                     gtk_notebook_set_current_page(notebook, dw->tab_displayed);
@@ -1962,20 +1963,11 @@ int load_heraia_ui(heraia_struct_t *main_struct)
                 }
 
 
-            /* preferences file */
-            fprintf(stdout, Q_("Loading heraia preference file        "));
-
-            if (load_preference_file(main_struct) != TRUE)
-                {
-                    fprintf(stdout, Q_(" [FAILED]\n"));
-                }
-            else /* Setting up preferences */
-                {
-                    fprintf(stdout, Q_(" [Done]\n"));
-                    fprintf(stdout, Q_("Setting up preferences...\n"));
-                    load_preferences(main_struct, main_struct->prefs);
-                    fprintf(stdout, Q_("[Done]\n"));
-                }
+            /* preferences file - Setting up preferences */
+            fprintf(stdout, Q_("Loading heraia preference file"));
+            fprintf(stdout, Q_("Setting up preferences...\n"));
+            load_preferences(main_struct, main_struct->prefs);
+            fprintf(stdout, Q_("[Done]\n"));
         }
 
     return success;
@@ -2348,12 +2340,9 @@ void init_window_states(heraia_struct_t *main_struct)
 
                     /* Data Interpretor Interface */
                     cmi = heraia_get_widget(main_struct->xmls->main, "DIMenu");
-                    /* Emit the specific signal to activate the check_menu_item */
-                    if (main_struct->win_prop->data_interpretor->displayed == TRUE)
-                        {
-                            main_struct->win_prop->data_interpretor->displayed = FALSE; /* dirty trick */
-                            g_signal_emit_by_name(heraia_get_widget(main_struct->xmls->main, "DIMenu"), "activate");
-                        }
+                    dialog_box = heraia_get_widget(main_struct->xmls->main, "data_interpretor_window");
+                    init_one_cmi_window_state(dialog_box, cmi, main_struct->win_prop->data_interpretor);
+                    on_DIMenu_activate(cmi, main_struct);
 
                     /* List Data type Interface */
                     cmi = heraia_get_widget(main_struct->xmls->main, "ldt_menu");

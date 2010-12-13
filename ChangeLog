@@ -1,3 +1,9 @@
+13.12.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Project loading now works.
+     * Initialiazing window state simplification for the data interpretor
+       window
+
 11.12.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Protecting user prefs to avoid segfault if prefs may be NULL.

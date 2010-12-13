@@ -440,6 +440,7 @@ static void load_mp_file_preferences_options(heraia_struct_t *main_struct, prefs
 
     if (main_struct != NULL && prefs != NULL)
         {
+            log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Loading window's positions"));
             /* Loading window's positions ? */
             activated = g_key_file_get_boolean(prefs->file, GN_GLOBAL_PREFS, KN_SAVE_WINDOW_PREFS, NULL);
             save_window_position_bt = heraia_get_widget(main_struct->xmls->main, "save_window_position_bt");
@@ -468,6 +469,7 @@ static void load_mp_file_preferences_options(heraia_struct_t *main_struct, prefs
 
             if (activated == TRUE)
                 {
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Loading files..."));
                     load_mp_files_filenames(main_struct, prefs);
                 }
         }
@@ -617,16 +619,24 @@ void load_preferences(heraia_struct_t *main_struct, prefs_t *prefs)
 {
     if (main_struct != NULL && prefs != NULL)
         {
-            /* 1. Loading Main Preferences */
-            load_mp_file_preferences_options(main_struct, prefs);
+            /* 0. Loading preferences from file */
+            if (load_preference_file(prefs) == TRUE)
+                {
+                    /* 1. Loading Main Preferences */
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Loading main preferences"));
+                    load_mp_file_preferences_options(main_struct, prefs);
 
-            /* 2. Loading Display preferences */
-            load_mp_display_preferences_options(main_struct, prefs);
+                    /* 2. Loading Display preferences */
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Loading main display preferences"));
+                    load_mp_display_preferences_options(main_struct, prefs);
 
-            /* 3. Loading Data Interpretor Preferences */
-            load_di_preferences(main_struct, prefs);
+                    /* 3. Loading Data Interpretor Preferences */
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Loading data interpretor preferences"));
+                    load_di_preferences(main_struct, prefs);
 
-            /* 4. Loading Main Preferences Window Preferences */
-            load_mpwp_preferences(main_struct, prefs);
+                    /* 4. Loading Main Preferences Window Preferences */
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Loading window preference's main preferences"));
+                    load_mpwp_preferences(main_struct, prefs);
+                }
         }
 }

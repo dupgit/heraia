@@ -99,7 +99,6 @@ gboolean load_file_to_analyse(heraia_struct_t *main_struct, gchar *filename)
 
 
 /**
- * @fn GtkBuilder *load_xml_if_it_exists(gchar *file_to_load)
  *  Checks if file_to_load exists and is valid and if possible, loads it
  *  in the xml structure
  * @param file_to_load : a filename of a possibly existing GtkBuilder file
@@ -136,7 +135,6 @@ static GtkBuilder *load_xml_if_it_exists(gchar *file_to_load)
 
 
 /**
- * @fn GtkBuilder *load_xml_file(GList *location_list, gchar *filename)
  *  loads the GtkBuilder xml file ('filename') that describes an interface,
  *  tries all the paths defined in the location_list and put the definition
  *  in the 'xml' variable. A frontend to load_xml_if_it_exists function
@@ -168,16 +166,15 @@ GtkBuilder *load_xml_file(GList *location_list, gchar *filename)
 
 
 /**
- * @fn gboolean load_preference_file(heraia_struct_t *main_struct)
- * Load the preference file
+ * Load the preference file from the disk
  * @param main_struct : main structure
  * @return TRUE if everything went ok, FALSE otherwise
  */
-gboolean load_preference_file(heraia_struct_t *main_struct)
+gboolean load_preference_file(prefs_t *prefs)
 {
-    if (main_struct != NULL && main_struct->prefs != NULL)
+    if (prefs != NULL && prefs->file != NULL && prefs->filename != NULL)
         {
-            return g_key_file_load_from_file(main_struct->prefs->file, main_struct->prefs->filename,  G_KEY_FILE_KEEP_COMMENTS & G_KEY_FILE_KEEP_TRANSLATIONS, NULL);
+            return g_key_file_load_from_file(prefs->file, prefs->filename,  G_KEY_FILE_KEEP_COMMENTS & G_KEY_FILE_KEEP_TRANSLATIONS, NULL);
         }
     else
         {
@@ -187,8 +184,7 @@ gboolean load_preference_file(heraia_struct_t *main_struct)
 
 
 /**
- * @fn gboolean save_preferences_to_file(prefs_t *prefs)
- *  Saves the preferences to the file preferences
+ * Saves the preferences to the file preferences
  * @param prefs : preferences (from prefs_t structure)
  * @return TRUE if everything went ok, FALSE otherwise
  */
