@@ -237,16 +237,17 @@ typedef struct
 typedef struct
 {
     window_prop_t *about_box;
-    window_prop_t *data_interpretor;  /**< data interpretor window   */
-    window_prop_t *log_box;           /**< log window                */
-    window_prop_t *main_dialog;       /**< heraia's main window      */
-    window_prop_t *plugin_list;       /**< plugin description window */
-    window_prop_t *ldt;               /**< list data types window    */
-    window_prop_t *main_pref_window;  /**< main preference window    */
-    window_prop_t *goto_window;       /**< goto dialog window        */
-    window_prop_t *result_window;     /**< result window properties  */
-    window_prop_t *find_window;       /**< find window               */
-    window_prop_t *fr_window;         /**< find and replace window   */
+    window_prop_t *data_interpretor;  /**< data interpretor window    */
+    window_prop_t *log_box;           /**< log window                 */
+    window_prop_t *main_dialog;       /**< heraia's main window       */
+    window_prop_t *plugin_list;       /**< plugin description window  */
+    window_prop_t *ldt;               /**< list data types window     */
+    window_prop_t *main_pref_window;  /**< main preference window     */
+    window_prop_t *goto_window;       /**< goto dialog window         */
+    window_prop_t *result_window;     /**< result window properties   */
+    window_prop_t *find_window;       /**< find window                */
+    window_prop_t *fr_window;         /**< find and replace window    */
+    window_prop_t *fdft_window;       /**< find data from type window */
 } all_window_prop_t;
 
 

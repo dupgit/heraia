@@ -531,6 +531,7 @@ static void fr_replace_search_bt_clicked(GtkWidget *widget, gpointer data)
         }
 }
 
+
 /**
  * Tries to replace, in the document, what the user entered in the GtkHex entry
  * in the fr window in the find hexwidget by what the user entered in the
@@ -608,5 +609,107 @@ void fr_window_init_interface(heraia_struct_t * main_struct)
                     find_replace_add_ghex_widget(main_struct->xmls, "fr_replace_al", main_struct->fr_replace_doc);
                 }
 
+        }
+}
+
+
+/******************************************************************************/
+/**************************** Find data from type *****************************/
+/******************************************************************************/
+
+
+/**
+ * Show find data from type window
+ * @param widget : the widget that issued the signal
+ * @param data : user data MUST be heraia_struct_t *main_struct main structure
+ */
+void fdft_window_show(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+    GtkWidget *window = NULL;      /**< find data from type window */
+
+    if (main_struct != NULL && main_struct->current_doc != NULL)
+        {
+            window = heraia_get_widget(main_struct->xmls->main, "fdft_window");
+            show_hide_widget(window, TRUE, main_struct->win_prop->fdft_window);
+        }
+}
+
+
+/**
+ * Call back function for the find data from type window destruction
+ * @param widget : calling widget (may be NULL as we don't use this here)
+ * @param event : event associated (may be NULL as we don't use this here)
+ * @param data :  MUST be heraia_struct_t *main_struct main structure
+ */
+static gboolean delete_fdft_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
+{
+    find_window_close(widget, data);
+
+    return TRUE;
+}
+
+
+/**
+ * Call back function for the find data from type window destruction
+ * @param widget : calling widget (may be NULL as we don't use this here)
+ * @param event : event associated (may be NULL as we don't use this here)
+ * @param data : user data - MUST be heraia_struct_t *main_struct main structure and not NULL
+ */
+static void destroy_fdft_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
+{
+    find_window_close(widget, data);
+}
+
+
+/**
+ * Close button has been clicked we want to hide the window
+ * @param widget : calling widget (may be NULL as we don't use this here)
+ * @param data : MUST be heraia_struct_t *main_struct main structure and not NULL
+ */
+static void fdft_window_close(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+    GtkWidget *window = NULL;     /**< find window */
+
+    if (main_struct != NULL)
+        {
+            window = heraia_get_widget(main_struct->xmls->main, "fdft_window");
+            show_hide_widget(window, FALSE, main_struct->win_prop->fdft_window);
+        }
+}
+
+
+/**
+ * Signal connections for the find data from type window
+ * @param main_struct : heraia's main structure
+ */
+static void fdft_window_connect_signal(heraia_struct_t *main_struct)
+{
+    /* Close button */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "fdft_close_bt")), "clicked",
+                     G_CALLBACK(fdft_window_close), main_struct);
+
+
+
+    /* When result window is killed or destroyed */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "result_window")), "delete_event",
+                     G_CALLBACK(delete_fdft_window_event), main_struct);
+
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "result_window")), "destroy",
+                     G_CALLBACK(destroy_fdft_window_event), main_struct);
+}
+
+
+/**
+ * Inits all the things in the find data from type window (signal and such)
+ * @param main_struct : heraia's main structure
+ */
+void fdft_window_init_interface(heraia_struct_t * main_struct)
+{
+
+    if (main_struct != NULL && main_struct->xmls != NULL && main_struct->xmls->main != NULL)
+        {
+            fdft_window_connect_signal(main_struct);
         }
 }

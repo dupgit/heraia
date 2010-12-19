@@ -1858,7 +1858,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
             /* Heraia UI signals */
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, Q_("Connecting heraia_ui signals          "));
+                    fprintf(stdout, Q_("Connecting heraia_ui signals             "));
                 }
 
             heraia_ui_connect_signals(main_struct);
@@ -1871,7 +1871,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
             /* The Log window */
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, Q_("log window init interface             "));
+                    fprintf(stdout, Q_("log window init interface                "));
                 }
 
             log_window_init_interface(main_struct);
@@ -1884,7 +1884,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
             /* Preferences window */
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, Q_("preferences window init interface     "));
+                    fprintf(stdout, Q_("preferences window init interface        "));
                 }
 
             main_pref_window_init_interface(main_struct);
@@ -1898,7 +1898,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
             /* The data interpretor window */
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, Q_("data interpretor init interface       "));
+                    fprintf(stdout, Q_("data interpretor init interface          "));
                 }
 
             data_interpretor_init_interface(main_struct);
@@ -1912,7 +1912,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
             /* Goto dialog window */
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, Q_("goto dialog window init interface     "));
+                    fprintf(stdout, Q_("goto dialog window init interface        "));
                 }
 
             goto_dialog_init_interface(main_struct);
@@ -1926,7 +1926,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
             /* result window */
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, Q_("result window init interface          "));
+                    fprintf(stdout, Q_("result window init interface             "));
                 }
 
             result_window_init_interface(main_struct);
@@ -1939,7 +1939,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
             /* find window */
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, Q_("find window init interface            "));
+                    fprintf(stdout, Q_("find window init interface               "));
                 }
 
             find_window_init_interface(main_struct);
@@ -1949,10 +1949,10 @@ int load_heraia_ui(heraia_struct_t *main_struct)
                     fprintf(stdout, Q_(" [Done]\n"));
                 }
 
-            /* find window */
+            /* find and replace window */
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, Q_("find and replace window init interface"));
+                    fprintf(stdout, Q_("find and replace window init interface   "));
                 }
 
             fr_window_init_interface(main_struct);
@@ -1961,7 +1961,18 @@ int load_heraia_ui(heraia_struct_t *main_struct)
                 {
                     fprintf(stdout, Q_(" [Done]\n"));
                 }
+            /* find and replace window */
+            if (main_struct->debug == TRUE)
+                {
+                    fprintf(stdout, Q_("find data from type window init interface"));
+                }
 
+            fdft_window_init_interface(main_struct);
+
+            if (main_struct->debug == TRUE)
+                {
+                    fprintf(stdout, Q_(" [Done]\n"));
+                }
 
             /* preferences file - Setting up preferences */
             fprintf(stdout, Q_("Loading heraia preference file"));

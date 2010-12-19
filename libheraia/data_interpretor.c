@@ -429,7 +429,7 @@ void add_new_row_to_tab(tab_t *tab, decode_generic_t *row)
             gtk_box_pack_start(GTK_BOX(vbox), row->label, FALSE, FALSE, 3);
 
             j = 0;
-            i = 1;
+            i = 1; /* first column is for labels (0) */
 
             while (i <  tab->nb_cols)
                 {
