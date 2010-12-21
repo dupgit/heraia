@@ -1,3 +1,12 @@
+21.12.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Initializing fdft window properties.
+     * Saving and loading window properties from preferences or projects.
+     * Displaying window.
+     * Size of the menu icon for find data from type menu entry.
+     * Connected menu find data from type to the right function in order to
+       display the window.
+
 19.12.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * New window to find data from a specific type (begining work)

@@ -218,6 +218,7 @@ static void save_mp_file_preferences_options(heraia_struct_t *main_struct, prefs
                     save_window_preferences(prefs->file, KN_RESULT_WINDOW, main_struct->win_prop->result_window);
                     save_window_preferences(prefs->file, KN_FIND_WINDOW, main_struct->win_prop->find_window);
                     save_window_preferences(prefs->file, KN_FR_WINDOW, main_struct->win_prop->fr_window);
+                    save_window_preferences(prefs->file, KN_FDFT_WINDOW, main_struct->win_prop->fdft_window);
                 }
 
             /* Saving opened files filenames ? */
@@ -460,6 +461,7 @@ static void load_mp_file_preferences_options(heraia_struct_t *main_struct, prefs
                     load_window_preferences(prefs->file, KN_RESULT_WINDOW, main_struct->win_prop->result_window);
                     load_window_preferences(prefs->file, KN_FIND_WINDOW, main_struct->win_prop->find_window);
                     load_window_preferences(prefs->file, KN_FR_WINDOW, main_struct->win_prop->fr_window);
+                    load_window_preferences(prefs->file, KN_FDFT_WINDOW, main_struct->win_prop->fdft_window);
                 }
 
             /* Loading opened files filenames ? */

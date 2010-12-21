@@ -1233,7 +1233,7 @@ POSSIBILITY OF SUCH DAMAGES.
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="fdft_menu">
+                      <object class="GtkImageMenuItem" id="menu_fdft">
                         <property name="label" translatable="yes">Find data from type...</property>
                         <property name="visible">True</property>
                         <property name="image">image2</property>
@@ -2405,5 +2405,6 @@ POSSIBILITY OF SUCH DAMAGES.
   <object class="GtkImage" id="image2">
     <property name="visible">True</property>
     <property name="stock">gtk-find</property>
+    <property name="icon-size">1</property>
   </object>
 </interface>

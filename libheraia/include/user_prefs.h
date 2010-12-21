@@ -31,7 +31,7 @@
  * @note
  *  GN == Group Name
  *  KN == Key Name
- *  Thoses variables are the ones to use in the main preference file
+ *  Thoses variables are the ones to use in main preference file and projects
  *  Please do not translate them !
  */
 #define GN_GLOBAL_PREFS "Global Preferences"
@@ -51,6 +51,7 @@
 #define KN_RESULT_WINDOW "Result Window"
 #define KN_FIND_WINDOW "Find Window"
 #define KN_FR_WINDOW "Find and Replace Window"
+#define KN_FDFT_WINDOW "Find data from type Window"
 
 #define KN_SAVE_OPENED_FILES_FILENAMES "Opened files filenames"
 #define KN_FILES_FILENAMES "Files filenames"

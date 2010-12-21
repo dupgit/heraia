@@ -561,6 +561,23 @@ void on_fr_activate(GtkWidget *widget, gpointer data)
 
 
 /**
+ * Find data from type, Search menu
+ * @param widget : the widget that issued the signal
+ * @param data : user data MUST be heraia_struct_t *main_struct main structure
+ */
+void on_fdft_activate(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+
+    if (main_struct != NULL && main_struct->current_doc != NULL)
+        {
+            fdft_window_show(widget, main_struct);
+        }
+}
+
+
+
+/**
  *  This function is refreshing the labels on the main
  *  window in order to reflect cursor position, selected
  *  positions and total selected size.
@@ -1798,6 +1815,10 @@ static void heraia_ui_connect_signals(heraia_struct_t *main_struct)
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_find_replace")), "activate",
                      G_CALLBACK(on_fr_activate), main_struct);
 
+    /* Find data from type, Search menu */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_fdft")), "activate",
+                     G_CALLBACK(on_fdft_activate), main_struct);
+
 
     /*** Display menu ***/
     /* the data interpretor menu */
@@ -2430,6 +2451,21 @@ void init_window_states(heraia_struct_t *main_struct)
                             /* if the window is not displayed modifies it's properties accordingly */
                             main_struct->win_prop->fr_window->displayed = FALSE;
                         }
+
+                    /* find data from type window */
+                    dialog_box = heraia_get_widget(main_struct->xmls->main, "fdft_window");
+                    if (main_struct->win_prop->fdft_window->displayed == TRUE && main_struct->current_doc != NULL)
+                        {
+                            gtk_window_move(GTK_WINDOW(dialog_box), main_struct->win_prop->fdft_window->x, main_struct->win_prop->fdft_window->y);
+                            gtk_window_resize(GTK_WINDOW(dialog_box), main_struct->win_prop->fdft_window->width, main_struct->win_prop->fdft_window->height);
+                            gtk_widget_show_all(dialog_box);
+                        }
+                    else
+                        {
+                            /* if the window is not displayed modifies it's properties accordingly */
+                            main_struct->win_prop->fdft_window->displayed = FALSE;
+                        }
+
 
                     /* About Box */
                     dialog_box = heraia_get_widget(main_struct->xmls->main, "about_dialog");
