@@ -2145,7 +2145,7 @@ POSSIBILITY OF SUCH DAMAGES.
                     <property name="visible">True</property>
                     <property name="homogeneous">True</property>
                     <child>
-                      <object class="GtkVBox" id="vbox18">
+                      <object class="GtkVBox" id="fdft_category_vbox">
                         <property name="visible">True</property>
                         <property name="spacing">2</property>
                         <child>
@@ -2160,14 +2160,7 @@ POSSIBILITY OF SUCH DAMAGES.
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkComboBox" id="fdft_category_cb">
-                            <property name="visible">True</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">1</property>
-                          </packing>
+                          <placeholder/>
                         </child>
                       </object>
                       <packing>
@@ -2175,7 +2168,7 @@ POSSIBILITY OF SUCH DAMAGES.
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkVBox" id="vbox19">
+                      <object class="GtkVBox" id="fdft_type_vbox">
                         <property name="visible">True</property>
                         <property name="spacing">2</property>
                         <child>
@@ -2190,14 +2183,7 @@ POSSIBILITY OF SUCH DAMAGES.
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkComboBox" id="fdft_type_cb">
-                            <property name="visible">True</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">1</property>
-                          </packing>
+                          <placeholder/>
                         </child>
                       </object>
                       <packing>
@@ -2205,7 +2191,7 @@ POSSIBILITY OF SUCH DAMAGES.
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkVBox" id="vbox20">
+                      <object class="GtkVBox" id="fdft_feature_vbox">
                         <property name="visible">True</property>
                         <property name="spacing">2</property>
                         <child>
@@ -2220,14 +2206,7 @@ POSSIBILITY OF SUCH DAMAGES.
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkComboBox" id="fdft_feature_cb">
-                            <property name="visible">True</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">1</property>
-                          </packing>
+                          <placeholder/>
                         </child>
                       </object>
                       <packing>

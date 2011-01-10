@@ -183,10 +183,10 @@ typedef struct
  */
 typedef struct
 {
-    GtkWidget *diw;                /**< data interpretor window                                   */
-    gint tab_displayed;            /**< keeps the last displayed tab's number before closing      */
-    guint nb_tabs;                 /**< keeps Number of tabs in the GPtrArray                     */
-    GPtrArray *tabs;               /**< an array of tabs displayed in data interpretor's notebook */
+    GtkWidget *diw;                /**< data interpretor window                                           */
+    gint tab_displayed;            /**< keeps the last displayed tab's number before closing              */
+    guint nb_tabs;                 /**< keeps Number of tabs in the GPtrArray                             */
+    GPtrArray *tabs;               /**< an array of tabs displayed in data interpretor's notebook (tab_t) */
 } data_window_t;
 
 
@@ -290,6 +290,18 @@ typedef struct
 
 
 /**
+ * @struct
+ * A structure to manage the find data type window
+ */
+typedef struct
+{
+    GtkWidget *category_cb; /** ComboBox Widget for the category of the search                  */
+    GtkWidget *type_cb;     /** ComboBox Widget for the type of the data in the category        */
+    GtkWidget *feature_cb;  /** ComboBox Widget for the feature related to the type of the data */
+} fdft_t;
+
+
+/**
  * @struct heraia_struct_t
  *  This is the main structure. It contains all things that the program needs
  *  results GPtrArray stores the pointer of the corresponding document from
@@ -310,6 +322,7 @@ typedef struct
     doc_t *find_doc;                /**< find document and hexwidget for find window                               */
     doc_t *fr_find_doc;             /**< find and replace window, find document and hexwidget                      */
     doc_t *fr_replace_doc;          /**< find and replace window, replace document and hexwidget                   */
+    fdft_t *fdft;                   /**< Keeps comboboxes created for the fdft window                              */
     GPtrArray *results;             /**< An array of pointers for each tab in the result window.                   */
 } heraia_struct_t;
 

@@ -5,7 +5,7 @@
                           the opened hex documents.
 
 
-  (C) Copyright 2010 Olivier Delhomme
+  (C) Copyright 2010 - 2011 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -55,6 +55,13 @@ static void fr_replace_bt_clicked(GtkWidget *widget, gpointer data);
 static void fr_replace_search_bt_clicked(GtkWidget *widget, gpointer data);
 static goffset fr_replace_data(heraia_struct_t *main_struct);
 
+
+/*** fdft window ***/
+static gboolean delete_fdft_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data);
+static void destroy_fdft_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data);
+static fdft_t *fdft_window_init_widgets(heraia_struct_t * main_struct);
+static void fdft_window_close(GtkWidget *widget, gpointer data);
+static void fdft_window_connect_signal(heraia_struct_t *main_struct);
 
 /**
  * Show find window
@@ -235,11 +242,11 @@ static void find_window_connect_signal(heraia_struct_t *main_struct)
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "find_all_bt")), "clicked",
                      G_CALLBACK(find_all_bt_clicked), main_struct);
 
-    /* When result window is killed or destroyed */
-    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "result_window")), "delete_event",
+    /* When find window is killed or destroyed */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "find_window")), "delete_event",
                      G_CALLBACK(delete_find_window_event), main_struct);
 
-    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "result_window")), "destroy",
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "find_window")), "destroy",
                      G_CALLBACK(destroy_find_window_event), main_struct);
 }
 
@@ -473,7 +480,7 @@ static void fr_window_connect_signal(heraia_struct_t *main_struct)
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "fr_close_bt")), "clicked",
                      G_CALLBACK(fr_window_close), main_struct);
 
-    /* When result window is killed or destroyed */
+    /* When find and replace  window is killed or destroyed */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "fr_window")), "delete_event",
                      G_CALLBACK(delete_fr_window_event), main_struct);
 
@@ -618,6 +625,34 @@ void fr_window_init_interface(heraia_struct_t * main_struct)
 /******************************************************************************/
 
 
+/***
+ * Populates the category combobox from the structures of the data interpretor
+ * window
+ * @param main_struct : main structure of the program
+ */
+static void fdft_window_populate_category_cb(heraia_struct_t *main_struct)
+{
+    GtkWidget *cb = NULL;  /**< category's combobox */
+    GtkWidget *label = NULL;
+    tab_t *tab = NULL;
+    gint i = 0;
+    gchar *text = NULL;
+
+    if (main_struct != NULL)
+        {
+            cb = main_struct->fdft->category_cb;
+
+            for (i = 0; i < main_struct->current_DW->nb_tabs; i++)
+                {
+                    tab = g_ptr_array_index(main_struct->current_DW->tabs, i);
+                    label = tab->label;
+                    text = gtk_label_get_text(GTK_LABEL(label));
+                    gtk_combo_box_append_text(GTK_COMBO_BOX(cb), text);
+                }
+        }
+}
+
+
 /**
  * Show find data from type window
  * @param widget : the widget that issued the signal
@@ -644,7 +679,7 @@ void fdft_window_show(GtkWidget *widget, gpointer data)
  */
 static gboolean delete_fdft_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {
-    find_window_close(widget, data);
+    fdft_window_close(widget, data);
 
     return TRUE;
 }
@@ -658,7 +693,7 @@ static gboolean delete_fdft_window_event(GtkWidget *widget, GdkEvent  *event, gp
  */
 static void destroy_fdft_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {
-    find_window_close(widget, data);
+    fdft_window_close(widget, data);
 }
 
 
@@ -690,14 +725,51 @@ static void fdft_window_connect_signal(heraia_struct_t *main_struct)
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "fdft_close_bt")), "clicked",
                      G_CALLBACK(fdft_window_close), main_struct);
 
-
-
-    /* When result window is killed or destroyed */
-    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "result_window")), "delete_event",
+    /* When fdft window is killed or destroyed */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "fdft_window")), "delete_event",
                      G_CALLBACK(delete_fdft_window_event), main_struct);
 
-    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "result_window")), "destroy",
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "fdft_window")), "destroy",
                      G_CALLBACK(destroy_fdft_window_event), main_struct);
+}
+
+
+/**
+ * Inits the fdft structure and adds the widgets to the window
+ * @param main_struct : heraia's main structure
+ */
+static fdft_t *fdft_window_init_widgets(heraia_struct_t * main_struct)
+{
+    fdft_t *fdft = NULL;
+    GtkWidget *vbox = NULL;
+
+    if (main_struct != NULL && main_struct->fdft == NULL)
+        {
+            fdft = (fdft_t *) g_malloc0 (sizeof(fdft_t));
+
+            fdft->category_cb = gtk_combo_box_new_text();
+            fdft->type_cb = gtk_combo_box_new_text();
+            fdft->feature_cb = gtk_combo_box_new_text();
+
+            vbox = heraia_get_widget(main_struct->xmls->main, "fdft_category_vbox");
+            gtk_box_pack_end(GTK_BOX(vbox), fdft->category_cb, FALSE, FALSE, 0);
+
+            vbox = heraia_get_widget(main_struct->xmls->main, "fdft_type_vbox");
+            gtk_box_pack_end(GTK_BOX(vbox), fdft->type_cb, FALSE, FALSE, 0);
+
+            vbox = heraia_get_widget(main_struct->xmls->main, "fdft_feature_vbox");
+            gtk_box_pack_end(GTK_BOX(vbox), fdft->feature_cb, FALSE, FALSE, 0);
+
+            /* Combo box button */
+            g_signal_connect(G_OBJECT(fdft->category_cb), "changed",
+                             G_CALLBACK(fdft_category_cb_changed), main_struct);
+
+            return fdft;
+        }
+    else
+        {
+            return NULL;
+        }
 }
 
 
@@ -711,5 +783,7 @@ void fdft_window_init_interface(heraia_struct_t * main_struct)
     if (main_struct != NULL && main_struct->xmls != NULL && main_struct->xmls->main != NULL)
         {
             fdft_window_connect_signal(main_struct);
+            main_struct->fdft = fdft_window_init_widgets(main_struct);
+            fdft_window_populate_category_cb(main_struct);
         }
 }
