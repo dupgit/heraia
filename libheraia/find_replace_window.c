@@ -733,6 +733,23 @@ static void fdft_window_connect_signal(heraia_struct_t *main_struct)
                      G_CALLBACK(destroy_fdft_window_event), main_struct);
 }
 
+/**
+ * Fills the type ComboBox with the right values
+ * @param widget : the combobox that issued the changed signal
+ * @param data : must be heraia_struct_t *main_struct
+ */
+static void fdft_category_cb_changed(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+
+    if (main_struct != NULL && main_struct->fdft == NULL)
+        {
+
+
+        }
+}
+
+
 
 /**
  * Inits the fdft structure and adds the widgets to the window
