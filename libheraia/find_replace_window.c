@@ -636,7 +636,7 @@ static void fdft_window_populate_category_cb(heraia_struct_t *main_struct)
     GtkWidget *label = NULL;
     tab_t *tab = NULL;
     gint i = 0;
-    gchar *text = NULL;
+    const gchar *text = NULL;
 
     if (main_struct != NULL)
         {
@@ -741,11 +741,51 @@ static void fdft_window_connect_signal(heraia_struct_t *main_struct)
 static void fdft_category_cb_changed(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
+    decode_generic_t *decod = NULL;
+    tab_t *tab = NULL;
+    GtkWidget *cb = NULL;
+    gint index = 0;  /* active index of the combobox */
+    gint i = 0;
+    GtkWidget *label = NULL;
+    const gchar *text = NULL;
+    GtkTreeModel *model = NULL;
 
-    if (main_struct != NULL && main_struct->fdft == NULL)
+    if (main_struct != NULL && main_struct->fdft != NULL)
         {
+            /* retrieve the selected category  */
+            cb = main_struct->fdft->category_cb;
+            index = gtk_combo_box_get_active(GTK_COMBO_BOX(cb));
+            tab = g_ptr_array_index(main_struct->current_DW->tabs, index);
 
+            /* Type combobox                   */
+            /* First delete all entries if any */
+            cb = main_struct->fdft->type_cb;
+            model = gtk_combo_box_get_model(GTK_COMBO_BOX(cb));
+            gtk_list_store_clear(GTK_LIST_STORE(model));
 
+            /* Second fill the combobox with the values */
+            for (i = 0; i < tab->nb_rows; i++)
+                {
+                    decod = g_ptr_array_index(tab->rows, i);
+                    label = decod->label;
+                    text = gtk_label_get_text(GTK_LABEL(label));
+                    gtk_combo_box_append_text(GTK_COMBO_BOX(cb), text);
+                }
+
+            /* Feature combobox                */
+            /* First delete all entries if any */
+            cb = main_struct->fdft->feature_cb;
+            model = gtk_combo_box_get_model(GTK_COMBO_BOX(cb));
+            gtk_list_store_clear(GTK_LIST_STORE(model));
+
+            /* Second fill the combobox with the values */
+            /* Here we start from 1, because column 0 is the row's title column */
+            for (i = 1; i < tab->nb_cols; i++)
+                {
+                    label = g_ptr_array_index(tab->col_labels, i);
+                    text = gtk_label_get_text(GTK_LABEL(label));
+                    gtk_combo_box_append_text(GTK_COMBO_BOX(cb), text);
+                }
         }
 }
 
@@ -767,6 +807,8 @@ static fdft_t *fdft_window_init_widgets(heraia_struct_t * main_struct)
             fdft->category_cb = gtk_combo_box_new_text();
             fdft->type_cb = gtk_combo_box_new_text();
             fdft->feature_cb = gtk_combo_box_new_text();
+
+            main_struct->fdft = fdft;
 
             vbox = heraia_get_widget(main_struct->xmls->main, "fdft_category_vbox");
             gtk_box_pack_end(GTK_BOX(vbox), fdft->category_cb, FALSE, FALSE, 0);

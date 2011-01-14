@@ -1,3 +1,8 @@
+14.01.2011
+    - Olivier Delhomme <heraia@delhomme.org>
+      * Filling the combo boxes in find data from type window upon category
+        combo box user's choice.
+
 21.12.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Initializing fdft window properties.
