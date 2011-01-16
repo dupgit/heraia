@@ -26,8 +26,6 @@
  */
 #include <libheraia.h>
 
-guint which_endianness(heraia_struct_t *main_struct);
-static guint which_stream_size(heraia_struct_t *main_struct);
 static void interpret(doc_t *doc, decode_t *decode_struct, decode_parameters_t *decode_parameters, guint length);
 static void connect_data_interpretor_signals(heraia_struct_t *main_struct);
 static void refresh_one_row(doc_t *doc, decode_generic_t *row,  guint nb_cols, decode_parameters_t *decode_parameters);
@@ -68,7 +66,7 @@ guint which_endianness(heraia_struct_t *main_struct)
  * @param main_struct : main structure
  * @return returns the value of the spin button or 1 if this value is not valid
  */
-static guint which_stream_size(heraia_struct_t *main_struct)
+guint which_stream_size(heraia_struct_t *main_struct)
 {
     guint stream_size = 1;
 

@@ -547,6 +547,126 @@ gboolean ghex_find_forward(doc_t *doc, guchar *search_buffer, guint buffer_size,
 }
 
 
+static gboolean hex_document_find_decode(gint direction, doc_t *doc, DecodeFunc decode_it, guint data_size, decode_parameters_t *decode_parameters, guint64 start, gchar *search_buffer, guint64 *found)
+{
+    guint64 pos = 0;
+    gint result = 0;     /** used to test different results of function calls                 */
+    guchar *c = NULL;    /** the character under the cursor                                   */
+    gchar *text = NULL;  /** decoded text                                                     */
+    gboolean end = FALSE; /** to stop the search when something is found or something is wrong */
+
+
+    if (direction == HERAIA_FIND_FORWARD)
+        {
+            c = (guchar *) g_malloc0(sizeof(guchar) * data_size);
+
+            pos = start;
+
+            while (end == FALSE)
+                {
+                    result = ghex_get_data_position(doc->hex_widget, pos, data_size, decode_parameters->endianness, c);
+
+                    if (result == TRUE)
+                        {
+                            text = decode_it(c, (gpointer) decode_parameters);
+
+                            if (g_ascii_strcasecmp(text, search_buffer) == 0)
+                                {
+                                    *found = pos;
+                                    end = TRUE;
+                                }
+                            else
+                                {
+                                    if (pos < doc->hex_doc->file_size)
+                                        {
+                                            pos = pos + 1;
+                                        }
+                                    else
+                                        {
+                                            *found = start + 1;
+                                            end = TRUE;
+                                        }
+                                }
+
+                            g_free(text);
+                        }
+                    else
+                        {
+                            *found = start + 1;
+                            end = TRUE;
+                        }
+                }
+
+            g_free(c);
+
+            if (*found != pos)
+                {
+                    return FALSE;
+                }
+            else
+                {
+                    return TRUE;
+                }
+
+        }
+    else if (direction == HERAIA_FIND_BACKWARD)
+        {
+
+            return FALSE;
+
+        }
+    else
+        {
+            return FALSE;
+        }
+}
+
+
+
+/**
+ * Wrappers to the functions that will do the search.
+ * Tries to find search_buffer in doc, data being passed to a decoding function
+ * @param direction : the direction to look for (HERAIA_FIND_FORWARD or HERAIA_FIND_BACKWARD)
+ * @param doc : the document searched in
+ * @param decode_it the function  that will be used to decode the text
+ * @param data_size : size of the data to be read in order to use the decoding function
+ * @param search_buffer : the string searched for (this is a simple guchar * null terminated entered by the user
+ * @param[out] position (if any) of the found string
+ * @return True if something has been found. False otherwise
+ */
+gboolean ghex_find_decode(gint direction, doc_t *doc, DecodeFunc decode_it, decode_parameters_t *decode_parameters, guint data_size, gchar *search_buffer, guint64 *position)
+{
+    guint64 current_position = 0;
+    gboolean result = FALSE;
+    guint64 offset = 0;
+
+    if (doc != NULL && doc->hex_widget != NULL && doc->hex_doc != NULL && decode_it != NULL)
+        {
+            current_position = *position;
+            result = hex_document_find_decode(direction, doc, decode_it, data_size, decode_parameters, current_position + 1, search_buffer, &offset);
+
+            g_free(decode_parameters);
+
+            if (result == TRUE)
+                {
+                    *position = (guint64) offset;
+                    return TRUE;
+                }
+            else
+                {
+                    *position = 0;
+                    return FALSE;
+                }
+        }
+    else
+        {
+            *position = 0;
+            return FALSE;
+        }
+}
+
+
+
 /**
  * Wrapper to the hex_document_compare_data function
  * Compares data from string to the one contained in doc at position position

@@ -714,6 +714,132 @@ static void fdft_window_close(GtkWidget *widget, gpointer data)
         }
 }
 
+/**
+ * return the decode structure that corresponds to the indexes from category,
+ * type and feature as stated in the parameters
+ * @param main_struct : heraia's main structure
+ * @param cat_index : category index (tab's number in the data interpertor's window
+ * @param typ_index : type index (the row number in the category's tab)
+ * @param fea_index : feature index (column number in the row of the tab of the data
+ *                    interpretor's window
+ * @param[out] data_size : size of the data to be filled to the decoding function
+ * @return the correspondinf decode structure that contains, the function, the
+ *         entry (gtkwidget) and an error message to be displayed in case of an error
+ */
+static decode_t *get_decode_struct(heraia_struct_t *main_struct, gint cat_index, gint typ_index, gint fea_index, guint *data_size)
+{
+    decode_generic_t *decod = NULL; /**< stores row structure (boxes, labels, entries and functions)                 */
+    tab_t *tab = NULL;              /**< stores description for one tab                                              */
+
+    /* Everything is selected and we know what data type the user is looking for */
+    if (cat_index >= 0 && typ_index >= 0 && fea_index >= 0)
+        {
+            tab = g_ptr_array_index(main_struct->current_DW->tabs, cat_index);
+            if (tab != NULL)
+                {
+                    decod = g_ptr_array_index(tab->rows, typ_index);
+                    if (decod  != NULL)
+                        {
+                            *data_size = decod->data_size;
+                            return g_ptr_array_index(decod->decode_array, fea_index);
+                        }
+                    else
+                        {
+                            return NULL;
+                        }
+                }
+            else
+                {
+                    return NULL;
+                }
+        }
+    else
+        {
+            return NULL;
+        }
+}
+
+/**
+ * Searches the string entered in the search document in the current one (from
+ * the currenty position + offset) in the main window.
+ * @param main_struct : heraia's main structure
+ * @param dircetion : says wether we should go forward or backward
+ * @param decode_struct : the decoding structure
+ * @param data_size : the size of the data to be send to the decode function
+ * @param buffer : Buffer that contains the string to look for
+ */
+static void fdft_search_direction(heraia_struct_t *main_struct, gint direction, decode_t *decode_struct, gint data_size, gchar *buffer)
+{
+    doc_t *current_doc = NULL; /**< Current doc where we want to search for the string */
+    gboolean result = FALSE;
+    guint64 position = 0;
+    guint endianness = 0;
+    guint stream_size = 0;
+    decode_parameters_t *decode_parameters = NULL;
+
+    if (buffer != NULL)
+        {
+            current_doc = main_struct->current_doc;
+            position = ghex_get_cursor_position(current_doc->hex_widget);
+
+            endianness = which_endianness(main_struct);    /** Endianness is computed only once here  */
+            stream_size =  which_stream_size(main_struct); /** stream size is computed only once here */
+
+            decode_parameters = new_decode_parameters_t(endianness, stream_size);
+
+            result = ghex_find_decode(direction, current_doc, decode_struct->func, decode_parameters, data_size, buffer, &position);
+
+            log_message(main_struct, G_LOG_LEVEL_DEBUG, "endianness : %d ; stream_size : %d - result : %d", endianness, stream_size, result);
+
+            if (result == TRUE)
+                {
+                    ghex_set_cursor_position(current_doc->hex_widget, position);
+                }
+        }
+}
+
+
+/**
+ * Searches data from the selected type (if any) in the current document (if any)
+ * and returns the results in the result window
+ * @param widget : Calling widget (Is used to determine the dircetion of the search)
+ * @param data : MUST be heraia_struct_t *main_struct main structure and not NULL
+ */
+static void fdft_next_bt_clicked(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+    gint cat_index = 0;   /**< index for the selected category in the combo box */
+    gint typ_index = 0;   /**< index for the selected type in the combo box     */
+    gint fea_index = 0;   /**< index for the selected feature in the combo box  */
+    GtkWidget *cb = NULL; /**< represents the combo boxes (category, type and feature combo boxes) */
+    decode_t *decode_struct = NULL;  /**< The structure that contains the function we need */
+    const gchar *buffer = NULL; /**< contains what the user enterer in the search window */
+    guint data_size = 0;
+
+    if (main_struct != NULL && main_struct->current_doc != NULL && main_struct->current_DW != NULL && main_struct->fdft != NULL)
+        {
+            cb = main_struct->fdft->category_cb;
+            cat_index = gtk_combo_box_get_active(GTK_COMBO_BOX(cb));
+
+            cb = main_struct->fdft->type_cb;
+            typ_index = gtk_combo_box_get_active(GTK_COMBO_BOX(cb));
+
+            cb = main_struct->fdft->feature_cb;
+            fea_index = gtk_combo_box_get_active(GTK_COMBO_BOX(cb));
+
+            decode_struct = get_decode_struct(main_struct, cat_index, typ_index, fea_index, &data_size);
+
+            buffer = gtk_entry_buffer_get_text(gtk_entry_get_buffer(GTK_ENTRY(heraia_get_widget(main_struct->xmls->main, "fdft_value_entry"))));
+
+            log_message(main_struct, G_LOG_LEVEL_DEBUG, "cat : %d, typ : %d, fea : %d - decode_struct : %p , data_size : %d ; buffer : %s", cat_index, typ_index, fea_index, decode_struct, data_size, buffer);
+
+            if (decode_struct != NULL && buffer != NULL && data_size > 0)
+                {
+                    fdft_search_direction(main_struct, HERAIA_FIND_FORWARD, decode_struct, data_size, (gchar *) buffer);
+                }
+        }
+}
+
 
 /**
  * Signal connections for the find data from type window
@@ -731,7 +857,13 @@ static void fdft_window_connect_signal(heraia_struct_t *main_struct)
 
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "fdft_window")), "destroy",
                      G_CALLBACK(destroy_fdft_window_event), main_struct);
+
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "fdft_next_bt")), "clicked",
+                     G_CALLBACK(fdft_next_bt_clicked), main_struct);
+
+
 }
+
 
 /**
  * Fills the type ComboBox with the right values
@@ -741,14 +873,14 @@ static void fdft_window_connect_signal(heraia_struct_t *main_struct)
 static void fdft_category_cb_changed(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
-    decode_generic_t *decod = NULL;
-    tab_t *tab = NULL;
-    GtkWidget *cb = NULL;
-    gint index = 0;  /* active index of the combobox */
+    decode_generic_t *decod = NULL; /**< stores row structure (boxes, labels, entries and functions)                 */
+    tab_t *tab = NULL;              /**< stores description for one tab                                              */
+    GtkWidget *cb = NULL;           /**< represents the combo boxes (category, type and feature combo boxes)         */
+    gint index = 0;                 /**< active index of the category combo box                                      */
     gint i = 0;
-    GtkWidget *label = NULL;
-    const gchar *text = NULL;
-    GtkTreeModel *model = NULL;
+    GtkWidget *label = NULL;        /**< used to retrieve labels from the GtkLabel widgets                           */
+    const gchar *text = NULL;       /**< contains text from the labels                                               */
+    GtkTreeModel *model = NULL;     /**< the models from the combo box (used to delete everything in the combo boxes */
 
     if (main_struct != NULL && main_struct->fdft != NULL)
         {
@@ -788,7 +920,6 @@ static void fdft_category_cb_changed(GtkWidget *widget, gpointer data)
                 }
         }
 }
-
 
 
 /**

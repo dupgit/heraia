@@ -97,6 +97,17 @@ typedef gint RefreshType;
 
 
 /**
+ * @def HERAIA_FIND_FORWARD
+ *  When one wants to do a search in the forward direction
+ *
+ * @def HERAIA_FIND_BACKWARD
+ *  When one wants to do a search in the backward direction
+ */
+#define HERAIA_FIND_FORWARD 32
+#define HERAIA_FIND_BACKWARD 64
+
+
+/**
  * @struct date_and_time_t
  *  A human struct to store a date with a time.
  * @todo add an UTC info field

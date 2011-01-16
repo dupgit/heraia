@@ -101,11 +101,16 @@ I let you imagine what I expect before I do a major release !!!
 . 0.1.8
    * rewrite data_type creation in order to allow a script or an extern
      program execution
+   * Add regexp to find data from type search window and add a new window that
+     will do a text only search but that may use regexp.
 
 . 0.1.9
    * python bindings ?
    * Look at everything in order to enhance user experience and have a more
      usable program.
+   * Add new options in find data from type window : endianness and stream size
+     to let the user fix them for the search and leave the data interpretor
+     window
    * Add recent files and recent projects
    * Add an import ability (for instance tcpdump imports)
 

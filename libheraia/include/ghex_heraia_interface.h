@@ -58,6 +58,8 @@ extern selection_t *ghex_get_selection(GtkWidget *hex_widget);
 extern doc_t *new_doc_t(Heraia_Document *hex_doc, GtkWidget *hex_widget);
 extern void close_doc_t(doc_t *current_doc);
 
+gboolean ghex_find_decode(gint direction, doc_t *doc, DecodeFunc decode_it, decode_parameters_t *decode_parameters, guint data_size, gchar *search_buffer, guint64 *position);
+
 
 /* From libgtkhex */
 #define is_displayable(c) (((c) >= 0x20) && ((c) < 0x7f))

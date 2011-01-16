@@ -1234,7 +1234,7 @@ POSSIBILITY OF SUCH DAMAGES.
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="menu_fdft">
-                        <property name="label" translatable="yes">Find data from type...</property>
+                        <property name="label" translatable="yes">Find data from type</property>
                         <property name="visible">True</property>
                         <property name="image">image2</property>
                         <property name="use_stock">False</property>
