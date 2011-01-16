@@ -102,9 +102,13 @@ typedef gint RefreshType;
  *
  * @def HERAIA_FIND_BACKWARD
  *  When one wants to do a search in the backward direction
+ *
+ * @def HERAIA_FIND_ALL
+ *  When one wants to do a global search in th whole document
  */
 #define HERAIA_FIND_FORWARD 32
 #define HERAIA_FIND_BACKWARD 64
+#define HERAIA_FIND_ALL 128
 
 
 /**

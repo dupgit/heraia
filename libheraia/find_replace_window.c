@@ -214,7 +214,7 @@ static void find_all_bt_clicked(GtkWidget *widget, gpointer data)
 
     if (all_pos != NULL)
         {
-            rw_add_one_tab_from_find_all_bt(main_struct, all_pos, buffer_size);
+            rw_add_one_tab_from_find_all_bt(main_struct, all_pos, buffer_size, NULL);
             g_array_free(all_pos, TRUE);
         }
 }
@@ -770,42 +770,69 @@ static decode_t *get_decode_struct(heraia_struct_t *main_struct, gint cat_index,
  */
 static void fdft_search_direction(heraia_struct_t *main_struct, gint direction, decode_t *decode_struct, gint data_size, gchar *buffer)
 {
+    decode_parameters_t *decode_parameters = NULL;
     doc_t *current_doc = NULL; /**< Current doc where we want to search for the string */
     gboolean result = FALSE;
     guint64 position = 0;
     guint endianness = 0;
     guint stream_size = 0;
-    decode_parameters_t *decode_parameters = NULL;
+    GArray *all_pos = NULL;    /**< All positions of the searched string               */
+
+
+    endianness = which_endianness(main_struct);    /** Endianness is computed only once here  */
+    stream_size =  which_stream_size(main_struct); /** stream size is computed only once here */
+
+    decode_parameters = new_decode_parameters_t(endianness, stream_size);
+
 
     if (buffer != NULL)
         {
             current_doc = main_struct->current_doc;
-            position = ghex_get_cursor_position(current_doc->hex_widget);
 
-            endianness = which_endianness(main_struct);    /** Endianness is computed only once here  */
-            stream_size =  which_stream_size(main_struct); /** stream size is computed only once here */
-
-            decode_parameters = new_decode_parameters_t(endianness, stream_size);
-
-            result = ghex_find_decode(direction, current_doc, decode_struct->func, decode_parameters, data_size, buffer, &position);
-
-            log_message(main_struct, G_LOG_LEVEL_DEBUG, "endianness : %d ; stream_size : %d - result : %d", endianness, stream_size, result);
-
-            if (result == TRUE)
+            if (direction == HERAIA_FIND_FORWARD || direction == HERAIA_FIND_BACKWARD)
                 {
-                    ghex_set_cursor_position(current_doc->hex_widget, position);
+                    position = ghex_get_cursor_position(current_doc->hex_widget);
+                    result = ghex_find_decode(direction, current_doc, decode_struct->func, decode_parameters, data_size, buffer, &position);
+
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, "endianness : %d ; stream_size : %d - result : %d", endianness, stream_size, result);
+
+                    if (result == TRUE)
+                        {
+                            ghex_set_cursor_position(current_doc->hex_widget, position);
+                        }
+                }
+            else if (direction == HERAIA_FIND_ALL)
+                {
+                    all_pos = g_array_new(TRUE, TRUE, sizeof(guint64));
+
+                    position = 0;
+                    result = ghex_find_decode(HERAIA_FIND_FORWARD, current_doc, decode_struct->func, decode_parameters, data_size, buffer, &position);
+
+                    while (result == TRUE)
+                        {
+                            all_pos = g_array_append_val(all_pos, position);
+                            result = ghex_find_decode(HERAIA_FIND_FORWARD, current_doc, decode_struct->func, decode_parameters, data_size, buffer, &position);
+                        }
+
+                    if (all_pos != NULL)
+                        {
+                            rw_add_one_tab_from_find_all_bt(main_struct, all_pos, data_size, buffer);
+                            g_array_free(all_pos, TRUE);
+                        }
                 }
         }
+
+    g_free(decode_parameters);
 }
 
 
 /**
  * Searches data from the selected type (if any) in the current document (if any)
  * and returns the results in the result window
- * @param widget : Calling widget (Is used to determine the dircetion of the search)
+ * @param widget : Calling widget (Is used to determine the direction of the search)
  * @param data : MUST be heraia_struct_t *main_struct main structure and not NULL
  */
-static void fdft_next_bt_clicked(GtkWidget *widget, gpointer data)
+static void fdft_prev_next_bt_clicked(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
     gint cat_index = 0;   /**< index for the selected category in the combo box */
@@ -815,6 +842,7 @@ static void fdft_next_bt_clicked(GtkWidget *widget, gpointer data)
     decode_t *decode_struct = NULL;  /**< The structure that contains the function we need */
     const gchar *buffer = NULL; /**< contains what the user enterer in the search window */
     guint data_size = 0;
+    GtkWidget *button = NULL;
 
     if (main_struct != NULL && main_struct->current_doc != NULL && main_struct->current_DW != NULL && main_struct->fdft != NULL)
         {
@@ -835,7 +863,24 @@ static void fdft_next_bt_clicked(GtkWidget *widget, gpointer data)
 
             if (decode_struct != NULL && buffer != NULL && data_size > 0)
                 {
-                    fdft_search_direction(main_struct, HERAIA_FIND_FORWARD, decode_struct, data_size, (gchar *) buffer);
+                    button = heraia_get_widget(main_struct->xmls->main, "fdft_next_bt");
+
+                    if (widget == button)
+                        {
+                            fdft_search_direction(main_struct, HERAIA_FIND_FORWARD, decode_struct, data_size, (gchar *) buffer);
+                        }
+                    else
+                        {
+                            button = heraia_get_widget(main_struct->xmls->main, "fdft_prev_bt");
+                            if (widget == button)
+                                {
+                                    fdft_search_direction(main_struct, HERAIA_FIND_BACKWARD, decode_struct, data_size, (gchar *) buffer);
+                                }
+                            else
+                                {
+                                    fdft_search_direction(main_struct, HERAIA_FIND_ALL, decode_struct, data_size, (gchar *) buffer);
+                                }
+                        }
                 }
         }
 }
@@ -858,10 +903,17 @@ static void fdft_window_connect_signal(heraia_struct_t *main_struct)
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "fdft_window")), "destroy",
                      G_CALLBACK(destroy_fdft_window_event), main_struct);
 
+    /* next button */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "fdft_next_bt")), "clicked",
-                     G_CALLBACK(fdft_next_bt_clicked), main_struct);
+                     G_CALLBACK(fdft_prev_next_bt_clicked), main_struct);
 
+    /* prev button */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "fdft_prev_bt")), "clicked",
+                     G_CALLBACK(fdft_prev_next_bt_clicked), main_struct);
 
+    /* find all button */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "fdft_all_bt")), "clicked",
+                     G_CALLBACK(fdft_prev_next_bt_clicked), main_struct);
 }
 
 

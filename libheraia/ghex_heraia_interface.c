@@ -547,6 +547,22 @@ gboolean ghex_find_forward(doc_t *doc, guchar *search_buffer, guint buffer_size,
 }
 
 
+/**
+ * Finds, in all directions the desired searched string
+ * @param direction : the direction to look for (HERAIA_FIND_FORWARD or
+ *                    HERAIA_FIND_BACKWARD)
+ * @param doc : the document searched in
+ * @param decode_it the function  that will be used to decode the text
+ * @param data_size : size of the data to be read in order to use the decoding
+ *                    function
+ * @param decode_parameters : this structure contains the selected endiannes and
+ *                            the selected stream size
+ * @param start : the start position where to begin the search
+ * @param search_buffer : the string searched for (this is a simple guchar *null
+ *                        terminated entered by the user
+ * @param[out] found : the position of the found string (or start +1 if not found)
+ * @return True if something has been found. False otherwise
+ */
 static gboolean hex_document_find_decode(gint direction, doc_t *doc, DecodeFunc decode_it, guint data_size, decode_parameters_t *decode_parameters, guint64 start, gchar *search_buffer, guint64 *found)
 {
     guint64 pos = 0;
@@ -554,28 +570,30 @@ static gboolean hex_document_find_decode(gint direction, doc_t *doc, DecodeFunc 
     guchar *c = NULL;    /** the character under the cursor                                   */
     gchar *text = NULL;  /** decoded text                                                     */
     gboolean end = FALSE; /** to stop the search when something is found or something is wrong */
+    guint len = 0;
 
+    len = g_utf8_strlen(search_buffer, -1);
 
-    if (direction == HERAIA_FIND_FORWARD)
+    c = (guchar *) g_malloc0(sizeof(guchar) * data_size);
+
+    pos = start;
+
+    while (end == FALSE)
         {
-            c = (guchar *) g_malloc0(sizeof(guchar) * data_size);
+            result = ghex_get_data_position(doc->hex_widget, pos, data_size, decode_parameters->endianness, c);
 
-            pos = start;
-
-            while (end == FALSE)
+            if (result == TRUE)
                 {
-                    result = ghex_get_data_position(doc->hex_widget, pos, data_size, decode_parameters->endianness, c);
+                    text = decode_it(c, (gpointer) decode_parameters);
 
-                    if (result == TRUE)
+                    if (g_ascii_strncasecmp(text, search_buffer, len) == 0)
                         {
-                            text = decode_it(c, (gpointer) decode_parameters);
-
-                            if (g_ascii_strcasecmp(text, search_buffer) == 0)
-                                {
-                                    *found = pos;
-                                    end = TRUE;
-                                }
-                            else
+                            *found = pos;
+                            end = TRUE;
+                        }
+                    else
+                        {
+                            if (direction == HERAIA_FIND_FORWARD)
                                 {
                                     if (pos < doc->hex_doc->file_size)
                                         {
@@ -587,50 +605,61 @@ static gboolean hex_document_find_decode(gint direction, doc_t *doc, DecodeFunc 
                                             end = TRUE;
                                         }
                                 }
-
-                            g_free(text);
+                            else if (direction == HERAIA_FIND_BACKWARD)
+                                {
+                                    if (pos > 0)
+                                        {
+                                            pos = pos - 1;
+                                        }
+                                    else
+                                        {
+                                            *found = start + 1;
+                                            end = TRUE;
+                                        }
+                                }
+                            else
+                                {
+                                    *found = start + 1;
+                                    end = TRUE;
+                                }
                         }
-                    else
-                        {
-                            *found = start + 1;
-                            end = TRUE;
-                        }
-                }
 
-            g_free(c);
-
-            if (*found != pos)
-                {
-                    return FALSE;
+                    g_free(text);
                 }
             else
                 {
-                    return TRUE;
+                    *found = start + 1;
+                    end = TRUE;
                 }
-
         }
-    else if (direction == HERAIA_FIND_BACKWARD)
+
+    g_free(c);
+
+    if (*found != pos)
         {
-
             return FALSE;
-
         }
     else
         {
-            return FALSE;
+            return TRUE;
         }
 }
 
 
-
 /**
- * Wrappers to the functions that will do the search.
+ * Wrappers to the functions that will do the search (here it has nothing to do
+ * with ghex in fact).
  * Tries to find search_buffer in doc, data being passed to a decoding function
- * @param direction : the direction to look for (HERAIA_FIND_FORWARD or HERAIA_FIND_BACKWARD)
+ * @param direction : the direction to look for (HERAIA_FIND_FORWARD or
+ *                    HERAIA_FIND_BACKWARD and only those directions)
  * @param doc : the document searched in
  * @param decode_it the function  that will be used to decode the text
- * @param data_size : size of the data to be read in order to use the decoding function
- * @param search_buffer : the string searched for (this is a simple guchar * null terminated entered by the user
+ * @param decode_parameters : this structure contains the selected endiannes and
+ *                            the selected stream size
+ * @param data_size : size of the data to be read in order to use the decoding
+ *                    function
+ * @param search_buffer : the string searched for (this is a simple guchar *null
+ *                        terminated entered by the user
  * @param[out] position (if any) of the found string
  * @return True if something has been found. False otherwise
  */
@@ -642,10 +671,16 @@ gboolean ghex_find_decode(gint direction, doc_t *doc, DecodeFunc decode_it, deco
 
     if (doc != NULL && doc->hex_widget != NULL && doc->hex_doc != NULL && decode_it != NULL)
         {
-            current_position = *position;
-            result = hex_document_find_decode(direction, doc, decode_it, data_size, decode_parameters, current_position + 1, search_buffer, &offset);
+            if (direction == HERAIA_FIND_FORWARD)
+                {
+                    current_position = *position + 1;
+                }
+            else if (direction == HERAIA_FIND_BACKWARD)
+                {
+                    current_position = *position - 1;
+                }
 
-            g_free(decode_parameters);
+            result = hex_document_find_decode(direction, doc, decode_it, data_size, decode_parameters, current_position, search_buffer, &offset);
 
             if (result == TRUE)
                 {
@@ -664,7 +699,6 @@ gboolean ghex_find_decode(gint direction, doc_t *doc, DecodeFunc decode_it, deco
             return FALSE;
         }
 }
-
 
 
 /**

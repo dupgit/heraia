@@ -2,6 +2,10 @@
     - Olivier Delhomme <heraia@delhomme.org>
       * Roadmap additions !
       * Menu coherence (deleted "..." from find data from type entry)
+      * Find data from type seams to work correctly. One can go forward,
+        backward and search for all position that decodes to the searched
+        string. The comparison is done upon the length of the string entered by
+        the user. This allow to search for a date without the hour for instance.
 
 14.01.2011
     - Olivier Delhomme <heraia@delhomme.org>

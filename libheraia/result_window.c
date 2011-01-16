@@ -327,8 +327,10 @@ static void add_gtk_tree_view_to_result_notebook(heraia_struct_t *main_struct, G
  * @param main_struct : main structure of heraia
  * @param all_pos : A GArray of all found positions
  * @param size : size of the string searched for (in bytes)
+ * @param text : the text for the label of the newly created tab. If NULL, a text
+ *               is guessed from the last found position and the text found
  */
-void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_pos, guint size)
+void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_pos, guint size, guchar *text)
 {
     GtkListStore *lstore =  NULL;         /**< List store that will contain results                    */
     guint i = 0;
@@ -377,8 +379,15 @@ void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_p
                 }
         }
 
-    /* Using last pos to retrieve the text for the label */
-    label_text = ghex_get_data_to_ascii(current_doc->hex_widget, real_pos, size, endianness);
+    if (text == NULL)
+        {
+            /* Using last pos to retrieve the text for the label */
+            label_text = ghex_get_data_to_ascii(current_doc->hex_widget, real_pos, size, endianness);
+        }
+    else
+        {
+            label_text = g_strdup(text);
+        }
 
     add_gtk_tree_view_to_result_notebook(main_struct, lstore, label_text, current_doc);
 
