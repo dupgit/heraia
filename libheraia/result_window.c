@@ -386,7 +386,7 @@ void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_p
         }
     else
         {
-            label_text = g_strdup(text);
+            label_text = (guchar *) g_strdup(text);
         }
 
     add_gtk_tree_view_to_result_notebook(main_struct, lstore, label_text, current_doc);

@@ -533,7 +533,7 @@ static void fr_replace_search_bt_clicked(GtkWidget *widget, gpointer data)
     if (main_struct != NULL && main_struct->fr_find_doc != NULL)
         {
             offset = fr_replace_data(main_struct);
-            fprintf(stdout, "offset : %ld\n", offset);
+            /* fprintf(stdout, "offset : %ld\n", offset); */
             fr_search_forward(main_struct, main_struct->fr_find_doc, offset);
         }
 }
@@ -816,7 +816,7 @@ static void fdft_search_direction(heraia_struct_t *main_struct, gint direction, 
 
                     if (all_pos != NULL)
                         {
-                            rw_add_one_tab_from_find_all_bt(main_struct, all_pos, data_size, buffer);
+                            rw_add_one_tab_from_find_all_bt(main_struct, all_pos, data_size, (guchar *) buffer);
                             g_array_free(all_pos, TRUE);
                         }
                 }
