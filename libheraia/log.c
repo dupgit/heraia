@@ -3,7 +3,7 @@
   log.c
   log functions for heraia
 
-  (C) Copyright 2006 - 2010 Olivier Delhomme
+  (C) Copyright 2006 - 2011 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -33,7 +33,7 @@ static void log_window_connect_signals(heraia_struct_t *main_struct);
 static gboolean delete_log_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data );
 static void destroy_log_window(GtkWidget *widget, GdkEvent  *event, gpointer data);
 static void logw_close_clicked(GtkWidget *widget, gpointer data);
-
+static void scroll_down_textview(heraia_struct_t *main_struct);
 
 /**
  * @fn print_message(const char *format, ...)
@@ -92,7 +92,6 @@ static void my_log(heraia_struct_t *main_struct, gchar *log_domain, GLogLevelFla
     GtkTextView *logw_textview = GTK_TEXT_VIEW(heraia_get_widget(main_struct->xmls->main, "logw_textview"));
     GtkTextBuffer *tb = NULL;
     GtkTextIter iStart;
-    GtkTextMark *mark = NULL;
 
     va_start(args, format);
     str = g_strdup_vprintf(format, args);
@@ -143,18 +142,40 @@ static void my_log(heraia_struct_t *main_struct, gchar *log_domain, GLogLevelFla
         }
 
     g_print("%s", display);
+
+    /* inserting text in the textview */
     tb = GTK_TEXT_BUFFER(gtk_text_view_get_buffer(GTK_TEXT_VIEW(logw_textview)));
+
     gtk_text_buffer_get_end_iter(tb, &iStart);
     gtk_text_buffer_insert(tb, &iStart, display, -1);
 
-    /* Scrolling down to the new line */
-    gtk_text_iter_set_line_offset(&iStart, 0);
-    mark = gtk_text_buffer_get_mark(tb, "scroll");
-    gtk_text_buffer_move_mark(tb, mark, &iStart);
-    gtk_text_view_scroll_mark_onscreen(logw_textview, mark);
+    /* scrolling down */
+    scroll_down_textview(main_struct);
 
     g_free(str);
     g_free(display);
+}
+
+
+/**
+ * Scrolling down to the new line at the end of the textview
+ * @param main_struct : main structure
+ */
+static void scroll_down_textview(heraia_struct_t *main_struct)
+{
+    GtkTextView *logw_textview = NULL;
+    GtkTextBuffer *tb = NULL;
+    GtkTextIter end;
+    GtkTextMark *mark = NULL;
+
+    logw_textview = GTK_TEXT_VIEW(heraia_get_widget(main_struct->xmls->main, "logw_textview"));
+    tb = GTK_TEXT_BUFFER(gtk_text_view_get_buffer(GTK_TEXT_VIEW(logw_textview)));
+
+    gtk_text_buffer_get_end_iter(tb, &end);
+    gtk_text_iter_set_line_offset(&end, 0);
+    mark = gtk_text_buffer_get_mark(tb, "scroll");
+    gtk_text_buffer_move_mark(tb, mark, &end);
+    gtk_text_view_scroll_mark_onscreen(logw_textview, mark);
 }
 
 
@@ -240,21 +261,19 @@ void log_message(heraia_struct_t *main_struct, GLogLevelFlags log_level, const c
 void show_hide_log_window(heraia_struct_t *main_struct, gboolean show, GtkCheckMenuItem *cmi)
 {
     GtkWidget *log_dialog = NULL;
-    window_prop_t *log_box_prop = main_struct->win_prop->log_box;
+    window_prop_t *log_box_prop = NULL;
 
     log_dialog = heraia_get_widget(main_struct->xmls->main, "log_window");
+    log_box_prop = main_struct->win_prop->log_box;
 
     if (show == TRUE)
         {
+            scroll_down_textview(main_struct);
             move_and_show_dialog_box(log_dialog, log_box_prop);
         }
     else
         {
-            if (log_box_prop->displayed == TRUE)
-                {
-                    gtk_check_menu_item_set_active(cmi, FALSE);
-                    record_and_hide_dialog_box(log_dialog, log_box_prop);
-                }
+            record_and_hide_dialog_box(log_dialog, log_box_prop);
         }
 }
 
@@ -321,7 +340,7 @@ static void logw_close_clicked(GtkWidget *widget, gpointer data)
     if (main_struct != NULL && main_struct->xmls != NULL && main_struct->xmls->main != NULL)
         {
             cmi = heraia_get_widget(main_struct->xmls->main, "mw_cmi_show_logw");
-            show_hide_log_window(main_struct, FALSE, GTK_CHECK_MENU_ITEM(cmi));
+            gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(cmi), FALSE); /* This emits the signals that calls mw_cmi_show_logw_toggle function */
         }
 }
 
@@ -379,7 +398,7 @@ void log_window_init_interface(heraia_struct_t *main_struct)
                     logw_textview = GTK_TEXT_VIEW(heraia_get_widget(main_struct->xmls->main, "logw_textview"));
                     tb = gtk_text_view_get_buffer(logw_textview);
                     gtk_text_buffer_get_end_iter(tb, &iStart);
-                    gtk_text_buffer_create_mark (tb, "scroll", &iStart, TRUE);
+                    gtk_text_buffer_create_mark(tb, "scroll", &iStart, TRUE);
                 }
         }
 }
