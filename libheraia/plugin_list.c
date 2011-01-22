@@ -3,7 +3,7 @@
  *  plugin_list.c
  *  manage the plugin_list_window window
  *
- *  (C) Copyright 2007 - 2010 Olivier Delhomme
+ *  (C) Copyright 2007 - 2011 Olivier Delhomme
  *  e-mail : heraia@delhomme.org
  *  URL    : http://heraia.tuxfamily.org
  *
@@ -134,7 +134,7 @@ static void mw_cmi_plw_toggle(GtkWidget *widget, gpointer data)
         }
     else
         {
-            record_and_hide_dialog_box(GTK_WIDGET(heraia_get_widget(main_struct->xmls->main, "plugin_list_window")), main_struct->win_prop->plugin_list);
+            record_and_hide_dialog_box(heraia_get_widget(main_struct->xmls->main, "plugin_list_window"), main_struct->win_prop->plugin_list);
         }
 }
 

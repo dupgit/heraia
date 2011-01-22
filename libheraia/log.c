@@ -250,35 +250,6 @@ void log_message(heraia_struct_t *main_struct, GLogLevelFlags log_level, const c
 
 
 /**
- * @fn void show_hide_log_window(heraia_struct_t *main_struct, gboolean show, GtkCheckMenuItem *cmi)
- *  Shows and hides the log window
- * @param main_struct : main structure
- * @param show : a boolean to say whether we want to show (TRUE) or hide (FALSE)
- *               the window
- * @param cmi : the associated check menu item in the menu
- */
-
-void show_hide_log_window(heraia_struct_t *main_struct, gboolean show, GtkCheckMenuItem *cmi)
-{
-    GtkWidget *log_dialog = NULL;
-    window_prop_t *log_box_prop = NULL;
-
-    log_dialog = heraia_get_widget(main_struct->xmls->main, "log_window");
-    log_box_prop = main_struct->win_prop->log_box;
-
-    if (show == TRUE)
-        {
-            scroll_down_textview(main_struct);
-            move_and_show_dialog_box(log_dialog, log_box_prop);
-        }
-    else
-        {
-            record_and_hide_dialog_box(log_dialog, log_box_prop);
-        }
-}
-
-
-/**
  * @fn mw_cmi_show_logw_toggle(GtkWidget *widget, gpointer data)
  *  The Check menu item for the Log window
  * @param widget : the widget that issued the signal (here the log check menu
@@ -288,10 +259,24 @@ void show_hide_log_window(heraia_struct_t *main_struct, gboolean show, GtkCheckM
 void mw_cmi_show_logw_toggle(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
-    GtkCheckMenuItem *cmi = GTK_CHECK_MENU_ITEM(widget);
-    gboolean checked = gtk_check_menu_item_get_active(cmi);
+    GtkWidget *cmi = NULL;
+    gboolean checked = FALSE;
+    GtkWidget *log_dialog = NULL;
 
-    show_hide_log_window(main_struct, checked, cmi);
+     log_dialog = heraia_get_widget(main_struct->xmls->main, "log_window");
+
+    cmi = heraia_get_widget(main_struct->xmls->main, "mw_cmi_show_logw");
+    checked = gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(cmi));
+
+    if (checked == TRUE)
+        {
+            scroll_down_textview(main_struct);
+            move_and_show_dialog_box(log_dialog, main_struct->win_prop->log_box);
+        }
+    else
+        {
+            record_and_hide_dialog_box(log_dialog, main_struct->win_prop->log_box);
+        }
 }
 
 
@@ -336,9 +321,13 @@ static void logw_close_clicked(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
     GtkWidget *cmi = NULL;
+    GtkWidget *log_dialog = NULL;
 
     if (main_struct != NULL && main_struct->xmls != NULL && main_struct->xmls->main != NULL)
         {
+            log_dialog = heraia_get_widget(main_struct->xmls->main, "log_window");
+            record_and_hide_dialog_box(log_dialog, main_struct->win_prop->log_box);
+
             cmi = heraia_get_widget(main_struct->xmls->main, "mw_cmi_show_logw");
             gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(cmi), FALSE); /* This emits the signals that calls mw_cmi_show_logw_toggle function */
         }

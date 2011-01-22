@@ -1,3 +1,9 @@
+22.01.2011
+    - Olivier Delhomme <heraia@delhomme.org>
+      * Code simplification in log.c (and deleted a useless cast in
+        plugin_list.c). There is no bug : the position of the window is not
+        recorded if some it is outside of the screen !
+
 20.01.2011
     - Olivier Delhomme <heraia@delhomme.org>
       * Corrected the bug that maid the log window appear (if closed at first)

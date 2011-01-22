@@ -2377,9 +2377,11 @@ void init_window_states(heraia_struct_t *main_struct)
                     on_DIMenu_activate(cmi, main_struct);
 
                     /* List Data type Interface */
-                    cmi = heraia_get_widget(main_struct->xmls->main, "ldt_menu");
-                    dialog_box = heraia_get_widget(main_struct->xmls->main, "list_data_types_window");
-                    init_one_cmi_window_state(dialog_box, cmi, main_struct->win_prop->ldt);
+                    /*
+                     * cmi = heraia_get_widget(main_struct->xmls->main, "ldt_menu");
+                     * dialog_box = heraia_get_widget(main_struct->xmls->main, "list_data_types_window");
+                     * init_one_cmi_window_state(dialog_box, cmi, main_struct->win_prop->ldt);
+                     */
 
                     /* Plugin List Interface */
                     cmi = heraia_get_widget(main_struct->xmls->main, "mw_cmi_plugin_list");
