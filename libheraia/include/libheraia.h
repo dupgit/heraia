@@ -338,7 +338,7 @@ typedef struct
     doc_t *fr_find_doc;             /**< find and replace window, find document and hexwidget                      */
     doc_t *fr_replace_doc;          /**< find and replace window, replace document and hexwidget                   */
     fdft_t *fdft;                   /**< Keeps comboboxes created for the fdft window                              */
-    GPtrArray *results;             /**< An array of pointers for each tab in the result window.                   */
+    GPtrArray *results;             /**< An array of pointers (doc_t *) for each tab in the result window.         */
 } heraia_struct_t;
 
 

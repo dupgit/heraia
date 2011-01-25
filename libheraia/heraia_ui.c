@@ -1249,7 +1249,6 @@ gboolean file_notebook_tab_changed(GtkNotebook *notebook, GtkNotebookPage *page,
                     refresh_event_handler(GTK_WIDGET(notebook), main_struct);
                     main_struct->event = HERAIA_REFRESH_NOTHING;
                 }
-
         }
 
     return TRUE;

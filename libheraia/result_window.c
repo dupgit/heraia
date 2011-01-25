@@ -292,6 +292,7 @@ static void add_gtk_tree_view_to_result_notebook(heraia_struct_t *main_struct, G
     gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
     g_signal_connect(G_OBJECT(select), "changed", G_CALLBACK(tree_selection_changed), main_struct);
 
+    tree_selection_changed(gtk_tree_view_get_selection(GTK_TREE_VIEW(tview)), main_struct);
 
     /* tab's label, menu label and tooltips */
     if (label_text != NULL)
@@ -418,6 +419,58 @@ static void menu_result_toggle(GtkWidget *widget, gpointer data)
 
 
 /**
+ * Function called when the user switches the pages from the notebook. Here we
+ * unselect the selection if any. This is to let the user be able to select
+ * again the first row if there is only one row in the treeview.
+ * @param notebook : result window's notebook object which received the signal.
+ * @param page : the new current page
+ * @param page_num : the index of the page (the new one)
+ * @param data :user data, MUST be main_struct main structure
+ */
+static void rw_on_notebook_switch_page(GtkNotebook *notebook, GtkNotebookPage *page, guint page_num, gpointer data)
+{
+    GList *widget_list =  NULL;         /** The list of the widgets in the page     */
+    GList *list = NULL;                 /** A temporary list                        */
+    GtkWidget *widget = NULL;
+    gboolean ok = FALSE;
+    GtkTreeSelection *selection = NULL; /** The selection (if any) to be unselected */
+
+    if (page != NULL)
+        {
+            /* Page indicates the selected notebook's page */
+            log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Page : %p, %d"), page, page_num);
+
+            widget_list = gtk_container_get_children(GTK_CONTAINER(gtk_notebook_get_nth_page(notebook, page_num)));
+
+            while (widget_list != NULL && ok != TRUE)
+                {
+                    widget = widget_list->data;
+
+                    /* Widget is the GtkWidget being processed */
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, "Widget : %p, %s",widget, gtk_widget_get_name(widget));
+
+                    if GTK_IS_SCROLLED_WINDOW(widget) /* If this is the scrolled window, get the tree view that is in it */
+                        {
+                            widget = gtk_bin_get_child(GTK_BIN(widget));
+                            ok = TRUE;
+
+                            selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(widget));
+                            if (selection != NULL)
+                                {
+                                    /* Unselect the selection -> this allows one to reselect the same
+                                     * raw (in case that there is only one raw in the results
+                                     */
+                                    gtk_tree_selection_unselect_all(selection);
+                                }
+                        }
+
+                    widget_list = g_list_next(widget_list);
+                }
+        }
+}
+
+
+/**
  * Signal connections for the result window
  * @param main_struct : heraia's main structure
  */
@@ -437,6 +490,10 @@ static void result_window_connect_signal(heraia_struct_t *main_struct)
     /* The toogle button in the main menu*/
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_result")), "toggled",
                      G_CALLBACK(menu_result_toggle), main_struct);
+
+  /* Switch pages on the notebook */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "result_notebook")), "switch-page",
+                     G_CALLBACK(rw_on_notebook_switch_page), main_struct);
 }
 
 

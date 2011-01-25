@@ -1,3 +1,9 @@
+25.01.2011
+    - Olivier Delhomme <heraia@delhomme.org>
+      * Bug correction that occured when a single row was added in the treeview.
+        It was then impossible to select twice the same row (the cursor would
+        not move again to the right position).
+
 22.01.2011
     - Olivier Delhomme <heraia@delhomme.org>
       * Code simplification in log.c (and deleted a useless cast in
