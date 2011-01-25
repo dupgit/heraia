@@ -4,7 +4,7 @@
   find_replace_window.h - Windows used to find text and find and replace text in
                           the opened hex documents.
 
-  (C) Copyright 2010 Olivier Delhomme
+  (C) Copyright 2010 - 2011 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 

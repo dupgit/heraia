@@ -3,7 +3,7 @@
   heraia_ui.h
   main menus, callback and utility functions
 
-  (C) Copyright 2005 - 2010 Olivier Delhomme
+  (C) Copyright 2005 - 2011 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 

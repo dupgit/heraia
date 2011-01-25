@@ -4,7 +4,7 @@
   result_window.h - A window that will collect all results of functions such as
                     find, find a data from type, ...
 
-  (C) Copyright 2010 Olivier Delhomme
+  (C) Copyright 2010 - 2011 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
