@@ -854,7 +854,7 @@ static void on_projects_open_activate(GtkWidget *widget, gpointer data)
     if (main_struct != NULL)
         {
             /* We except a list with only one element (no multiple selection allowed) */
-            list = select_file_to_load(main_struct, FALSE, N_("Select a project to load"));
+            list = select_file_to_load(main_struct, FALSE, (gchar *) Q_("Select a project to load"));
 
             if (list != NULL && list->data != NULL)
                 {

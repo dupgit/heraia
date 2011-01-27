@@ -22,7 +22,7 @@
 #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 # heraia's sources (from POTFILES)
-xgettext --default-domain=heraia --add-comments --keyword=Q_:1g --keyword=N_:1g --from-code=UTF-8 --flag=g_strdup_printf:1:c-format --flag=g_string_printf:2:c-format  --flag=g_string_append_printf:2:c-format --flag=g_error_new:3:c-format --flag=g_set_error:4:c-format --flag=g_markup_printf_escaped:1:c-format --flag=g_log:3:c-format --flag=g_print:1:c-format --flag=g_printerr:1:c-format --flag=g_printf:1:c-format --flag=g_fprintf:2:c-format --flag=g_sprintf:2:c-format --flag=g_snprintf:3:c-format --flag=g_scanner_error:2:c-format --flag=g_scanner_warn:2:c-format --files-from=./POTFILES.in
+xgettext -j --default-domain=heraia --add-comments --keyword=Q_:1g --keyword=N_:1g --from-code=UTF-8 --flag=g_strdup_printf:1:c-format --flag=g_string_printf:2:c-format  --flag=g_string_append_printf:2:c-format --flag=g_error_new:3:c-format --flag=g_set_error:4:c-format --flag=g_markup_printf_escaped:1:c-format --flag=g_log:3:c-format --flag=g_print:1:c-format --flag=g_printerr:1:c-format --flag=g_printf:1:c-format --flag=g_fprintf:2:c-format --flag=g_sprintf:2:c-format --flag=g_snprintf:3:c-format --flag=g_scanner_error:2:c-format --flag=g_scanner_warn:2:c-format --files-from=./POTFILES.in
 
 # GtkBuilder's interfaces
 xgettext -j --default-domain=heraia --add-comments --from-code=UTF-8 -Lglade ../src/heraia.gtkbuilder
