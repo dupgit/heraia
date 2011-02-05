@@ -679,6 +679,10 @@ gboolean ghex_find_decode(gint direction, doc_t *doc, DecodeFunc decode_it, deco
                 {
                     current_position = *position - 1;
                 }
+            else if (direction == HERAIA_FIND_ALL)
+                {
+                    current_position = 0;
+                }
 
             result = hex_document_find_decode(direction, doc, decode_it, data_size, decode_parameters, current_position, search_buffer, &offset);
 

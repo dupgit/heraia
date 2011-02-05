@@ -103,6 +103,8 @@ I let you imagine what I expect before I do a major release !!!
      program execution
    * Add regexp to find data from type search window and add a new window that
      will do a text only search but that may use regexp.
+   * Add options to the find data from type : endianness, stream size, exact
+     match (which will be very usefull for numbers)
 
 . 0.1.9
    * python bindings ?

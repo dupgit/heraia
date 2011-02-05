@@ -806,7 +806,7 @@ static void fdft_search_direction(heraia_struct_t *main_struct, gint direction, 
                     all_pos = g_array_new(TRUE, TRUE, sizeof(guint64));
 
                     position = 0;
-                    result = ghex_find_decode(HERAIA_FIND_FORWARD, current_doc, decode_struct->func, decode_parameters, data_size, buffer, &position);
+                    result = ghex_find_decode(HERAIA_FIND_ALL, current_doc, decode_struct->func, decode_parameters, data_size, buffer, &position);
 
                     while (result == TRUE)
                         {

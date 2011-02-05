@@ -1,3 +1,10 @@
+05.02.2011
+    - Olivier Delhomme <heraia@delhomme.org>
+      * Deleted an unused variable.
+      * Corrected a bug that appeared when the result of a search by data type
+        was at the first byte of the file.
+      * Roadmap features additions for version 0.1.8
+
 26.01.2011
     - Olivier Delhomme <heraia@delhomme.org>
       * French translation update

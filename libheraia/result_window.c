@@ -431,7 +431,6 @@ static void rw_on_notebook_switch_page(GtkNotebook *notebook, GtkNotebookPage *p
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
     GList *widget_list =  NULL;         /** The list of the widgets in the page     */
-    GList *list = NULL;                 /** A temporary list                        */
     GtkWidget *widget = NULL;
     gboolean ok = FALSE;
     GtkTreeSelection *selection = NULL; /** The selection (if any) to be unselected */
