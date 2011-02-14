@@ -538,6 +538,9 @@ int main(int argc, char **argv)
 
     init_international_languages();
 
+    /* init of gtk */
+    exit_value = gtk_init_check(&argc, &argv);
+
     opt = init_options_struct();
 
     main_struct = heraia_init_main_struct(heraia_path);
@@ -560,8 +563,7 @@ int main(int argc, char **argv)
                     libheraia_test(); /* testing libheraia */
                 }
 
-            /* init of gtk and new window */
-            exit_value = gtk_init_check(&argc, &argv);
+
 
             if (load_heraia_ui(main_struct) == TRUE)
                 {

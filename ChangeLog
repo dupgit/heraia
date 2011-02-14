@@ -1,3 +1,8 @@
+14.02.2011
+    - Olivier Delhomme <heraia@delhomme.org>
+      * Bug correction : translation was not good until the gtk_init_check. The
+        gtk_init_check has been put at the very begining of the program.
+
 05.02.2011
     - Olivier Delhomme <heraia@delhomme.org>
       * Deleted an unused variable.
