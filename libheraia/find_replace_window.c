@@ -808,6 +808,8 @@ static void fdft_search_direction(heraia_struct_t *main_struct, gint direction, 
                     position = 0;
                     result = ghex_find_decode(HERAIA_FIND_ALL, current_doc, decode_struct->func, decode_parameters, data_size, buffer, &position);
 
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, "endianness : %d ; stream_size : %d - result : %d", endianness, stream_size, result);
+
                     while (result == TRUE)
                         {
                             all_pos = g_array_append_val(all_pos, position);

@@ -566,10 +566,11 @@ gboolean ghex_find_forward(doc_t *doc, guchar *search_buffer, guint buffer_size,
 static gboolean hex_document_find_decode(gint direction, doc_t *doc, DecodeFunc decode_it, guint data_size, decode_parameters_t *decode_parameters, guint64 start, gchar *search_buffer, guint64 *found)
 {
     guint64 pos = 0;
-    gint result = 0;     /** used to test different results of function calls                 */
-    guchar *c = NULL;    /** the character under the cursor                                   */
-    gchar *text = NULL;  /** decoded text                                                     */
-    gboolean end = FALSE; /** to stop the search when something is found or something is wrong */
+    gboolean result = FALSE; /** used to test different results of function calls                 */
+    guchar *c = NULL;        /** the character under the cursor                                   */
+    gchar *text = NULL;      /** decoded text                                                     */
+    gboolean end = FALSE;    /** to stop the search when something is found or something is wrong */
+    gboolean yes = FALSE;    /** TRUE if something has been found, FALSE otherwise                */
     guint len = 0;
 
     len = g_utf8_strlen(search_buffer, -1);
@@ -590,10 +591,11 @@ static gboolean hex_document_find_decode(gint direction, doc_t *doc, DecodeFunc 
                         {
                             *found = pos;
                             end = TRUE;
+                            yes = TRUE;
                         }
                     else
                         {
-                            if (direction == HERAIA_FIND_FORWARD)
+                            if (direction == HERAIA_FIND_FORWARD || direction == HERAIA_FIND_ALL)
                                 {
                                     if (pos < doc->hex_doc->file_size)
                                         {
@@ -601,8 +603,8 @@ static gboolean hex_document_find_decode(gint direction, doc_t *doc, DecodeFunc 
                                         }
                                     else
                                         {
-                                            *found = start + 1;
                                             end = TRUE;
+                                            yes = FALSE;
                                         }
                                 }
                             else if (direction == HERAIA_FIND_BACKWARD)
@@ -613,14 +615,14 @@ static gboolean hex_document_find_decode(gint direction, doc_t *doc, DecodeFunc 
                                         }
                                     else
                                         {
-                                            *found = start + 1;
                                             end = TRUE;
+                                            yes = FALSE;
                                         }
                                 }
                             else
                                 {
-                                    *found = start + 1;
                                     end = TRUE;
+                                    yes = FALSE;
                                 }
                         }
 
@@ -628,21 +630,13 @@ static gboolean hex_document_find_decode(gint direction, doc_t *doc, DecodeFunc 
                 }
             else
                 {
-                    *found = start + 1;
                     end = TRUE;
                 }
         }
 
     g_free(c);
 
-    if (*found != pos)
-        {
-            return FALSE;
-        }
-    else
-        {
-            return TRUE;
-        }
+    return yes;
 }
 
 
