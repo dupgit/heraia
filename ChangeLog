@@ -3,6 +3,8 @@
       * Bug correction in find from type window : the find all button was
         ineffective because it was not taking HERAIA_FIND_ALL direction into
         account.
+      * Result window now displays on top the last added tab
+      * Roadmap corrections : same feature was wanted for 0.1.8 and 0.1.9 !
 
 14.02.2011
     - Olivier Delhomme <heraia@delhomme.org>

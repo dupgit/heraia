@@ -110,9 +110,8 @@ I let you imagine what I expect before I do a major release !!!
    * python bindings ?
    * Look at everything in order to enhance user experience and have a more
      usable program.
-   * Add new options in find data from type window : endianness and stream size
-     to let the user fix them for the search and leave the data interpretor
-     window
+   * Add new options in find, find and replace and find data from type window :
+     Search in all documents of the session.
    * Add recent files and recent projects
    * Add an import ability (for instance tcpdump imports)
 

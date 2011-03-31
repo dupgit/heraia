@@ -319,6 +319,9 @@ static void add_gtk_tree_view_to_result_notebook(heraia_struct_t *main_struct, G
     gtk_widget_show_all(vbox);
     tab_num = gtk_notebook_append_page_menu(GTK_NOTEBOOK(notebook), vbox, hbox, menu_label);
 
+    /* Displaying the just added tab */
+    gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), tab_num);
+
     gtk_widget_show_all(notebook);
 }
 
