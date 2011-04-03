@@ -19,12 +19,6 @@ On OpenSuse 11.3 and Fedora 14 :
  . gtk2-devel
  . ghex-devel
 
-On Mageia :
-
- . intltool
- . gettext
- . libgtk2-devel
-
 On OpenIndiana 5.11 :
 
  . gcc-3
