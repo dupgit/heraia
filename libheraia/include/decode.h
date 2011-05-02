@@ -4,7 +4,7 @@
   Heraia's library decode.c
 
   (C) Copyright 2008 Sébastien Tricaud        e-mail : toady@gscore.org
-  (C) Copyright 2008 - 2010 Olivier Delhomme  e-mail : heraia@delhomme.org
+  (C) Copyright 2008 - 2011 Olivier Delhomme  e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
   This program is free software; you can redistribute it and/or modify

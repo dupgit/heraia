@@ -3,7 +3,7 @@
  *  heraia.c
  *  heraia - an hexadecimal file editor and analyser based on ghex
  *
- *  (C) Copyright 2005 - 2010 Olivier Delhomme
+ *  (C) Copyright 2005 - 2011 Olivier Delhomme
  *  e-mail : heraia@delhomme.org
  *  URL    : http://heraia.tuxfamily.org
  *
@@ -30,8 +30,8 @@
  *         Sébastien TRICAUD,
  *         Grégory AUDET,
  *         Aurélie DERAISME.
- * @version 0.1.6
- * @date 2005-2010
+ * @version 0.1.7
+ * @date 2005-2011
  */
 
 
@@ -158,6 +158,7 @@ static heraia_struct_t *init_window_property_struct(heraia_struct_t *main_struct
     window_prop_t *result_window = NULL;
     window_prop_t *find_window = NULL;
     window_prop_t *fr_window = NULL;
+    window_prop_t *fdft_window = NULL;
 
     /* Global struct */
     win_prop = (all_window_prop_t *) g_malloc0(sizeof(all_window_prop_t));
@@ -174,7 +175,7 @@ static heraia_struct_t *init_window_property_struct(heraia_struct_t *main_struct
     result_window = init_window_properties(0, 0, WPT_DEFAULT_HEIGHT, WPT_DEFAULT_WIDTH, FALSE);
     find_window = init_window_properties(0, 0, WPT_DEFAULT_HEIGHT, WPT_DEFAULT_WIDTH, FALSE);
     fr_window = init_window_properties(0, 0, WPT_DEFAULT_HEIGHT, WPT_DEFAULT_WIDTH, FALSE);
-
+    fdft_window = init_window_properties(0, 0, WPT_DEFAULT_HEIGHT, WPT_DEFAULT_WIDTH, FALSE);
 
     /* Attach to the struct */
     win_prop->about_box = about_box;
@@ -188,6 +189,7 @@ static heraia_struct_t *init_window_property_struct(heraia_struct_t *main_struct
     win_prop->result_window = result_window;
     win_prop->find_window = find_window;
     win_prop->fr_window = fr_window;
+    win_prop->fdft_window = fdft_window;
 
     /* attach it to the main struct so that it can be read everywhere */
     main_struct->win_prop = win_prop;
@@ -217,9 +219,8 @@ static heraia_struct_t *heraia_init_main_struct(gchar *heraia_path)
         }
 
     /* preference file name initialisation */
-    main_struct->prefs = NULL;
-    init_preference_struct(main_struct);
-    verify_preference_file(main_struct->prefs->pathname, main_struct->prefs->filename);
+    main_struct->prefs = init_preference_struct(g_build_path(G_DIR_SEPARATOR_S, g_get_user_config_dir(), "heraia", NULL), "main_preferences");
+    verify_preference_file(main_struct->prefs);
 
     /**
      * First, in this early stage of the development we want to toggle debugging
@@ -251,6 +252,8 @@ static heraia_struct_t *heraia_init_main_struct(gchar *heraia_path)
     main_struct->find_doc = NULL;
     main_struct->fr_find_doc = NULL;
     main_struct->fr_replace_doc = NULL;
+    main_struct->results = g_ptr_array_new();
+    main_struct->fdft = NULL;
 
     /* init global variable for the library */
     libheraia_main_struct = main_struct;
@@ -354,18 +357,22 @@ static GList *init_heraia_location_list(gchar *heraia_path)
 static void init_international_languages(void)
 {
     gchar *result = NULL;
+    gchar *codeset = NULL;
+    gchar *text_domain = NULL;
 
-    setlocale(LC_ALL, "");
+    /* gtk_set_locale(); */
     result = bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR);
+    codeset = bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+    text_domain = textdomain(GETTEXT_PACKAGE);
 
     if (ENABLE_DEBUG == TRUE)
         {
             fprintf(stdout, Q_("Gettext package : %s\n"), GETTEXT_PACKAGE);
             fprintf(stdout, Q_("Locale dir : %s\n"), LOCALEDIR);
             fprintf(stdout, Q_("Bindtextdomain : %s\n"), result);
+            fprintf(stdout, Q_("Code set : %s\n"), codeset);
+            fprintf(stdout, Q_("Text domain : %s\n"), text_domain);
         }
-    bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
-    textdomain(GETTEXT_PACKAGE);
 }
 
 
@@ -531,9 +538,10 @@ int main(int argc, char **argv)
 
     init_international_languages();
 
+    /* init of gtk */
+    exit_value = gtk_init_check(&argc, &argv);
+
     opt = init_options_struct();
-
-
 
     main_struct = heraia_init_main_struct(heraia_path);
 
@@ -555,8 +563,7 @@ int main(int argc, char **argv)
                     libheraia_test(); /* testing libheraia */
                 }
 
-            /* init of gtk and new window */
-            exit_value = gtk_init_check(&argc, &argv);
+
 
             if (load_heraia_ui(main_struct) == TRUE)
                 {

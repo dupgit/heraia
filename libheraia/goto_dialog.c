@@ -4,7 +4,7 @@
   goto_dialog.c - everything to manage the dialog that lets one go everywhere
                   in the file
 
-  (C) Copyright 2010 Olivier Delhomme
+  (C) Copyright 2010 - 2011 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -133,11 +133,11 @@ static void goto_dialog_ok(GtkWidget *widget, gpointer data)
 
             if (entry_text[0] == '0' && entry_text[1] == 'x')
                 {
-                    convert_ok = (sscanf(entry_text, "%lx", &offset) == 1);
+                    convert_ok = (sscanf(entry_text, "%llx", (long long unsigned int *) &offset) == 1);
                 }
             else
                 {
-                    convert_ok = (sscanf(entry_text, "%lu", &offset) == 1);
+                    convert_ok = (sscanf(entry_text, "%llu", (long long unsigned int *) &offset) == 1);
                 }
 
             if (convert_ok == TRUE)

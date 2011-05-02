@@ -3,7 +3,7 @@
   stat.c
   an heraia plugin to calculate some stats on the opened file
 
-  (C) Copyright 2007 - 2010 Olivier Delhomme
+  (C) Copyright 2007 - 2011 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -411,7 +411,7 @@ static void statw_export_to_csv_clicked(GtkWidget *widget, gpointer data)
 
                             for (i=0; i<=255; i++)
                                 {
-                                    fprintf(fp, "%d;%lu\n", i, extra->histo1D[i]);
+                                    fprintf(fp, "%d;%llu\n", i, (long long unsigned int) extra->histo1D[i]);
                                 }
 
                         }
@@ -430,9 +430,9 @@ static void statw_export_to_csv_clicked(GtkWidget *widget, gpointer data)
                                 fprintf(fp, "\"%d\";", i);
                                 for (j=0 ; j<255; j++)
                                     {
-                                        fprintf(fp, "\"%lu\";", extra->histo2D[i][j]);
+                                        fprintf(fp, "\"%llu\";", (long long unsigned int) extra->histo2D[i][j]);
                                     }
-                                fprintf(fp, "\"%lu\"\n", extra->histo2D[i][255]);
+                                fprintf(fp, "\"%llu\"\n", (long long unsigned int) extra->histo2D[i][255]);
                             }
                     }
                     fclose(fp);
@@ -488,7 +488,7 @@ static void statw_export_to_gnuplot_clicked(GtkWidget *widget, gpointer data)
 
                             for (i=0; i<=255; i++)
                                 {
-                                    fprintf(fp, "%lu\n", extra->histo1D[i]);
+                                    fprintf(fp, "%llu\n", (long long unsigned int) extra->histo1D[i]);
                                 }
                             fprintf(fp, "e\n");
                         }
@@ -509,7 +509,7 @@ static void statw_export_to_gnuplot_clicked(GtkWidget *widget, gpointer data)
                                 {
                                     for (j=0; j<=255; j++)
                                         {
-                                            fprintf(fp, "%lu ", extra->histo2D[i][j]);
+                                            fprintf(fp, "%llu ", (long long unsigned int) extra->histo2D[i][j]);
                                         }
                                     fprintf(fp, "\n");
                                 }
@@ -571,7 +571,7 @@ static void statw_export_to_pcv_clicked(GtkWidget *widget, gpointer data)
 
                             for (i=0; i<=255; i++)
                                 {
-                                    fprintf(fp, "\tb=\"%d\", c=\"%lu\";\n", i, extra->histo1D[i]);
+                                    fprintf(fp, "\tb=\"%d\", c=\"%llu\";\n", i, (long long unsigned int) extra->histo1D[i]);
                                 }
                             fprintf(fp, "}\n");
                         }
@@ -596,17 +596,17 @@ static void statw_export_to_pcv_clicked(GtkWidget *widget, gpointer data)
                                         {
                                             if (extra->histo2D[i][j] == extra->infos_2D->max)
                                                 {
-                                                    fprintf(fp, "\ta=\"%d\", c=\"%lu\", b=\"%d\" [color=\"red\"];\n", i, extra->histo2D[i][j], j);
+                                                    fprintf(fp, "\ta=\"%d\", c=\"%llu\", b=\"%d\" [color=\"red\"];\n", i, (long long unsigned int) extra->histo2D[i][j], j);
                                                 }
                                             else
                                                 {
                                                     if (extra->histo2D[i][j] == extra->infos_2D->min)
                                                         {
-                                                            fprintf(fp, "\ta=\"%d\", c=\"%lu\", b=\"%d\" [color=\"green\"];\n", i, extra->histo2D[i][j], j);
+                                                            fprintf(fp, "\ta=\"%d\", c=\"%llu\", b=\"%d\" [color=\"green\"];\n", i, (long long unsigned int) extra->histo2D[i][j], j);
                                                         }
                                                     else
                                                         {
-                                                            fprintf(fp, "\ta=\"%d\", c=\"%lu\", b=\"%d\";\n", i, extra->histo2D[i][j], j);
+                                                            fprintf(fp, "\ta=\"%d\", c=\"%llu\", b=\"%d\";\n", i, (long long unsigned int) extra->histo2D[i][j], j);
                                                         }
                                                 }
                                         }

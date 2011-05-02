@@ -4,7 +4,7 @@
   result_window.h - A window that will collect all results of functions such as
                     find, find a data from type, ...
 
-  (C) Copyright 2010 Olivier Delhomme
+  (C) Copyright 2010 - 2011 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -44,8 +44,7 @@ enum {
 
 extern void result_window_show(GtkWidget *widget, gpointer data);
 extern void result_window_init_interface(heraia_struct_t *main_struct);
-
-extern void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_pos, guint size);
-
+extern void rw_add_one_tab_from_find_all_bt(heraia_struct_t *main_struct, GArray *all_pos, guint size, guchar *text);
+extern void rw_remove_all_tabs(heraia_struct_t *main_struct, doc_t *doc);
 
 #endif /* _HERAIA_RESULT_WINDOW_H_ */

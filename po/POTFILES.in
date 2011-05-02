@@ -14,5 +14,7 @@
 ../libheraia/plugin_list.c
 ../libheraia/tests.c
 ../libheraia/goto_dialog.c
+../libheraia/result_window.c
+../libheraia/find_replace_window.c
 ../plugins/stat/stat.c
 

@@ -3,7 +3,7 @@
  *  main_pref_window.c
  *  heraia - an hexadecimal file editor and analyser based on ghex
  *
- *  (C) Copyright 2008 - 2010 Olivier Delhomme
+ *  (C) Copyright 2008 - 2011 Olivier Delhomme
  *  e-mail : heraia@delhomme.org
  *  URL    : http://heraia.tuxfamily.org
  *
@@ -58,7 +58,7 @@ static gboolean pref_window_delete(GtkWidget *widget, GdkEvent *event, gpointer 
     if (main_struct != NULL && main_struct->win_prop != NULL && main_struct->win_prop->main_pref_window != NULL)
         {
             pref_window = heraia_get_widget(main_struct->xmls->main, "main_preferences_window");
-            save_preferences(main_struct);
+            save_preferences(main_struct, main_struct->prefs);
             record_and_hide_dialog_box(pref_window, main_struct->win_prop->main_pref_window);
         }
 

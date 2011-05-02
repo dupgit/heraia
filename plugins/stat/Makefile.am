@@ -1,7 +1,6 @@
 SUBDIRS =
 
 DEFS = -I$(SRCDIR) -I$(SRCDIR)/include			\
-       -DPLUGINS_DIR=\"$(plugins_dir)\"	     	\
 	   -I$(top_builddir)/libheraia/include		\
 	   -DDATA_DIR=\"$(data_dir)\"				\
 	   $(GTKHEX_CFLAGS)							\

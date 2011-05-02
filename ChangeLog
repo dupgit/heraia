@@ -1,3 +1,232 @@
+02.05.2011 [release 0.1.7]
+    - Olivier Delhomme <heraia@delhomme.org>
+      * 0.1.7 release
+
+31.03.2011
+    - Olivier Delhomme <heraia@delhomme.org>
+      * Bug correction in find from type window : the find all button was
+        ineffective because it was not taking HERAIA_FIND_ALL direction into
+        account.
+      * Result window now displays on top the last added tab
+      * Roadmap corrections : same feature was wanted for 0.1.8 and 0.1.9 !
+
+14.02.2011
+    - Olivier Delhomme <heraia@delhomme.org>
+      * Bug correction : translation was not good until the gtk_init_check. The
+        gtk_init_check has been put at the very begining of the program.
+
+05.02.2011
+    - Olivier Delhomme <heraia@delhomme.org>
+      * Deleted an unused variable.
+      * Corrected a bug that appeared when the result of a search by data type
+        was at the first byte of the file.
+      * Roadmap features additions for version 0.1.8
+
+26.01.2011
+    - Olivier Delhomme <heraia@delhomme.org>
+      * French translation update
+
+25.01.2011
+    - Olivier Delhomme <heraia@delhomme.org>
+      * Bug correction that occured when a single row was added in the treeview.
+        It was then impossible to select twice the same row (the cursor would
+        not move again to the right position).
+
+22.01.2011
+    - Olivier Delhomme <heraia@delhomme.org>
+      * Code simplification in log.c (and deleted a useless cast in
+        plugin_list.c). There is no bug : the position of the window is not
+        recorded if some it is outside of the screen !
+
+20.01.2011
+    - Olivier Delhomme <heraia@delhomme.org>
+      * Corrected the bug that maid the log window appear (if closed at first)
+        with the textview at the first position instead of the last one.
+      * Tried to correct the display bug when clicking on the Check menu item or
+        the close button (of the log window). It does not record the position of
+        the window (altenatively when clicking on the menu or when clicking on
+        the close button) -> this is still not corrected
+
+16.01.2011
+    - Olivier Delhomme <heraia@delhomme.org>
+      * Roadmap additions !
+      * Menu coherence (deleted "..." from find data from type entry)
+      * Find data from type seams to work correctly. One can go forward,
+        backward and search for all position that decodes to the searched
+        string. The comparison is done upon the length of the string entered by
+        the user. This allow to search for a date without the hour for instance.
+
+14.01.2011
+    - Olivier Delhomme <heraia@delhomme.org>
+      * Filling the combo boxes in find data from type window upon category
+        combo box user's choice.
+
+21.12.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Initializing fdft window properties.
+     * Saving and loading window properties from preferences or projects.
+     * Displaying window.
+     * Size of the menu icon for find data from type menu entry.
+     * Connected menu find data from type to the right function in order to
+       display the window.
+
+19.12.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * New window to find data from a specific type (begining work)
+
+13.12.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Project loading now works.
+     * Initialiazing window state simplification for the data interpretor
+       window
+
+11.12.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Protecting user prefs to avoid segfault if prefs may be NULL.
+     * Added a save as entry in the project sub menu.
+     * menus are greyed when a project is closed.
+     * Roadmap addition.
+     * Saving a project is now possible.
+
+10.12.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Closing a project is possible. This still has some issues.
+
+09.12.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Deleted some unecessary tests on GTK's version (we need at least 2.16)
+
+02.12.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Added a call in order to load the proper translation for the gtkbuilder
+       source.
+
+01.12.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Working on localization (seems to work under windows - but not under
+       openindiana)
+     * Corrected a small bug
+
+30.11.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Documentation on the required packages to build under OpenIndiana (5.11)
+     * Corrected a locale problème that prevented to compile under OpenIndiana
+     * Trying to figure out why the locales are not ok under Windows or
+       OpenIndiana
+     * Correcting the option name in order to reflect reality (blank character
+       is used in french, in US locale it is ','. Now it is "Use thousands's
+       grouping character".
+
+21.11.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Roadmap typos corrections
+     * Added Projects submenu to File's menu
+     * Deleted all signal calls in the gtkbuilder file
+     * Deleted an old test on context menu
+
+20.11.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Generalized init preference function
+     * user_prefs.c code refactoring in order to be able to use this to load and
+       save preferences file as 'projects'.
+
+16.11.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Trying to put the cursor position in the saved preferences
+
+15.11.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Roadmap release date for 0.1.6
+     * Now the current tab of the main notebook is saved (so when opening the
+       files the last selected tab of the session is re-opened).
+
+14.11.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Roadmap addition : It may be interesting to import a file from a tcpdump
+       session (or any other tool)
+     * New frame for general options. I want to be able to save the filenames of
+       the opened files in the session in order to be able to read them again in
+       the next session.
+     * Now opened files filenames are saved in the preference file (and opened
+       in the next session (if the option has been sat))
+
+05.11.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Correcting a syntax error which strangely only appears when trying to
+       compile heraia under windows (I don't even know how this could have been
+       compiled before !)
+
+04.11.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Documentation on what packages are needed to build heraia on Fedora (they
+       are indeed the same than the ones needed for OpenSuse).
+
+02.11.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Documentation on what packages are needed to build heraia on Ubuntu,
+       Debian and OpenSuse.
+     * Correcting things to avoid warnings on 32bits systems
+     * Adding OpenSuse to the description as an OS known to compile heraia
+     * Now heading to 0.1.7
+
+30.10.2010 [release 0.1.6]
+   - Olivier Delhomme <heraia@delhomme.org>
+     * ChangeLog typos corrections !
+     * 0.1.6 release
+
+26.10.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Sanitizing a bit the code
+     * French translation for 0.1.6
+     * Forgot to record the position of some windows
+     * Some code review
+     * Result window opening and closing with the CheckMenuItem in main window's
+       menu.
+
+25.10.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Now one can search and replace in the document.
+
+24.10.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Corrected a bug that prevented to find all positions when searching for
+       instance an 'e' in 'green' will now find two positions.
+     * Corrected an another similar bug that occured when pressing the back
+       button.
+     * Changing a bit the way the "find and replace" dialog box looks like.
+     * factoring code. Now search button in the find and replace window does
+       work.
+     * Now replace button works.
+
+18.10.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Having some improvments when searching the tabs to kill from the result
+       window
+     * Corrected a bug that prevented the tab menu to be displayed in the result
+       window notebook
+
+17.10.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Generalizing some functions in heraia_ui.c in order to use them in
+       result_window.c for the notebook
+     * Given that, closing the results are now possible
+
+14.10.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Now on can click on search results and it will jump to the given position
+       in the given file
+
+13.10.2010
+   - Olivier Delhomme <heraia@delhomme.org>
+     * Corrected a bug in the find window that prevented to search when the
+       cursor of the search window was not at position 0
+     * Corrected a bug that crashed heraia (or lead the window title to be
+       messed) when closing the last opened document.
+     * Corrected a bug when launching heraia : if no document is opened then the
+       result window is not displayed (even if is was before)
+     * Call back function that will be called upon selection change (the signal
+       has still to be sat)
+
 20.09.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Corrected some bugs that crashed heraia when using the find all button
@@ -26,7 +255,7 @@
 06.09.2010
    - Olivier Delhomme <heraia@delhomme.org>
      * Now find,find and replace and goto windows are not displayed if a
-      document is not opened when launching heraia
+       document is not opened when launching heraia
 
 04.09.2010
    - Olivier Delhomme <heraia@delhomme.org>
@@ -75,8 +304,8 @@
    - Olivier Delhomme <heraia@delhomme.org>
      * casts to avoid warnings on 32 bits systems
      * New files to manage the goto dialog box
-     * Now one can jump across the file, forward, bacward, from the beginning or
-       form the end !
+     * Now one can jump across the file, forward, backward, from the beginning
+       or from the end !
      * Some description modification to avoid repeating things and to clarify on
        which systems heraia is known to work on.
 

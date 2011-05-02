@@ -4,8 +4,7 @@
   find_replace_window.h - Windows used to find text and find and replace text in
                           the opened hex documents.
 
-
-  (C) Copyright 2010 Olivier Delhomme
+  (C) Copyright 2010 - 2011 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -35,5 +34,8 @@ extern void find_window_init_interface(heraia_struct_t * main_struct);
 
 extern void fr_window_show(GtkWidget *widget, gpointer data);
 extern void fr_window_init_interface(heraia_struct_t * main_struct);
+
+extern void fdft_window_show(GtkWidget *widget, gpointer data);
+extern void fdft_window_init_interface(heraia_struct_t * main_struct);
 
 #endif /*  _HERAIA_FIND_REPLACE_WINDOW_H_ */

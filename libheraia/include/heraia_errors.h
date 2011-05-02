@@ -4,7 +4,7 @@
   heraia - an hexadecimal file editor and analyser based on ghex
 
   (C) Copyright 2005 - 2007 Sebastien Tricaud  e-mail : toady@gscore.org
-  (C) Copyright 2005 - 2010 Olivier Delhomme   e-mail : heraia@delhomme.org
+  (C) Copyright 2005 - 2011 Olivier Delhomme   e-mail : heraia@delhomme.org
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by

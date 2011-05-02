@@ -3,7 +3,7 @@
   libheraia.c
   Heraia's library
 
-  (C) Copyright 2008 - 2009 Sébastien Tricaud, Olivier Delhomme
+  (C) Copyright 2008 - 2011 Sébastien Tricaud, Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 

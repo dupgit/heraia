@@ -3,7 +3,7 @@
   data_interpretor.h
   heraia - an hexadecimal file editor and analyser based on ghex
 
-  (C) Copyright 2005 - 2010 Olivier Delhomme
+  (C) Copyright 2005 - 2011 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -57,6 +57,8 @@
 #define H_DI_LITTLE_ENDIAN 8
 
 extern guint which_endianness(heraia_struct_t *main_struct);
+extern guint which_stream_size(heraia_struct_t *main_struct);
+
 extern void data_interpretor_init_interface(heraia_struct_t *main_struct);
 extern void refresh_data_interpretor_window(GtkWidget *hexwidget, gpointer data);
 

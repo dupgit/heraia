@@ -3,7 +3,7 @@
   libheraia.h
   Heraia's library header
 
-  (C) Copyright 2008 - 2010 Sébastien Tricaud, Olivier Delhomme
+  (C) Copyright 2008 - 2011 Sébastien Tricaud, Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -58,7 +58,7 @@
  *  Abstract layer this may be usefull if we decide to leave Heraia_Hex
  *  and use something else !
  *
- * @typedef Heraia_Hex Heraia_Hex
+ * @typedef GtkHex Heraia_Hex
  *  Abstract layer this may be usefull if we decide to leave Heraia_Hex
  *  and use something else !
  */
@@ -94,6 +94,21 @@ typedef gint RefreshType;
 #define HERAIA_REFRESH_NEW_FILE 1
 #define HERAIA_REFRESH_CURSOR_MOVE 2
 #define HERAIA_REFRESH_TAB_CHANGED 3
+
+
+/**
+ * @def HERAIA_FIND_FORWARD
+ *  When one wants to do a search in the forward direction
+ *
+ * @def HERAIA_FIND_BACKWARD
+ *  When one wants to do a search in the backward direction
+ *
+ * @def HERAIA_FIND_ALL
+ *  When one wants to do a global search in th whole document
+ */
+#define HERAIA_FIND_FORWARD 32
+#define HERAIA_FIND_BACKWARD 64
+#define HERAIA_FIND_ALL 128
 
 
 /**
@@ -137,8 +152,8 @@ typedef struct
  */
  typedef struct
  {
-    DecodeFunc func;  /**< a function to decode into something     */
-    GtkWidget *entry; /**< the widget that will receive the result */
+    DecodeFunc func;  /**< a function to decode into something                  */
+    GtkWidget *entry; /**< the widget that will receive the result              */
     gchar *err_msg;   /**< error message if something went wrong when decoding
                             expects a %d somewhere in the message to represents
                             the stream lenght to be decoded                     */
@@ -183,10 +198,10 @@ typedef struct
  */
 typedef struct
 {
-    GtkWidget *diw;                /**< data interpretor window                                              */
-    gint tab_displayed;            /**< keeps the last displayed tab's number before closing                 */
-    guint nb_tabs;                 /**< keeps Number of tabs in the GPtrArray                                */
-    GPtrArray *tabs;               /**< an array of tabs displayed in data interpretor's notebook            */
+    GtkWidget *diw;                /**< data interpretor window                                           */
+    gint tab_displayed;            /**< keeps the last displayed tab's number before closing              */
+    guint nb_tabs;                 /**< keeps Number of tabs in the GPtrArray                             */
+    GPtrArray *tabs;               /**< an array of tabs displayed in data interpretor's notebook (tab_t) */
 } data_window_t;
 
 
@@ -237,16 +252,17 @@ typedef struct
 typedef struct
 {
     window_prop_t *about_box;
-    window_prop_t *data_interpretor;  /**< data interpretor window   */
-    window_prop_t *log_box;           /**< log window                */
-    window_prop_t *main_dialog;       /**< heraia's main window      */
-    window_prop_t *plugin_list;       /**< plugin description window */
-    window_prop_t *ldt;               /**< list data types window    */
-    window_prop_t *main_pref_window;  /**< main preference window    */
-    window_prop_t *goto_window;       /**< goto dialog window        */
-    window_prop_t *result_window;     /**< result window properties  */
-    window_prop_t *find_window;       /**< find window               */
-    window_prop_t *fr_window;         /**< find and replace window   */
+    window_prop_t *data_interpretor;  /**< data interpretor window    */
+    window_prop_t *log_box;           /**< log window                 */
+    window_prop_t *main_dialog;       /**< heraia's main window       */
+    window_prop_t *plugin_list;       /**< plugin description window  */
+    window_prop_t *ldt;               /**< list data types window     */
+    window_prop_t *main_pref_window;  /**< main preference window     */
+    window_prop_t *goto_window;       /**< goto dialog window         */
+    window_prop_t *result_window;     /**< result window properties   */
+    window_prop_t *find_window;       /**< find window                */
+    window_prop_t *fr_window;         /**< find and replace window    */
+    window_prop_t *fdft_window;       /**< find data from type window */
 } all_window_prop_t;
 
 
@@ -269,11 +285,11 @@ typedef struct
  */
 typedef struct
 {
-    Heraia_Document *hex_doc;  /**< Document definition related to libHeraia_Hex */
-    GtkWidget *hex_widget;     /**< hexwidget corresponding to the document      */
+    Heraia_Document *hex_doc;  /**< Document definition related to Heraia_Hex (GtkHex) */
+    GtkWidget *hex_widget;     /**< hexwidget corresponding to the document            */
     gboolean modified;         /**< If hex_doc->changed <> modified then the
                                     document has something changed that may need
-                                    an upate                                     */
+                                    an upate                                           */
 } doc_t;
 
 
@@ -289,8 +305,22 @@ typedef struct
 
 
 /**
+ * @struct
+ * A structure to manage the find data type window
+ */
+typedef struct
+{
+    GtkWidget *category_cb; /** ComboBox Widget for the category of the search                  */
+    GtkWidget *type_cb;     /** ComboBox Widget for the type of the data in the category        */
+    GtkWidget *feature_cb;  /** ComboBox Widget for the feature related to the type of the data */
+} fdft_t;
+
+
+/**
  * @struct heraia_struct_t
  *  This is the main structure. It contains all things that the program needs
+ *  results GPtrArray stores the pointer of the corresponding document from
+ *  which the search took place.
  */
 typedef struct
 {
@@ -307,6 +337,8 @@ typedef struct
     doc_t *find_doc;                /**< find document and hexwidget for find window                               */
     doc_t *fr_find_doc;             /**< find and replace window, find document and hexwidget                      */
     doc_t *fr_replace_doc;          /**< find and replace window, replace document and hexwidget                   */
+    fdft_t *fdft;                   /**< Keeps comboboxes created for the fdft window                              */
+    GPtrArray *results;             /**< An array of pointers (doc_t *) for each tab in the result window.         */
 } heraia_struct_t;
 
 

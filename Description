@@ -9,10 +9,10 @@ to analyse and edit files in an hexadecimal way. It contains :
   . an extensible data interpretor
 
 It is written in C using GTK and based on GtkHex Widget. It is known to run on
-many systems 32 or 64 bits (Ubuntu 10.04, Debian squeeze, Fedora 12 (used to
-work on windows XP). As it is based on GtkBuilder, minimum version of Gtk is
-2.16 (so it won't work on Centos 5 or RHEL 5). It integrates smoothly with
-Gnome but it does not depend on it.
+many systems 32 or 64 bits such as Ubuntu 10.04, Debian squeeze, Fedora 12,
+OpenSuse 11.3 (used to work on windows XP). As it is based on GtkBuilder,
+minimum version of Gtk is 2.16 (so it won't work on Centos 5 or RHEL 5). It
+integrates smoothly with Gnome but it does not depend on it.
 
 You can download heraia at both locations (for now) :
 

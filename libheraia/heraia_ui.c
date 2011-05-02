@@ -3,7 +3,7 @@
   heraia_ui.c
   main menus, callback and utility functions
 
-  (C) Copyright 2005 - 2010 Olivier Delhomme
+  (C) Copyright 2005 - 2011 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -31,13 +31,22 @@
 #include <libheraia.h>
 
 static void set_a_propos_properties(GtkWidget *about_dialog);
+
 static gboolean load_heraia_xml(heraia_struct_t *main_struct);
+
 static void heraia_ui_connect_signals(heraia_struct_t *main_struct);
+
 static void record_and_hide_about_box(heraia_struct_t *main_struct);
+
 static gboolean unsaved_documents(heraia_struct_t *main_struct);
+
+static void close_one_document(heraia_struct_t *main_struct, doc_t *closing_doc, gint index);
+static gboolean close_a_project(heraia_struct_t *main_struct, gchar *question);
 static gboolean close_heraia(heraia_struct_t *main_struct);
-static GtkWidget *create_tab_close_button(heraia_struct_t *main_struct, GtkWidget *tab_label);
-static GtkWidget *find_label_from_hbox(GtkWidget *hbox);
+
+static void on_projects_close_activate(GtkWidget *widget, gpointer data);
+static void on_projects_open_activate(GtkWidget *widget, gpointer data);
+static void on_projects_save_as_activate(GtkWidget *widget, gpointer data);
 
 /**
  * @fn void on_quit_activate(GtkWidget *widget, gpointer data)
@@ -148,14 +157,8 @@ static void set_a_propos_properties(GtkWidget *about_dialog)
 
     if (about_dialog != NULL)
         {
-            if (GTK_MINOR_VERSION >= 12)
-                {
-                    gtk_about_dialog_set_program_name(GTK_ABOUT_DIALOG(about_dialog), PACKAGE_NAME);
-                }
-            if (GTK_MINOR_VERSION >= 6)
-                {
-                    gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(about_dialog), PACKAGE_VERSION);
-                }
+           gtk_about_dialog_set_program_name(GTK_ABOUT_DIALOG(about_dialog), PACKAGE_NAME);
+           gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(about_dialog), PACKAGE_VERSION);
         }
 }
 
@@ -285,6 +288,18 @@ void record_all_dialog_box_positions(heraia_struct_t *main_struct)
             /* goto dialog box */
             dialog_box = heraia_get_widget (main_struct->xmls->main, "goto_dialog");
             record_dialog_box_position(dialog_box, main_struct->win_prop->goto_window);
+
+            /* result window */
+            dialog_box = heraia_get_widget (main_struct->xmls->main, "result_window");
+            record_dialog_box_position(dialog_box, main_struct->win_prop->result_window);
+
+            /* find window */
+            dialog_box = heraia_get_widget (main_struct->xmls->main, "find_window");
+            record_dialog_box_position(dialog_box, main_struct->win_prop->find_window);
+
+            /* find and replace window */
+            dialog_box = heraia_get_widget (main_struct->xmls->main, "fr_window");
+            record_dialog_box_position(dialog_box, main_struct->win_prop->fr_window);
         }
 }
 
@@ -546,6 +561,23 @@ void on_fr_activate(GtkWidget *widget, gpointer data)
 
 
 /**
+ * Find data from type, Search menu
+ * @param widget : the widget that issued the signal
+ * @param data : user data MUST be heraia_struct_t *main_struct main structure
+ */
+void on_fdft_activate(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+
+    if (main_struct != NULL && main_struct->current_doc != NULL)
+        {
+            fdft_window_show(widget, main_struct);
+        }
+}
+
+
+
+/**
  *  This function is refreshing the labels on the main
  *  window in order to reflect cursor position, selected
  *  positions and total selected size.
@@ -676,7 +708,7 @@ void on_open_activate(GtkWidget *widget, gpointer data)
     GSList *head = NULL;
     gboolean success = FALSE;
 
-    list = select_file_to_load(main_struct);
+    list = select_file_to_load(main_struct, TRUE, N_("Select a file to analyse"));
 
     if (list != NULL)
         {
@@ -701,14 +733,15 @@ void on_open_activate(GtkWidget *widget, gpointer data)
 
 
 /**
- * Searches main notebook's tabs for a particular widget and returns the number
+ * Searches in a notebook's tabs for a particular widget and returns the number
  * of the corresponding tab if it exists, -1 otherwise
  * @param main_struct : main structure
+ * @param notebbok_name : the name of the notebook in the structure
  * @param to_find : a GtkWidget that we want to find in the main notebook tabs
  * @return a gint as tha tab number that contains the widget "to_find" or -1 if
  *         not found
  */
-gint find_tab_number_from_widget(heraia_struct_t *main_struct, GtkWidget *to_find)
+gint find_tab_number_from_widget(heraia_struct_t *main_struct, gchar *notebook_name, GtkWidget *to_find)
 {
     GtkWidget *notebook = NULL;  /**< Notenook on the main window         */
     GtkWidget *page = NULL;      /**< pages on the notebook               */
@@ -718,7 +751,7 @@ gint find_tab_number_from_widget(heraia_struct_t *main_struct, GtkWidget *to_fin
     gboolean found = FALSE;      /**< True when the widget has been found */
     GList *children = NULL;      /**< Children from the tab label         */
 
-    notebook = heraia_get_widget(main_struct->xmls->main, "file_notebook");
+    notebook = heraia_get_widget(main_struct->xmls->main, notebook_name);
 
     nb_pages = gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook));
 
@@ -768,14 +801,119 @@ gint find_tab_number_from_widget(heraia_struct_t *main_struct, GtkWidget *to_fin
 
 
 /**
- * Closes an openned file
+ * Closes an entire project
+ * @param widget : the widget that issued the signal
+ * @param data : user data MUST be heraia_struct_t *main_struct main structure
+ */
+static void on_projects_close_activate(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+
+    if (main_struct != NULL)
+        {
+            close_a_project(main_struct, N_("Do you want to close the project"));
+        }
+}
+
+
+/**
+ * Saves a project in a new file (does not close the project itself)
+ * @param widget : the widget that issued the signal
+ * @param data : user data MUST be heraia_struct_t *main_struct main structure
+ */
+static void on_projects_save_as_activate(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+    gchar *filename = NULL;  /**< Auto malloc'ed, do not free */
+
+    if (main_struct != NULL)
+        {
+            filename = select_a_file_to_save(main_struct);
+
+            if (filename != NULL)
+                {
+                    free_preference_struct(main_struct->prefs);
+                    main_struct->prefs = init_preference_struct(g_path_get_dirname(filename),g_path_get_basename(filename));
+                    save_preferences(main_struct, main_struct->prefs);
+                }
+        }
+}
+
+
+/**
+ * Opens a project from a file : closes all documents an imports new ones ...
+ * @param widget : the widget that issued the signal
+ * @param data : user data MUST be heraia_struct_t *main_struct main structure
+ */
+static void on_projects_open_activate(GtkWidget *widget, gpointer data)
+{
+    heraia_struct_t *main_struct = (heraia_struct_t *) data;
+    gchar *filename = NULL;
+    GSList *list = NULL;
+
+    if (main_struct != NULL)
+        {
+            /* We except a list with only one element (no multiple selection allowed) */
+            list = select_file_to_load(main_struct, FALSE, (gchar *) Q_("Select a project to load"));
+
+            if (list != NULL && list->data != NULL)
+                {
+                    /* Closing the projects */
+                    on_projects_close_activate(widget, data);
+
+                    /* Opening the new project */
+                    filename = list->data;
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Loading project %s"), filename);
+                    main_struct->prefs = init_preference_struct(g_path_get_dirname(filename), g_path_get_basename(filename));
+                    load_preferences(main_struct, main_struct->prefs);
+
+                    /* . Updating things in the interface */
+                    gtk_widget_show_all(heraia_get_widget(main_struct->xmls->main, "file_notebook"));
+                    init_window_states(main_struct);
+                    g_slist_free(list);
+                }
+        }
+}
+
+
+/**
+ * Closes one document in heraia. Does not do any updates of the interface.
+ * @param main_struct : main structure
+ * @param closing_doc : the doc_t * document to be closed
+ * @param index : the index in the array of documents of the closing_doc
+ *                document
+ */
+static void close_one_document(heraia_struct_t *main_struct, doc_t *closing_doc, gint index)
+{
+    GtkWidget *notebook = NULL;  /**< Notenook on the main window            */
+
+    if (main_struct != NULL && main_struct->documents != NULL)
+        {
+            /* Removing the index in the array */
+            g_ptr_array_remove_index(main_struct->documents, index);
+
+            /* Removes all results beeing associated with this document */
+            rw_remove_all_tabs(main_struct, closing_doc);
+
+            /* And removing it in the notebook */
+            notebook = heraia_get_widget(main_struct->xmls->main, "file_notebook");
+            gtk_notebook_remove_page(GTK_NOTEBOOK(notebook), index);
+
+            /* kills the widget and the document */
+            close_doc_t(closing_doc);
+        }
+}
+
+
+/**
+ * Closes an opened file
  * @param widget : the widget that issued the signal
  * @param data : user data MUST be heraia_struct_t *main_struct main structure
  */
 void on_close_activate(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
-    doc_t * closing_doc = NULL;  /**< Current document to close in heraia    */
+    doc_t *closing_doc = NULL;   /**< Current document to close in heraia    */
     doc_t *document = NULL;      /**< To iterate over the array of documents */
     GtkWidget *notebook = NULL;  /**< Notenook on the main window            */
     GtkWidget *dialog = NULL;    /**< The dialog box                         */
@@ -792,15 +930,16 @@ void on_close_activate(GtkWidget *widget, gpointer data)
         {
             /* Guessing where the user asked to close the document */
             if (GTK_IS_BUTTON(widget))
-                {
+                {   /* From the tab */
                     /* Guessing which document the user has closed */
-                    tab_number = find_tab_number_from_widget(main_struct, widget);
+                    tab_number = find_tab_number_from_widget(main_struct, "file_notebook", widget);
                     closing_doc = g_ptr_array_index(main_struct->documents, tab_number);
-                    is_current_doc = closing_doc == main_struct->current_doc;
+                    is_current_doc = (closing_doc == main_struct->current_doc);
                 }
             else
-                {
+                {   /* From the menu */
                     closing_doc = main_struct->current_doc;
+                    is_current_doc = TRUE;
                 }
 
             log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Closing document %s"), doc_t_document_get_filename(closing_doc));
@@ -843,16 +982,7 @@ void on_close_activate(GtkWidget *widget, gpointer data)
 
             if (index >= 0)
                 {
-                    /* Removing the index in the array */
-                    g_ptr_array_remove_index(main_struct->documents, index);
-
-                    /* And removing it in the notebook */
-                    notebook = heraia_get_widget(main_struct->xmls->main, "file_notebook");
-                    gtk_notebook_remove_page(GTK_NOTEBOOK(notebook), index);
-
-                    /* kills the widget and the document */
-                    close_doc_t(closing_doc);
-
+                    close_one_document(main_struct, closing_doc, index);
 
                     /* Try to find out the new current document */
                     /* We do not need to update if the current doc is not closed ! */
@@ -882,7 +1012,6 @@ void on_close_activate(GtkWidget *widget, gpointer data)
                     /* updating things in conformance to the new situation */
                     refresh_event_handler(notebook, main_struct);
                     update_main_window_name(main_struct);
-
                 }
         }
 }
@@ -996,7 +1125,7 @@ void on_DIMenu_activate(GtkWidget *widget, gpointer data)
                         {
                             notebook = GTK_NOTEBOOK(heraia_get_widget(main_struct->xmls->main, "diw_notebook"));
 
-                            if (main_struct->win_prop->data_interpretor->displayed == FALSE)
+                            if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(heraia_get_widget(main_struct->xmls->main, "DIMenu"))) == TRUE)
                                 {
                                     /* Setting the first page of the notebook as default (Numbers) */
                                     gtk_notebook_set_current_page(notebook, dw->tab_displayed);
@@ -1051,7 +1180,7 @@ void on_tests_menu_activate(GtkWidget *widget, gpointer data)
  * @param event : event associated (may be NULL as we don't use this here)
  * @param data : MUST be heraia_struct_t *main_struct main structure
  */
-gboolean delete_main_struct_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
+gboolean delete_main_window_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
 {
 
     on_quit_activate(widget, data);
@@ -1120,7 +1249,6 @@ gboolean file_notebook_tab_changed(GtkNotebook *notebook, GtkNotebookPage *page,
                     refresh_event_handler(GTK_WIDGET(notebook), main_struct);
                     main_struct->event = HERAIA_REFRESH_NOTHING;
                 }
-
         }
 
     return TRUE;
@@ -1198,9 +1326,11 @@ void set_the_working_directory(GtkFileChooser *file_chooser, gchar *filename)
  *  This function does open a file selector dialog box and returns the selected
  *  filename.
  * @param main_struct : main structure
+ * @param multiple : to say wether we want multiple selection be possible or not
+ * @param message : the message to print in the title's dialog box
  * @return returns a list of filenames to be loaded (if any)
  */
-GSList *select_file_to_load(heraia_struct_t *main_struct)
+GSList *select_file_to_load(heraia_struct_t *main_struct, gboolean multiple, gchar *message)
 {
     GtkWidget *parent = NULL; /**< A parent window (we use main_struct)            */
     GtkFileChooser *file_chooser = NULL;
@@ -1208,23 +1338,19 @@ GSList *select_file_to_load(heraia_struct_t *main_struct)
 
     parent = heraia_get_widget(main_struct->xmls->main, "main_window");
 
-    file_chooser = GTK_FILE_CHOOSER(gtk_file_chooser_dialog_new(Q_("Select a file to analyse"),
+    file_chooser = GTK_FILE_CHOOSER(gtk_file_chooser_dialog_new(message,
                                                                 GTK_WINDOW(parent),
                                                                 GTK_FILE_CHOOSER_ACTION_OPEN,
                                                                 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                                                                 GTK_STOCK_OPEN, GTK_RESPONSE_OK,
                                                                 NULL));
 
-    /**
-     *  for the moment we do not want to retrieve multiples selections
-     *  but this could be a valuable thing in the future
-     */
     gtk_window_set_modal(GTK_WINDOW(file_chooser), TRUE);
-    gtk_file_chooser_set_select_multiple(file_chooser, TRUE);
+    gtk_file_chooser_set_select_multiple(file_chooser, multiple);
 
     /**
-     *  We want the file selection path to be the one of the previous
-     *  openned file if any !
+     *  We want the file selection path to be the one of the current
+     *  opened file if any !
      */
     if (doc_t_document_get_filename(main_struct->current_doc) != NULL)
        {
@@ -1252,7 +1378,6 @@ GSList *select_file_to_load(heraia_struct_t *main_struct)
 
 
 /**
- * @fn gchar *select_a_file_to_save(heraia_struct_t *main_struct)
  *  This function opens a dialog box that allow one to choose a
  *  file name to the file which is about to be saved
  * @param main_struct : main structure
@@ -1329,12 +1454,13 @@ void update_main_window_name(heraia_struct_t *main_struct)
         }
 }
 
+
 /**
  * Tries to find the label contained in the hbox
  * @param hbox : the hbox widget containing one GtkLabel
  * @return the label or NULL if not found
  */
-static GtkWidget *find_label_from_hbox(GtkWidget *hbox)
+GtkWidget *find_label_from_hbox(GtkWidget *hbox)
 {
     GList *children = NULL;     /**< List of children in hbox widget */
     gboolean found = FALSE;
@@ -1491,6 +1617,8 @@ void grey_main_widgets(GtkBuilder *xml, gboolean greyed)
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_close"), FALSE);
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_goto"), FALSE);
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_search"), FALSE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_projects_close"), FALSE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_projects_save_as"), FALSE);
                     gtk_widget_hide(notebook);
                 }
             else
@@ -1504,6 +1632,8 @@ void grey_main_widgets(GtkBuilder *xml, gboolean greyed)
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_close"), TRUE);
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_goto"), TRUE);
                     gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_search"), TRUE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_projects_close"), TRUE);
+                    gtk_widget_set_sensitive(heraia_get_widget(xml, "menu_projects_save_as"), TRUE);
                     gtk_widget_show_all(notebook);
                 }
         }
@@ -1568,6 +1698,10 @@ static gboolean load_heraia_xml(heraia_struct_t *main_struct)
                 }
             else
                 {
+                    /* log_message(main_struct, G_LOG_LEVEL_DEBUG, "%s", gtk_builder_get_translation_domain(main_struct->xmls->main));
+                       gtk_builder_set_translation_domain(main_struct->xmls->main, GETTEXT_PACKAGE);
+                       log_message(main_struct, G_LOG_LEVEL_DEBUG, "%s", gtk_builder_get_translation_domain(main_struct->xmls->main));
+                    */
                     return TRUE;
                 }
         }
@@ -1598,10 +1732,6 @@ void connect_cursor_moved_signal(heraia_struct_t *main_struct, GtkWidget *hex_wi
 static void heraia_ui_connect_signals(heraia_struct_t *main_struct)
 {
 
-    /* the data interpretor menu */
-    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "DIMenu")), "activate",
-                     G_CALLBACK(on_DIMenu_activate), main_struct);
-
     /*** File Menu ***/
     /* Quit, file menu */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "quit")), "activate",
@@ -1626,6 +1756,19 @@ static void heraia_ui_connect_signals(heraia_struct_t *main_struct)
     /* Save As, file menu */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "save_as")), "activate",
                      G_CALLBACK(on_save_as_activate), main_struct);
+
+    /**** Projects sub menu ****/
+    /* Close, projects sub menu, file menu */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_projects_close")), "activate",
+                     G_CALLBACK(on_projects_close_activate), main_struct);
+
+    /* Save As, projects sub menu, file menu */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_projects_save_as")), "activate",
+                     G_CALLBACK(on_projects_save_as_activate), main_struct);
+
+    /* Open, projects sub menu, file menu */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_projects_open")), "activate",
+                     G_CALLBACK(on_projects_open_activate), main_struct);
 
 
     /*** Edit Menu ***/
@@ -1661,6 +1804,7 @@ static void heraia_ui_connect_signals(heraia_struct_t *main_struct)
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_delete")), "activate",
                      G_CALLBACK(on_delete_activate), main_struct);
 
+
      /*** Search Menu ***/
     /* Find, Search menu */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_find")), "activate",
@@ -1669,6 +1813,16 @@ static void heraia_ui_connect_signals(heraia_struct_t *main_struct)
     /* Find and replace, Search menu */
     g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_find_replace")), "activate",
                      G_CALLBACK(on_fr_activate), main_struct);
+
+    /* Find data from type, Search menu */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "menu_fdft")), "activate",
+                     G_CALLBACK(on_fdft_activate), main_struct);
+
+
+    /*** Display menu ***/
+    /* the data interpretor menu */
+    g_signal_connect(G_OBJECT(heraia_get_widget(main_struct->xmls->main, "DIMenu")), "activate",
+                     G_CALLBACK(on_DIMenu_activate), main_struct);
 
 
     /*** Help Menu ***/
@@ -1697,7 +1851,7 @@ static void heraia_ui_connect_signals(heraia_struct_t *main_struct)
 
     /* main window killed or destroyed */
     g_signal_connect(G_OBJECT (heraia_get_widget(main_struct->xmls->main, "main_window")), "delete-event",
-                     G_CALLBACK(delete_main_struct_event), main_struct);
+                     G_CALLBACK(delete_main_window_event), main_struct);
 }
 
 
@@ -1724,7 +1878,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
             /* Heraia UI signals */
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, Q_("Connecting heraia_ui signals          "));
+                    fprintf(stdout, Q_("Connecting heraia_ui signals             "));
                 }
 
             heraia_ui_connect_signals(main_struct);
@@ -1737,7 +1891,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
             /* The Log window */
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, Q_("log window init interface             "));
+                    fprintf(stdout, Q_("log window init interface                "));
                 }
 
             log_window_init_interface(main_struct);
@@ -1750,7 +1904,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
             /* Preferences window */
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, Q_("preferences window init interface     "));
+                    fprintf(stdout, Q_("preferences window init interface        "));
                 }
 
             main_pref_window_init_interface(main_struct);
@@ -1764,7 +1918,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
             /* The data interpretor window */
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, Q_("data interpretor init interface       "));
+                    fprintf(stdout, Q_("data interpretor init interface          "));
                 }
 
             data_interpretor_init_interface(main_struct);
@@ -1778,7 +1932,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
             /* Goto dialog window */
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, Q_("goto dialog window init interface     "));
+                    fprintf(stdout, Q_("goto dialog window init interface        "));
                 }
 
             goto_dialog_init_interface(main_struct);
@@ -1792,7 +1946,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
             /* result window */
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, Q_("result window init interface          "));
+                    fprintf(stdout, Q_("result window init interface             "));
                 }
 
             result_window_init_interface(main_struct);
@@ -1805,7 +1959,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
             /* find window */
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, Q_("find window init interface            "));
+                    fprintf(stdout, Q_("find window init interface               "));
                 }
 
             find_window_init_interface(main_struct);
@@ -1815,10 +1969,10 @@ int load_heraia_ui(heraia_struct_t *main_struct)
                     fprintf(stdout, Q_(" [Done]\n"));
                 }
 
-            /* find window */
+            /* find and replace window */
             if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, Q_("find and replace window init interface"));
+                    fprintf(stdout, Q_("find and replace window init interface   "));
                 }
 
             fr_window_init_interface(main_struct);
@@ -1827,23 +1981,24 @@ int load_heraia_ui(heraia_struct_t *main_struct)
                 {
                     fprintf(stdout, Q_(" [Done]\n"));
                 }
-
-
-            /* preferences file */
-
-            fprintf(stdout, Q_("Loading heraia preference file        "));
-
-            if (load_preference_file(main_struct) != TRUE)
+            /* find and replace window */
+            if (main_struct->debug == TRUE)
                 {
-                    fprintf(stdout, Q_(" [FAILED]\n"));
+                    fprintf(stdout, Q_("find data from type window init interface"));
                 }
-            else /* Setting up preferences */
+
+            fdft_window_init_interface(main_struct);
+
+            if (main_struct->debug == TRUE)
                 {
                     fprintf(stdout, Q_(" [Done]\n"));
-                    fprintf(stdout, Q_("Setting up preferences                "));
-                    load_preferences(main_struct);
-                    fprintf(stdout, Q_(" [Done]\n"));
                 }
+
+            /* preferences file - Setting up preferences */
+            fprintf(stdout, Q_("Loading heraia preference file"));
+            fprintf(stdout, Q_("Setting up preferences...\n"));
+            load_preferences(main_struct, main_struct->prefs);
+            fprintf(stdout, Q_("[Done]\n"));
         }
 
     return success;
@@ -2076,18 +2231,21 @@ static gboolean unsaved_documents(heraia_struct_t *main_struct)
 
 
 /**
- * @fn void close_heraia(heraia_struct_t *main_struct)
- * Before closing heraia we need to do few things
+ * Closes all documents and saves preferences if the users wants to close
+ * the documents.
  * @param main_struct : main_struct
- * @return TRUE if we can safely quit heraia, FALSE otherwise
+ * @param question a const gchar * string to be displayed when an unsaved
+ *        document is found. This should ask the user what to do.
+ * @return the user anwser if an unsaved document is found and TRUE if not
  */
-static gboolean close_heraia(heraia_struct_t *main_struct)
+static gboolean close_a_project(heraia_struct_t *main_struct, gchar *question)
 {
     gboolean unsaved = FALSE;    /**< if there is any unsaved documents */
     gboolean quit_heraia = TRUE; /**< By default we want to quit        */
     GtkWidget *dialog = NULL;    /**< The dialog box                    */
     GtkWidget *parent = NULL;    /**< parent widget for the dialog box  */
     gint result = 0;             /**< result from the dialog box        */
+    doc_t *closing_doc = NULL;   /**< The document to be closed         */
 
     unsaved = unsaved_documents(main_struct);
 
@@ -2097,7 +2255,7 @@ static gboolean close_heraia(heraia_struct_t *main_struct)
             parent = heraia_get_widget(main_struct->xmls->main, "main_window");
 
             dialog = gtk_message_dialog_new(GTK_WINDOW(parent), GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO, Q_("Unsaved document(s) remains."));
-            gtk_message_dialog_format_secondary_markup(GTK_MESSAGE_DIALOG(dialog), Q_("Do you want to quit without saving ?"));
+            gtk_message_dialog_format_secondary_markup(GTK_MESSAGE_DIALOG(dialog), "%s", question);
 
 
             result = gtk_dialog_run(GTK_DIALOG(dialog));
@@ -2116,16 +2274,45 @@ static gboolean close_heraia(heraia_struct_t *main_struct)
             gtk_widget_destroy(dialog);
         }
 
-    if ( quit_heraia == TRUE)
+    if (quit_heraia == TRUE)
         {
-            /* recording window's position */
+            /* . Recording window's position       */
             record_all_dialog_box_positions(main_struct);
 
-            /* . Saving preferences */
-            save_preferences(main_struct);
+            /* . Saving preferences                */
+            save_preferences(main_struct, main_struct->prefs);
+
+            /* . Closing the documents             */
+            while (main_struct->documents->len > 0)
+                {
+                    closing_doc = g_ptr_array_index(main_struct->documents, 0);
+                    close_one_document(main_struct, closing_doc, 0);
+                }
+            main_struct->current_doc = NULL;
+
+             /* . Updating things in the interface */
+            refresh_event_handler(parent, main_struct);
+            update_main_window_name(main_struct);
+            grey_main_widgets(main_struct->xmls->main, TRUE);
+
+            /* . Destroying preferences structure  */
+            free_preference_struct(main_struct->prefs);
+            main_struct->prefs = NULL;
         }
 
     return quit_heraia;
+}
+
+
+/**
+ * @fn void close_heraia(heraia_struct_t *main_struct)
+ * Before closing heraia we need to do few things
+ * @param main_struct : main_struct
+ * @return TRUE if we can safely quit heraia, FALSE otherwise
+ */
+static gboolean close_heraia(heraia_struct_t *main_struct)
+{
+   return close_a_project(main_struct, N_("Do you want to quit without saving ?"));
 }
 
 
@@ -2184,17 +2371,16 @@ void init_window_states(heraia_struct_t *main_struct)
 
                     /* Data Interpretor Interface */
                     cmi = heraia_get_widget(main_struct->xmls->main, "DIMenu");
-                    /* Emit the specific signal to activate the check_menu_item */
-                    if (main_struct->win_prop->data_interpretor->displayed == TRUE)
-                        {
-                            main_struct->win_prop->data_interpretor->displayed = FALSE; /* dirty trick */
-                            g_signal_emit_by_name(heraia_get_widget(main_struct->xmls->main, "DIMenu"), "activate");
-                        }
+                    dialog_box = heraia_get_widget(main_struct->xmls->main, "data_interpretor_window");
+                    init_one_cmi_window_state(dialog_box, cmi, main_struct->win_prop->data_interpretor);
+                    on_DIMenu_activate(cmi, main_struct);
 
                     /* List Data type Interface */
-                    cmi = heraia_get_widget(main_struct->xmls->main, "ldt_menu");
-                    dialog_box = heraia_get_widget(main_struct->xmls->main, "list_data_types_window");
-                    init_one_cmi_window_state(dialog_box, cmi, main_struct->win_prop->ldt);
+                    /*
+                     * cmi = heraia_get_widget(main_struct->xmls->main, "ldt_menu");
+                     * dialog_box = heraia_get_widget(main_struct->xmls->main, "list_data_types_window");
+                     * init_one_cmi_window_state(dialog_box, cmi, main_struct->win_prop->ldt);
+                     */
 
                     /* Plugin List Interface */
                     cmi = heraia_get_widget(main_struct->xmls->main, "mw_cmi_plugin_list");
@@ -2226,12 +2412,18 @@ void init_window_states(heraia_struct_t *main_struct)
 
                     /* result window */
                     dialog_box = heraia_get_widget(main_struct->xmls->main, "result_window");
-                    if (main_struct->win_prop->result_window->displayed == TRUE)
+                    cmi = heraia_get_widget(main_struct->xmls->main, "menu_result");
+                    if (main_struct->win_prop->result_window->displayed == TRUE && main_struct->current_doc != NULL)
                         {
                             gtk_window_move(GTK_WINDOW(dialog_box), main_struct->win_prop->result_window->x, main_struct->win_prop->result_window->y);
                             gtk_window_resize(GTK_WINDOW(dialog_box), main_struct->win_prop->result_window->width, main_struct->win_prop->result_window->height);
                             gtk_widget_show_all(dialog_box);
                         }
+                    else
+                        {
+                            main_struct->win_prop->result_window->displayed = FALSE;
+                        }
+                    init_one_cmi_window_state(dialog_box, cmi, main_struct->win_prop->result_window);
 
                     /* find window */
                     dialog_box = heraia_get_widget(main_struct->xmls->main, "find_window");
@@ -2261,6 +2453,21 @@ void init_window_states(heraia_struct_t *main_struct)
                             main_struct->win_prop->fr_window->displayed = FALSE;
                         }
 
+                    /* find data from type window */
+                    dialog_box = heraia_get_widget(main_struct->xmls->main, "fdft_window");
+                    if (main_struct->win_prop->fdft_window->displayed == TRUE && main_struct->current_doc != NULL)
+                        {
+                            gtk_window_move(GTK_WINDOW(dialog_box), main_struct->win_prop->fdft_window->x, main_struct->win_prop->fdft_window->y);
+                            gtk_window_resize(GTK_WINDOW(dialog_box), main_struct->win_prop->fdft_window->width, main_struct->win_prop->fdft_window->height);
+                            gtk_widget_show_all(dialog_box);
+                        }
+                    else
+                        {
+                            /* if the window is not displayed modifies it's properties accordingly */
+                            main_struct->win_prop->fdft_window->displayed = FALSE;
+                        }
+
+
                     /* About Box */
                     dialog_box = heraia_get_widget(main_struct->xmls->main, "about_dialog");
                     if (main_struct->win_prop->about_box->displayed == TRUE)
@@ -2276,25 +2483,28 @@ void init_window_states(heraia_struct_t *main_struct)
 
 
 /**
+ * Creates an hbox containning a cross button (in order to close the tab) and
+ * a label (from tab_label).
  * Creates a label an a button to add into a tab from main window's notebook
  * @param main_struct : main structure
  * @param tab_label : a GtkWidget that is the label we want to add to the tab
+ * @param signal_handler : the signal to connect to when the close button is
+ *                         clicked.
  * @return a newly created GtkWidget which contains the label and a close button
  */
-static GtkWidget *create_tab_close_button(heraia_struct_t *main_struct, GtkWidget *tab_label)
+GtkWidget *create_tab_close_button(heraia_struct_t *main_struct, GtkWidget *tab_label, void *signal_handler)
 {
     GtkWidget *hbox = NULL;    /**< used for hbox creation in the tabs */
     GtkWidget *button = NULL;  /**< Closing button                     */
 
-
-     /* Close button in tabs */
+    /* Close button in tabs */
     hbox = gtk_hbox_new(FALSE, 0);
 
     button = gtk_button_new_with_label("x");
     gtk_button_set_relief(GTK_BUTTON(button), GTK_RELIEF_NONE);
     gtk_widget_set_size_request(button, 18, 17);
     gtk_widget_set_tooltip_text(button, Q_("Close button"));
-    g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(on_close_activate), main_struct);
+    g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(signal_handler), main_struct);
 
     /* Packing label and button all together in order to display everything in the tab */
     gtk_box_pack_start(GTK_BOX(hbox), tab_label, FALSE, FALSE, 0);
@@ -2318,7 +2528,7 @@ void add_new_tab_in_main_window(heraia_struct_t *main_struct, doc_t *doc)
     GtkWidget *menu_label = NULL; /**<menu's label                          */
     gint tab_num = -1;            /**< new tab's index                      */
     gchar *filename = NULL;
-    gchar *whole_filename;
+    gchar *whole_filename = NULL;
     gchar *markup = NULL;         /**< markup text                          */
     gchar *menu_markup = NULL;    /**< menu markup text                     */
     GtkWidget *hbox = NULL;       /**< used for hbox creation in the tabs   */
@@ -2345,7 +2555,7 @@ void add_new_tab_in_main_window(heraia_struct_t *main_struct, doc_t *doc)
             g_free(menu_markup);
         }
 
-    hbox = create_tab_close_button(main_struct, tab_label);
+    hbox = create_tab_close_button(main_struct, tab_label, on_close_activate);
 
     gtk_widget_show_all(vbox);
     tab_num = gtk_notebook_append_page_menu(notebook, vbox, hbox, menu_label);

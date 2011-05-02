@@ -88,7 +88,7 @@ I let you imagine what I expect before I do a major release !!!
    * have the ability to close opened files
    * Improve dialog box when closing with modified documents
 
-. 0.1.6
+. 0.1.6 [30.10.2010]
    * have basic search and replace functions
    * hability to jump anywhere in the file
    * Enable line numbers in the ghex widget with an option in main preferences
@@ -101,11 +101,19 @@ I let you imagine what I expect before I do a major release !!!
 . 0.1.8
    * rewrite data_type creation in order to allow a script or an extern
      program execution
+   * Add regexp to find data from type search window and add a new window that
+     will do a text only search but that may use regexp.
+   * Add options to the find data from type : endianness, stream size, exact
+     match (which will be very usefull for numbers)
 
 . 0.1.9
    * python bindings ?
-   * Look at everything in order to enhance user experience and the have a more
+   * Look at everything in order to enhance user experience and have a more
      usable program.
+   * Add new options in find, find and replace and find data from type window :
+     Search in all documents of the session.
+   * Add recent files and recent projects
+   * Add an import ability (for instance tcpdump imports)
 
 - 0.2.0
    * rename tha main_window_t structure in main_struct_t structure which
@@ -117,7 +125,6 @@ I let you imagine what I expect before I do a major release !!!
    * save and load  a "project" like geany editor (saving preferences, opened
      files, current opened tab and so on...)
    * enhance python bindings
-   * work in progress to make the whole project translatable
 
 . 0.2.1
    * Have something to allow one to take notes (enhanced bookmarks).
@@ -132,7 +139,7 @@ I let you imagine what I expect before I do a major release !!!
    * Begin writing some user documentation
 
 . 0.2.8
-   * If there is time, see how to bring 3D visualization in stat plugin
+   * If there is time, see how to bring 3D visualization in stat plugin ?
 
 - 0.3.0
    * user documentation

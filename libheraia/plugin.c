@@ -3,7 +3,7 @@
  *  plugin.c
  *  heraia - an hexadecimal file editor and analyser based on ghex
  *
- *  (C) Copyright 2007 - 2010 Olivier Delhomme
+ *  (C) Copyright 2007 - 2011 Olivier Delhomme
  *  e-mail : heraia@delhomme.org
  *  URL    : http://heraia.tuxfamily.org
  *
@@ -230,6 +230,8 @@ static void load_one_plugin(heraia_struct_t *main_struct, const gchar *filename,
 
     full_filename = g_build_filename(PLUGINS_DIR, filename, NULL);
 
+    log_message(main_struct, G_LOG_LEVEL_DEBUG, "full_filename = %s ; ext = %s ; filename = %s", full_filename, ext, filename);
+
     /* Make sure we do load the module named .so, .dll or .sl depending on the OS type */
     if ( (g_file_test(full_filename, G_FILE_TEST_IS_DIR) == FALSE) &&
          (strcmp(strrchr(filename, '.'), ext) == 0)
@@ -260,8 +262,9 @@ void load_plugins(heraia_struct_t *main_struct)
     const gchar *filename = NULL;
     unsigned int plugins_nb = 0;
 
-    /* Register all shared plugins (plugins_dir) (-DPLUGINS_DIR) */
-    /* This may be a config file option later ...                */
+    /**
+     * @todo Register all shared plugins (plugins_dir) (-DPLUGINS_DIR)
+     * This may be a config file option later ...                      */
     plugins_dir = g_dir_open(PLUGINS_DIR, 0, &error);
 
     if (plugins_dir == NULL) /* error while openning the plugins directory */
@@ -273,7 +276,7 @@ void load_plugins(heraia_struct_t *main_struct)
         {
             while ((filename = g_dir_read_name(plugins_dir)) != NULL)
                 {
-                    if (g_str_has_suffix(filename, "libheraia.so") == FALSE)
+                    if (g_str_has_prefix(filename, "libheraia") == FALSE)
                     {
                         load_one_plugin(main_struct, filename, ++plugins_nb);
                     }

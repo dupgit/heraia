@@ -3,7 +3,7 @@
 #  heraia_xgettext.sh
 #  extracts all translatable strings from heraia's code
 #
-#  (C) Copyright 2010 Olivier Delhomme
+#  (C) Copyright 2010 - 2011 Olivier Delhomme
 #  e-mail : heraia@delhomme.org
 #  URL    : http://heraia.tuxfamily.org
 #

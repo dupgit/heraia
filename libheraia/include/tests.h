@@ -3,7 +3,7 @@
  *  tests.h
  *  tests for code coverage and bugs
  *
- *  (C) Copyright 2010 Olivier Delhomme
+ *  (C) Copyright 2011 Olivier Delhomme
  *  e-mail : heraia@delhomme.org
  *  URL    : http://heraia.tuxfamily.org
  *

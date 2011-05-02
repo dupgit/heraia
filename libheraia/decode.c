@@ -3,7 +3,7 @@
   decode.c
   Heraia's library decode.c
 
-  (C) Copyright 2008 - 2010 Sébastien Tricaud, Olivier Delhomme
+  (C) Copyright 2008 - 2011 Sébastien Tricaud, Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -195,7 +195,7 @@ gchar *decode_64bits_signed(guchar *data, gpointer data_struct)
     else
         {
             memcpy(&total, data, 8 * sizeof (guchar));
-            return g_strdup_printf("%ld", total);
+            return g_strdup_printf("%lld", (long long int) total);
         }
 }
 
@@ -218,7 +218,7 @@ gchar *decode_64bits_unsigned(guchar *data, gpointer data_struct)
     else
         {
             memcpy(&total, data, 8 * sizeof (guchar));
-            return g_strdup_printf("%lu", total);
+            return g_strdup_printf("%llu", (long long unsigned int) total);
         }
 }
 

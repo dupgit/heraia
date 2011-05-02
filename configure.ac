@@ -1,6 +1,6 @@
 AC_PREREQ(2.59)
 
-AC_INIT([Heraia], [0.1.6],
+AC_INIT([Heraia], [0.1.7],
         [Olivier Delhomme],
         [heraia])
 
@@ -101,12 +101,11 @@ dnl * directories definitions                        *
 dnl **************************************************
 plugins_dir=$libdir/heraia
 data_dir=$datadir/heraia
+LOCALEDIR=$datadir/locale
 
+AC_SUBST(LOCALEDIR)
 AC_SUBST(plugins_dir)
 AC_SUBST(data_dir)
-
-dnl the line below does not work !!
-dnl AC_DEFINE_UNQUOTED(PLUGINS_DIR, "$plugins_dir", [Directory where the plugins are located])
 
 dnl **************************************************
 dnl * languages                                      *
@@ -120,9 +119,6 @@ GETTEXT_PACKAGE=heraia
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [Gettext Package used])
 AM_GLIB_GNU_GETTEXT
-LOCALEDIR=[${datadir}/locale]
-AC_SUBST(LOCALEDIR)
-
 
 dnl **************************************************
 dnl * checking for glib                              *
@@ -155,7 +151,6 @@ CFLAGS="$CFLAGS -Wall -Wstrict-prototypes -Wmissing-declarations \
 -DGSEAL_ENABLE -DG_DISABLE_DEPRECATED=1"
 
 
-
 dnl **************************************************
 dnl * checking OS                                    *
 dnl **************************************************
@@ -171,6 +166,7 @@ case $build_os in
         CFLAGS="$CFLAGS -mms-bitfields -mwindows -mno-cygwin"
     ;;
 esac
+
 
 dnl **************************************************
 dnl * ./configure options                            *
@@ -283,5 +279,5 @@ echo "    - Data dir                 : ${datadir}"
 echo "    - Plugins dir              : ${plugins_dir}"
 echo "    - Locale dir               : ${LOCALEDIR}"
 echo
-echo "    You can now run 'make' to compile heraia"
+echo "    You can now run 'make -s' to compile heraia"
 echo

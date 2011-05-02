@@ -3,7 +3,7 @@
   user_prefs.h
   heraia - an hexadecimal file editor and analyser based on ghex
 
-  (C) Copyright 2008 - 2010 Olivier Delhomme
+  (C) Copyright 2008 - 2011 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -31,7 +31,7 @@
  * @note
  *  GN == Group Name
  *  KN == Key Name
- *  Thoses variables are the ones to use in the main preference file
+ *  Thoses variables are the ones to use in main preference file and projects
  *  Please do not translate them !
  */
 #define GN_GLOBAL_PREFS "Global Preferences"
@@ -51,6 +51,13 @@
 #define KN_RESULT_WINDOW "Result Window"
 #define KN_FIND_WINDOW "Find Window"
 #define KN_FR_WINDOW "Find and Replace Window"
+#define KN_FDFT_WINDOW "Find data from type Window"
+
+#define KN_SAVE_OPENED_FILES_FILENAMES "Opened files filenames"
+#define KN_FILES_FILENAMES "Files filenames"
+#define KN_FILES_CURSOR_POSITIONS "Files cursor positions"
+#define KN_CURRENT_TAB "Main current tab"
+
 
 #define KN_DISP_THOUSAND "Thousand"
 #define KN_DISP_OFFSETS "Offsets"
@@ -61,10 +68,12 @@
 
 #define KN_MPWP_SELECTED_TAB "Selected Tab"
 
-extern void verify_preference_file(gchar *pathname, gchar *filename);
-extern void init_preference_struct(heraia_struct_t *main_struct);
+extern void verify_preference_file(prefs_t *prefs);
 
-extern void save_preferences(heraia_struct_t *main_struct);
-extern void load_preferences(heraia_struct_t *main_struct);
+extern prefs_t *init_preference_struct(gchar *pathname, gchar *filename);
+extern void free_preference_struct(prefs_t *prefs);
+
+extern void save_preferences(heraia_struct_t *main_struct, prefs_t *prefs);
+extern void load_preferences(heraia_struct_t *main_struct, prefs_t *prefs);
 
 #endif /* _LIBHERAIA_USER_PREFS_H_ */

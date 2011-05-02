@@ -3,7 +3,7 @@
  *  user_prefs.c
  *  heraia - an hexadecimal file editor and analyser based on ghex
  *
- *  (C) Copyright 2005 - 2010 Olivier Delhomme
+ *  (C) Copyright 2005 - 2011 Olivier Delhomme
  *  e-mail : heraia@delhomme.org
  *  URL    : http://heraia.tuxfamily.org
  *
@@ -27,25 +27,31 @@
  */
 #include <libheraia.h>
 
+/* Verifying */
 static void verify_preference_file_path_presence(gchar *pathname);
 static void verify_preference_file_name_presence(gchar *filename);
 
+/* Saving */
 static void save_window_preferences(GKeyFile *file, gchar *name, window_prop_t *window_prop);
 
-static void save_mp_file_preferences_options(heraia_struct_t *main_struct);
-static void save_mp_display_preferences_options(heraia_struct_t *main_struct);
+static void save_mp_file_preferences_options(heraia_struct_t *main_struct, prefs_t *prefs);
+static void save_mp_display_preferences_options(heraia_struct_t *main_struct, prefs_t *prefs);
+static void save_mp_files_filenames(heraia_struct_t *main_struct, prefs_t *prefs);
 
-static void save_di_preferences(heraia_struct_t *main_struct);
+static void save_di_preferences(heraia_struct_t *main_struct, prefs_t *prefs);
 
-static void save_mpwp_preferences(heraia_struct_t *main_struct);
+static void save_mpwp_preferences(heraia_struct_t *main_struct, prefs_t *prefs);
 
-
+/* Loading */
 static void load_window_preferences(GKeyFile *file, gchar *name, window_prop_t *window_prop);
 
-static void load_mp_file_preferences_options(heraia_struct_t *main_struct);
-static void load_mp_display_preferences_options(heraia_struct_t *main_struct);
+static void load_mp_file_preferences_options(heraia_struct_t *main_struct, prefs_t *prefs);
+static void load_mp_display_preferences_options(heraia_struct_t *main_struct, prefs_t *prefs);
+static void load_mp_files_filenames(heraia_struct_t *main_struct, prefs_t *prefs);
 
-static void load_di_preferences(heraia_struct_t *main_struct);
+static void load_di_preferences(heraia_struct_t *main_struct, prefs_t *prefs);
+
+static void load_mpwp_preferences(heraia_struct_t *main_struct, prefs_t *prefs);
 
 
 /**
@@ -101,14 +107,16 @@ static void verify_preference_file_name_presence(gchar *filename)
 
 /**
  *  Verify preference file presence and creates it if it does not
- *  already exists
- * @param pathname is the full pathname
- * @param filename is the filename containing the path itself
+ *  already exists.
+ * @param prefs is a 'prefs_t *' filled preference structure
  */
-void verify_preference_file(gchar *pathname, gchar *filename)
+void verify_preference_file(prefs_t *prefs)
 {
-    verify_preference_file_path_presence(pathname);
-    verify_preference_file_name_presence(filename);
+    if (prefs != NULL)
+        {
+            verify_preference_file_path_presence(prefs->pathname);
+            verify_preference_file_name_presence(prefs->filename);
+        }
 }
 
 
@@ -116,27 +124,34 @@ void verify_preference_file(gchar *pathname, gchar *filename)
  * Look out if the preference structure exists or not. If not
  * it creates it.
  * @see http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
- * @param main_struct the main structure
+ * @param pathname is the pathname where the preference file is
+ * @param filename is the filename of the preference file itself
  */
-void init_preference_struct(heraia_struct_t *main_struct)
+prefs_t *init_preference_struct(gchar *pathname, gchar *filename)
 {
     prefs_t *prefs = NULL;
 
-    if (main_struct->prefs == NULL)
-        {
-           main_struct->prefs = (prefs_t *) g_malloc0(sizeof(prefs_t));
-           main_struct->prefs->file = g_key_file_new();
-           main_struct->prefs->pathname = g_build_path(G_DIR_SEPARATOR_S, g_get_user_config_dir(), "heraia", NULL);
-           main_struct->prefs->filename = g_build_filename(main_struct->prefs->pathname, "main_preferences", NULL);
-        }
-    else
-        {
-            prefs = main_struct->prefs;
+    prefs = (prefs_t *) g_malloc0(sizeof(prefs_t));
 
-            if (prefs->file == NULL)
-                {
-                    prefs->file = g_key_file_new();
-                }
+    prefs->file = g_key_file_new();
+    prefs->pathname = pathname;
+    prefs->filename = g_build_filename(prefs->pathname, filename, NULL);
+
+    return prefs;
+}
+
+
+/**
+ * Destroys a preference structure
+ * @param prefs the preference structure to be freed
+ */
+void free_preference_struct(prefs_t *prefs)
+{
+    if (prefs != NULL)
+        {
+            g_free(prefs->filename);
+            g_free(prefs->pathname);
+            g_key_file_free(prefs->file);
         }
 }
 
@@ -174,18 +189,17 @@ static void save_window_preferences(GKeyFile *file, gchar *name, window_prop_t *
 
 
 /**
- *  Save only file preferences related options
- *  @param main_struct the main structure
+ * Save only file preferences related options
+ * @param main_struct the main structure
+ * @param prefs is a 'prefs_t *' filled preference structure
  */
-static void save_mp_file_preferences_options(heraia_struct_t *main_struct)
+static void save_mp_file_preferences_options(heraia_struct_t *main_struct, prefs_t *prefs)
 {
-    prefs_t *prefs = NULL;
     gboolean activated = FALSE;
 
-    if (main_struct != NULL)
-        {
-            prefs = main_struct->prefs;
 
+    if (main_struct != NULL && prefs != NULL)
+        {
             /* Saves the position */
             activated = is_toggle_button_activated(main_struct->xmls->main, "save_window_position_bt");
             g_key_file_set_boolean(prefs->file, GN_GLOBAL_PREFS, KN_SAVE_WINDOW_PREFS, activated);
@@ -204,24 +218,84 @@ static void save_mp_file_preferences_options(heraia_struct_t *main_struct)
                     save_window_preferences(prefs->file, KN_RESULT_WINDOW, main_struct->win_prop->result_window);
                     save_window_preferences(prefs->file, KN_FIND_WINDOW, main_struct->win_prop->find_window);
                     save_window_preferences(prefs->file, KN_FR_WINDOW, main_struct->win_prop->fr_window);
+                    save_window_preferences(prefs->file, KN_FDFT_WINDOW, main_struct->win_prop->fdft_window);
                 }
+
+            /* Saving opened files filenames ? */
+            activated = is_toggle_button_activated(main_struct->xmls->main, "save_filenames_bt");
+            g_key_file_set_boolean(prefs->file, GN_GLOBAL_PREFS, KN_SAVE_OPENED_FILES_FILENAMES, activated);
+
+            if (activated == TRUE)
+                {
+                    save_mp_files_filenames(main_struct, prefs);
+                }
+        }
+}
+
+/**
+ * Saves files filenames to the config file
+ * @param main_struct the main structure
+ * @param prefs preference structure
+ */
+static void save_mp_files_filenames(heraia_struct_t *main_struct, prefs_t *prefs)
+{
+    const gchar **list = NULL;  /**< A list that will contain all the files filenames            */
+    gchar *filename = NULL;     /**< One filename                                                */
+    gint *pos_list = NULL;   /**< list of the current position of the cursor in the documents */
+    gsize i = 0;
+    gsize len = 0;
+    gsize j = 0;
+    gint current_tab = 0;       /**< Current selected tab in the main notebook                   */
+    doc_t *document = NULL;     /**< One document (from the documents array in the main_struct   */
+    GtkWidget *notebook = NULL; /**< Main notebook in the file view in the main window           */
+
+    if (main_struct != NULL && prefs != NULL)
+        {
+            /* First initializing the list variable with the filenames of the opened documents */
+            i = 0;
+            j = 0;
+            len = main_struct->documents->len;
+            list = (const gchar **) g_malloc0 (sizeof(gchar *)*len);
+            pos_list = (gint *) g_malloc0 (sizeof(gint)*len);
+
+            while (i < len)
+                {
+                    document = g_ptr_array_index(main_struct->documents, i);
+
+                    if (document != NULL)
+                        {
+                            filename = g_strdup(doc_t_document_get_filename(document));
+                            /* There will be some limitations here due to the guint64 to gint cast */
+                            pos_list[j] = (gint) ghex_get_cursor_position(document->hex_widget);
+                            list[j] = filename;
+                            j++;
+                        }
+                    i++;
+                }
+
+            /* Saving them to the preference file */
+            g_key_file_set_string_list(prefs->file, GN_GLOBAL_PREFS, KN_FILES_FILENAMES, list, j);
+            g_key_file_set_integer_list(prefs->file, GN_GLOBAL_PREFS, KN_FILES_CURSOR_POSITIONS, pos_list, j);
+
+            /* saving current tab */
+            notebook = heraia_get_widget(main_struct->xmls->main, "file_notebook");
+            current_tab = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
+            g_key_file_set_integer(prefs->file, GN_GLOBAL_PREFS, KN_CURRENT_TAB, current_tab);
         }
 }
 
 
 /**
- *  Save only display related preferences
- *  @param main_struct : main structure
+ * Save only display related preferences
+ * @param main_struct : main structure
+ * @param prefs is a 'prefs_t *' filled preference structure
  */
-static void save_mp_display_preferences_options(heraia_struct_t *main_struct)
+static void save_mp_display_preferences_options(heraia_struct_t *main_struct, prefs_t *prefs)
 {
-    prefs_t *prefs = NULL;
     gboolean activated = FALSE;
 
-    if (main_struct != NULL)
+    if (main_struct != NULL && prefs != NULL)
         {
-            prefs = main_struct->prefs;
-
             /* Display Thousand (or not) */
             activated = is_toggle_button_activated(main_struct->xmls->main, "mp_thousand_bt");
             g_key_file_set_boolean(prefs->file, GN_DISPLAY_PREFS, KN_DISP_THOUSAND, activated);
@@ -236,18 +310,16 @@ static void save_mp_display_preferences_options(heraia_struct_t *main_struct)
 /**
  * Saves data interpretor state and preferences
  * @param main_struct : main structure
+ * @param prefs is a 'prefs_t *' filled preference structure
  */
-static void save_di_preferences(heraia_struct_t *main_struct)
+static void save_di_preferences(heraia_struct_t *main_struct, prefs_t *prefs)
 {
     gint selected_tab = -1; /**< Selected tab in data interpretor's window */
     gint stream_size = -1;  /**< Stream size in data interpretor's window  */
     gint endianness = -1;   /**< Endianness in data interpretor's window   */
-    prefs_t *prefs = NULL;  /**< structure for preferences                 */
 
-    if (main_struct != NULL && main_struct->current_DW != NULL)
+    if (main_struct != NULL && main_struct->current_DW != NULL && prefs != NULL)
         {
-            prefs = main_struct->prefs;
-
             selected_tab = di_get_selected_tab(main_struct);
             if (selected_tab >= 0)
                 {
@@ -272,17 +344,15 @@ static void save_di_preferences(heraia_struct_t *main_struct)
 /**
  * Saves main preferences window state and preferences
  * @param main_struct : main structure
+ * @param prefs is a 'prefs_t *' filled preference structure
  */
-static void save_mpwp_preferences(heraia_struct_t *main_struct)
+static void save_mpwp_preferences(heraia_struct_t *main_struct, prefs_t *prefs)
 {
     GtkNotebook *notebook = NULL; /**< main preferences's notebook               */
     gint selected_tab = -1;       /**< Selected tab in data interpretor's window */
-    prefs_t *prefs = NULL;        /**< structure for preferences                 */
 
-    if (main_struct != NULL && main_struct->current_DW != NULL)
+    if (main_struct != NULL && main_struct->current_DW != NULL && prefs != NULL)
         {
-            prefs = main_struct->prefs;
-
             notebook = GTK_NOTEBOOK(heraia_get_widget(main_struct->xmls->main, "mp_first_notebook"));
 
             if (notebook != NULL)
@@ -301,34 +371,32 @@ static void save_mpwp_preferences(heraia_struct_t *main_struct)
 /**
  * Save all preferences to the user preference file
  * @param main_struct the main structure
+ * @param prefs is a 'prefs_t *' filled preference structure
  */
-void save_preferences(heraia_struct_t *main_struct)
+void save_preferences(heraia_struct_t *main_struct, prefs_t *prefs)
 {
-    if (main_struct != NULL)
+    if (main_struct != NULL && prefs != NULL)
         {
             /* 1. Saving main Preferences */
-            save_mp_file_preferences_options(main_struct);
+            save_mp_file_preferences_options(main_struct, prefs);
 
             /* 2. Saving Display Preferences */
-            save_mp_display_preferences_options(main_struct);
+            save_mp_display_preferences_options(main_struct, prefs);
 
             /* 3. Saving Data Interpretor Preferences */
-            save_di_preferences(main_struct);
+            save_di_preferences(main_struct, prefs);
 
             /* 4. Saving Main Preferences Window Preferences */
-            save_mpwp_preferences(main_struct);
+            save_mpwp_preferences(main_struct, prefs);
 
-            if (main_struct->prefs != NULL)
-                {
-                    /* Saving to file */
-                    save_preferences_to_file(main_struct->prefs);
-                }
+            /* 5. Saving to file */
+            save_preferences_to_file(prefs);
         }
 }
 
 
 /**
- *  window preferences
+ *  Window preferences
  *  @param file a GKeyFile where values are stored
  *  @param name a keyname (basically a window name)
  *  @param window_prop all window properties to save (structure window_prop_t)
@@ -361,20 +429,20 @@ static void load_window_preferences(GKeyFile *file, gchar *name, window_prop_t *
 
 
 /**
- *  Load only main preferences related options
+ * Load only main preferences related options
  * @param main_struct the main structure
+ * @param prefs is a 'prefs_t *' filled preference structure
  */
-static void load_mp_file_preferences_options(heraia_struct_t *main_struct)
+static void load_mp_file_preferences_options(heraia_struct_t *main_struct, prefs_t *prefs)
 {
-    prefs_t *prefs = NULL;
     GtkWidget *save_window_position_bt = NULL;
+    GtkWidget *save_filenames_bt = NULL;
     gboolean activated = FALSE;
 
-    if (main_struct != NULL)
+    if (main_struct != NULL && prefs != NULL)
         {
-            prefs = main_struct->prefs;
-
-            /* Saving window's positions ? */
+            log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Loading window's positions"));
+            /* Loading window's positions ? */
             activated = g_key_file_get_boolean(prefs->file, GN_GLOBAL_PREFS, KN_SAVE_WINDOW_PREFS, NULL);
             save_window_position_bt = heraia_get_widget(main_struct->xmls->main, "save_window_position_bt");
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(save_window_position_bt), activated);
@@ -393,7 +461,63 @@ static void load_mp_file_preferences_options(heraia_struct_t *main_struct)
                     load_window_preferences(prefs->file, KN_RESULT_WINDOW, main_struct->win_prop->result_window);
                     load_window_preferences(prefs->file, KN_FIND_WINDOW, main_struct->win_prop->find_window);
                     load_window_preferences(prefs->file, KN_FR_WINDOW, main_struct->win_prop->fr_window);
+                    load_window_preferences(prefs->file, KN_FDFT_WINDOW, main_struct->win_prop->fdft_window);
                 }
+
+            /* Loading opened files filenames ? */
+            activated = g_key_file_get_boolean(prefs->file, GN_GLOBAL_PREFS, KN_SAVE_OPENED_FILES_FILENAMES, NULL);
+            save_filenames_bt = heraia_get_widget(main_struct->xmls->main, "save_filenames_bt");
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(save_filenames_bt), activated);
+
+            if (activated == TRUE)
+                {
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Loading files..."));
+                    load_mp_files_filenames(main_struct, prefs);
+                }
+        }
+}
+
+
+/**
+ * Load files filenames from the config file
+ * @param main_struct the main structure
+ * @param prefs preference structure
+ */
+static void load_mp_files_filenames(heraia_struct_t *main_struct, prefs_t *prefs)
+{
+    gchar **list = NULL;      /**< The list that will contain all filenames to be loaded       */
+    gint *pos_list = NULL;    /**< list of the current position of the cursor in the documents */
+    gsize i = 0;
+    gsize len = 0;
+    gsize pos_len = 0;
+    gint current_tab = 0;
+    GtkWidget *notebook = NULL;
+
+    if (main_struct != NULL && prefs != NULL)
+        {
+            /* get file list */
+            list = g_key_file_get_string_list(prefs->file, GN_GLOBAL_PREFS, KN_FILES_FILENAMES, &len, NULL);
+            pos_list = (gint *) g_key_file_get_integer_list(prefs->file, GN_GLOBAL_PREFS, KN_FILES_CURSOR_POSITIONS, &pos_len, NULL);
+
+            if (len == pos_len)
+                {
+                    for (i = 0; i < len; i++)
+                        {
+                            if (load_file_to_analyse(main_struct, list[i]))
+                                {
+                                    /* in add_new_tab_in_main_window() function, the newly */
+                                    /* opened document becomes the current one             */
+                                    /* There is some limitations here due to the cast from */
+                                    /* gint to guint64                                     */
+                                    ghex_set_cursor_position(main_struct->current_doc->hex_widget, (guint64) pos_list[i]);
+                                }
+                        }
+                }
+
+            /* get current tab */
+            current_tab = g_key_file_get_integer(prefs->file, GN_GLOBAL_PREFS, KN_CURRENT_TAB, NULL);
+            notebook = heraia_get_widget(main_struct->xmls->main, "file_notebook");
+            gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), current_tab);
         }
 }
 
@@ -401,17 +525,15 @@ static void load_mp_file_preferences_options(heraia_struct_t *main_struct)
 /**
  *  Load display related preferences
  * @param main_struct the main structure
+ * @param prefs is a 'prefs_t *' filled preference structure
  */
-static void load_mp_display_preferences_options(heraia_struct_t *main_struct)
+static void load_mp_display_preferences_options(heraia_struct_t *main_struct, prefs_t *prefs)
 {
-    prefs_t *prefs = NULL;
     GtkWidget *toggle_button = NULL;
     gboolean activated = FALSE;
 
-    if (main_struct != NULL)
+    if (main_struct != NULL && prefs != NULL)
         {
-            prefs = main_struct->prefs;
-
             /* Display thousands (or not) */
             activated = g_key_file_get_boolean(prefs->file, GN_DISPLAY_PREFS, KN_DISP_THOUSAND, NULL);
             toggle_button = heraia_get_widget(main_struct->xmls->main, "mp_thousand_bt");
@@ -428,20 +550,16 @@ static void load_mp_display_preferences_options(heraia_struct_t *main_struct)
 /**
  * Load data interpretor state and preferences
  * @param main_struct : main structure
+ * @param prefs is a 'prefs_t *' filled preference structure
  */
-static void load_di_preferences(heraia_struct_t *main_struct)
+static void load_di_preferences(heraia_struct_t *main_struct, prefs_t *prefs)
 {
-    GtkNotebook *notebook = NULL;  /**< data interpretor's notebook               */
-    gint selected_tab = -1;        /**< Selected tab in data interpretor's window */
-    gint stream_size = -1;         /**< Stream size in data interpretor's window  */
-    gint endianness = -1;          /**< Endianness in data interpretor's window   */
-    prefs_t *prefs = NULL;         /**< structure for preferences                 */
+    gint selected_tab = -1;   /**< Selected tab in data interpretor's window */
+    gint stream_size = -1;    /**< Stream size in data interpretor's window  */
+    gint endianness = -1;     /**< Endianness in data interpretor's window   */
 
-    if (main_struct != NULL && main_struct->current_DW != NULL && main_struct->xmls != NULL && main_struct->xmls->main != NULL)
+    if (main_struct != NULL && main_struct->current_DW != NULL && main_struct->xmls != NULL && main_struct->xmls->main != NULL && prefs != NULL)
         {
-
-            prefs = main_struct->prefs;
-
             selected_tab = g_key_file_get_integer(prefs->file, GN_DI_PREFS, KN_DI_SELECTED_TAB, NULL);
             stream_size = g_key_file_get_integer(prefs->file, GN_DI_PREFS, KN_DI_STREAM_SIZE, NULL);
             endianness = g_key_file_get_integer(prefs->file, GN_DI_PREFS, KN_DI_ENDIANNESS, NULL);
@@ -456,18 +574,17 @@ static void load_di_preferences(heraia_struct_t *main_struct)
 /**
  * Load main preferences window state and preferences
  * @param main_struct : main structure
+ * @param prefs is a 'prefs_t *' filled preference structure
  */
-static void load_mpwp_preferences(heraia_struct_t *main_struct)
+static void load_mpwp_preferences(heraia_struct_t *main_struct, prefs_t *prefs)
 {
     GtkNotebook *notebook = NULL;  /**< main preferences's notebook               */
     GtkWidget *button = NULL;      /**< tool button from the toolbar              */
     gint selected_tab;             /**< Selected tab in data interpretor's window */
-    prefs_t *prefs = NULL;         /**< structure for preferences                 */
 
-    if (main_struct != NULL && main_struct->current_DW != NULL && main_struct->xmls != NULL && main_struct->xmls->main != NULL)
+    if (main_struct != NULL && main_struct->current_DW != NULL && main_struct->xmls != NULL && main_struct->xmls->main != NULL && prefs != NULL)
         {
             notebook = GTK_NOTEBOOK(heraia_get_widget(main_struct->xmls->main, "mp_first_notebook"));
-            prefs = main_struct->prefs;
 
             if (notebook != NULL)
                 {
@@ -498,21 +615,30 @@ static void load_mpwp_preferences(heraia_struct_t *main_struct)
 /**
  * Sets up the preferences as loaded in the preference file
  * @param main_struct the main structure
+ * @param prefs is a 'prefs_t *' filled preference structure
  */
-void load_preferences(heraia_struct_t *main_struct)
+void load_preferences(heraia_struct_t *main_struct, prefs_t *prefs)
 {
-    if (main_struct != NULL)
+    if (main_struct != NULL && prefs != NULL)
         {
-            /* 1. Loading Main Preferences */
-            load_mp_file_preferences_options(main_struct);
+            /* 0. Loading preferences from file */
+            if (load_preference_file(prefs) == TRUE)
+                {
+                    /* 1. Loading Main Preferences */
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Loading main preferences"));
+                    load_mp_file_preferences_options(main_struct, prefs);
 
-            /* 2. Loading Display preferences */
-            load_mp_display_preferences_options(main_struct);
+                    /* 2. Loading Display preferences */
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Loading main display preferences"));
+                    load_mp_display_preferences_options(main_struct, prefs);
 
-            /* 3. Loading Data Interpretor Preferences */
-            load_di_preferences(main_struct);
+                    /* 3. Loading Data Interpretor Preferences */
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Loading data interpretor preferences"));
+                    load_di_preferences(main_struct, prefs);
 
-            /* 4. Loading Main Preferences Window Preferences */
-            load_mpwp_preferences(main_struct);
+                    /* 4. Loading Main Preferences Window Preferences */
+                    log_message(main_struct, G_LOG_LEVEL_DEBUG, Q_("Loading window preference's main preferences"));
+                    load_mpwp_preferences(main_struct, prefs);
+                }
         }
 }

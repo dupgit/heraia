@@ -65,15 +65,62 @@
                     <property name="visible">True</property>
                     <property name="spacing">2</property>
                     <child>
-                      <object class="GtkCheckButton" id="save_window_position_bt">
-                        <property name="label" translatable="yes">Save windows's position</property>
+                      <object class="GtkFrame" id="frame5">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="draw_indicator">True</property>
+                        <property name="label_xalign">0</property>
+                        <child>
+                          <object class="GtkAlignment" id="alignment5">
+                            <property name="visible">True</property>
+                            <property name="top_padding">2</property>
+                            <property name="bottom_padding">2</property>
+                            <property name="left_padding">12</property>
+                            <property name="right_padding">2</property>
+                            <child>
+                              <object class="GtkVBox" id="vbox16">
+                                <property name="visible">True</property>
+                                <child>
+                                  <object class="GtkCheckButton" id="save_window_position_bt">
+                                    <property name="label" translatable="yes">Windows's position</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">False</property>
+                                    <property name="draw_indicator">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkCheckButton" id="save_filenames_bt">
+                                    <property name="label" translatable="yes">Filenames of opened files in the session</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">False</property>
+                                    <property name="draw_indicator">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child type="label">
+                          <object class="GtkLabel" id="label8">
+                            <property name="visible">True</property>
+                            <property name="xpad">2</property>
+                            <property name="label" translatable="yes">Save (and open)</property>
+                            <property name="use_markup">True</property>
+                          </object>
+                        </child>
                       </object>
                       <packing>
-                        <property name="expand">False</property>
                         <property name="position">0</property>
                       </packing>
                     </child>
@@ -126,7 +173,7 @@
                             <property name="spacing">2</property>
                             <child>
                               <object class="GtkCheckButton" id="mp_thousand_bt">
-                                <property name="label" translatable="yes">Use a blank separator for thousands</property>
+                                <property name="label" translatable="yes">Use thousands's grouping character</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -968,7 +1015,6 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accel_main_window</property>
-                        <signal name="activate" handler="on_open_activate"/>
                       </object>
                     </child>
                     <child>
@@ -978,7 +1024,6 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accel_main_window</property>
-                        <signal name="activate" handler="on_save_activate"/>
                       </object>
                     </child>
                     <child>
@@ -988,11 +1033,51 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accel_main_window</property>
-                        <signal name="activate" handler="on_save_as_activate"/>
                       </object>
                     </child>
                     <child>
                       <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="menuitem10">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">_Projects</property>
+                        <property name="use_underline">True</property>
+                        <child type="submenu">
+                          <object class="GtkMenu" id="menu2">
+                            <property name="visible">True</property>
+                            <child>
+                              <object class="GtkImageMenuItem" id="menu_projects_open">
+                                <property name="label">gtk-open</property>
+                                <property name="visible">True</property>
+                                <property name="use_underline">True</property>
+                                <property name="use_stock">True</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkImageMenuItem" id="menu_projects_save_as">
+                                <property name="label">gtk-save-as</property>
+                                <property name="visible">True</property>
+                                <property name="use_underline">True</property>
+                                <property name="use_stock">True</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkImageMenuItem" id="menu_projects_close">
+                                <property name="label">gtk-close</property>
+                                <property name="visible">True</property>
+                                <property name="use_underline">True</property>
+                                <property name="use_stock">True</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="menuitem9">
                         <property name="visible">True</property>
                       </object>
                     </child>
@@ -1017,7 +1102,6 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accel_main_window</property>
-                        <signal name="activate" handler="on_quit_activate"/>
                       </object>
                     </child>
                   </object>
@@ -1038,7 +1122,6 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accel_main_window</property>
-                        <signal name="activate" handler="on_undo_activate"/>
                       </object>
                     </child>
                     <child>
@@ -1062,7 +1145,6 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accel_main_window</property>
-                        <signal name="activate" handler="on_cut_activate"/>
                       </object>
                     </child>
                     <child>
@@ -1072,7 +1154,6 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accel_main_window</property>
-                        <signal name="activate" handler="on_copy_activate"/>
                       </object>
                     </child>
                     <child>
@@ -1082,7 +1163,6 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accel_main_window</property>
-                        <signal name="activate" handler="on_paste_activate"/>
                       </object>
                     </child>
                     <child>
@@ -1092,7 +1172,6 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accel_main_window</property>
-                        <signal name="activate" handler="on_delete_activate"/>
                       </object>
                     </child>
                     <child>
@@ -1121,7 +1200,6 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accel_main_window</property>
-                        <signal name="activate" handler="on_preferences_activate"/>
                       </object>
                     </child>
                   </object>
@@ -1154,6 +1232,14 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="accel_group">accel_main_window</property>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="menu_fdft">
+                        <property name="label" translatable="yes">Find data from type</property>
+                        <property name="visible">True</property>
+                        <property name="image">image2</property>
+                        <property name="use_stock">False</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
@@ -1171,7 +1257,6 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="label" translatable="yes">Data _Interpretor</property>
                         <property name="use_underline">True</property>
                         <accelerator key="I" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                        <signal name="activate" handler="on_DIMenu_activate"/>
                       </object>
                     </child>
                     <child>
@@ -1205,7 +1290,6 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Plugins list</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_plugin_list_activate"/>
                       </object>
                     </child>
                     <child>
@@ -1231,7 +1315,6 @@ POSSIBILITY OF SUCH DAMAGES.
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accel_main_window</property>
-                        <signal name="activate" handler="on_a_propos1_activate"/>
                       </object>
                     </child>
                     <child>
@@ -1433,6 +1516,11 @@ POSSIBILITY OF SUCH DAMAGES.
               <object class="GtkNotebook" id="file_notebook">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="has_focus">True</property>
+                <property name="is_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="has_default">True</property>
+                <property name="receives_default">True</property>
                 <property name="scrollable">True</property>
                 <property name="enable_popup">True</property>
               </object>
@@ -1456,54 +1544,6 @@ POSSIBILITY OF SUCH DAMAGES.
     <property name="upper">4096</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
-  </object>
-  <object class="GtkMenu" id="hex_context_menu">
-    <property name="visible">True</property>
-    <child>
-      <object class="GtkImageMenuItem" id="hcm_undo">
-        <property name="label">gtk-undo</property>
-        <property name="visible">True</property>
-        <property name="use_underline">True</property>
-        <property name="use_stock">True</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="hcm_redo">
-        <property name="label">gtk-redo</property>
-        <property name="visible">True</property>
-        <property name="use_underline">True</property>
-        <property name="use_stock">True</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkSeparatorMenuItem" id="menuitem2">
-        <property name="visible">True</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="hcm_copy">
-        <property name="label">gtk-copy</property>
-        <property name="visible">True</property>
-        <property name="use_underline">True</property>
-        <property name="use_stock">True</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="hcm_cut">
-        <property name="label">gtk-cut</property>
-        <property name="visible">True</property>
-        <property name="use_underline">True</property>
-        <property name="use_stock">True</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="hcm_paste">
-        <property name="label">gtk-paste</property>
-        <property name="visible">True</property>
-        <property name="use_underline">True</property>
-        <property name="use_stock">True</property>
-      </object>
-    </child>
   </object>
   <object class="GtkDialog" id="goto_dialog">
     <property name="border_width">5</property>
@@ -2005,10 +2045,11 @@ POSSIBILITY OF SUCH DAMAGES.
             </child>
             <child>
               <object class="GtkButton" id="fr_replace_bt">
-                <property name="label" translatable="yes">Replace</property>
+                <property name="label" translatable="yes">R_eplace</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="use_underline">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -2017,12 +2058,13 @@ POSSIBILITY OF SUCH DAMAGES.
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="fr_search_replace_bt">
-                <property name="label">gtk-find-and-replace</property>
+              <object class="GtkButton" id="fr_replace_search_bt">
+                <property name="label" translatable="yes">Replace and searc_h</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
+                <property name="image">image1</property>
+                <property name="use_underline">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -2075,5 +2117,273 @@ POSSIBILITY OF SUCH DAMAGES.
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="stock">gtk-find-and-replace</property>
+  </object>
+  <object class="GtkWindow" id="fdft_window">
+    <property name="title" translatable="yes">Find data from type...</property>
+    <property name="icon">pixmaps/logo_with_more_transparency.png</property>
+    <child>
+      <object class="GtkVBox" id="vbox17">
+        <property name="visible">True</property>
+        <child>
+          <object class="GtkFrame" id="frame8">
+            <property name="visible">True</property>
+            <property name="border_width">2</property>
+            <property name="label_xalign">0</property>
+            <child>
+              <object class="GtkAlignment" id="alignment6">
+                <property name="visible">True</property>
+                <property name="top_padding">2</property>
+                <property name="bottom_padding">2</property>
+                <property name="left_padding">2</property>
+                <property name="right_padding">2</property>
+                <child>
+                  <object class="GtkHBox" id="hbox6">
+                    <property name="visible">True</property>
+                    <property name="homogeneous">True</property>
+                    <child>
+                      <object class="GtkVBox" id="fdft_category_vbox">
+                        <property name="visible">True</property>
+                        <property name="spacing">2</property>
+                        <child>
+                          <object class="GtkLabel" id="label12">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Category</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkVBox" id="fdft_type_vbox">
+                        <property name="visible">True</property>
+                        <property name="spacing">2</property>
+                        <child>
+                          <object class="GtkLabel" id="label13">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Type</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkVBox" id="fdft_feature_vbox">
+                        <property name="visible">True</property>
+                        <property name="spacing">2</property>
+                        <child>
+                          <object class="GtkLabel" id="label14">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Feature</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="label9">
+                <property name="visible">True</property>
+                <property name="xpad">4</property>
+                <property name="label" translatable="yes">Data type selection :</property>
+                <property name="use_markup">True</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFrame" id="frame9">
+            <property name="visible">True</property>
+            <property name="border_width">2</property>
+            <property name="label_xalign">0</property>
+            <child>
+              <object class="GtkAlignment" id="alignment7">
+                <property name="visible">True</property>
+                <property name="top_padding">2</property>
+                <property name="bottom_padding">2</property>
+                <property name="left_padding">2</property>
+                <property name="right_padding">2</property>
+                <child>
+                  <object class="GtkHBox" id="hbox5">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkLabel" id="label11">
+                        <property name="visible">True</property>
+                        <property name="xpad">4</property>
+                        <property name="label" translatable="yes">Value :</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="fdft_value_entry">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="invisible_char">&#x25CF;</property>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="label10">
+                <property name="visible">True</property>
+                <property name="xpad">4</property>
+                <property name="label" translatable="yes">Look for :</property>
+                <property name="use_markup">True</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHButtonBox" id="hbuttonbox9">
+            <property name="visible">True</property>
+            <property name="border_width">2</property>
+            <property name="spacing">2</property>
+            <property name="layout_style">center</property>
+            <child>
+              <object class="GtkButton" id="fdft_prev_bt">
+                <property name="label">gtk-go-back</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="fdft_next_bt">
+                <property name="label">gtk-go-forward</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="fdft_all_bt">
+                <property name="label" translatable="yes">Find all</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHSeparator" id="hseparator5">
+            <property name="visible">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="padding">2</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHButtonBox" id="hbuttonbox10">
+            <property name="visible">True</property>
+            <property name="border_width">2</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="fdft_close_bt">
+                <property name="label">gtk-close</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">4</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="stock">gtk-find</property>
+    <property name="icon-size">1</property>
   </object>
 </interface>
