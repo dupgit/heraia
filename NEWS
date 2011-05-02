@@ -1,3 +1,9 @@
+02.05.2011 New version 0.1.7
+            - Windows binary
+            - save and load a "project" like geany editor (saving preferences,
+              opened files, current opened tabs and so on...)
+            - find data from type
+
 20.08.2010 New version 0.1.5
             - full french translation
             - now one can close files with a little button on tabs or via

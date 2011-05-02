@@ -3,7 +3,7 @@
   user_prefs.h
   heraia - an hexadecimal file editor and analyser based on ghex
 
-  (C) Copyright 2008 - 2010 Olivier Delhomme
+  (C) Copyright 2008 - 2011 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 

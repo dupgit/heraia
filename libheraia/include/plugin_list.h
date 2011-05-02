@@ -3,7 +3,7 @@
  *  plugin_list.h
  *  manage the plugin_list_window window
  *
- *  (C) Copyright 2007 - 2010 Olivier Delhomme
+ *  (C) Copyright 2007 - 2011 Olivier Delhomme
  *  e-mail : heraia@delhomme.org
  *  URL    : http://heraia.tuxfamily.org
  *
