@@ -1,3 +1,37 @@
+02 may 2011
+    Release date for 0.1.7.
+    Additions are :
+     - a find from data type window that lets one look for a specific string
+       as if decoded with the selected data type (eg search in the document a
+       date such as 02/05/2011 coded in a C way)
+     - saving and loading projects is now possible.
+     - Some bugs were corrected (Please report them !)
+
+    Now a windows binary package is available for download. It should be a
+    portable one (ie no need to install the heraia and all needed library are
+    included). I hope I'll be able to do so at each release. By the way, I'm
+    looking for packagers (Debian, Ubuntu, Redhat, Suse, Solaris, ...).
+
+    Translations :
+     Langages are English and French (up to date).
+
+    Since 0.1.6
+     - 2786 lines were added
+     - 1155 lines were killed
+
+    Heraia has now 13220 lines.  The biggest file and the smallest ones are
+    still the same :
+     - heraia_ui.c with 2601 lines now
+     - main_pref_window.h which still has 32 lines
+
+    The development focused on libfcl these last month. It is going very slowly
+    but it might lead to something useable. I hope I will be able to connect
+    this library to libgtkhex that I use with heraia. Before this there is still
+    a hudge work to do.
+
+    The devel docs are 51 MB in 2731 files ! The graphic stuff explains this
+    hudge size.
+
 30 October 2010
     Release date for 0.1.6.
     Additions are :
@@ -33,7 +67,7 @@
      - 3196 lines were added
      - 165 lines were killed
 
-    Heraia has now 12085 lines. THe biggest file is heraia_ui with 2411 lines
+    Heraia has now 12085 lines. The biggest file is heraia_ui with 2411 lines
     and the smalest one is main_pref_window.h with 32 lines !
 
     Devel docs, generated with doxygen are 49 MB in size and represents 2564
