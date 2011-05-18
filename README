@@ -65,10 +65,10 @@ Code coverage and profiling tests do the following :
  ./src/heraia src/heraia
 
 Then do whatever you want with the program (eg. test the functions you
-need to) and :
+need to) and (assuming you are in the trunk directory) :
 
- cd src
- lcov -c -o coverage.info --directory=./
+ lcov -c -o ../../coverage/coverage.info --directory=./
+ cd ../../coverage
  genhtml coverage.info
 
 open index.html generated file with your favorite web browser, and you're done.
