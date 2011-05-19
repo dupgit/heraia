@@ -1,80 +1,112 @@
+================================================================================
+Building Heraia
+================================================================================
+
+.. contents::
+
+
+Dependencies needed
+-------------------
+
 To build heraia you need to install the following packages and all their
 dependencies before (according that you have a default installation) :
 
 On ubuntu 10.04 and Debian squeeze :
 
- . gcc
- . make
- . intltool
- . libglib2.0-dev
- . libgtk2.0-dev
- . libgtkhex0-dev
+ - gcc
+ - make
+ - intltool
+ - libglib2.0-dev
+ - libgtk2.0-dev
+ - libgtkhex0-dev
 
 On OpenSuse 11.3 and Fedora 14 :
 
- . gcc
- . make
- . intltool
- . glib2-devel
- . gtk2-devel
- . ghex-devel
+ - gcc
+ - make
+ - intltool
+ - glib2-devel
+ - gtk2-devel
+ - ghex-devel
 
 On OpenIndiana 5.11 :
 
- . gcc-3
- . gettext
- . gnu-gettext
- . ghex
+ - gcc-3
+ - gettext
+ - gnu-gettext
+ - ghex
 
 
-Compiling :
----------
+Compiling the source from a release version (heraia-\*.tar.gz)
+--------------------------------------------------------------
 
-Compiling the program if you have the svn sources (the easy way)
+Type the following set of commands ::
 
- ./autoclean.sh
- ./autogen.sh
- ./configure
- make -s
+    ./configure
+    make -s
 
-Optional (system installation) :
- sudo make install
+
+Optional (system installation) ::
+
+    sudo make install
+
+
+Compiling the source from the svn (the easy way)
+------------------------------------------------
+
+You'll need the following programs ``aclocal``, ``libtoolize``, ``automake``,
+``autoconf``, ``glib-gettextize`` and ``intltoolize`` to be installed in order
+to run heraia's autogen.sh ::
+
+    ./autoclean.sh
+    ./autogen.sh
+    ./configure
+    make -s
+
+Optional (system installation) ::
+
+    sudo make install
 
 Now you can run the program (filename is a file of your own choice, for
-instance src/heraia :) :
- src/heraia filename
+instance *src/heraia* :) ::
 
-If you have installed it :
- heraia filename
+    src/heraia filename
 
-Please note :
-If you downloaded the sources from the svn repository the
-file heraia.csv does not mean anything (as it is not generated
-for every commit - but only for distribution packages upon new
-versions).
+If you have installed it ::
 
-And also, if you have any question regarding heraia, please e-mail me at
-heraia@delhomme.org
+    heraia filename
+
+.. note::
+   If you downloaded the sources from the svn repository the
+   file *heraia.csv* does not mean anything as it has not been generated back
+   since 2007 !
+
+If you have any question regarding heraia, please e-mail me at
+heraia@delhomme.org I'll be glad to answer your questions.
 
 
-***** Reminder for code coverage *****
+Reminder for code coverage
+--------------------------
 
-Code coverage and profiling tests do the following :
- ./configure --enable-gcov --enable-gprof --enable-debug
- make
- ./src/heraia src/heraia
+Code coverage and profiling tests do the following ::
+
+    ./configure --enable-gcov --enable-gprof --enable-debug
+    make
+    ./src/heraia src/heraia
 
 Then do whatever you want with the program (eg. test the functions you
-need to) and (assuming you are in the trunk directory) :
+need to) and (assuming you are in the trunk directory) ::
 
- lcov -c -o ../../coverage/coverage.info --directory=./
- cd ../../coverage
- genhtml coverage.info
+    lcov -c -o ../../coverage/coverage.info --directory=./
+    cd ../../coverage
+    genhtml coverage.info
 
-open index.html generated file with your favorite web browser, and you're done.
+Open *index.html* generated file with your favorite web browser, and you're
+done !
 
 
-***** Reminder for developpers *****
+Reminder for developpers
+------------------------
 
 For a release do not forget to :
 
@@ -84,26 +116,57 @@ For a release do not forget to :
  - generate the doxygen documentation in the docs directory. Edit
    heraia.doxygen file to reflect version number and directories (basicaly
    lines PROJECT_NUMBER and OUTPUT_DIRECTORY).
-   Execute "./make_devel_docs.sh"
-   make a tar.gz available in the download directory (as for sources)
+
+    - Execute "./make_devel_docs.sh"
+    - make a tar.gz available in the download directory (as for sources)
+
  - generate code coverage tests
 
 
-DocBook : (Heraia uses JavaDoc Style with @ instead of \)
+Documentation
+-------------
 
-    * \see to do a see also comment
-    * \param to document parameters
-    * \return to document to result of a function
-    * \struct to document a C-struct.
-    * \union to document a union.
-    * \enum to document an enumeration type.
-    * \fn to document a function.
-    * \var to document a variable or typedef or enum value.
-    * \def to document a #define.
-    * \typedef to document a type definition.
-    * \file to document a file.
-    * \namespace to document a namespace.
-    * \brief to document briefly
+DocBook
+~~~~~~~
 
-See all available commands here :
-http://www.stack.nl/~dimitri/doxygen/commands.html
+Heraia uses JavaDoc style doxygen comments with ``@`` instead of ``\`` to
+document the code. Here are some of the more commonly used commands :
+
+    * ``\see`` to do a see also comment
+    * ``\param`` to document parameters
+    * ``\return`` to document to result of a function
+    * ``\struct`` to document a C-struct.
+    * ``\union`` to document a union.
+    * ``\enum`` to document an enumeration type.
+    * ``\fn`` to document a function.
+    * ``\var`` to document a variable or typedef or enum value.
+    * ``\def`` to document a #define.
+    * ``\typedef`` to document a type definition.
+    * ``\file`` to document a file.
+    * ``\namespace`` to document a namespace.
+    * ``\brief`` to document briefly
+
+See all available commands in `Dimitri's documentation`_
+
+__
+.. _Dimitri's documentation: http://www.stack.nl/~dimitri/doxygen/commands.html
+
+
+ReST
+~~~~
+
+I'll try to write user documentations with a ReST style. Here are some links to
+some ReST documentation :
+
+ * The cheatsheet_
+ * A quickref_
+ * An `interesting page`_
+
+To generate the documentation use ``rst2*`` programs like ::
+
+    rst2html -q ../../README README.html
+
+__
+.. _cheatsheet: http://docutils.sourceforge.net/docs/user/rst/cheatsheet.txt
+.. _quickref:   http://docutils.sourceforge.net/docs/user/rst/quickref.html
+.. _interesting page: http://sphinx.pocoo.org/rest.html
