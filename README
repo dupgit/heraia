@@ -85,8 +85,11 @@ If you have any question regarding heraia, please e-mail me at
 heraia@delhomme.org I'll be glad to answer your questions.
 
 
-Reminder for code coverage
---------------------------
+Reminders
+---------
+
+Code coverage
+~~~~~~~~~~~~~
 
 Code coverage and profiling tests do the following ::
 
@@ -105,8 +108,8 @@ Open *index.html* generated file with your favorite web browser, and you're
 done !
 
 
-Reminder for developpers
-------------------------
+To do a release
+~~~~~~~~~~~~~~~
 
 For a release do not forget to :
 

@@ -1,7 +1,7 @@
 AC_PREREQ(2.59)
 
-AC_INIT([Heraia], [0.1.7],
-        [Olivier Delhomme],
+AC_INIT([Heraia], [0.1.8],
+        [Olivier Delhomme <heraia@delhomme.org>],
         [heraia])
 
 AC_CONFIG_MACRO_DIR([m4])
