@@ -1,38 +1,40 @@
+================================================================================
 Heraia's version roadmap.
+================================================================================
 
 I consider a minor release as a cumulative number of micro releases. So the
 functions I need for 0.1.0 will be done in 0.0.x micro releases. I expect
 functions to be tested for a micro release and more tested for a minor release,
 I let you imagine what I expect before I do a major release !!!
 
-. 0.0.2 [08.08.2008]
+- 0.0.2 [08.08.2008]
    * save function
 
-. 0.0.3 [19.08.2008]
+- 0.0.3 [19.08.2008]
    * record window properties
 
-. 0.0.4 [24.08.2008]
+- 0.0.4 [24.08.2008]
    * save as function
    * add curent edited file name in the main window name
    * rename window_prop and all_window_prop with and "_t" at the end of the
      name
 
-. 0.0.5 [20.10.2008]
+- 0.0.5 [20.10.2008]
    * add a user preferences file
    * add the cursor position somewhere, somehow (a new property zone
      may be welcomed)
 
-. 0.0.6 [17.01.2009]
+- 0.0.6 [17.01.2009]
    * save window properties to the user config file
    * load window properties from user config file
    * translate all french function names in the code into english ones
    * add a preference window
 
-. 0.0.7 [14.02.2009]
+- 0.0.7 [14.02.2009]
    * add a preference option to display thousands or not in the main window
    * begin code documentation effort
 
-. 0.0.8 [14.03.2009]
+- 0.0.8 [14.03.2009]
    * add height and weight to window properties (including saving and loading
      to/from preference file)
    * save the displayed tab of the data interpretor in the preference file
@@ -41,26 +43,27 @@ I let you imagine what I expect before I do a major release !!!
    * Save and Save As buttons should be greyed when no file is loaded (same
      thing applies to stat plugin)
 
-. 0.0.9 [19.05.2009]
+- 0.0.9 [19.05.2009]
    * get rid of the filename structure in the heraia_window_t (it does
      duplicates the one contained in the hexdocument structure)
    * double clicking on a plugin in plugin list window opens it
 
-- 0.1.0 [30.06.2009]
+- **0.1.0 [30.06.2009]**
    * save and save as functions
    * record window positions (save them to a user preference file)
    * add somewhere, the cursor's position and file length
    * do some of the most important todos found in the code
 
-    Delayed features : I may do this if someone wants it :
-     . save plugins preferences to the config file
-     . save plugins display preferences
-     . add plugins preferences files
-     . load plugins preferences from the config file (when initialiazing plugins)
-     . add a preference option where the user may be able to reset window
+.. note::
+    Delayed features *(I may do this if someone wants it)* :
+     * save plugins preferences to the config file
+     * save plugins display preferences
+     * add plugins preferences files
+     * load plugins preferences from the config file (when initialiazing plugins)
+     * add a preference option where the user may be able to reset window
        properties (not necessary as one may only uncheck saving properties)
 
-. 0.1.1 [05.04.2010]
+- 0.1.1 [05.04.2010]
    * rename main_window variable and heraia_window_t structure in
      main_struct variable and heraia_struct_t structure which
      will be less confusing.
@@ -68,37 +71,37 @@ I let you imagine what I expect before I do a major release !!!
    * review code with coherence in mind and replace 'GtkHex' by 'Heraia_Hex'
      for example
 
-. 0.1.2 [11.05.2010]
+- 0.1.2 [11.05.2010]
    * have the selection positions added near the cursor's position
    * add a function that will look if the document has been modified or not
      before closing
 
-. 0.1.3 [16.06.2010]
+- 0.1.3 [16.06.2010]
    * begin effort to make the whole project translatable
    * Saving stream size from data interpretor's windows to main preferences
    * Clean duplicate code in data_interpretor.c
 
-. 0.1.4 [10.08.2010]
+- 0.1.4 [10.08.2010]
    * undo/redo features
    * copy/cut/paste features
    * Saving endianness from data interpretor's windows to main preferences
 
-. 0.1.5 [20.08.2010]
+- 0.1.5 [20.08.2010]
    * have the ability to open more than one file at a time
    * have the ability to close opened files
    * Improve dialog box when closing with modified documents
 
-. 0.1.6 [30.10.2010]
+- 0.1.6 [30.10.2010]
    * have basic search and replace functions
    * hability to jump anywhere in the file
    * Enable line numbers in the ghex widget with an option in main preferences
 
-. 0.1.7
+- 0.1.7 [02.05.2011]
    * save and load a "project" like geany editor (saving preferences, opened
      files, current opened tabs and so on...)
    * find data from type
 
-. 0.1.8
+- 0.1.8
    * rewrite data_type creation in order to allow a script or an extern
      program execution
    * Add regexp to find data from type search window and add a new window that
@@ -106,7 +109,7 @@ I let you imagine what I expect before I do a major release !!!
    * Add options to the find data from type : endianness, stream size, exact
      match (which will be very usefull for numbers)
 
-. 0.1.9
+- 0.1.9
    * python bindings ?
    * Look at everything in order to enhance user experience and have a more
      usable program.
@@ -115,7 +118,7 @@ I let you imagine what I expect before I do a major release !!!
    * Add recent files and recent projects
    * Add an import ability (for instance tcpdump imports)
 
-- 0.2.0
+- **0.2.0**
    * rename tha main_window_t structure in main_struct_t structure which
      will be less confusing.
    * rewrite the data_type creation in order to allow a script, or an extern
@@ -126,22 +129,22 @@ I let you imagine what I expect before I do a major release !!!
      files, current opened tab and so on...)
    * enhance python bindings
 
-. 0.2.1
+- 0.2.1
    * Have something to allow one to take notes (enhanced bookmarks).
 
-. 0.2.2
+- 0.2.2
    * Pass parts of the file to an extern (or not) filter
 
-. 0.2.3
+- 0.2.3
    * Begin work on template manager
 
-. 0.2.4
+- 0.2.4
    * Begin writing some user documentation
 
-. 0.2.8
+- 0.2.8
    * If there is time, see how to bring 3D visualization in stat plugin ?
 
-- 0.3.0
+- **0.3.0**
    * user documentation
    * ability to pass a part of the file to an extern program and analyse it's
      output -> ie gunzip, unzip, sed, ...
@@ -150,10 +153,10 @@ I let you imagine what I expect before I do a major release !!!
    * add more functions to the plugin list (a configure button if the plugin is
      configurable, and so on)
 
-- 0.4.0
+- **0.4.0**
    * have a usable version of the template manager
    * have .deb and .rpm package (and scripts)
 
-- 0.5.0
+- **0.5.0**
    * have color for the template fields (directly in the editor)
    * first version for a "search with the templates" function
