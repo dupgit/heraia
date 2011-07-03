@@ -1,3 +1,8 @@
+03.07.2011
+    - Olivier Delhomme <heraia@delhomme.org>
+      * Added a script to do the documentations automatically.
+      * "Restifying" TODO file.
+
 06.06.2011
     - Olivier Delhomme <heraia@delhomme.org>
       * "Restifying" Roadmap file. This will be usefull to generate some user

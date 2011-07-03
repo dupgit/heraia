@@ -1,9 +1,9 @@
 #!/bin/bash
 #
-#  make_devel_docs.sh
-#  A simple script to generate devel docs
+#  make_docs.sh
+#  A simple script to generate documentation from the files from the project
 #
-#  (C) Copyright 2010 - 2011 Olivier Delhomme
+#  (C) Copyright 2011 Olivier Delhomme
 #  e-mail : heraia@delhomme.org
 #  URL    : http://heraia.tuxfamily.org
 #
@@ -21,12 +21,21 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-# PATH guessed from heraia.doxygen
-DOC_PATH=$(cat heraia.doxygen | grep OUTPUT_DIRECTORY | cut -d'=' -f 2 | sed s/\ //g)
+DOC_FILES="README NEWS HISTORY RoadMap TODO ChangeLog"
+HTML_DIR="html"
+DOC_DIRS="$HTML_DIR"
 
-# Cleanning
-rm -rf $DOC_PATH
+# Making the directories if necessary (and cleaning them)
+for d in $DOC_DIRS; do
+    mkdir -p $d
+    rm -f $d/*
+done;
 
-# Invoking doxygen !
-doxygen heraia.doxygen
+# Generating html documentation
+cd $HTML_DIR;
+for f in $DOC_FILES; do
+    echo "Making $f to $f.html"
+    rst2html -q ../../$f $f.html;
+done;
+cd ../
 
