@@ -1,29 +1,29 @@
-02.05.2011 New version 0.1.7
+02.05.2011 *New version 0.1.7*
             - Windows binary
             - save and load a "project" like geany editor (saving preferences,
               opened files, current opened tabs and so on...)
             - find data from type
 
-20.08.2010 New version 0.1.5
+20.08.2010 *New version 0.1.5*
             - full french translation
             - now one can close files with a little button on tabs or via
               the menu.
             - the interface has been taken into account. Some very minor bugs
               were corrected (user experience is getting better)
 
-10.08.2010 New version 0.1.4
+10.08.2010 *New version 0.1.4*
             - undo / redo functions
             - copy / cut / paste /delete functions
             - better user experience
 
-16.06.2010 New version 0.1.3
+16.06.2010 *New version 0.1.3*
             - Now heraia is fully translatable and there is already one
               translation : French ;-)
             - Last stream size and endianness are now saved to the preference
               file and loaded at boot time.
             - This is a collector version !
 
-11.05.2010 New version 0.1.2 with minor changes :
+11.05.2010 *New version 0.1.2* with minor changes :
             - heraia now ask the user if an unsaved modified document still
               exists
             - selection (start and end) and selection size ar now displayed
@@ -31,7 +31,7 @@
               returns to black when saved
             - internationalisation is in progress
 
-05.04.2010 New version 0.1.1 with major changes :
+05.04.2010 *New version 0.1.1* with **major** changes :
             - requires GTK > 2.16 because everything is now passed to GtkBuilder
             - added new option -t --tests to allow tests executions (for the
               code itself).
@@ -48,7 +48,8 @@
             - some code coverage has been done
             - and of course numerous bug corrections
 
-07.11.2007 I tried to minimise McCabe's complexity measure results
-           of every function. I would be very pleased if heraia
-           developpers, if any, could be carefull enought to leave
-           each function's McCabe value under 10 strictly.
+07.11.2007
+            - I tried to minimise McCabe's complexity measure results of every
+              function. I would be very pleased if heraia developpers, if any,
+              could be carefull enought to leave each function's McCabe value
+              under 10 strictly.
