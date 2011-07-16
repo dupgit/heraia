@@ -1,3 +1,8 @@
+16.07.2011
+    - Olivier Delhomme <heraia@delhomme.org>
+        * Finished to "ReSTify" the ChangeLog ! Now one would care to write the
+          documentations in a ReST form.
+
 04.07.2011
     - Olivier Delhomme <heraia@delhomme.org>
         * "Restifying" Changelog itself :)
@@ -1072,14 +1077,14 @@
         * Changed french function names and comments to english ones
         * Supressed some unecessary "\n" from log output
         * new main_pref_window.[ch] files to handle main preferences window
-       directly in libheraia
+          directly in libheraia
         * moved all struct declarations from heraia_types.h to libheraia.h
         * moved heraia_ui.[ch], log.[ch], ghex_heraia_interface.[ch],
-       data_interpretor.[ch], heraia_errors.[ch], plugin.[ch], heraia_io.[ch],
-       list_data_types.[ch], data_types.[ch], treatments.[ch] to libheraia
+          data_interpretor.[ch], heraia_errors.[ch], plugin.[ch], heraia_io.[ch],
+          list_data_types.[ch], data_types.[ch], treatments.[ch] to libheraia
         * commented some instructions in the Makefile.am from libheraia
         * Changed Makefile.am from the plugin stat to reflect all huge changes
-       in heraia's and libheraia's included files.
+          in heraia's and libheraia's included files.
 
 20.10.2008
    - Olivier Delhomme <heraia@delhomme.org>
@@ -1094,7 +1099,7 @@
 19.09.2008
    - Olivier Delhomme <heraia@delhomme.org>
         * Flexibility with doxygen, using relative paths. Do not to forget to
-       change version numbers (when creating a new doxygen documentation)
+          change version numbers (when creating a new doxygen documentation)
         * Suppressed the number for the position field when no file is open
 
 16.09.2008
@@ -1102,10 +1107,10 @@
         * continuation of the migration work on libheraia.h
         * added one test to avoid using 2.12 functions were 2.12 is not available
         * added user_prefs.[ch] files to manage user preference window and
-      properties
+          properties
         * deleted decode.c and decode.h as they are migrated in libheraia
         * changed heraia.glade and added two labels that will receive cursor's
-      position and cursor's selection
+          position and cursor's selection
         * added cursor position
         * forgot to include decode.h in libheraia files
 
@@ -1113,17 +1118,17 @@
     - Olivier Delhomme <heraia@delhomme.org>
         * migrated some functions from decode.c into libheraia (decode.c)
         * preference file added (empty for now - it's still not possible to load
-      or save anything).
+          or save anything).
 
 12.09.2008
     - Olivier Delhomme <heraia@delhomme.org>
         * took notebook's tab's names into account (this may be usefull when
-      we'll have more than one file edited at a time).
+          we'll have more than one file edited at a time).
 
 11.09.2008
     - Olivier Delhomme <heraia@delhomme.org>
         * Corrected a bug that crashed the program when using the saving as
-      menu while no file were opened.
+          menu while no file were opened.
 
 27.08.2008
     - Sebastien Tricaud <toady@gscore.org>
@@ -1131,8 +1136,8 @@
 
     - Olivier Delhomme <heraia@delhomme.org>
         * Added licenses at file's begining, added "extern" keyword to
-      exported functions, copy-paste typo, added a #include directive
-      (glib/gstdio.h) to avoid a warning on g_chdir.
+          exported functions, copy-paste typo, added a #include directive
+          (glib/gstdio.h) to avoid a warning on g_chdir.
 
 
 26.08.2008
@@ -1141,8 +1146,8 @@
 
     - Olivier Delhomme <heraia@delhomme.org>
         * I was not happy with the skeleton so I tried to put that directly in the
-      src tree. I'm getting nervous with thoses things but it seems that I have
-      somethings that works.
+          src tree. I'm getting nervous with thoses things but it seems that I have
+          somethings that works.
 
 25.08.2008
     - Olivier Delhomme <heraia@delhomme.org>
@@ -1151,67 +1156,67 @@
 24.08.2008 [release 0.0.4]
     - Olivier Delhomme <heraia@delhomme.org>
         * Roadmap changes, added a task and an explanation on how I see heraia's
-      releases.
+          releases.
         * Readme appended
         * heraia.desktop : more precise description of heraia's job
         * corrected bugs in on_save_as_activate function.
         * added a function to display file's name (without the complete path)
         * Changed the window_prop and all_window_prop structures to window_prop_t
-      and all_window_prop_t structures to reflect naming scheme in heraia.
+          and all_window_prop_t structures to reflect naming scheme in heraia.
         * generated documentation files with doxygen (update heraia.doxygen file)
         * Prepared the code to 0.0.5 release (changed version numbers)
 
 20.08.2008
     - Olivier Delhomme <heraia@delhomme.org>
         * Commented out a bunch of things in the init_heraia_interface in
-      heraia_ui.c file. Code coverage tests in that part
+          heraia_ui.c file. Code coverage tests in that part
         * begining work leading to the next release
 
 19.08.2008 [release 0.0.3]
     - Olivier Delhomme <heraia@delhomme.org>
         * Changed the show_hide_widget function in plugin.c to allow this function
-      to use the added window_prop struc in the plugin_t struct. This allow a
-      plugin to manage it's window properties (that are x,y position and if
-      displayed or not)
+          to use the added window_prop struc in the plugin_t struct. This allow a
+          plugin to manage it's window properties (that are x,y position and if
+          displayed or not)
 
 16.08.2008
     - Olivier Delhomme <heraia@delhomme.org>
         * Added a preference window in heraia.glade
         * Enhanced roadmap
         * Added heraia.desktop file that describes the heraia gnome menu entry
-      and modified Makefile.am and configure.ac accordingly (inspired from
-      the glade project)
+          and modified Makefile.am and configure.ac accordingly (inspired from
+          the glade project)
         * changed "img" directory name to "pixmaps" and added hicolor
-      subdirectories
+          subdirectories
         * Added some new pixmaps (16x16, 32x32, 48x48, 64x64, 128x128)
-      unfortunally the original logo is not in a scalable format.
+          unfortunally the original logo is not in a scalable format.
 
 12.08.2008
     - Olivier Delhomme <heraia@delhomme.org>
         * Added a preference menu (still not activated)
         * Commented out some exit() commands when logging errors, fatals or
-      recursion
+          recursion
         * Changed things a bit in the about box in order that heraia could
-      compile even if gtk's version is < 2.12
+          compile even if gtk's version is < 2.12
 
 11.08.2008
     - Olivier Delhomme <heraia@delhomme.org>
         * Now plugin_list, main_window and list data types properties are
-      saved.
+          saved.
         * Got rid of an old display variable in the data_window_t struct.
 
 08.08.2008 [release 0.0.2]
     - Olivier Delhomme <heraia@delhomme.org>
         * Changed roadmap numbers to allow more subversion (private joke)
         * Changed window position structure to window properties structure.
-      I don't know why I haven't done this before !!! It corrects a bug
-      with the log window and a bug with the about box
+          I don't know why I haven't done this before !!! It corrects a bug
+          with the log window and a bug with the about box
 
 30.07.2008
     - Olivier Delhomme <heraia@delhomme.org>
         * log's window position is now saved (for the session)
-      There is a bug when closing the window with the "close" button : it
-      resets the window's position !!!
+          There is a bug when closing the window with the "close" button : it
+          resets the window's position !!!
         * translated some french comments in log.c
 
 29.07.2008
@@ -1224,14 +1229,14 @@
     - Olivier Delhomme <heraia@delhomme.org>
         * About dialog box's position is saved (in a single session)
         * Added a RoadMap file to record which features I want to have in heraia's
-      next versions (Hey feel free to contribute !)
+          next versions (Hey feel free to contribute !)
 
 18.07.2008
     - Olivier Delhomme <heraia@delhomme.org>
         * A propos changes :
             + renamed a function to have coherence between a_propos functions
             + added the PACKAGE_VERSION config variable in order to avoid to have
-        to modify the .glade file at each version.
+              to modify the .glade file at each version.
         * translated some french strings in the stat plugin window
         * added some info bubbles to comment the 1D and 2D options
 
@@ -1255,100 +1260,100 @@
     - Olivier Delhomme <heraia@delhomme.org>
         * Modified a lot of things in the data type creation part
             + added the ability to add treatments to the data type
-        and to calculate the result
+              and to calculate the result
             + added one simple treatment as un example : "reverse" that
-        reverse the bytes in the buffers
+              reverse the bytes in the buffers
             + added the just created data types a special user defined
-        tab in the data interpretor window
+              tab in the data interpretor window
             + added a refresh caller that refreshes the user defined
-        type tab if one moves the cursor around in the hex editor
+              type tab if one moves the cursor around in the hex editor
         * Moved treatments definitions to heraia_type.h
         * Reviewed gmalloc allocations
 
 26.11.2007
     - Olivier Delhomme <heraia@delhomme.org>
         * Added treatments.[ch] where one should find all treatments
-      definitions that may be used in new data type definitions in
-      the data_type window.
+          definitions that may be used in new data type definitions in
+          the data_type window.
 
 23.11.2007
     - Olivier Delhomme <heraia@delhomme.org>
         * Added structures and functions to manage the treatment
-      container where treatments will appear
+          container where treatments will appear
 
 22.11.2007
     - Olivier Delhomme <heraia@delhomme.org>
         * Added a wrapper to the function glade_xml_get_widget in
-      order to be able to change the method (or add a user choice
-      about the method or library), thinking about GtkBuilder
+          order to be able to change the method (or add a user choice
+          about the method or library), thinking about GtkBuilder
 
 21.11.2007
     - Olivier Delhomme <heraia@delhomme.org>
         * Activating debug, by default in file "configure.ac"
-      and turning back the option correctly in heraia.c
+          and turning back the option correctly in heraia.c
         * Added -ggdb flag to debugging option in file "configure.ac"
         * Added a new structure to handle XML definitions loaded at
-      runtime: xmls that will group all GladeXML definitions
-      Modified all the sources accordingly
+          runtime: xmls that will group all GladeXML definitions.
+          Modified all the sources accordingly
 
 13.11.2007
     - Olivier Delhomme <heraia@delhomme.org>
         * Added comments
         * Changed few things in configure.ac
         * Begun the data type and list data type windows. Here we should
-      find a way to add new types (that will be used in the data
-      interpretor window)
+          find a way to add new types (that will be used in the data
+          interpretor window)
 
 12.11.2007
     - Olivier Delhomme <heraia@delhomme.org>
         * Could not find a way to compile plugins under windows.
-      Unresolved errors like "undefined symbol" occurs where
-      they do not under my linux box (debian etch).
+          Unresolved errors like "undefined symbol" occurs where
+          they do not under my linux box (debian etch).
 
 09.11.2007
     - Olivier Delhomme <heraia@delhomme.org>
         * Use of $(LDFLAG) varaible in Makefile.am this will be more
-      convenient if we want to change things : we might do so only
-      in configure.ac file.
+          convenient if we want to change things : we might do so only
+          in configure.ac file.
 
 08.11.2007
     - Olivier Delhomme <heraia@delhomme.org>
         * Changed heraia's behavior when called to allow the user to
-      call without a filename in the command line (but the option
-      to do so is not removed)
+          call without a filename in the command line (but the option
+          to do so is not removed)
         * Added more comments and removed old commented out functions
         * Re-added the fact that the file chooser 'remembers' the last
-      openned directory
+          openned directory
         * Modified the init_location_list in order that this fucntion
-      returns a GList of locations and does not take any arguments
+          returns a GList of locations and does not take any arguments
 
 07.11.2007
     - Olivier Delhomme <heraia@delhomme.org>
         * Changed the way to call the log function for debug purposes.
-      Now you can call directly (without testing main_window->debug)
-      the 'log_message' function with G_LOG_LEVEL_DEBUG parameter.
+          Now you can call directly (without testing main_window->debug)
+          the 'log_message' function with G_LOG_LEVEL_DEBUG parameter.
         * Modified some functions in order that their McCabe complexity
-      number be strictly under 10.
+          number be strictly under 10.
         * Translated some french sentences to english.
         * Data interpretor notebook tab now remembers the last opened
-      tab (in order to display this one when re-opening it)
+          tab (in order to display this one when re-opening it)
         * Switched from file selection to file chooser
 
 06.11.2007
     - Olivier Delhomme <heraia@delhomme.org>
         * Added --enable-debug, --enable-gcov and --enable-gprof options
-      to ./configure's script
+          to ./configure's script :
             + enable-debug sets the PROGRAM_DEBUG environment variable to
-        TRUE and compiles heraia with debugging mode on, otherwise
-        heraia is compiled without debugging mode. As for now, as I
-        consider the code as not mature, heraia is compiled in
-        debugging mode (whatever the option you choose)
+              TRUE and compiles heraia with debugging mode on, otherwise
+              heraia is compiled without debugging mode. As for now, as I
+              consider the code as not mature, heraia is compiled in
+              debugging mode (whatever the option you choose)
             + enable-gcov enables code coverage functionnalities used by
-        gnu's gcov software (it may help to see how well is tested
-        a particular piece of code)
+              gnu's gcov software (it may help to see how well is tested
+              a particular piece of code)
             + enable-gprof enables code performances analysis. It may be
-        a little bit useless at first, but it may become interesting
-        in the future (when some search functions will be available)
+              a little bit useless at first, but it may become interesting
+              in the future (when some search functions will be available)
 
 03.11.2007
     - Olivier Delhomme <heraia@delhomme.org>
@@ -1358,49 +1363,49 @@
 02.11.2007
     - Olivier Delhomme <heraia@delhomme.org>
         * moved connect_cursor_moved_signal function from
-      ghex_heraia_interface.c to heraia_ui.h to be
-      more coherent.
+          ghex_heraia_interface.c to heraia_ui.h to be
+          more coherent.
         * adding a new window that will allow the user to
-      create new data types (that may be viewed in the
-      data interpretor window) added the files
+          create new data types (that may be viewed in the
+          data interpretor window) added the files :
             + list_data_types.[ch]
         * Moved the connection to the moved cursor's signal
-      from heraia.c to init_heraia_interface() in the
-      heraia_ui.c file. Added in load_heraia_ui()  a call
-      to list_data_types_init_interface() function.
+          from heraia.c to init_heraia_interface() in the
+          heraia_ui.c file. Added in load_heraia_ui()  a call
+          to list_data_types_init_interface() function.
         * Moved some signals connections to the data interpretor
-      window from init_heraia_interface() to
-      connect_data_interpretor_signals()
+          window from init_heraia_interface() to
+          connect_data_interpretor_signals()
         * Added a return value to
-      gtk_radio_button_get_active_from_widget() in case
-      of a null radio_group_member (returns NULL)
+          gtk_radio_button_get_active_from_widget() in case
+          of a null radio_group_member (returns NULL)
 
 
 30.10.2007
     - Olivier Delhomme <heraia@delhomme.org>
         * Changed the "Base" tab name to "Binary based"
-      name.
+          name.
         * Added HFS as a new interpreted date
         * Added BCD coding to the "Binary based" tab
         * Added links to the "links" file to document
-      dates formats and some interresting projects
+          dates formats and some interresting projects
         * Redesigned a bit the functions that computes
-      the date and time
+          the date and time
         * Added middle endian encoding
         * Added logos to the main window and the about
-      box
+          box
 
 24.10.2007
     - Olivier Delhomme <heraia@delhomme.org>
         * Get rid of the old data interpretor window and :
             + added a new one in the glade description file
-        that uses tabs (numbers, dates and base)
+              that uses tabs (numbers, dates and base)
             + modified a bit to take this major change into
-        account. Now adding a new function to decode
-        things and linking it to the data interpretor
-        window is much more easy.
+              account. Now adding a new function to decode
+              things and linking it to the data interpretor
+              window is much more easy.
             + Added a binary interpretation into the "base"
-        tab.
+              tab.
             + cleaned code and comments a bit
         * added a link for the endianness documentation
 
@@ -1415,31 +1420,31 @@
         * plugins/stat/stats.c
             + still making some efforts on color normalisation
             + suppressed an unecessary function parameter that
-        we can have with the other one
+              we can have with the other one
             + added some textual informations about the histograms
             + added some space between the textual informations
-        in the hope that it will add lisibility
+              in the hope that it will add lisibility
 
 25.06.2007
     - Olivier Delhomme <heraia@delhomme.org>
         * plugins/stat/Makefile.am
             + added some libs for the linker (supprisingly windows needs this
-        were linux doesn't even bother !)
+              were linux doesn't even bother !)
         * plugins/stat/stat.c
             + added a info structure to store min, max, mean and the number of
-        different values (and may be some other statistical values in
-        the future) in order to draw better histograms (some day).
+              different values (and may be some other statistical values in
+              the future) in order to draw better histograms (some day).
             + changed two functions to made the calculation of thoses values
-        for histo 1D and 2D.
+              for histo 1D and 2D.
             + optimized things by doing a double loop only once.
             + tried to change the normalization calculation (still to be
-        improved !!)
+              improved !!)
         * configure.ac
             + added the src dir for the linker (same reason)
         * Makefile.am
             + added autogen.sh and autoclean to the dist files. Thoses files
-        are usefull tools that I uses everyday. There is no valuable
-        reason that others won't !
+              are usefull tools that I uses everyday. There is no valuable
+              reason that others won't !
         * ChangeLog
             + corrected a typo !!!
 
@@ -1457,14 +1462,14 @@
             + added 2D histo visualization (still to be improved)
         * heraia.c
             + added system_config_dirs in the location list and
-        modified its order.
+              modified its order.
         * heraia_io.c
             + changed a g_strdup_printf into a more portable g_build_filename
 
 18.06.2007
     - Olivier Delhomme <heraia@delhomme.org>
         * renamed the following files (some stupid system are unable to
-      compile heraia otherwise) :
+          compile heraia otherwise) :
             + io.c -> heraia_io.c
             + io.h -> heraia_io.h
             + types.h -> heraia_types.h
@@ -1476,7 +1481,7 @@
     - Olivier Delhomme <heraia@delhomme.org>
         * stat.[ch] :
             + added the histogram 1D and 2D visualisation (generating an image)
-        with a GdkPixbuf (Still doesn't work)
+              with a GdkPixbuf (Still doesn't work)
             + killed the #include directives (now all is included in types.h)
         * types.h :
             + killed an unecessary commented out line (graph analysis)
@@ -1485,56 +1490,56 @@
     - Olivier Delhomme <heraia@delhomme.org>
         * heraia_ui.c :
             + added some code in order that the about dialog box can close
-        correctly under windows (that is to say by pressing the "close"
-        button!)
+              correctly under windows (that is to say by pressing the "close"
+              button!)
 
 14.06.2007
     - Olivier Delhomme <heraia@delhomme.org>
         * Still some changes to enable easy compilation under the
-      mingw/msys environment under Windows.
+          mingw/msys environment under Windows.
         + modified nearly all files to put, in the file type.h all the
-        decalaratives part in order that the linker under windows may
-        not be confused (which is the case even if you specify hard
-        coded paths to the .o files!)
+          decalaratives part in order that the linker under windows may
+          not be confused (which is the case even if you specify hard
+          coded paths to the .o files!)
         + suppressed some trailing '/' to the end of SRCDIR and TOP_SRCDIR
-        in order that the path is really included by the compiler (gcc)
-        under windows (I do not know why there is such a difference with
-        the linux environment which does not complain at all !!)
+          in order that the path is really included by the compiler (gcc)
+          under windows (I do not know why there is such a difference with
+          the linux environment which does not complain at all !!)
 
 12.06.2007
     - Olivier Delhomme <heraia@delhomme.org>
         * Changes to prepare heraia to be compiled on windows :
             + added the -mno-cygwin flag to CFLAGS. So the executable is made
-        standalone.
+              standalone.
             + added SRCDIR and TOP_SRCDIR definition in configure.ac and
-        replaced the old srcdir and top_srcdir by those variables
-        in the Makefiles.am in order to take paths correctly under
-        windows
+              replaced the old srcdir and top_srcdir by those variables
+              in the Makefiles.am in order to take paths correctly under
+              windows
             + modified the AC_OUTPUT command with a AC_CONFIG_FILE because
-        it's smarter !
+              it's smarter !
         * heraia.c :
             + added and changed some comments
             + changed the hardcoded paths with the glib equivalent functions
-        in order that the software still works in an environment where
-        paths can begin with C: or F: and so on ...
+              in order that the software still works in an environment where
+              paths can begin with C: or F: and so on ...
         * plugin.c :
             + changed a g_strdup_printf in a g_build_filename in order that
-        the filename is built correctly even if we are under windows !
+              the filename is built correctly even if we are under windows !
 
 20.01.2007
     - Olivier Delhomme <heraia@delhomme.org>
         * corrected some mistakes about freeing thinks (trying some code in
-      some less tolerant system is good finaly !)
+          some less tolerant system is good finaly !)
         * changed the default display value for the data_interpretor window
         * deleted the unnecessary code from graph_analysis.[ch] which will
-      be transferred to the stat plugin
+          be transferred to the stat plugin
 
 17.01.2007
     - Olivier Delhomme <heraia@delhomme.org>
         * modified 'plugin/stat/Makefile.am', 'src/Makefile.am' to make 'make
-      dist' be functional.
+          dist' be functional.
         * added 'ghex_file_size' function to access the GtkHex structure
-      directly only in the 'ghex_heraia_interface.c'
+          directly only in the 'ghex_heraia_interface.c'
 
 15.01.2007
     - Olivier Delhomme <heraia@delhomme.org>
@@ -1558,34 +1563,34 @@
         * added 'plugin_list.c' and 'plugin_list.h'
         * modified 'Makefile.am'
         * added some generic code to add text and kill text from a textview in
-      'heraia_ui.c' and 'heraia_ui.h'
+          'heraia_ui.c' and 'heraia_ui.h'
         * Modified 'README' a bit
         * removed the gboolean loaded of the plugin structure and replace with
-      a PluginState state one.
+          a PluginState state one.
         * plugins/stat/stat.c modified to reflect the above change
 
 07.01.2007
     - Olivier Delhomme <heraia@delhomme.org>
         * added an 'event' gint to the main structure heraia_window_t in order
-      that the plugins know what event called there refresh_proc function
-      (new file, cursor move). Such events may be added in the future.
-      note : this is where is located the main reason making the plugin
-         system unable to instantly become multi-threaded (some
-         hard work will be needed)
+          that the plugins know what event called there refresh_proc function
+          (new file, cursor move). Such events may be added in the future.
+          note : this is where is located the main reason making the plugin
+          system unable to instantly become multi-threaded (some
+          hard work will be needed)
         * Change the default location for *.glade's' file to be found to
-      /usr/local/share/heraia/
+          /usr/local/share/heraia/
 
 06.01.2007
     - Olivier Delhomme <heraia@delhomme.org>
         * added functions to plugin.c to manage a glade xml interface
         * added stat.glade to the stat plugin
         * added a simple script to copy the glade files to the right
-      places.
+          places.
         * Modified autoclean :
             + take into account plugins/ and plugins/stat/
             + suppress all the Makefiles
         * Replaced g_malloc0 with g_strdup_printf in the load_heraia_glade_xml
-      function (heraia_ui.c)
+          function (heraia_ui.c)
 
 
 05.01.2007
@@ -1594,9 +1599,9 @@
         * added 'plugins' subdir to the project
             + added 'stat' plugin subdir and sources as an example
         * Modified configure.ac (plugins_dir & data_dir & coherence &
-      presentation)
+          presentation)
         * Modified Makefile.am (plugins_dir & data_dir & coherence &
-      presentation)
+          presentation)
         * autoclean : now we do not remove the 'po' directory anymore !
 
 
@@ -1606,7 +1611,7 @@
         * changed configure.ac :
             + added GMODULE detection
             + added Build OS detection (in order to be able to compile
-        or cross compile for other oses)
+              or cross compile for other oses)
         * generated a config.h.in with autoheader
         * modified the AUTHORS file
 
@@ -1626,7 +1631,7 @@
         * Added graphic_analysis.c and graphic_analysis.h
         * Added types.h
         * Modified nearly all the files to reflect that the file
-      types.h now as all the necessary types.
+          types.h now as all the necessary types.
 
 07.02.2006
     - Olivier Delhomme <heraia@delhomme.org>
@@ -1635,13 +1640,13 @@
 12.11.2005
     - Olivier Delhomme <heraia@delhomme.org>
         * changed the  heraia_window_t structure to reflect
-      that we do use glade. Change the heraia_ui.c.
+          that we do use glade. Change the heraia_ui.c.
         * cleaned some unecessary commented code lines.
         * added definition checking in heraia-errors.h
         * moved functions that calls the Hexwidget to
-      the ghex_heraia_interface file
+          the ghex_heraia_interface file
         * moved the swap_byte function from ghex_heraia_interface.c to
-      decode.c (where all those type of functions should be)
+          decode.c (where all those type of functions should be)
         * added all static declarations where needed
         * Modified test_file a bit ;-)
 
@@ -1661,24 +1666,24 @@
     - Olivier Delhomme <heraia@delhomme.org>
         * src/data_interpretor.c
             + changed some calls to gtk_add_container in gtk_box_pack_start and
-          gtk_box_pack_end in order to prevent menu_bar and status bar to
-          resize when the window was resized.
+              gtk_box_pack_end in order to prevent menu_bar and status bar to
+             resize when the window was resized.
 
 14.05.2005
     - Olivier Delhomme <heraia@delhomme.org>
         * src/heraia.c
-        made filename argument optional. If file does not exists, an empty
-        hexdocument is created.
+          made filename argument optional. If file does not exists, an empty
+          hexdocument is created.
 
         * src/data_interpretor.c and src/decode.c and src/include/decode.h
             + added decode_8bits_signed and decode_8bits_unsigned functions.
             + modified the interpret_signed_byte and interpret_unsigned_byte to
-          reflect those changes.
+              reflect those changes.
             + added some g_free to avoid memory leak.
 
         * src/heraia.c
             + cleaned some tests, added some g_free and bypassed a bug that
-          appear when openning a zero length file.
+              appear when openning a zero length file.
 
 09.05.2005
     - Olivier Delhomme <heraia@delhomme.org>
@@ -1690,10 +1695,10 @@ O8.05.2005
     - Olivier Delhomme <heraia@delhomme.org>
         * src/data_interpretor.c
             + corrected an assert warning telling that there was nothing
-          to resize when nothing was displayed in the data_interpretor
-          window.
+              to resize when nothing was displayed in the data_interpretor
+              window.
             + added a font selector dialog box that allows one to change the
-          font used by the data_interpretor window to display things.
+              font used by the data_interpretor window to display things.
 
 05.05.2005
     - Olivier Delhomme <heraia@delhomme.org>
@@ -1707,24 +1712,24 @@ O8.05.2005
 
         * src/include/data_interpretor.h
             + added a 'current_hexwidget' pointer to the main structure in order
-          to know which hexwidget we are interpreting datas (a first step
-          to an MDI driven application!).
+              to know which hexwidget we are interpreting datas (a first step
+              to an MDI driven application!).
 
         * src/decode.c
             + cleaned the code
             + At least we have now a decode_dos_date function that retrieves
-          the right date !
+              the right date !
 
         * src/ghex_heraia_interface.c
             + cleaned the code and added a big_endian parameter to the
-          ghex_memcpy function.
+              ghex_memcpy function.
 
         * src/data_interpretor.c
             + cleaned the code
             + added an 'encoding' menu with a Big Endian menu item. By default
-          all documents are viewed in a little endian manner.
+              all documents are viewed in a little endian manner.
             + changed all calls to catch the new 'current_hexwidget' pointer
-          in the 'data_window_t' structure.
+              in the 'data_window_t' structure.
             + modified the call to the data_interpret initialisation function.
 
         * src/heraia.c
@@ -1732,7 +1737,7 @@ O8.05.2005
 
         * docs/links
             + added a french link to an endianness explanation at debian.org
-          that worth the reading time.
+              that worth the reading time.
 
 
 
@@ -1742,34 +1747,34 @@ O8.05.2005
             + modified the Data_Window_Struct to add a menubar and a menu
             + deleted the previous display_xxx vars
             + modified the code to add that menu. Now you can choose what you
-          want to display. By default, 32 and 64 bits are not displayed.
+              want to display. By default, 32 and 64 bits are not displayed.
 
         * src/decode.c and src/include/decode.h
-        modified the decode_dos_date : added the date_and_time structure
-        and also changed things in order to calculate the date correctly.
-        This need some testing and improvements.
+          modified the decode_dos_date : added the date_and_time structure
+          and also changed things in order to calculate the date correctly.
+          This need some testing and improvements.
 
         * heraia.csv
-        This is a new file that contains the following fields separated by
-        tabs :
-        filename, size, md5, sha1, ripemd160
+          This is a new file that contains the following fields separated by
+          tabs :
+          filename, size, md5, sha1, ripemd160
 
 29.03.2005
     - Olivier Delhomme <heraia@delhomme.org>
         * src/decode.c and src/include/decode.h
             + added a date_and_time structure
-          functions decode_filetime_date and decode_C_date now takes
-          this structure as an argument. This will make things easier
-          for the search capabilities still to add to heraia ;)
+              functions decode_filetime_date and decode_C_date now takes
+              this structure as an argument. This will make things easier
+              for the search capabilities still to add to heraia ;)
             + At least the C dates and filetime dates are now Ok.
-          Still todo : dos date.
+              Still todo : dos date.
 
         * src/data_interpretor.c
-         changed the calls to decode_filetime_date and decode_C_date
-         to reflect the changes in decode.c
+          changed the calls to decode_filetime_date and decode_C_date
+          to reflect the changes in decode.c
 
         * autoclean
-        added a line to suppress all *~ files (generated by emacs)
+          added a line to suppress all *~ files (generated by emacs)
 
 26.03.2005
     - Olivier Delhomme <heraia@delhomme.org>
@@ -1804,19 +1809,19 @@ O8.05.2005
         * src/decode.c : added a decode_filetime_date function
         * src/data_interpretor.c : added a interpret_filetime_date function
         * docs/test_file : a test file that contains filetime dates and whose
-        aim is to provide data tests from the test-suite.
+          aim is to provide data tests from the test-suite.
         * docs/links : updated that file with one link
 
 15.03.2005
     - Olivier Delhomme <heraia@delhomme.org>
         * src/decode.c file: here we should put all the stuff to decode and
-        interpret data.
+          interpret data.
         * src/include/decode.h created.
         * src/ghex_heraia_interface.c file : here we should put all the stuff
-        we need to communicate with the ghex widget.
+          we need to communicate with the ghex widget.
         * src/include/ghex_heraia_interface.h
         * docs/test-suite : here we explain which data test-suite we have used
-        to make the whole stuff working.
+          to make the whole stuff working.
 
 14.03.2005
     - Gregory Audet <gretsim@yahoo.com>
