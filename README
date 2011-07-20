@@ -158,16 +158,19 @@ __
 ReST
 ~~~~
 
-I'll try to write user documentations with a ReST style. Here are some links to
-some ReST documentation :
+Users documentations are now to be written with "ReST" conventions. Here are
+a few links to some ReST documentation :
 
  * The cheatsheet_
  * A quickref_
  * An `interesting page`_
 
-To generate the documentation use ``rst2*`` programs like ::
+To generate all the documentation use ``make_docs.sh`` program in the docs
+sub-directory ::
 
-    rst2html -q ../../README README.html
+    ./make_docs.sh
+
+This will generate html documentation in the sub-directory docs/html.
 
 __
 .. _cheatsheet: http://docutils.sourceforge.net/docs/user/rst/cheatsheet.txt

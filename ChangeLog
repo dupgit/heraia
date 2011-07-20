@@ -1,3 +1,8 @@
+20.07.2011
+    - Olivier Delhomme <heraia@delhomme.org>
+        * Modified README file in order to talk about the convenient script used
+          to generate the documentations (in html for now).
+
 16.07.2011
     - Olivier Delhomme <heraia@delhomme.org>
         * Finished to "ReSTify" the ChangeLog ! Now one would care to write the
