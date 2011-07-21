@@ -11,7 +11,7 @@ Dependencies needed
 To build heraia you need to install the following packages and all their
 dependencies before (according that you have a default installation) :
 
-On ubuntu 10.04 and Debian squeeze :
+On Ubuntu 10.04 and Debian Squeeze :
 
  - gcc
  - make
@@ -35,6 +35,14 @@ On OpenIndiana 5.11 :
  - gettext
  - gnu-gettext
  - ghex
+
+On Centos 6.0 and Redhat 6.0 :
+
+ - gcc-4.4.4-13.el6
+ - intltool-0.41.0-1.1.el6
+ - glib2-devel-2.22.5-5.el6
+ - gtk2-devel-2.18.9-4.el6
+ - ghex-2.24.0-4.el6 and ghex-devel-2.24.0-4.el6 found on EPEL_
 
 
 Compiling the source from a release version (heraia-\*.tar.gz)
@@ -173,6 +181,7 @@ sub-directory ::
 This will generate html documentation in the sub-directory docs/html.
 
 __
+.. _EPEL: http://download.fedora.redhat.com/pub/epel/6/
 .. _cheatsheet: http://docutils.sourceforge.net/docs/user/rst/cheatsheet.txt
 .. _quickref:   http://docutils.sourceforge.net/docs/user/rst/quickref.html
 .. _interesting page: http://sphinx.pocoo.org/rest.html
