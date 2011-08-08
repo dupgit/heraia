@@ -1,9 +1,14 @@
+08.08.2011
+    - Olivier Delhomme <heraia@delhomme.org>
+        * Reminder in README to generate the archive one the code is ready for
+          release.
+
 21.07.2011
     - Olivier Delhomme <heraia@delhomme.org>
-      * As heraia can compile under Centos 6.0 and Redhat 6.0 because they now
-        include a recent gtk that embeds gtkbuilder (that is needed for heraia).
-        I made the documentation in order that one will find the packages needed
-        to compile heraia like a charm !
+        * As heraia can compile under Centos 6.0 and Redhat 6.0 because they now
+          include a recent gtk that embeds gtkbuilder (that is needed for
+          heraia). I made the documentation in order that one will find the
+          packages needed to compile heraia like a charm !
 
 20.07.2011
     - Olivier Delhomme <heraia@delhomme.org>

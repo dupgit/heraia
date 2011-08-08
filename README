@@ -133,6 +133,12 @@ For a release do not forget to :
 
  - generate code coverage tests
 
+ - generate the archive by issuing one of the following command ::
+
+    make dist
+    make dist-bzip2
+    make dist-xz
+
 
 Documentation
 -------------
