@@ -278,8 +278,9 @@ void record_all_dialog_box_positions(heraia_struct_t *main_struct)
             record_dialog_box_position(dialog_box, main_struct->win_prop->plugin_list);
 
             /* list data types */
-            dialog_box = heraia_get_widget (main_struct->xmls->main, "list_data_types_window");
-            record_dialog_box_position(dialog_box, main_struct->win_prop->ldt);
+            /* dialog_box = heraia_get_widget (main_struct->xmls->main, "list_data_types_window");
+               record_dialog_box_position(dialog_box, main_struct->win_prop->ldt);
+            */
 
             /* main_preferences */
             dialog_box = heraia_get_widget (main_struct->xmls->main, "main_preferences_window");
