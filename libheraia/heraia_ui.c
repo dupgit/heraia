@@ -41,7 +41,7 @@ static void record_and_hide_about_box(heraia_struct_t *main_struct);
 static gboolean unsaved_documents(heraia_struct_t *main_struct);
 
 static void close_one_document(heraia_struct_t *main_struct, doc_t *closing_doc, gint index);
-static gboolean close_a_project(heraia_struct_t *main_struct, gchar *question);
+static gboolean close_a_project(heraia_struct_t *main_struct, const gchar *question);
 static gboolean close_heraia(heraia_struct_t *main_struct);
 
 static void on_projects_close_activate(GtkWidget *widget, gpointer data);
@@ -2238,7 +2238,7 @@ static gboolean unsaved_documents(heraia_struct_t *main_struct)
  *        document is found. This should ask the user what to do.
  * @return the user anwser if an unsaved document is found and TRUE if not
  */
-static gboolean close_a_project(heraia_struct_t *main_struct, gchar *question)
+static gboolean close_a_project(heraia_struct_t *main_struct, const gchar *question)
 {
     gboolean unsaved = FALSE;    /**< if there is any unsaved documents */
     gboolean quit_heraia = TRUE; /**< By default we want to quit        */
@@ -2312,7 +2312,7 @@ static gboolean close_a_project(heraia_struct_t *main_struct, gchar *question)
  */
 static gboolean close_heraia(heraia_struct_t *main_struct)
 {
-   return close_a_project(main_struct, N_("Do you want to quit without saving ?"));
+   return close_a_project(main_struct, Q_("Do you want to quit without saving ?"));
 }
 
 
