@@ -1,6 +1,13 @@
 18.02.2012
     - Olivier Delhomme <heraia@delhomme.org>
-      * Changed 2010 to 2012 in about dialog box
+        * Changed 2010 to 2012 in about dialog box
+
+15.01.2012
+    - Olivier Delhomme <heraia@delhomme.org>
+        * Corrected a bug that prevented a translated text to be printed when
+          leaving the program with some files modified
+        * Commented out some code that does nothing for now (not used anywhere
+          else)
 
 08.10.2011
     - Olivier Delhomme <heraia@delhomme.org>
