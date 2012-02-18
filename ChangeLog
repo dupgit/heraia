@@ -1,9 +1,6 @@
-15.01.2012
+18.02.2012
     - Olivier Delhomme <heraia@delhomme.org>
-        * Corrected a bug that prevented a translated text to be printed when
-          leaving the program with some files modified
-        * Commented out some code that does nothing for now (not used anywhere
-          else)
+      * Changed 2010 to 2012 in about dialog box
 
 08.10.2011
     - Olivier Delhomme <heraia@delhomme.org>
@@ -22,7 +19,7 @@
     - Olivier Delhomme <heraia@delhomme.org>
         * As heraia can compile under Centos 6.0 and Redhat 6.0 because they now
           include a recent gtk that embeds gtkbuilder (that is needed for
-          heraia). I made the documentation in order that one will find the
+          heraia) I made the documentation in order that one will find the
           packages needed to compile heraia like a charm !
 
 20.07.2011
