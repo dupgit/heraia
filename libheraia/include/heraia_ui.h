@@ -108,6 +108,6 @@ extern void set_notebook_tab_label_color(heraia_struct_t *main_struct, gboolean 
 extern gint find_tab_number_from_widget(heraia_struct_t *main_struct, gchar *notebook_name, GtkWidget *to_find);
 extern GtkWidget *find_label_from_hbox(GtkWidget *hbox);
 extern GtkWidget *create_tab_close_button(heraia_struct_t *main_struct, GtkWidget *tab_label, void *signal_handler);
-extern gboolean file_notebook_tab_changed(GtkNotebook *notebook, GtkNotebookPage *page, gint tab_num, gpointer data);
+extern gboolean file_notebook_tab_changed(GtkNotebook *notebook, GtkWidget *page, gint tab_num, gpointer data);
 
 #endif /* _LIBHERAIA_HERAIA_UI_H_ */

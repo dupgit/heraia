@@ -1,3 +1,8 @@
+03.09.2012
+    - Olivier Delhomme <heraia@delhomme.org>
+        * Replaced some deprecated functions and reviewed configure.ac in order
+          to prepare gtk3 migration in the future.
+
 18.02.2012
     - Olivier Delhomme <heraia@delhomme.org>
         * Changed 2010 to 2012 in about dialog box

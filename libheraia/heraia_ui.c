@@ -1231,7 +1231,7 @@ void destroy_dt_window(GtkWidget *widget, GdkEvent  *event, gpointer data)
  * @param tab_num : index of this page
  * @param data : MUST be heraia_struct_t *main_struct !
  */
-gboolean file_notebook_tab_changed(GtkNotebook *notebook, GtkNotebookPage *page, gint tab_num, gpointer data)
+gboolean file_notebook_tab_changed(GtkNotebook *notebook, GtkWidget *page, gint tab_num, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
 

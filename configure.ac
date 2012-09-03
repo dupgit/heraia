@@ -28,14 +28,14 @@ AC_CONFIG_HEADER([config.h])
 dnl **************************************************
 dnl * Libraries requirements                         *
 dnl **************************************************
-GLIB2_VERSION=2.2.0
-GTK2_VERSION=2.16.0
+GLIB_VERSION=2.2.0
+GTK_VERSION=2.16.0
 GTKHEX_VERSION=1.0.0
 GMODULE_VERSION=2.0.0
 
 AC_SUBST(GTKHEX_VERSION)
-AC_SUBST(GLIB2_VERSION)
-AC_SUBST(GTK2_VERSION)
+AC_SUBST(GLIB_VERSION)
+AC_SUBST(GTK_VERSION)
 AC_SUBST(GMODULE_VERSION)
 
 dnl **************************************************
@@ -123,12 +123,12 @@ AM_GLIB_GNU_GETTEXT
 dnl **************************************************
 dnl * checking for glib                              *
 dnl **************************************************
-PKG_CHECK_MODULES(GLIB2, [glib-2.0 >= $GLIB2_VERSION])
+PKG_CHECK_MODULES(GLIB, [glib-2.0 >= $GLIB_VERSION])
 
 dnl **************************************************
 dnl * checking for gtk+                              *
 dnl **************************************************
-PKG_CHECK_MODULES(GKT2, [gtk+-2.0 >= $GTK2_VERSION])
+PKG_CHECK_MODULES(GKT, [gtk+-2.0 >= $GTK_VERSION])
 
 dnl **************************************************
 dnl * checking for GtkHex                            *
@@ -233,10 +233,10 @@ AC_SUBST(GTKHEX_CFLAGS)
 AC_SUBST(GTKHEX_LIBS)
 AC_SUBST(GMODULE_CFLAGS)
 AC_SUBST(GMODULE_LIBS)
-AC_SUBST(GLIB2_CFLAGS)
-AC_SUBST(GLIB2_LIBS)
-AC_SUBST(GTK2_CFLAGS)
-AC_SUBST(GTK2_LIBS)
+AC_SUBST(GLIB_CFLAGS)
+AC_SUBST(GLIB_LIBS)
+AC_SUBST(GTK_CFLAGS)
+AC_SUBST(GTK_LIBS)
 
 AC_CONFIG_FILES([
 Makefile

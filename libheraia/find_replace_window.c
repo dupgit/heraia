@@ -647,7 +647,7 @@ static void fdft_window_populate_category_cb(heraia_struct_t *main_struct)
                     tab = g_ptr_array_index(main_struct->current_DW->tabs, i);
                     label = tab->label;
                     text = gtk_label_get_text(GTK_LABEL(label));
-                    gtk_combo_box_append_text(GTK_COMBO_BOX(cb), text);
+                    gtk_combo_box_text_append_text(GTK_COMBO_BOX(cb), text);
                 }
         }
 }
@@ -955,7 +955,7 @@ static void fdft_category_cb_changed(GtkWidget *widget, gpointer data)
                     decod = g_ptr_array_index(tab->rows, i);
                     label = decod->label;
                     text = gtk_label_get_text(GTK_LABEL(label));
-                    gtk_combo_box_append_text(GTK_COMBO_BOX(cb), text);
+                    gtk_combo_box_text_append_text(GTK_COMBO_BOX(cb), text);
                 }
 
             /* Feature combobox                */
@@ -970,7 +970,7 @@ static void fdft_category_cb_changed(GtkWidget *widget, gpointer data)
                 {
                     label = g_ptr_array_index(tab->col_labels, i);
                     text = gtk_label_get_text(GTK_LABEL(label));
-                    gtk_combo_box_append_text(GTK_COMBO_BOX(cb), text);
+                    gtk_combo_box_text_append_text(GTK_COMBO_BOX(cb), text);
                 }
         }
 }
@@ -989,9 +989,9 @@ static fdft_t *fdft_window_init_widgets(heraia_struct_t * main_struct)
         {
             fdft = (fdft_t *) g_malloc0 (sizeof(fdft_t));
 
-            fdft->category_cb = gtk_combo_box_new_text();
-            fdft->type_cb = gtk_combo_box_new_text();
-            fdft->feature_cb = gtk_combo_box_new_text();
+            fdft->category_cb = gtk_combo_box_text_new();
+            fdft->type_cb = gtk_combo_box_text_new();
+            fdft->feature_cb = gtk_combo_box_text_new();
 
             main_struct->fdft = fdft;
 

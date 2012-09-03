@@ -6,14 +6,14 @@ DEFS = -I$(SRCDIR)  -I$(SRCDIR)/include	 		\
 	   -DLOCALEDIR=\"$(LOCALEDIR)\"				\
 	   $(Heraia_Hex_CFLAGS) 					\
 	   $(GMODULE_CFLAGS) $(CFLAGS)				\
-	   $(GTK2_CFLAGS) $(GLIB2_CFLAGS)
+	   $(GTK_CFLAGS) $(GLIB_CFLAGS)
 
 bin_PROGRAMS = heraia
 heraia_LDFLAGS = $(LDFLAGS)
 heraia_LDADD = $(GTKHEX_LIBS) $(GMODULES_LIBS) 			\
-			   $(GLIB2_LIBS) $(GTK2_LIBS) 				\
+			   $(GLIB_LIBS) $(GTK_LIBS) 				\
 			   -L$(top_builddir)/libheraia/ -lheraia	\
-			   $(GMODULE_LIBS) $(GKT2_LIBS)
+			   $(GMODULE_LIBS) $(GKT_LIBS)
 
 heraia_SOURCES = 					\
 	heraia.c						\
@@ -29,5 +29,5 @@ EXTRA_DIST = $(gtkbuilderfiles)
 AM_CPPFLAGS = 			\
 	$(GMODULE_CFLAGS) 	\
 	$(GTKHEX_CFLAGS) 	\
-	$(GLIB2_CFLAGS) 	\
-	$(GKT2_CFLAGS)
+	$(GLIB_CFLAGS) 	\
+	$(GKT_CFLAGS)

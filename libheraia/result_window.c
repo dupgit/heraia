@@ -430,7 +430,7 @@ static void menu_result_toggle(GtkWidget *widget, gpointer data)
  * @param page_num : the index of the page (the new one)
  * @param data :user data, MUST be main_struct main structure
  */
-static void rw_on_notebook_switch_page(GtkNotebook *notebook, GtkNotebookPage *page, guint page_num, gpointer data)
+static void rw_on_notebook_switch_page(GtkNotebook *notebook, GtkWidget *page, guint page_num, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
     GList *widget_list =  NULL;         /** The list of the widgets in the page     */
