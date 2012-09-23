@@ -46,6 +46,7 @@ static heraia_struct_t *heraia_init_main_struct(gchar *heraia_path);
 static HERAIA_ERROR init_heraia_plugin_system(heraia_struct_t *main_struct);
 static GList *init_heraia_location_list(gchar *heraia_path);
 static gboolean manage_command_line_options(Options *opt, int argc, char **argv);
+static void print_lirairies_versions(void);
 
 /**
  *  libheraia_main_struct is a global variable that points
@@ -513,6 +514,17 @@ static Options *init_options_struct(void)
 
 
 /**
+ * Prints on stdout the librairies versions. To be used for debugging.
+ * Takes no parameters and returns nothing.
+ */
+static void print_lirairies_versions(void)
+{
+    fprintf(stdout, Q_("GTK version : %d.%d.%d\n"),GTK_MAJOR_VERSION, GTK_MINOR_VERSION,GTK_MICRO_VERSION);
+    fprintf(stdout, Q_("GLIB version : %d.%d.%d\n"), glib_major_version, glib_minor_version,  glib_micro_version);
+}
+
+
+/**
  *  main program
  *  options :
  *   - --version
@@ -549,6 +561,7 @@ int main(int argc, char **argv)
 
     if (main_struct->debug == TRUE)
         {
+            print_lirairies_versions();
             fprintf(stdout, Q_("Main struct initialized !\n"));
         }
 

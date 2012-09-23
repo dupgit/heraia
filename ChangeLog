@@ -1,3 +1,7 @@
+23.09.2012
+    - Olivier Delhomme <heraia@delhomme.org>
+        * Give some information on the libraries versions (GTK, GLIB).
+
 03.09.2012
     - Olivier Delhomme <heraia@delhomme.org>
         * Replaced some deprecated functions and reviewed configure.ac in order

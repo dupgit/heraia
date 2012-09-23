@@ -28,6 +28,7 @@ AC_CONFIG_HEADER([config.h])
 dnl **************************************************
 dnl * Libraries requirements                         *
 dnl **************************************************
+PKG_PROG_PKG_CONFIG([0.10])
 GLIB_VERSION=2.2.0
 GTK_VERSION=2.16.0
 GTKHEX_VERSION=1.0.0
@@ -128,7 +129,7 @@ PKG_CHECK_MODULES(GLIB, [glib-2.0 >= $GLIB_VERSION])
 dnl **************************************************
 dnl * checking for gtk+                              *
 dnl **************************************************
-PKG_CHECK_MODULES(GKT, [gtk+-2.0 >= $GTK_VERSION])
+PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= $GTK_VERSION])
 
 dnl **************************************************
 dnl * checking for GtkHex                            *
@@ -166,6 +167,7 @@ case $build_os in
         CFLAGS="$CFLAGS -mms-bitfields -mwindows -mno-cygwin"
     ;;
 esac
+
 
 
 dnl **************************************************

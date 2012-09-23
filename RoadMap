@@ -119,7 +119,7 @@ I let you imagine what I expect before I do a major release !!!
    * Add an import ability (for instance tcpdump imports)
 
 - **0.2.0**
-   * rename tha main_window_t structure in main_struct_t structure which
+   * rename main_window_t structure in main_struct_t structure which
      will be less confusing.
    * rewrite the data_type creation in order to allow a script, or an extern
      program execution
