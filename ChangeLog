@@ -3,6 +3,7 @@
         * Added some preprocessing tests to enable compilation of heraia
           even with some 'old' glib2 version (now it compiles under
           Centos 6).
+        * Date changes (one year since last ChangeLog entry !)
 
 23.09.2012
     - Olivier Delhomme <heraia@delhomme.org>

@@ -5,7 +5,7 @@
                           the opened hex documents.
 
 
-  (C) Copyright 2010 - 2011 Olivier Delhomme
+  (C) Copyright 2010 - 2013 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
