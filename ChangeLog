@@ -5,6 +5,7 @@
           Centos 6).
         * Date changes (one year since last ChangeLog entry !)
         * Getting the output fancier (both in english and French !)
+        * Python will be used to create new data types.
 
 23.09.2012
     - Olivier Delhomme <heraia@delhomme.org>

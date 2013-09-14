@@ -33,11 +33,13 @@ GLIB_VERSION=2.2.0
 GTK_VERSION=2.16.0
 GTKHEX_VERSION=1.0.0
 GMODULE_VERSION=2.0.0
+PYTHON_VERSION=2.6.0
 
 AC_SUBST(GTKHEX_VERSION)
 AC_SUBST(GLIB_VERSION)
 AC_SUBST(GTK_VERSION)
 AC_SUBST(GMODULE_VERSION)
+AC_SUBST(PYTHON_VERSION)
 
 dnl **************************************************
 dnl * Build time sanity check                        *
@@ -140,6 +142,15 @@ dnl **************************************************
 dnl * checking for gmodule                           *
 dnl **************************************************
 PKG_CHECK_MODULES(GMODULE, [gmodule-2.0 >= $GMODULE_VERSION])
+
+dnl **************************************************
+dnl * checking for python and retreving flags        *
+dnl **************************************************
+#AM_PATH_PYTHON([$PYTHON_VERSION])
+#PYTHON_LDFLAGS=$($PYTHON-config --libs)
+#PYTHON_CFLAGS=$($PYTHON-config --cflags)
+#AC_SUBST(PYTHON_LDFLAGS)
+#AC_SUBST(PYTHON_CFLAGS)
 
 AC_PROG_INSTALL
 
@@ -269,7 +280,7 @@ echo "*** Dumping configuration ***"
 echo
 echo "    - Build For OS             : $build_os"
 echo "    - Compiler                 : ${CC}"
-echo "    - Options                  :"
+echo "    - Options"
 echo "      . is code profiling on ? : $gprof"
 echo "      . Code coverage is on ?  : $gcov"
 echo "      . debbuging is on ?      : $debug"
