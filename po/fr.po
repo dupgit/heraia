@@ -289,7 +289,7 @@ msgstr "Changement de la couleur pour le fichier nommé %s dans l'onglet n° %d"
 
 #: ../libheraia/heraia_ui.c:1881
 msgid "Connecting heraia_ui signals             "
-msgstr "heraia_ui, connexion des signaux                            "
+msgstr "heraia_ui, connexion des signaux                                    "
 
 #: ../libheraia/heraia_ui.c:1888 ../libheraia/heraia_ui.c:1901
 #: ../libheraia/heraia_ui.c:1914 ../libheraia/heraia_ui.c:1928
@@ -333,12 +333,12 @@ msgstr "Initialisation de l'interface de la fenêtre rechercher selon le type"
 
 #. preferences file - Setting up preferences
 #: ../libheraia/heraia_ui.c:1998
-msgid "Loading heraia preference file"
-msgstr "Chargement des préférences d'Heraia                                 "
+msgid "Loading heraia preference file\n"
+msgstr "Chargement des préférences d'Heraia\n"
 
 #: ../libheraia/heraia_ui.c:1999
 msgid "Setting up preferences...\n"
-msgstr "Mise en place des préférences                                     \n"
+msgstr "Mise en place des préférences\n"
 
 #: ../libheraia/heraia_ui.c:2001
 msgid "[Done]\n"

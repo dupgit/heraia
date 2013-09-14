@@ -3,7 +3,7 @@
   heraia_ui.c
   main menus, callback and utility functions
 
-  (C) Copyright 2005 - 2011 Olivier Delhomme
+  (C) Copyright 2005 - 2013 Olivier Delhomme
   e-mail : heraia@delhomme.org
   URL    : http://heraia.tuxfamily.org
 
@@ -1996,10 +1996,10 @@ int load_heraia_ui(heraia_struct_t *main_struct)
                 }
 
             /* preferences file - Setting up preferences */
-            fprintf(stdout, Q_("Loading heraia preference file"));
+            fprintf(stdout, Q_("Loading heraia preference file\n"));
             fprintf(stdout, Q_("Setting up preferences...\n"));
             load_preferences(main_struct, main_struct->prefs);
-            fprintf(stdout, Q_("[Done]\n"));
+            /* fprintf(stdout, Q_("[Done]\n")); */
         }
 
     return success;

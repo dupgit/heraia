@@ -3,7 +3,7 @@
  *  heraia.c
  *  heraia - an hexadecimal file editor and analyser based on ghex
  *
- *  (C) Copyright 2005 - 2012 Olivier Delhomme
+ *  (C) Copyright 2005 - 2013 Olivier Delhomme
  *  e-mail : heraia@delhomme.org
  *  URL    : http://heraia.tuxfamily.org
  *
@@ -519,8 +519,8 @@ static Options *init_options_struct(void)
  */
 static void print_lirairies_versions(void)
 {
-    fprintf(stdout, Q_("GTK version : %d.%d.%d\n"),GTK_MAJOR_VERSION, GTK_MINOR_VERSION,GTK_MICRO_VERSION);
-    fprintf(stdout, Q_("GLIB version : %d.%d.%d\n"), glib_major_version, glib_minor_version,  glib_micro_version);
+    fprintf(stdout, Q_("GTK version : %d.%d.%d\n"), GTK_MAJOR_VERSION, GTK_MINOR_VERSION, GTK_MICRO_VERSION);
+    fprintf(stdout, Q_("GLIB version : %d.%d.%d\n"), glib_major_version, glib_minor_version, glib_micro_version);
 }
 
 

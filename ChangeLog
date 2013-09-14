@@ -4,6 +4,7 @@
           even with some 'old' glib2 version (now it compiles under
           Centos 6).
         * Date changes (one year since last ChangeLog entry !)
+        * Getting the output fancier (both in english and French !)
 
 23.09.2012
     - Olivier Delhomme <heraia@delhomme.org>
