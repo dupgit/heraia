@@ -1,3 +1,9 @@
+13.09.2013
+    - Olivier Delhomme <heraia@delhomme.org>
+        * Added some preprocessing tests to enable compilation of heraia
+          even with some 'old' glib2 version (now it compiles under
+          Centos 6).
+
 23.09.2012
     - Olivier Delhomme <heraia@delhomme.org>
         * Changed a date in a comment to 2012.
