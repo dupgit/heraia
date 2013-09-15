@@ -131,12 +131,13 @@ PKG_CHECK_MODULES(GLIB, [glib-2.0 >= $GLIB_VERSION])
 dnl **************************************************
 dnl * checking for gtk+                              *
 dnl **************************************************
-PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= $GTK_VERSION])
+PKG_CHECK_EXISTS(gtk+-3.0, [PKG_CHECK_MODULES(GTK, [gtk+-3.0 >= $GTK_VERSION]);AC_DEFINE([GTK3], [1], [Gtk version 3 is available])], [PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= $GTK_VERSION])])
+
 
 dnl **************************************************
 dnl * checking for GtkHex                            *
 dnl **************************************************
-PKG_CHECK_MODULES(GTKHEX, [gtkhex >= $GTKHEX_VERSION])
+PKG_CHECK_EXISTS(gtkhex-3, [PKG_CHECK_MODULES(GTKHEX, [gtkhex-3 >= $GTKHEX_VERSION]);AC_DEFINE([GTKHEX3], [1], [GtkHex version 3 is available])], [PKG_CHECK_MODULES(GTKHEX, [gtkhex >= $GTKHEX_VERSION])])
 
 dnl **************************************************
 dnl * checking for gmodule                           *
@@ -155,12 +156,13 @@ dnl **************************************************
 AC_PROG_INSTALL
 
 dnl This flag : "-Wcast-qual" implies gcc warnings on gthreads.h
-dnl -DGTK_DISABLE_DEPRECATED=1 -DG_DISABLE_DEPRECATED=1 -DGSEAL_ENABLE
+dnl -DGTK_DISABLE_DEPRECATED -DG_DISABLE_DEPRECATED -DGSEAL_ENABLE
+dnl -DGDK_DISABLE_DEPRECATED
 
 CFLAGS="$CFLAGS -Wall -Wstrict-prototypes -Wmissing-declarations \
 -Wbad-function-cast -Wcast-align -Wnested-externs -Wunused \
 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE \
--DGSEAL_ENABLE -DG_DISABLE_DEPRECATED=1"
+-DGSEAL_ENABLE -DG_DISABLE_DEPRECATED"
 
 
 dnl **************************************************
@@ -191,7 +193,7 @@ dnl * At this early stage debugging IS activated     *
 dnl * by default                                     *
 dnl **************************************************
 AC_ARG_ENABLE([debug],
-     [  --enable-debug    Turn on debugging],
+     [  --enable-debug         Turn on debugging],
      [case "${enableval}" in
        yes) debug=true ;;
        no)  debug=false ;;
@@ -206,11 +208,12 @@ else
  CFLAGS="$CFLAGS -ggdb"
 fi
 
+
 dnl **************************************************
 dnl * gcov option                                    *
 dnl **************************************************
 AC_ARG_ENABLE([gcov],
-     [  --enable-gcov     Enables gcov coverage tests],
+     [  --enable-gcov          Enables gcov coverage tests],
      [case "${enableval}" in
        yes) gcov=true ;;
        no)  gcov=false ;;
@@ -223,11 +226,12 @@ else
  CFLAGS="$CFLAGS"
 fi
 
+
 dnl **************************************************
 dnl * gprof option                                   *
 dnl **************************************************
 AC_ARG_ENABLE([gprof],
-     [  --enable-gprof    Enables gprof profiling],
+     [  --enable-gprof         Enables gprof profiling],
      [case "${enableval}" in
        yes) gprof=true ;;
        no)  gprof=false ;;
@@ -239,6 +243,25 @@ then
 else
  CFLAGS="$CFLAGS"
 fi
+
+
+dnl **************************************************
+dnl * deprecated option                              *
+dnl **************************************************
+AC_ARG_ENABLE([deprecated],
+     [  --enable-deprecated    Enables GTK deprecated functions tests],
+     [case "${enableval}" in
+       yes) deprecated=true ;;
+       no)  deprecated=false ;;
+       *) AC_MSG_ERROR([bad value ${enableval} for --enable-deprecated]) ;;
+     esac],[deprecated=false])
+if test x$deprecated = xtrue
+then
+ CFLAGS="-DGTK_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED $CFLAGS"
+else
+ CFLAGS="$CFLAGS"
+fi
+
 
 AC_SUBST(LDFLAGS)
 AC_SUBST(CFLAGS)
@@ -274,7 +297,30 @@ pixmaps/hicolor/256x256/Makefile
 pixmaps/hicolor/256x256/apps/Makefile
 ])
 AC_OUTPUT
-
+echo
+echo
+echo "*** Flags that will be used to compile Heraia ***"
+echo
+echo "GTK CFLAGS    : ${GTK_CFLAGS}"
+echo
+echo "GTK LIBS      : ${GTK_LIBS}"
+echo
+echo "CFLAGS        : ${CFLAGS}"
+echo
+echo "LDFLAGS       : ${LDFLAGS}"
+echo
+echo "GTKHEX CFLAGS : ${GTKHEX_CFLAGS}"
+echo
+echo "GTKHEX LIBS   : ${GTKHEX_LIBS}"
+echo
+echo "GMODULE CFLAGS: ${GMODULE_CFLAGS}"
+echo
+echo "GMODULE LIBS  : ${GMODULE_LIBS}"
+echo
+echo "GLIB CFLAGS   : ${GLIB_CFLAGS}"
+echo
+echo "GLIB LIBS     : ${GLIB_LIBS}"
+echo
 echo
 echo "*** Dumping configuration ***"
 echo

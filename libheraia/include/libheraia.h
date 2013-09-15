@@ -51,7 +51,14 @@
 #include <glib/gi18n-lib.h>
 #include <gmodule.h>
 
-#include <gtkhex/gtkhex.h>
+
+#ifdef GTKHEX3
+    #include <gtkhex-3/gtkhex.h>
+#endif
+#ifndef GTKHEX3
+    #include <gtkhex/gtkhex.h>
+#endif
+
 
 /**
  * @typedef HexDocument Heraia_Document

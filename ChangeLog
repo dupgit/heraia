@@ -1,3 +1,13 @@
+14.09.2013
+    - Olivier Delhomme <heraia@delhomme.org>
+        * Heraia now compiles also with gtk+-3.0 and gtkhex-3 (for instance
+          in Debian Wheezy).
+        * Documentation for Debian Wheezy needed packages to compile.
+        * New --enable-deprecated ./configure function that enables the
+          flags -DGTK_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED to check
+          if there is still any deprecated functions. This does not work
+          with libgtkhex-0 (under gtk2).
+
 13.09.2013
     - Olivier Delhomme <heraia@delhomme.org>
         * Added some preprocessing tests to enable compilation of heraia
