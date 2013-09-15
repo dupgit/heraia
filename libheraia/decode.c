@@ -1034,7 +1034,7 @@ decode_generic_t *new_decode_generic_t(const gchar *label, guint data_size, gboo
         {
             decode_it = (DecodeFunc) va_arg(args, DecodeFunc);
             entry = gtk_entry_new();
-            gtk_editable_set_editable(GTK_ENTRY(entry), FALSE);
+            gtk_editable_set_editable(GTK_EDITABLE(entry), FALSE);
             decode = new_decode_t(decode_it, entry, err_msg);
             g_ptr_array_add(decode_array, (gpointer) decode);
         }

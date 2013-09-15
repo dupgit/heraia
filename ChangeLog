@@ -7,6 +7,8 @@
           flags -DGTK_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED to check
           if there is still any deprecated functions. This does not work
           with libgtkhex-0 (under gtk2).
+        * Corrected a transtype error (the function is expecting a
+          GtkEditable pointer and not a GtkEntry !).
 
 13.09.2013
     - Olivier Delhomme <heraia@delhomme.org>
