@@ -9,6 +9,8 @@
           with libgtkhex-0 (under gtk2).
         * Corrected a transtype error (the function is expecting a
           GtkEditable pointer and not a GtkEntry !).
+        * Removed unused variables (but leaved a comment where necessary).
+        * Corrected some transtype errors with gtk+3
 
 13.09.2013
     - Olivier Delhomme <heraia@delhomme.org>

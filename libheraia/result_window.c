@@ -512,14 +512,10 @@ void rw_remove_all_tabs(heraia_struct_t *main_struct, doc_t *doc)
     gint len = 0;               /**< total len of result array                   */
     GtkWidget *notebook = NULL; /**< result_notebook from heraia.gtkbuilder      */
     doc_t *value = NULL;        /**< Value to compare with doc                   */
-    GArray *array = NULL;       /**< array that stores the indexes where results
-                                     value is equal to doc.                      */
 
     if (main_struct != NULL && main_struct->results != NULL)
         {
             notebook = heraia_get_widget(main_struct->xmls->main, "result_notebook");
-
-            array = g_array_new(TRUE, TRUE, sizeof(gint));
 
             len = main_struct->results->len;
 

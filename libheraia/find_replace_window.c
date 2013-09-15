@@ -366,8 +366,6 @@ static void find_replace_add_ghex_widget(xml_t *xmls, gchar *widget_name, doc_t 
     al = heraia_get_widget(xmls->main, widget_name);
     gtk_container_add(GTK_CONTAINER(al), entry->hex_widget);
     gtk_container_set_border_width(GTK_CONTAINER(al), 3);
-
-
 }
 
 
@@ -589,9 +587,9 @@ static goffset fr_replace_data(heraia_struct_t *main_struct)
 static void fr_replace_bt_clicked(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
-    goffset offset = 0;
+    /* goffset length = 0; */ /* Unused here but returned by fr_replace_data() function */
 
-    offset = fr_replace_data(main_struct);
+    fr_replace_data(main_struct);
 }
 
 
@@ -650,7 +648,7 @@ static void fdft_window_populate_category_cb(heraia_struct_t *main_struct)
 
                     #if GLIB_MAJOR_VERSION >= 2
                         #if GLIB_MINOR_VERSION >= 24
-                            gtk_combo_box_text_append_text(GTK_COMBO_BOX(cb), text);
+                            gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(cb), text);
                         #endif
                         #if GLIB_MINOR_VERSION <= 23
                             gtk_combo_box_append_text(GTK_COMBO_BOX(cb), text);
@@ -966,7 +964,7 @@ static void fdft_category_cb_changed(GtkWidget *widget, gpointer data)
 
                     #if GLIB_MAJOR_VERSION >= 2
                         #if GLIB_MINOR_VERSION >= 24
-                            gtk_combo_box_text_append_text(GTK_COMBO_BOX(cb), text);
+                            gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(cb), text);
                         #endif
                         #if GLIB_MINOR_VERSION <= 23
                             gtk_combo_box_append_text(GTK_COMBO_BOX(cb), text);
@@ -989,7 +987,7 @@ static void fdft_category_cb_changed(GtkWidget *widget, gpointer data)
 
                     #if GLIB_MAJOR_VERSION >= 2
                         #if GLIB_MINOR_VERSION >= 24
-                            gtk_combo_box_text_append_text(GTK_COMBO_BOX(cb), text);
+                            gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(cb), text);
                         #endif
                         #if GLIB_MINOR_VERSION <= 23
                             gtk_combo_box_append_text(GTK_COMBO_BOX(cb), text);
