@@ -20,7 +20,7 @@ On Ubuntu 10.04 and Debian Squeeze :
  - libgtk2.0-dev
  - libgtkhex0-dev
 
-On Debian Wheezy :
+On Debian 7 (Wheezy) :
 
  - gcc
  - make
@@ -53,6 +53,9 @@ On Centos 6.0 and Redhat 6.0 :
  - glib2-devel-2.22.5-5.el6
  - gtk2-devel-2.18.9-4.el6
  - ghex-2.24.0-4.el6 and ghex-devel-2.24.0-4.el6 found on EPEL_
+
+
+To make the documentation you will need docutils_ front end tools (rst2html).
 
 
 Compiling the source from a release version (heraia-\*.tar.gz)
@@ -201,3 +204,4 @@ __
 .. _cheatsheet: http://docutils.sourceforge.net/docs/user/rst/cheatsheet.txt
 .. _quickref:   http://docutils.sourceforge.net/docs/user/rst/quickref.html
 .. _interesting page: http://sphinx.pocoo.org/rest.html
+.. _docutils: http://docutils.sourceforge.net/docs/user/tools.html

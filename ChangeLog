@@ -1,3 +1,9 @@
+17.09.2013
+    - Olivier Delhomme <heraia@delhomme.org>
+        * Documentation update
+        * gtk_vbox_new and gtk_hbox_new has been deprecated since GTK 3.2
+
+
 14.09.2013
     - Olivier Delhomme <heraia@delhomme.org>
         * Heraia now compiles also with gtk+-3.0 and gtkhex-3 (for instance

@@ -2499,7 +2499,15 @@ GtkWidget *create_tab_close_button(heraia_struct_t *main_struct, GtkWidget *tab_
     GtkWidget *button = NULL;  /**< Closing button                     */
 
     /* Close button in tabs */
-    hbox = gtk_hbox_new(FALSE, 0);
+    #if GTK_MAJOR_VERSION <= 3 && GTK_MINOR_VERSION <= 1
+        /* valid in GTK+ 2 and 3.0 and 3.1 */
+        hbox = gtk_hbox_new(FALSE, 0);
+    #endif
+    #if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 2
+        /* only valid from GTK 3.2 */
+        hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    #endif
+
 
     button = gtk_button_new_with_label("x");
     gtk_button_set_relief(GTK_BUTTON(button), GTK_RELIEF_NONE);
@@ -2535,7 +2543,16 @@ void add_new_tab_in_main_window(heraia_struct_t *main_struct, doc_t *doc)
     GtkWidget *hbox = NULL;       /**< used for hbox creation in the tabs   */
 
     notebook = GTK_NOTEBOOK(heraia_get_widget(main_struct->xmls->main, "file_notebook"));
-    vbox = gtk_vbox_new(FALSE, 2);
+
+    #if GTK_MAJOR_VERSION <= 3 && GTK_MINOR_VERSION <= 1
+        /* valid in GTK+ 2 and 3.0 and 3.1 */
+        vbox = gtk_vbox_new(FALSE, 2);
+    #endif
+    #if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 2
+        /* only valid from GTK 3.2 */
+        vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
+    #endif
+
     gtk_box_pack_start(GTK_BOX(vbox), doc->hex_widget, TRUE, TRUE, 3);
 
     /* tab's label and menu label */

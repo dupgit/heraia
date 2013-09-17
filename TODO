@@ -41,6 +41,9 @@
 01.09.2010
  - Add some user documentation.
 
+17.09.2013
+ - Do not forget to clean the code when GTK2 will not be available anymore
+
 
 [Done List]
 -----------

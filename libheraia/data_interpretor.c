@@ -352,7 +352,16 @@ tab_t *add_new_tab_in_data_interpretor(GtkNotebook *notebook, guint index, const
     hpaned = gtk_hpaned_new();
     gtk_container_set_border_width(GTK_CONTAINER(hpaned), 2); /* properties for the hpaned */
     child = hpaned;
-    vbox = gtk_vbox_new(FALSE, 2);
+
+    #if GTK_MAJOR_VERSION <= 3 && GTK_MINOR_VERSION <= 1
+        /* valid in GTK+ 2 and 3.0 and 3.1 */
+        vbox = gtk_vbox_new(FALSE, 2);
+    #endif
+    #if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 2
+        /* only valid from GTK 3.2 */
+        vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
+    #endif
+
     gtk_box_set_homogeneous(GTK_BOX(vbox), FALSE);
     g_ptr_array_add(vboxes, vbox);
     gtk_paned_add1(GTK_PANED(hpaned), (gpointer) vbox);
@@ -366,7 +375,16 @@ tab_t *add_new_tab_in_data_interpretor(GtkNotebook *notebook, guint index, const
             gtk_container_set_border_width(GTK_CONTAINER(hpaned2), 2); /* properties for the hpaned */
             gtk_paned_add2(GTK_PANED(hpaned), hpaned2);
             hpaned = hpaned2;                  /* translation */
-            vbox = gtk_vbox_new(FALSE, 2);
+
+            #if GTK_MAJOR_VERSION <= 3 && GTK_MINOR_VERSION <= 1
+                /* valid in GTK+ 2 and 3.0 and 3.1 */
+                vbox = gtk_vbox_new(FALSE, 2);
+            #endif
+            #if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 2
+                /* only valid from GTK 3.2 */
+                vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
+            #endif
+
             gtk_box_set_homogeneous(GTK_BOX(vbox), FALSE);
             g_ptr_array_add(vboxes, (gpointer) vbox);
             gtk_paned_add1(GTK_PANED(hpaned), vbox);
@@ -375,7 +393,15 @@ tab_t *add_new_tab_in_data_interpretor(GtkNotebook *notebook, guint index, const
             i++;
         }
 
-    vbox = gtk_vbox_new(FALSE, 2);
+    #if GTK_MAJOR_VERSION <= 3 && GTK_MINOR_VERSION <= 1
+        /* valid in GTK+ 2 and 3.0 and 3.1 */
+        vbox = gtk_vbox_new(FALSE, 2);
+    #endif
+    #if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 2
+        /* only valid from GTK 3.2 */
+        vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
+    #endif
+
     g_ptr_array_add(vboxes, (gpointer) vbox);
     gtk_paned_add2(GTK_PANED(hpaned), vbox);
     gtk_box_set_homogeneous(GTK_BOX(vbox), FALSE);
