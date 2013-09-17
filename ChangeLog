@@ -2,6 +2,7 @@
     - Olivier Delhomme <heraia@delhomme.org>
         * Documentation update
         * gtk_vbox_new and gtk_hbox_new has been deprecated since GTK 3.2
+        * gtk_hpaned_new was also deprecated
 
 
 14.09.2013

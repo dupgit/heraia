@@ -349,7 +349,17 @@ tab_t *add_new_tab_in_data_interpretor(GtkNotebook *notebook, guint index, const
     tab = (tab_t *) g_malloc0(sizeof(tab_t));
 
     i = 0;
-    hpaned = gtk_hpaned_new();
+
+    #if GTK_MAJOR_VERSION <= 3 && GTK_MINOR_VERSION <= 1
+        /* valid in GTK+ 2 and 3.0 and 3.1 */
+        hpaned = gtk_hpaned_new();
+    #endif
+    #if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 2
+        /* only valid from GTK 3.2 */
+        hpaned = gtk_paned_new(GTK_ORIENTATION_HORIZONTAL);
+    #endif
+
+
     gtk_container_set_border_width(GTK_CONTAINER(hpaned), 2); /* properties for the hpaned */
     child = hpaned;
 
@@ -371,7 +381,15 @@ tab_t *add_new_tab_in_data_interpretor(GtkNotebook *notebook, guint index, const
     i++;
     while (i < nb_cols-1)
         {
-            hpaned2 = gtk_hpaned_new();
+            #if GTK_MAJOR_VERSION <= 3 && GTK_MINOR_VERSION <= 1
+                /* valid in GTK+ 2 and 3.0 and 3.1 */
+                hpaned2 = gtk_hpaned_new();
+            #endif
+            #if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 2
+                /* only valid from GTK 3.2 */
+                hpaned2 = gtk_paned_new(GTK_ORIENTATION_HORIZONTAL);
+            #endif
+
             gtk_container_set_border_width(GTK_CONTAINER(hpaned2), 2); /* properties for the hpaned */
             gtk_paned_add2(GTK_PANED(hpaned), hpaned2);
             hpaned = hpaned2;                  /* translation */
