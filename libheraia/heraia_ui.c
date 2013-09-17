@@ -2499,13 +2499,19 @@ GtkWidget *create_tab_close_button(heraia_struct_t *main_struct, GtkWidget *tab_
     GtkWidget *button = NULL;  /**< Closing button                     */
 
     /* Close button in tabs */
-    #if GTK_MAJOR_VERSION <= 3 && GTK_MINOR_VERSION <= 1
-        /* valid in GTK+ 2 and 3.0 and 3.1 */
+    #if GTK_MAJOR_VERSION < 3
+        /* valid in GTK+ 2.x */
         hbox = gtk_hbox_new(FALSE, 0);
     #endif
-    #if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 2
-        /* only valid from GTK 3.2 */
-        hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    #if GTK_MAJOR_VERSION >= 3
+        #if GTK_MINOR_VERSION <= 1
+            /* valid in GTK+ 3.0 and 3.1 */
+            hbox = gtk_hbox_new(FALSE, 0);
+        #endif
+        #if GTK_MINOR_VERSION >= 2
+            /* only valid from GTK 3.2 */
+            hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+        #endif
     #endif
 
 
@@ -2544,13 +2550,19 @@ void add_new_tab_in_main_window(heraia_struct_t *main_struct, doc_t *doc)
 
     notebook = GTK_NOTEBOOK(heraia_get_widget(main_struct->xmls->main, "file_notebook"));
 
-    #if GTK_MAJOR_VERSION <= 3 && GTK_MINOR_VERSION <= 1
-        /* valid in GTK+ 2 and 3.0 and 3.1 */
+    #if GTK_MAJOR_VERSION < 3
+        /* valid in GTK+ 2.x */
         vbox = gtk_vbox_new(FALSE, 2);
     #endif
-    #if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 2
-        /* only valid from GTK 3.2 */
-        vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
+    #if GTK_MAJOR_VERSION >= 3
+        #if GTK_MINOR_VERSION <= 1
+            /* valid in GTK+ 3.0 and 3.1 */
+            vbox = gtk_vbox_new(FALSE, 2);
+        #endif
+        #if GTK_MINOR_VERSION >= 2
+            /* only valid from GTK 3.2 */
+            vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
+        #endif
     #endif
 
     gtk_box_pack_start(GTK_BOX(vbox), doc->hex_widget, TRUE, TRUE, 3);
