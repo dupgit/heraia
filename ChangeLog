@@ -1,3 +1,8 @@
+18.09.2013
+    - Olivier Delhomme <heraia@delhomme.org>
+        * New path where to look for (when heraia was invoked from the
+          user's PATH then it was unable to find the gtkbuilder file).
+
 17.09.2013
     - Olivier Delhomme <heraia@delhomme.org>
         * Documentation update
