@@ -39,7 +39,7 @@ On OpenSuse 11.3 and Fedora 14 :
  - gtk2-devel
  - ghex-devel
 
-On OpenIndiana 5.11 :
+On OpenIndiana 5.11 (still ok for oi_151.1.8) :
 
  - gcc-3
  - gettext
