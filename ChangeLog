@@ -1,6 +1,7 @@
 27.09.2013
     - Olivier Delhomme <heraia@delhomme.org>
         * New compilation option in order to disable completly the logs
+        * Some pain with those GTK_VERSION tests !
 
 22.09.2013
     - Olivier Delhomme <heraia@delhomme.org>

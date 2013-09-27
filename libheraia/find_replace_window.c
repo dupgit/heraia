@@ -646,13 +646,16 @@ static void fdft_window_populate_category_cb(heraia_struct_t *main_struct)
                     label = tab->label;
                     text = gtk_label_get_text(GTK_LABEL(label));
 
-                    #if GTK_MAJOR_VERSION >= 2
+                    #if GTK_MAJOR_VERSION == 2
                         #if GTK_MINOR_VERSION >= 24
                             gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(cb), text);
                         #endif
                         #if GTK_MINOR_VERSION <= 23
                             gtk_combo_box_append_text(GTK_COMBO_BOX(cb), text);
                         #endif
+                    #endif
+                    #if GTK_MAJOR_VERSION > 2
+                        gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(cb), text);
                     #endif
                 }
         }
@@ -962,13 +965,16 @@ static void fdft_category_cb_changed(GtkWidget *widget, gpointer data)
                     label = decod->label;
                     text = gtk_label_get_text(GTK_LABEL(label));
 
-                    #if GTK_MAJOR_VERSION >= 2
+                    #if GTK_MAJOR_VERSION == 2
                         #if GTK_MINOR_VERSION >= 24
                             gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(cb), text);
                         #endif
                         #if GTK_MINOR_VERSION <= 23
                             gtk_combo_box_append_text(GTK_COMBO_BOX(cb), text);
                         #endif
+                    #endif
+                    #if  GTK_MAJOR_VERSION > 2
+                        gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(cb), text);
                     #endif
                 }
 
@@ -985,13 +991,16 @@ static void fdft_category_cb_changed(GtkWidget *widget, gpointer data)
                     label = g_ptr_array_index(tab->col_labels, i);
                     text = gtk_label_get_text(GTK_LABEL(label));
 
-                    #if GTK_MAJOR_VERSION >= 2
+                    #if GTK_MAJOR_VERSION == 2
                         #if GTK_MINOR_VERSION >= 24
                             gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(cb), text);
                         #endif
                         #if GTK_MINOR_VERSION <= 23
                             gtk_combo_box_append_text(GTK_COMBO_BOX(cb), text);
                         #endif
+                    #endif
+                    #if  GTK_MAJOR_VERSION > 2
+                        gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(cb), text);
                     #endif
                 }
         }
@@ -1011,7 +1020,7 @@ static fdft_t *fdft_window_init_widgets(heraia_struct_t * main_struct)
         {
             fdft = (fdft_t *) g_malloc0 (sizeof(fdft_t));
 
-            #if GTK_MAJOR_VERSION >= 2
+            #if GTK_MAJOR_VERSION == 2
                 #if GTK_MINOR_VERSION >= 24
                     fdft->category_cb = gtk_combo_box_text_new();
                     fdft->type_cb = gtk_combo_box_text_new();
@@ -1022,6 +1031,12 @@ static fdft_t *fdft_window_init_widgets(heraia_struct_t * main_struct)
                     fdft->type_cb = gtk_combo_box_new_text();
                     fdft->feature_cb = gtk_combo_box_new_text();
                 #endif
+            #endif
+
+            #if GTK_MAJOR_VERSION > 2
+                fdft->category_cb = gtk_combo_box_text_new();
+                fdft->type_cb = gtk_combo_box_text_new();
+                fdft->feature_cb = gtk_combo_box_text_new();
             #endif
 
             main_struct->fdft = fdft;
