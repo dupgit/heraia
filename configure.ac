@@ -204,7 +204,7 @@ then
  AC_DEFINE_UNQUOTED(ENABLE_DEBUG, TRUE, [Debug mode On])
  CFLAGS="$CFLAGS -ggdb"
 else
- AC_DEFINE_UNQUOTED(ENABLE_DEBUG, TRUE, [Debug mode Off])
+ AC_DEFINE_UNQUOTED(ENABLE_DEBUG, FALSE, [Debug mode Off])
  CFLAGS="$CFLAGS -ggdb"
 fi
 
@@ -246,7 +246,7 @@ fi
 
 
 dnl **************************************************
-dnl * deprecated option                              *
+dnl * deprecated function tests option               *
 dnl **************************************************
 AC_ARG_ENABLE([deprecated],
      [  --enable-deprecated    Enables GTK deprecated functions tests],
@@ -260,6 +260,24 @@ then
  CFLAGS="-DGTK_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED $CFLAGS"
 else
  CFLAGS="$CFLAGS"
+fi
+
+
+dnl **************************************************
+dnl * Disabling the log output to make heraia quiet  *
+dnl **************************************************
+AC_ARG_ENABLE([logoutput],
+     [  --disable-logoutput    Disables all log output],
+     [case "${enableval}" in
+       yes) logoutput=false ;;
+       no)  logoutput=true ;;
+       *) AC_MSG_ERROR([bad value ${enableval} for --disable-log-output]) ;;
+     esac],[logoutput=true])
+if test x$logoutput = xfalse
+then
+ AC_DEFINE([LOGOUTPUT], [0], [Disabling the log output to make heraia quiet])
+else
+ AC_DEFINE([LOGOUTPUT], [1], [Logging is activated])
 fi
 
 

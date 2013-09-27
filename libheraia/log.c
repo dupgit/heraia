@@ -194,6 +194,8 @@ static void scroll_down_textview(heraia_struct_t *main_struct)
  */
 void log_message(heraia_struct_t *main_struct, GLogLevelFlags log_level, const char *format, ...)
 {
+
+#if LOGOUTPUT == 0   /* If LOGOUTPUT is <> 0 it disables all output from this log system */
     va_list args;
     gchar *str = NULL;
     gchar *str_time = NULL;
@@ -246,6 +248,8 @@ void log_message(heraia_struct_t *main_struct, GLogLevelFlags log_level, const c
             g_free(str_time_utf8);
             g_free(str_utf8);
         }
+
+#endif /* LOGOUTPUT */
 }
 
 
@@ -263,7 +267,7 @@ void mw_cmi_show_logw_toggle(GtkWidget *widget, gpointer data)
     gboolean checked = FALSE;
     GtkWidget *log_dialog = NULL;
 
-     log_dialog = heraia_get_widget(main_struct->xmls->main, "log_window");
+    log_dialog = heraia_get_widget(main_struct->xmls->main, "log_window");
 
     cmi = heraia_get_widget(main_struct->xmls->main, "mw_cmi_show_logw");
     checked = gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(cmi));

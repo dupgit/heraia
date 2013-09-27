@@ -1,3 +1,7 @@
+27.09.2013
+    - Olivier Delhomme <heraia@delhomme.org>
+        * New compilation option in order to disable completly the logs
+
 22.09.2013
     - Olivier Delhomme <heraia@delhomme.org>
         * Oups when using GTK's function, one would expect to test GTK's
