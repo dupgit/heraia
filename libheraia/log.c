@@ -195,7 +195,7 @@ static void scroll_down_textview(heraia_struct_t *main_struct)
 void log_message(heraia_struct_t *main_struct, GLogLevelFlags log_level, const char *format, ...)
 {
 
-#if LOGOUTPUT == 1     /* Logging things only if LOGOUTPUT as a value of 1 (use --disable-logoutput in ./configure to change this) */
+#if LOGOUTPUT == 1     /* Logging things only if LOGOUTPUT has a value of 1 (use --disable-logoutput in ./configure to change this) */
     va_list args;
     gchar *str = NULL;
     gchar *str_time = NULL;

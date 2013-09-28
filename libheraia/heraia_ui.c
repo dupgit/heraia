@@ -739,18 +739,18 @@ void on_open_activate(GtkWidget *widget, gpointer data)
  * @param main_struct : main structure
  * @param notebbok_name : the name of the notebook in the structure
  * @param to_find : a GtkWidget that we want to find in the main notebook tabs
- * @return a gint as tha tab number that contains the widget "to_find" or -1 if
+ * @return a gint as the tab number that contains the widget "to_find" or -1 if
  *         not found
  */
 gint find_tab_number_from_widget(heraia_struct_t *main_struct, gchar *notebook_name, GtkWidget *to_find)
 {
-    GtkWidget *notebook = NULL;  /**< Notenook on the main window         */
-    GtkWidget *page = NULL;      /**< pages on the notebook               */
-    GtkWidget *tab_label = NULL; /**< tab label GtkWidget (hbox + others) */
-    gint nb_pages = 0;           /**< Number of pages in the notebook     */
+    GtkWidget *notebook = NULL;  /** GtkWidget *notebook is the notenook on the main window     */
+    GtkWidget *page = NULL;      /** GtkWidget *page are the pages on the notebook              */
+    GtkWidget *tab_label = NULL; /** GtkWidget *tab_label is the tab label (hbox + others)      */
+    gint nb_pages = 0;           /** gint nb_pages reflects the number of pages in the notebook */
     gint i = 0;
-    gboolean found = FALSE;      /**< True when the widget has been found */
-    GList *children = NULL;      /**< Children from the tab label         */
+    gboolean found = FALSE;      /** gboolean found is True when the widget has been found      */
+    GList *children = NULL;      /** GList *children a list of the Children from the tab label  */
 
     notebook = heraia_get_widget(main_struct->xmls->main, notebook_name);
 
@@ -766,7 +766,7 @@ gint find_tab_number_from_widget(heraia_struct_t *main_struct, gchar *notebook_n
                 {
                     tab_label = gtk_notebook_get_tab_label(GTK_NOTEBOOK(notebook), page);
 
-                    if (GTK_IS_HBOX(tab_label))
+                    if (GTK_IS_BOX(tab_label))
                         {
                             children = gtk_container_get_children(GTK_CONTAINER(tab_label));
                         }
@@ -825,7 +825,7 @@ static void on_projects_close_activate(GtkWidget *widget, gpointer data)
 static void on_projects_save_as_activate(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
-    gchar *filename = NULL;  /**< Auto malloc'ed, do not free */
+    gchar *filename = NULL;  /** gchar *filename is auto malloc'ed, do not free ! */
 
     if (main_struct != NULL)
         {
@@ -886,7 +886,7 @@ static void on_projects_open_activate(GtkWidget *widget, gpointer data)
  */
 static void close_one_document(heraia_struct_t *main_struct, doc_t *closing_doc, gint index)
 {
-    GtkWidget *notebook = NULL;  /**< Notenook on the main window            */
+    GtkWidget *notebook = NULL;  /** GtkWidget *notebook is the notenook on the main window */
 
     if (main_struct != NULL && main_struct->documents != NULL)
         {
@@ -914,18 +914,17 @@ static void close_one_document(heraia_struct_t *main_struct, doc_t *closing_doc,
 void on_close_activate(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
-    doc_t *closing_doc = NULL;   /**< Current document to close in heraia    */
-    doc_t *document = NULL;      /**< To iterate over the array of documents */
-    GtkWidget *notebook = NULL;  /**< Notenook on the main window            */
-    GtkWidget *dialog = NULL;    /**< The dialog box                         */
-    GtkWidget *parent = NULL;    /**< parent widget for the dialog box       */
-    gint result = 0;             /**< result from the dialog box             */
+    doc_t *closing_doc = NULL;   /** doc_t *closing_doc the current document to close in heraia */
+    doc_t *document = NULL;      /** doc_t *document to iterate over the array of documents     */
+    GtkWidget *notebook = NULL;  /** GtkWidget *notebook is the notenook on the main window     */
+    GtkWidget *dialog = NULL;    /** GtkWidget *dialog is the dialog box                        */
+    GtkWidget *parent = NULL;    /** GtkWidget *parent is the parent widget for the dialog box  */
+    gint result = 0;             /** gint result the result from the dialog box                 */
     gint index = -1;
     gint i = 0;
     gint tab_number = 0;
-    gboolean is_current_doc = FALSE; /**< Says wheter the document that we are
-                                          trying to close is the current one or
-                                          not                                 */
+    gboolean is_current_doc = FALSE; /** gboolean is_current_doc says wheter the document
+                                         that we are trying to close is the current one or not  */
 
     if (main_struct != NULL && main_struct->current_doc != NULL)
         {
@@ -933,7 +932,7 @@ void on_close_activate(GtkWidget *widget, gpointer data)
             if (GTK_IS_BUTTON(widget))
                 {   /* From the tab */
                     /* Guessing which document the user has closed */
-                    tab_number = find_tab_number_from_widget(main_struct, "file_notebook", widget);
+                    tab_number = find_tab_number_from_widget(main_struct, "file_notebook", widget); /** @todo test the returned value here before doing anything else */
                     closing_doc = g_ptr_array_index(main_struct->documents, tab_number);
                     is_current_doc = (closing_doc == main_struct->current_doc);
                 }
@@ -1059,7 +1058,7 @@ void on_save_as_activate(GtkWidget *widget, gpointer data)
 {
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
     HERAIA_ERROR erreur = HERAIA_NOERR;
-    gchar *filename = NULL;  /**< Auto malloc'ed, do not free */
+    gchar *filename = NULL;  /** gchar *filename is auto malloc'ed, do not free */
 
     if (main_struct != NULL && main_struct->current_doc != NULL)
         {
@@ -1108,8 +1107,8 @@ void on_DIMenu_activate(GtkWidget *widget, gpointer data)
 {
 
     heraia_struct_t *main_struct = (heraia_struct_t *) data;
-    data_window_t *dw = NULL;      /**< data_window structure for data interpretor */
-    GtkNotebook *notebook = NULL;  /**< data interpretor's notebook                */
+    data_window_t *dw = NULL;      /** data_window_t *dw is a structure for the data interpretor */
+    GtkNotebook *notebook = NULL;  /** GtkNotebook *notebook is the data interpretor's notebook  */
 
     if (main_struct != NULL)
         {
@@ -1311,7 +1310,7 @@ static gchar *make_absolute_path(gchar *filename)
  */
 void set_the_working_directory(GtkFileChooser *file_chooser, gchar *filename)
 {
-    gchar *dirname = NULL;    /**< directory where we want to be, at first, in the file chooser */
+    gchar *dirname = NULL;  /** gchar *dirname is the directory where we want to be, at first, in the file chooser */
 
     dirname = make_absolute_path(filename);
 
@@ -1333,9 +1332,9 @@ void set_the_working_directory(GtkFileChooser *file_chooser, gchar *filename)
  */
 GSList *select_file_to_load(heraia_struct_t *main_struct, gboolean multiple, gchar *message)
 {
-    GtkWidget *parent = NULL; /**< A parent window (we use main_struct)            */
+    GtkWidget *parent = NULL; /** GtkWidget *parent is a parent window (we use main_struct)            */
     GtkFileChooser *file_chooser = NULL;
-    GSList *list = NULL;   /**< list of selected (if any) filenames to be openned  */
+    GSList *list = NULL;      /** GSList *list is a list of selected (if any) filenames to be openned  */
 
     parent = heraia_get_widget(main_struct->xmls->main, "main_window");
 
@@ -1386,7 +1385,7 @@ GSList *select_file_to_load(heraia_struct_t *main_struct, gboolean multiple, gch
  */
 gchar *select_a_file_to_save(heraia_struct_t *main_struct)
 {
-    GtkWidget *parent = NULL;     /**< A parent window (we use main_struct) */
+    GtkWidget *parent = NULL;     /** GtkWidget *parent is a parent window (we use main_struct) */
     GtkFileChooser *fcd = NULL;
     gchar *filename = NULL;
 
@@ -1463,7 +1462,7 @@ void update_main_window_name(heraia_struct_t *main_struct)
  */
 GtkWidget *find_label_from_hbox(GtkWidget *hbox)
 {
-    GList *children = NULL;     /**< List of children in hbox widget */
+    GList *children = NULL;     /** GList *children is the list of children in the hbox widget */
     gboolean found = FALSE;
 
     if (hbox != NULL)

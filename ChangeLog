@@ -7,6 +7,9 @@
           been disabled.
         * Suppressed a warning from glib when heraia was not in the user's
           path.
+        * Better comments in order to have a cleaner doxygen documentation
+        * Corrected a bug with GTK3 that segfaulted heraia GTK_IS_HBOX to
+          GTK_IS_BOX
 
 27.09.2013
     - Olivier Delhomme <heraia@delhomme.org>
@@ -28,7 +31,6 @@
         * Documentation update
         * gtk_vbox_new and gtk_hbox_new has been deprecated since GTK 3.2
         * gtk_hpaned_new was also deprecated
-
 
 14.09.2013
     - Olivier Delhomme <heraia@delhomme.org>
