@@ -5,7 +5,8 @@
           with ./configure script)
         * make heraia completly quiet when debugging is off and log has
           been disabled.
-
+        * Suppressed a warning from glib when heraia was not in the user's
+          path.
 
 27.09.2013
     - Olivier Delhomme <heraia@delhomme.org>

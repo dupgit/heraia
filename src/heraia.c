@@ -304,6 +304,7 @@ static HERAIA_ERROR init_heraia_plugin_system(heraia_struct_t *main_struct)
 static GList *init_heraia_location_list(gchar *heraia_path)
 {
     gchar *path = NULL;
+    gchar *abs_path = NULL;            /* absolute path */
     const gchar* const *system_dirs;
     guint i = 0;
     GList *location_list = NULL;
@@ -349,8 +350,13 @@ static GList *init_heraia_location_list(gchar *heraia_path)
     location_list = g_list_prepend(location_list, path);
 
     /* the first location of the program in the path */
-    path =  g_build_path(G_DIR_SEPARATOR_S, g_path_get_dirname(g_find_program_in_path("heraia")), "..", "share", "heraia", NULL);
-    location_list = g_list_prepend(location_list, path);
+    abs_path = g_find_program_in_path("heraia");
+    if (abs_path != NULL)
+        {
+            path =  g_build_path(G_DIR_SEPARATOR_S, g_path_get_dirname(abs_path), "..", "share", "heraia", NULL);
+            location_list = g_list_prepend(location_list, path);
+            g_free(abs_path);
+        }
 
     return location_list;
 }
