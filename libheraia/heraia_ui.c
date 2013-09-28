@@ -1871,7 +1871,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
 {
     gboolean success = FALSE;
 
-    /* load the XML interfaces (main & treatment) */
+    /* load the XML interfaces (main) */
     success = load_heraia_xml(main_struct);
 
     if (success == TRUE)
@@ -1889,6 +1889,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
                     fprintf(stdout, Q_(" [Done]\n"));
                 }
 
+
             /* The Log window */
             if (main_struct->debug == TRUE)
                 {
@@ -1901,6 +1902,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
                 {
                     fprintf(stdout, Q_(" [Done]\n"));
                 }
+
 
             /* Preferences window */
             if (main_struct->debug == TRUE)
@@ -1957,6 +1959,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
                     fprintf(stdout, Q_(" [Done]\n"));
                 }
 
+
             /* find window */
             if (main_struct->debug == TRUE)
                 {
@@ -1970,6 +1973,7 @@ int load_heraia_ui(heraia_struct_t *main_struct)
                     fprintf(stdout, Q_(" [Done]\n"));
                 }
 
+
             /* find and replace window */
             if (main_struct->debug == TRUE)
                 {
@@ -1982,6 +1986,8 @@ int load_heraia_ui(heraia_struct_t *main_struct)
                 {
                     fprintf(stdout, Q_(" [Done]\n"));
                 }
+
+
             /* find and replace window */
             if (main_struct->debug == TRUE)
                 {
@@ -1995,11 +2001,15 @@ int load_heraia_ui(heraia_struct_t *main_struct)
                     fprintf(stdout, Q_(" [Done]\n"));
                 }
 
+
             /* preferences file - Setting up preferences */
-            fprintf(stdout, Q_("Loading heraia preference file\n"));
-            fprintf(stdout, Q_("Setting up preferences...\n"));
+            if (main_struct->debug == TRUE)
+                {
+                    fprintf(stdout, Q_("Loading heraia preference file\n"));
+                    fprintf(stdout, Q_("Setting up preferences...\n"));
+                }
+
             load_preferences(main_struct, main_struct->prefs);
-            /* fprintf(stdout, Q_("[Done]\n")); */
         }
 
     return success;

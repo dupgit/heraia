@@ -1,3 +1,12 @@
+28.09.2013
+    - Olivier Delhomme <heraia@delhomme.org>
+        * Disabling logging now works (--disable-logoutput option) !
+        * Debugging is not set by default anymore (use --enable-debug at
+          with ./configure script)
+        * make heraia completly quiet when debugging is off and log has
+          been disabled.
+
+
 27.09.2013
     - Olivier Delhomme <heraia@delhomme.org>
         * New compilation option in order to disable completly the logs

@@ -267,19 +267,10 @@ dnl **************************************************
 dnl * Disabling the log output to make heraia quiet  *
 dnl **************************************************
 AC_ARG_ENABLE([logoutput],
-     [  --disable-logoutput    Disables all log output],
-     [case "${enableval}" in
-       yes) logoutput=false ;;
-       no)  logoutput=true ;;
-       *) AC_MSG_ERROR([bad value ${enableval} for --disable-log-output]) ;;
-     esac],[logoutput=true])
-if test x$logoutput = xfalse
-then
- AC_DEFINE([LOGOUTPUT], [0], [Disabling the log output to make heraia quiet])
-else
- AC_DEFINE([LOGOUTPUT], [1], [Logging is activated])
-fi
-
+              [  --disable-logoutput    Disables all log output],
+              [AC_DEFINE([LOGOUTPUT], [0], [Disabling the log output to make heraia quiet])],
+              [AC_DEFINE([LOGOUTPUT], [1], [Logging is activated])]
+             )
 
 AC_SUBST(LDFLAGS)
 AC_SUBST(CFLAGS)
