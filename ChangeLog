@@ -1,3 +1,8 @@
+09.10.2013
+    - Olivier Delhomme <heraia@delhomme.org>
+        * Corrected a bug in the stat plugin that was leading the buttons
+          to save the datas not sensitive at load time.
+
 28.09.2013
     - Olivier Delhomme <heraia@delhomme.org>
         * Disabling logging now works (--disable-logoutput option) !

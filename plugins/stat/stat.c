@@ -791,7 +791,17 @@ static void realize_some_numerical_stat(heraia_struct_t *main_struct, heraia_plu
                     add_text_to_textview(textview, Q_("     . mean             : %lld\n"), extra->infos_2D->mean);
                     add_text_to_textview(textview, Q_("     . number of values : %lld\n"), extra->infos_2D->nb_val);
                     log_message(main_struct, G_LOG_LEVEL_INFO, Q_("Histos calculated !"));
+
+                    set_statw_button_state(plugin->xml, TRUE);
                 }
+            else
+                {
+                    set_statw_button_state(plugin->xml, FALSE);
+                }
+        }
+    else
+        {
+            set_statw_button_state(plugin->xml, FALSE);
         }
 }
 
