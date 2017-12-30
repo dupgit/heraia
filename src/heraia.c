@@ -3,7 +3,7 @@
  *  heraia.c
  *  heraia - an hexadecimal file editor and analyser based on ghex
  *
- *  (C) Copyright 2005 - 2013 Olivier Delhomme
+ *  (C) Copyright 2005 - 2018 Olivier Delhomme
  *  e-mail : heraia@delhomme.org
  *  URL    : http://heraia.tuxfamily.org
  *
@@ -31,7 +31,7 @@
  *         Grégory AUDET,
  *         Aurélie DERAISME.
  * @version 0.1.8
- * @date 2005-2012
+ * @date 2005-2018
  */
 
 
