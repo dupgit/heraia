@@ -339,8 +339,8 @@ tab_t *add_new_tab_in_data_interpretor(GtkNotebook *notebook, guint index, const
             if (va_label != NULL)
                 {
                     vbox_label = gtk_label_new(va_label);
-                    gtk_misc_set_padding(GTK_MISC(vbox_label), 3, 3);       /* properties for the labels */
-                    gtk_misc_set_alignment(GTK_MISC(vbox_label), 0.5, 0.5);
+                    my_gtk_misc_set_padding(GTK_WIDGET(vbox_label), 3, 3);       /* properties for the labels */
+                    my_gtk_misc_set_alignment(GTK_WIDGET(vbox_label));
                     g_ptr_array_add(col_labels, (gpointer) vbox_label);     /* Keeping a pointer to the label */
                 }
         }
@@ -459,8 +459,8 @@ tab_t *add_new_tab_in_data_interpretor(GtkNotebook *notebook, guint index, const
     tab->nb_cols = nb_cols;
     tab->nb_rows = 0;
     tab->label = gtk_label_new(label);   /* tab's label */
-    gtk_misc_set_padding(GTK_MISC(tab->label), 2, 2);
-    gtk_misc_set_alignment(GTK_MISC(tab->label), 0.5, 0.5);
+    my_gtk_misc_set_padding(GTK_WIDGET(tab->label), 2, 2);
+    my_gtk_misc_set_alignment(GTK_WIDGET(tab->label));
     tab->col_labels = col_labels;
     tab->vboxes = vboxes;
     tab->rows = NULL;

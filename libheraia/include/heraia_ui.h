@@ -29,6 +29,11 @@
 
 #define H_DEBUG 1
 
+/* Deprecated function rewritten */
+extern void my_gtk_misc_set_padding(GtkWidget *widget, gint xpad, gint ypad);
+extern void my_gtk_misc_set_alignment(GtkWidget *widget);
+
+
 /* Menu functions */
 extern void on_quit_activate(GtkWidget *widget, gpointer data);
 extern void on_new_activate(GtkWidget *widget, gpointer data);

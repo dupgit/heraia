@@ -48,6 +48,43 @@ static void on_projects_close_activate(GtkWidget *widget, gpointer data);
 static void on_projects_open_activate(GtkWidget *widget, gpointer data);
 static void on_projects_save_as_activate(GtkWidget *widget, gpointer data);
 
+
+/*** Deprecated functions rewritten ***/
+
+/**
+ * @fn void my_gtk_misc_set_padding(GtkWidget *widget, gint xpad, gint ypad)
+ * Sets the padding with new gtk functions.
+ * @param widget is the widget to be padded
+ * @param xpad is the padding to apply horizontally
+ * @param ypad is the padding to apply vertically
+ */
+void my_gtk_misc_set_padding(GtkWidget *widget, gint xpad, gint ypad)
+{
+
+    #if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 12
+        gtk_widget_set_margin_start(widget, xpad);
+        gtk_widget_set_margin_end(widget, xpad);
+        gtk_widget_set_margin_top(widget, ypad);
+        gtk_widget_set_margin_bottom(widget, ypad);
+    #else
+        gtk_misc_set_padding(GTK_MISC(widget, xpad, ypad);
+    #endif
+}
+
+
+/**
+ * @fn void my_gtk_misc_set_alignment(GtkWidget *widget)
+ * @param widget is the widget to set the alignement.
+ */
+void my_gtk_misc_set_alignment(GtkWidget *widget)
+{
+    gtk_widget_set_valign(widget, GTK_ALIGN_CENTER);
+    gtk_widget_set_halign(widget, GTK_ALIGN_CENTER);
+}
+
+
+/*** Menu function ***/
+
 /**
  * @fn void on_quit_activate(GtkWidget *widget, gpointer data)
  *  Quit, file menu
