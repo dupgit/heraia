@@ -5,14 +5,15 @@
 #
 
 ##
-# Deletes a file
-# first argument is a file's filename to be deleted
+# Deletes all files passed in arguments
 #
 function delete_files {
 
     for file in "${@}"; do
-        echo "${file}"
-        rm -f "${file}"
+        if test -f "${file}"; then
+            echo "${file}"
+            rm -f "${file}"
+        fi
     done
 }
 
