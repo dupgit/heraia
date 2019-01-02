@@ -6,3 +6,4 @@ m4/
 *.bak
 *.log
 docs/doxygen
+autom4te.cache/
