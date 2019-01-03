@@ -492,7 +492,7 @@ static gboolean manage_command_line_options(Options *opt, int argc, char **argv)
 
     while (optind < argc)
         {
-            filename = (char *) malloc (sizeof(char) * strlen(argv[optind]) + 1);
+            filename = g_strdup(argv[optind]);
             strcpy(filename, argv[optind]);
             opt->filenames = g_list_prepend(opt->filenames, filename);
             optind++;
