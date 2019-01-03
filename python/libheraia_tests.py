@@ -30,5 +30,5 @@ pygtk.require('2.0')
 import gtk
 
 
-libheraia=cdll.LoadLibrary('libheraia.so')
+libheraia = cdll.LoadLibrary('libheraia.so')
 libheraia.libheraia_test()
